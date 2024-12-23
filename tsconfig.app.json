@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/firebaseConfig.ts"]
+  "include": ["src", "src/services/firebase.ts"]
 }
