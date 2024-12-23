@@ -1,7 +1,7 @@
 // src/components/Login.tsx
 import React, { useState } from 'react';
-import { signInWithPopup, signOut } from 'firebase/auth';
-import { auth, googleProvider } from '../firebaseConfig';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
 
 const Login: React.FC = () => {
