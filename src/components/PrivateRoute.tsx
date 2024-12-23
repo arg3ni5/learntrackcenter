@@ -8,11 +8,13 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
 
-    console.log("Usuario:", user);
+    if (loading) {
+        return <div>Cargando...</div>; // Muestra un mensaje mientras se verifica la autenticación
+    }
 
-    return user ? element : <Navigate to="/" replace />;
+    return user ? <>{element}</> : <Navigate to="/learntrackcenter" replace />;
 };
 
 export default PrivateRoute;
