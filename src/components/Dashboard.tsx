@@ -1,11 +1,14 @@
 import React from 'react';
+import { useAuth } from '../hooks/useAuth';
 
 const Dashboard: React.FC = () => {
+    const { user } = useAuth();
+
     return (
         <div>
-            <h1>Dashboard</h1>
-            <p>Bienvenido al panel de control. Aquí puedes gestionar tus calificaciones y asistencia.</p>
-            {/* Aquí puedes agregar más funcionalidades relacionadas con el dashboard */}
+            <h1>Bienvenido, {user?.displayName}</h1>
+            <h2>Resumen Académico</h2>
+            {/* Aquí puedes añadir componentes para mostrar calificaciones y asistencia */}
         </div>
     );
 };
