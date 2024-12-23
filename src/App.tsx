@@ -17,10 +17,10 @@ const App: React.FC = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+                <Route path="/learntrackcenter" element={<Login />} />
+                <Route path="/learntrackcenter/register" element={<Register />} />
+                <Route path="/learntrackcenter/login" element={<Login />} />
+                <Route path="/learntrackcenter/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
                 {/* Otras rutas públicas o privadas pueden ser agregadas aquí */}
             </Routes>
         </Router>
