@@ -14,7 +14,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
         return <div>Cargando...</div>; // Muestra un mensaje mientras se verifica la autenticación
     }
 
-    return user ? <>{element}</> : <Navigate to="/learntrackcenter" replace />;
+    return user ? <>{element}</> : <Navigate to="/" replace />;
 };
 
 export default PrivateRoute;
