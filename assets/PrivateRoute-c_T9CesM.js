@@ -1,1 +1,0 @@
-import{u as s,j as e,N as n}from"./index-qW3l38ml.js";const u=({element:r})=>{const{user:t,loading:a}=s();return a?e.jsx("div",{children:"Cargando..."}):t?e.jsx(e.Fragment,{children:r}):e.jsx(n,{to:"/",replace:!0})};export{u as default};
