@@ -1,0 +1,1 @@
+import{u as i,j as e}from"./index-qW3l38ml.js";const a=()=>{const{user:s}=i();return e.jsxs("div",{children:[e.jsxs("h1",{children:["Bienvenido, ",s==null?void 0:s.displayName]}),e.jsx("h2",{children:"Resumen Académico"})]})};export{a as default};
