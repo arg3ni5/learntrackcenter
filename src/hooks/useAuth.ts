@@ -1,3 +1,4 @@
+// src/hooks/useAuth.ts
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
@@ -11,7 +12,7 @@ export const useAuth = () => {
             setUser(user);
             setLoading(false);
         });
-        return unsubscribe;
+        return () => unsubscribe(); // Limpiar la suscripción al desmontar el componente
     }, []);
 
     return { user, loading };

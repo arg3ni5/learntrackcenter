@@ -1,6 +1,7 @@
+// src/components/Login.tsx
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebaseConfig';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '../firebaseConfig';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -16,12 +17,24 @@ const Login: React.FC = () => {
         }
     };
 
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            console.log("Usuario autenticado con Google:", result.user);
+        } catch (error) {
+            console.error("Error iniciando sesión con Google:", error);
+        }
+    };
+
     return (
-        <form onSubmit={handleLogin}>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            <button type="submit">Iniciar Sesión</button>
-        </form>
+        <div>
+            <form onSubmit={handleLogin}>
+                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+            <button onClick={handleGoogleLogin}>Iniciar Sesión con Google</button>
+        </div>
     );
 };
 
