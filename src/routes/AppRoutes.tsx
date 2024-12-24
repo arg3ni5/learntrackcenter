@@ -3,7 +3,8 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import PrivateRoute from "../components/PrivateRoute";
+import PrivateRoute from "../modules/userAuth/components/PrivateRoute";
+import Grades from "../pages/Grades";
 
 const Login = lazy(() => import("../components/Login"));
 const Register = lazy(() => import("../components/Register"));
@@ -29,6 +30,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/students" element={<PrivateRoute element={<Students />} />} />
         <Route path="/teachers" element={<PrivateRoute element={<Teachers />} />} />
         <Route path="/courses" element={<PrivateRoute element={<CourseManager />} />} />
+        <Route path="/grades" element={<PrivateRoute element={<Grades />} />} />
         <Route path="*" element={<Navigate to="/" />} /> {/* Redirigir a la página de inicio */}
       </Routes>
     </Suspense>
