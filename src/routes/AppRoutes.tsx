@@ -19,11 +19,11 @@ const AppRoutes: React.FC = () => {
     return (
         <Suspense fallback={<div>Cargando componente...</div>}>
             <Routes>
-                <Route path="/" element={<Navigate replace to="/login" />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
                 <Route path="/courses" element={<PrivateRoute element={<CourseManager />} />} />
+                <Route path="*" element={<Navigate to="/" />} /> {/* Redirigir a la página de inicio */}
             </Routes>
         </Suspense>
     );
