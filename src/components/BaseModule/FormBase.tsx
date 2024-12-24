@@ -1,16 +1,23 @@
-// src/BaseModule/FormBase.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../../services/firebase';
+import './FormBase.css'; // Importing CSS styles 
 
 interface FormBaseProps<T> {
     collectionName: string;
     onItemAdded: (newItem: T) => Promise<void>; // Callback para manejar la adición de un item
     fields: { name: string; placeholder: string }[];
+    initialData?: T | null; // Propiedad opcional para datos iniciales del formulario
 }
 
-const FormBase = <T extends {}>({ collectionName, onItemAdded, fields }: FormBaseProps<T>) => {
+const FormBase = <T extends {}>({ collectionName, onItemAdded, fields, initialData }: FormBaseProps<T>) => {
     const [formData, setFormData] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        if (initialData) {
+            setFormData(initialData as Record<string, string>); // Cargar datos iniciales en el formulario
+        }
+    }, [initialData]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

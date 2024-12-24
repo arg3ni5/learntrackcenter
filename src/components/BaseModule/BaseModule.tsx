@@ -11,6 +11,7 @@ interface BaseModuleProps<T> {
     fetchItems: () => Promise<T[]>; // Función para obtener los elementos
     onItemAdded: (newItem: T) => Promise<void>; // Callback para manejar la adición de un item
     onItemDeleted?: (id: string) => Promise<void>; // Callback opcional para manejar la eliminación
+    initialFormData?: T | null; // Datos iniciales para el formulario
 }
 
 const BaseModule = <T extends { id?: string }>({
@@ -20,6 +21,7 @@ const BaseModule = <T extends { id?: string }>({
     fetchItems,
     onItemAdded,
     onItemDeleted,
+    initialFormData,
 }: BaseModuleProps<T>) => {
     const [items, setItems] = useState<T[]>([]);
 
@@ -42,6 +44,7 @@ const BaseModule = <T extends { id?: string }>({
                     loadItems(); // Refresca la lista después de agregar
                 }} 
                 fields={fields} 
+                initialData={initialFormData} 
             />
             <ListBase 
                 items={items} 
