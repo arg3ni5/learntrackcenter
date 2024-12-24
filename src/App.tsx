@@ -7,7 +7,7 @@ import AppRoutes from './routes/AppRoutes';
 
 const App: React.FC = () => {
     return (
-        <Router>
+        <Router basename="/learntrackcenter">
             <Navbar />
             <AppRoutes />
         </Router>
