@@ -7,16 +7,16 @@ const Navbar: React.FC = () => {
         <nav>
             <ul>
                 <li>
-                    <Link to="/learntrackcenter/login">Login</Link>
+                    <Link to="/login">Login</Link>
                 </li>
                 <li>
-                    <Link to="/learntrackcenter/register">Register</Link>
+                    <Link to="/register">Register</Link>
                 </li>
                 <li>
-                    <Link to="/learntrackcenter/dashboard">Dashboard</Link>
+                    <Link to="/dashboard">Dashboard</Link>
                 </li>
                 <li>
-                    <Link to="/learntrackcenter/courses">Courses</Link>
+                    <Link to="/courses">Courses</Link>
                 </li>
             </ul>
         </nav>
