@@ -1,6 +1,6 @@
 // src/components/Student/StudentModule.tsx
 import React from "react";
-import BaseModule from "./BaseModule";
+import BaseModule from "./BaseModule/BaseModule";
 
 const StudentModule: React.FC = () => {
   const fields = [

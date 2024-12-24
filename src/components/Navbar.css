@@ -1,0 +1,29 @@
+/* src/components/Navbar.css */
+
+nav {
+    background-color: #007bff; /* Color de fondo azul */
+    padding: 10px 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+nav ul {
+    list-style-type: none; /* Eliminar viñetas */
+    padding: 0; /* Eliminar padding por defecto */
+    margin: 0; /* Eliminar margen por defecto */
+    display: flex; /* Usar flexbox para alinear los elementos */
+    justify-content: space-around; /* Espaciado equitativo entre los elementos */
+}
+
+nav li {
+    margin: 0 15px; /* Margen horizontal entre los elementos */
+}
+
+nav a {
+    color: white; /* Color del texto */
+    text-decoration: none; /* Sin subrayado en los enlaces */
+    font-weight: bold; /* Texto en negrita */
+}
+
+nav a:hover {
+    text-decoration: underline; /* Subrayar el enlace al pasar el mouse */
+}

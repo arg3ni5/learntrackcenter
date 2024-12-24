@@ -1,6 +1,8 @@
 // src/components/Navbar.tsx
+
 import React from "react";
 import { Link } from "react-router-dom";
+import './Navbar.css'; // Importar el archivo CSS
 
 const Navbar: React.FC = () => {
   return (
