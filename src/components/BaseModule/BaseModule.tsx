@@ -1,43 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../services/firebase';
-import Form from './Form';
-import List from './List';
+// src/BaseModule/BaseModule.tsx
+import { useEffect, useState } from 'react';
+import FormBase from './FormBase';
+import ListBase from './ListBase';
 import './BaseModule.css'; // Importar el archivo CSS
 
-interface BaseModuleProps {
+interface BaseModuleProps<T> {
     collectionName: string;
     title?: string;
     fields: { name: string; placeholder: string }[];
+    fetchItems: () => Promise<T[]>; // Función para obtener los elementos
+    onItemAdded: (newItem: T) => Promise<void>; // Callback para manejar la adición de un item
+    onItemDeleted?: (id: string) => Promise<void>; // Callback opcional para manejar la eliminación
 }
 
-const BaseModule: React.FC<BaseModuleProps> = ({ collectionName, title, fields }) => {
-    const [items, setItems] = useState<any[]>([]);
+const BaseModule = <T extends { id?: string }>({
+    collectionName,
+    title,
+    fields,
+    fetchItems,
+    onItemAdded,
+    onItemDeleted,
+}: BaseModuleProps<T>) => {
+    const [items, setItems] = useState<T[]>([]);
 
-    const fetchItems = async () => {
-        const itemsCollection = collection(db, collectionName);
-        const itemSnapshot = await getDocs(itemsCollection);
-        const itemList = itemSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const loadItems = async () => {
+        const itemList = await fetchItems(); // Llama a la función proporcionada para obtener los elementos
         setItems(itemList);
     };
 
     useEffect(() => {
-        fetchItems();
+        loadItems();
     }, []);
 
     return (
         <div>
             {title && <h2>{title}</h2>}
-            <Form 
+            <FormBase 
                 collectionName={collectionName} 
-                onItemAdded={fetchItems} 
+                onItemAdded={async (newItem: T) => { // Especificar el tipo aquí
+                    await onItemAdded(newItem); // Llama al callback para manejar la adición
+                    loadItems(); // Refresca la lista después de agregar
+                }} 
                 fields={fields} 
             />
-            <List 
+            <ListBase 
                 items={items} 
                 collectionName={collectionName} 
                 fields={fields} 
-                onItemDeleted={fetchItems} 
+                onItemDeleted={async (id) => {
+                    if (onItemDeleted) {
+                        await onItemDeleted(id); // Llama al callback si está definido
+                    }
+                    loadItems(); // Refresca la lista después de eliminar
+                }} 
             />
         </div>
     );

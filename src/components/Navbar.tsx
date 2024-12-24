@@ -26,6 +26,9 @@ const Navbar: React.FC = () => {
         <li>
           <Link to="/teachers">Profesores</Link>
         </li>
+        <li>
+          <Link to="/grades">Carreras</Link>
+        </li>
       </ul>
     </nav>
   );
