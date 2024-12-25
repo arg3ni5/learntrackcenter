@@ -1,0 +1,29 @@
+.dropdown {
+    position: relative; /* Necesario para posicionar el menú */
+}
+
+.dropdown-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute; /* Posiciona el menú debajo del botón */
+    background-color: #202020;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    list-style-type: none; /* Eliminar viñetas */
+    padding: 0; /* Sin padding */
+}
+
+.dropdown-menu li {
+    padding: 10px;
+}
+
+.dropdown-menu li:hover {
+    background-color: #575757; /* Cambiar color al pasar el mouse */
+}
