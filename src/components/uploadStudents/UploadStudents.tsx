@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
+import './UploadStudents.css';
 
 interface UploadStudentsProps {
     onSelectStudent: (student: any) => void; // Prop para manejar la selección de estudiante
@@ -97,7 +98,7 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent }) => {
                     <button onClick={() => console.log('Delete Selected Rows')}>Delete Selected Rows</button>
                     <button onClick={() => console.log('Confirm and Save')}>Confirm and Save</button>
                     
-                    <table>
+                    <table className="students-table">
                         <thead>
                             <tr>
                                 <th>Select</th>

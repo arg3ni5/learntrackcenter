@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, connectAuthEmulator } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -21,4 +21,5 @@ export const googleProvider = new GoogleAuthProvider();
 // Conectar al emulador de autenticación
 if (window.location.hostname === "localhost") {
     connectAuthEmulator(auth, "http://localhost:9099/");
+    connectFirestoreEmulator(db, "127.0.0.1", 8080);
 }
