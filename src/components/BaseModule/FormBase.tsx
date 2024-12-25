@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../../services/firebase';
 import './FormBase.css'; // Importing CSS styles 
 
 interface FormBaseProps<T> {
-    collectionName: string;
     onItemAdded: (newItem: T) => Promise<void>; // Callback para manejar la adición de un item
     fields: { name: string; placeholder: string }[];
     initialData?: T | null; // Propiedad opcional para datos iniciales del formulario
 }
 
-const FormBase = <T extends {}>({ collectionName, onItemAdded, fields, initialData }: FormBaseProps<T>) => {
+const FormBase = <T extends {}>({ onItemAdded, fields, initialData }: FormBaseProps<T>) => {
     const [formData, setFormData] = useState<Record<string, string>>({});
 
     useEffect(() => {
@@ -25,10 +22,9 @@ const FormBase = <T extends {}>({ collectionName, onItemAdded, fields, initialDa
     };
 
     const addItem = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        await addDoc(collection(db, collectionName), formData);
+        e.preventDefault(); // Evitar el comportamiento por defecto del formulario
         await onItemAdded(formData as T); // Llama al callback para manejar la adición
-        setFormData({}); // Resetea el formulario
+        setFormData({}); // Resetea el formulario después de agregar
     };
 
     return (

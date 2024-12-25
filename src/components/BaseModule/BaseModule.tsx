@@ -12,6 +12,7 @@ interface BaseModuleProps<T> {
     onItemAdded: (newItem: T) => Promise<void>; // Callback para manejar la adición de un item
     onItemDeleted?: (id: string) => Promise<void>; // Callback opcional para manejar la eliminación
     initialFormData?: T | null; // Datos iniciales para el formulario
+    loading?: boolean; 
 }
 
 const BaseModule = <T extends { id?: string }>({
@@ -22,6 +23,7 @@ const BaseModule = <T extends { id?: string }>({
     onItemAdded,
     onItemDeleted,
     initialFormData,
+    loading
 }: BaseModuleProps<T>) => {
     const [items, setItems] = useState<T[]>([]);
 
@@ -37,8 +39,7 @@ const BaseModule = <T extends { id?: string }>({
     return (
         <div>
             {title && <h2>{title}</h2>}
-            <FormBase 
-                collectionName={collectionName} 
+            <FormBase
                 onItemAdded={async (newItem: T) => { // Especificar el tipo aquí
                     await onItemAdded(newItem); // Llama al callback para manejar la adición
                     loadItems(); // Refresca la lista después de agregar
@@ -56,6 +57,7 @@ const BaseModule = <T extends { id?: string }>({
                     }
                     loadItems(); // Refresca la lista después de eliminar
                 }} 
+                loading={loading || false}
             />
         </div>
     );

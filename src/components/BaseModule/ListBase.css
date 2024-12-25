@@ -1,0 +1,30 @@
+/* src/BaseModule/ListBase.css */
+
+.list-base-table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.list-base-table th,
+.list-base-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.list-base-table th {
+    background-color: #007bff;
+}
+
+.delete-button {
+    background-color: #f44336; /* Color rojo */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f; /* Color rojo más oscuro al pasar el mouse */
+}

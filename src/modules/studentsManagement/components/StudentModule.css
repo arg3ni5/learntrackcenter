@@ -1,0 +1,13 @@
+/* src/modules/studentsManagement/StudentModule.css */
+
+.loading {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+}
+
+.error {
+    text-align: center;
+    font-size: 18px;
+    color: red; /* Color rojo para errores */
+}

@@ -5,8 +5,8 @@ import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 export interface Student {
     id?: string; // Optional ID property, used when fetching from Firestore
     fullName: string; // Full name of the student
-    identificationNumber: string; // Unique identification number for the student
-    email: string; // Email address of the student
+    identificationNumber?: string; // Unique identification number for the student
+    email?: string; // Email address of the student
 }
 
 // Función para agregar una nueva calificación
