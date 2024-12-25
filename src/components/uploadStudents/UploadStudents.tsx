@@ -1,5 +1,3 @@
-// src/components/UploadStudents.tsx
-
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import './UploadStudents.css';
@@ -68,6 +66,19 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent }) => {
         });
     };
 
+    // Delete selected rows
+    const deleteSelectedRows = () => {
+        const newStudentsData = studentsData.filter((_, index) => !selectedRows.has(index));
+        setStudentsData(newStudentsData);
+        setSelectedRows(new Set()); // Clear selection after deletion
+    };
+
+    // Confirm and save action (implement your logic here)
+    const confirmAndSave = () => {
+        console.log('Confirmed and saved:', studentsData.filter((_, index) => selectedRows.has(index)));
+        // Implement your save logic here
+    };
+
     return (
         <div>
             <h2>Upload Students</h2>
@@ -95,8 +106,8 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent }) => {
                 <div>
                     <h3>Preview of Students Data</h3>
                     
-                    <button onClick={() => console.log('Delete Selected Rows')}>Delete Selected Rows</button>
-                    <button onClick={() => console.log('Confirm and Save')}>Confirm and Save</button>
+                    <button onClick={deleteSelectedRows}>Delete Selected Rows</button>
+                    <button onClick={confirmAndSave}>Confirm and Save</button>
                     
                     <table className="students-table">
                         <thead>
