@@ -1,5 +1,6 @@
 .dropdown {
-    position: relative; /* Necesario para posicionar el menú */
+    position: relative;
+    /* Necesario para posicionar el menú */
 }
 
 .dropdown-button {
@@ -10,20 +11,62 @@
     cursor: pointer;
 }
 
+.dropdown-icon {
+    margin-left: 5px;
+    /* Espacio entre el título y el ícono */
+}
+
 .dropdown-menu {
-    position: absolute; /* Posiciona el menú debajo del botón */
+    position: absolute;
+    /* Posiciona el menú debajo del botón */
     background-color: #202020;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-top: 5px;
-    list-style-type: none; /* Eliminar viñetas */
-    padding: 0; /* Sin padding */
+    list-style-type: none;
+    /* Eliminar viñetas */
+    padding: 0;
+    /* Sin padding */
 }
 
 .dropdown-menu li {
+    display: flex; /* Usar flexbox para alinear ícono y texto */
+    align-items: center; /* Centrar verticalmente */
     padding: 10px;
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el elemento */
 }
 
-.dropdown-menu li:hover {
-    background-color: #575757; /* Cambiar color al pasar el mouse */
+
+.dropdown-menu li a:hover {
+    background-color: #797979 !important;
+    /* Cambiar color al pasar el mouse */
+}
+
+.dropdown-button.active {
+    background-color: #f1f1f1; /* Color para el botón activo */
+    color: black; /* Color del texto en activo */
+}
+
+.dropdown-menu li.active a {
+    background-color: #f1f1f1;
+    /* Color para el elemento activo */
+    color: black;
+    /* Color del texto en activo */
+}
+
+
+
+.item-icon {
+    margin-right: 8px;
+    /* Espacio entre el ícono y el texto */
+    display: flex;
+    /* Asegurar que el ícono se comporte como un elemento flex */
+    align-items: center;
+    /* Centrar verticalmente el ícono */
+}
+
+/* Estilo adicional para el botón del dropdown */
+.dropdown-button {
+    display: flex; /* Usar flexbox para alinear el texto y el ícono del dropdown */
+    align-items: center; /* Centrar verticalmente */
 }
