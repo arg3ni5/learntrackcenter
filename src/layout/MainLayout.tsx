@@ -1,8 +1,8 @@
 // src/components/MainLayout.tsx
 
 import React from "react";
-import "./MainLayout.css"; // Asegúrate de importar el archivo CSS
 import Navbar from "../components/navbar/Navbar";
+import "./MainLayout.css"; // Asegúrate de importar el archivo CSS
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (

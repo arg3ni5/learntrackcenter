@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
   const studentItems = [
     { label: "Estudiantes", to: "/students", icon: <FaUserGraduate /> },
     { label: "Profesores", to: "/teachers", icon: <FaChalkboardTeacher /> },
-    { label: "Carreras", to: "/grades", icon: <FaBook /> },
+    { label: "Calificaciones", to: "/grades", icon: <FaBook /> },
   ];
 
   const userItems = [
@@ -25,10 +25,11 @@ const Navbar: React.FC = () => {
   const navbarItems = [
     { label: "Dashboard", to: "/dashboard" },
     { label: "Courses", to: "/courses" },
+    { label: "Periods", to: "/periods" },
   ];
 
   return (
-    <nav>
+    <header>
       <ul>
         <Dropdown title="Estudiantes" items={studentItems} />
         
@@ -43,7 +44,7 @@ const Navbar: React.FC = () => {
         ))}
 
       </ul>
-    </nav>
+    </header>
   );
 };
 

@@ -1,22 +1,23 @@
 @media (max-width: 768px) {
-    nav ul {
+    header ul {
         flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
         align-items: center; /* Centrar los elementos */
     }
     
-    nav li {
+    header li {
         margin: 10px 0; /* Margen vertical entre elementos */
     }
 }
 
 
-nav {
-    background-color: #007bff; /* Color de fondo azul */
-    padding: 10px 20px; /* Espaciado interno */
-    border-radius: 8px; /* Bordes redondeados */
+header {
+    background-color: #007bff;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    transition: background-color 0.3s; /* Transición suave */
 }
 
-nav ul {
+header ul {
     list-style-type: none; /* Eliminar viñetas */
     padding: 0; /* Eliminar padding por defecto */
     margin: 0; /* Eliminar margen por defecto */
@@ -24,7 +25,7 @@ nav ul {
     justify-content: space-around; /* Espaciado equitativo entre los elementos */
 }
 
-nav li {
+header li {
     margin: 0 15px; /* Margen horizontal entre los elementos */
     color: white;
     border: none;
@@ -32,7 +33,7 @@ nav li {
     cursor: pointer;
 }
 
-nav a {
+header a {
     color: white; /* Color del texto */
     text-decoration: none; /* Sin subrayado en los enlaces */
     font-weight: bold; /* Texto en negrita */
@@ -44,24 +45,16 @@ nav a {
     border-radius: 4px;
 }
 
-nav a:hover {
+header a:hover {
     color: white; /* Color del texto */
 }
 
-nav {
-    background-color: #007bff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
-    transition: background-color 0.3s; /* Transición suave */
-}
-
-nav:hover {
+header:hover {
     background-color: #0056b3; /* Color más oscuro al pasar el mouse */
 }
 
 
-nav li.active a {
+header li.active a {
     background-color: #f1f1f1;
     /* Color para el elemento activo */
     color: black;
