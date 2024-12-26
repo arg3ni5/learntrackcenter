@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import BaseModule from "../../../components/BaseModule/BaseModule"; // Importing the reusable BaseModule component
 import { fetchStudents, addStudent, deleteStudent, Student } from "../services/studentService"; // Importing necessary functions and types
 import UploadStudents from "../../../components/uploadStudents/UploadStudents";
+import Loading from "../../../components/loading/Loading";
 
 const StudentModule: React.FC = () => {
     const [initialStudentData, setInitialStudentData] = useState<Student | null>(null); // State to hold initial data for the form
@@ -46,7 +47,7 @@ const StudentModule: React.FC = () => {
                 loading={loading} // Pass loading state to BaseModule or directly to ListBase if needed
             />
             <UploadStudents onSelectStudent={setInitialStudentData} /> {/* Pass function to update initial form data */}
-            {loading && <div className="loading">Cargando estudiantes...</div>} {/* Loading message */}
+            {loading && <div className="loading"><Loading /></div>} {/* Loading message */}
             {error && <div className="error">{error}</div>} {/* Error message */}
         </>
     );

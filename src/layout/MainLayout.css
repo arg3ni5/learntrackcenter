@@ -1,0 +1,20 @@
+.grid {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "main"; /* Solo header y main */
+    grid-template-columns: 1fr; /* Solo una columna */
+    grid-template-rows: 60px 1fr; /* Header y contenido */
+    height: 100vh; /* Altura completa de la ventana */
+}
+
+.header {
+    grid-area: header;
+    color: white;
+}
+
+.main {
+    margin: 20px 10px;
+    grid-area: main;
+    padding: 10px;
+}

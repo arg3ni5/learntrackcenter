@@ -9,6 +9,7 @@ const Login = lazy(() => import("../components/Login"));
 const Register = lazy(() => import("../components/Register"));
 const Courses = lazy(() => import("../pages/Courses"));
 const Grades = lazy(() => import("../pages/Grades"));
+const Periods = lazy(() => import("../pages/Periods"));
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Students = lazy(() => import("../pages/Students"));
@@ -31,6 +32,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/teachers" element={<PrivateRoute element={<Teachers />} />} />
         <Route path="/courses" element={<PrivateRoute element={<Courses />} />} />
         <Route path="/grades" element={<PrivateRoute element={<Grades />} />} />
+        <Route path="/periods" element={<PrivateRoute element={<Periods />} />} />
         <Route path="*" element={<Navigate to="/" />} /> {/* Redirigir a la página de inicio */}
       </Routes>
     </Suspense>
@@ -38,3 +40,4 @@ const AppRoutes: React.FC = () => {
 };
 
 export default AppRoutes;
+

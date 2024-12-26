@@ -4,6 +4,7 @@ import React from "react";
 import BaseModule from "../../../components/BaseModule/BaseModule"; 
 import { Period } from "../services/periodService"; 
 import usePeriods from "../hooks/usePeriod";
+import Loading from "../../../components/loading/Loading";
 
 const PeriodsModule: React.FC = () => {
     const { periods, loading, error, handleAddPeriod, handleDeletePeriod } = usePeriods(); 
@@ -28,7 +29,7 @@ const PeriodsModule: React.FC = () => {
                 loading={loading} // Loading state
             />
             
-            {loading && <div className="loading">Loading...</div>} {/* Loading message */}
+            {loading && <div className="loading"><Loading /></div>} {/* Loading message */}
             {error && <div className="error">{error}</div>} {/* Error message */}
         </>
     );

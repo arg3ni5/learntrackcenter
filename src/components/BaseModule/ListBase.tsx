@@ -2,6 +2,7 @@ import React from 'react';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../services/firebase';
 import './ListBase.css'; // Importar archivo CSS para estilos
+import Loading from '../loading/Loading';
 
 interface ListBaseProps {
     items: any[]; // Puedes definir un tipo más específico según tu modelo de datos
@@ -19,7 +20,7 @@ const ListBase: React.FC<ListBaseProps> = ({ items, collectionName, fields, onIt
     };
 
     if (loading) {
-        return <div className="loading">Cargando...</div>; // Mensaje de carga
+        return <div className="loading"><Loading /></div>; // Mensaje de carga
     }
 
     return (

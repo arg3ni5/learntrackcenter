@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import BaseModule from "../../../components/BaseModule/BaseModule"; // Importing the reusable BaseModule component
 import { fetchCourses, addCourse, deleteCourse, Course } from "../services/courseService"; // Importing necessary functions and types
+import Loading from "../../../components/loading/Loading";
 
 const CourseModule: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true); // State to handle loading
@@ -42,7 +43,7 @@ const CourseModule: React.FC = () => {
                 onItemDeleted={deleteCourse} // Function to delete a course using the service
                 loading={loading} // Pass loading state to BaseModule or directly to ListBase if needed
             />
-            {loading && <div className="loading">Cargando cursos...</div>} {/* Loading message */}
+            {loading && <div className="loading"><Loading /></div>} {/* Loading message */}
             {error && <div className="error">{error}</div>} {/* Error message */}
         </>
     );

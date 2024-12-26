@@ -1,0 +1,26 @@
+.loading-container {
+    display: flex; /* Usar flexbox para centrar el contenido */
+    flex-direction: column; /* Colocar el spinner y el texto en columna */
+    justify-content: center; /* Centrar verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+.spinner {
+    border: 8px solid rgba(255, 255, 255, 0.3); /* Borde blanco con transparencia */
+    border-top: 8px solid #007bff; /* Color del spinner */
+    border-radius: 50%; /* Hacerlo circular */
+    width: 50px; /* Ancho del spinner */
+    height: 50px; /* Alto del spinner */
+    animation: spin 1s linear infinite; /* Animación de rotación infinita */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+p {
+    margin-top: 10px; /* Espacio entre el spinner y el texto */
+    color: #007bff; /* Color del texto */
+}
