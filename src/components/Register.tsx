@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../services/firebase';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import { useNavigate } from 'react-router-dom';
 import './Register.css'; // Asegúrate de importar el CSS
+import { useNotification } from './notification/NotificationContext';
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' | null } | null>(null);
-    const navigate = useNavigate(); // Inicializar useNavigate
+    const navigate = useNavigate();
+    const { showNotification } = useNotification();
+
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,6 +22,7 @@ const Register: React.FC = () => {
             navigate('/login'); // Cambia '/login' según la ruta correcta en tu aplicación
         } catch (error) {
             setMessage({ text: "Error registrando usuario: " + (error as any).message, type: 'error' });
+            showNotification("Error registrando usuario", "error"); // Mostrar notificación de error
         }
     };
 

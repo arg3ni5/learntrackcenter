@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
+import { useNotification } from '../notification/NotificationContext';
 import * as XLSX from 'xlsx';
 import './UploadStudents.css';
 
 interface UploadStudentsProps {
-    onSelectStudent: (student: any) => void; // Prop para manejar la selección de estudiante
+    onSelectStudent: (student: any) => void;
+    onImportStudent: (student: any) => void;
 }
 
-const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent }) => {
+const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent, onImportStudent }) => {
     const [file, setFile] = useState<File | null>(null);
     const [studentsData, setStudentsData] = useState<any[]>([]);
     const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
     const [previewVisible, setPreviewVisible] = useState(false);
     const [hasHeaders, setHasHeaders] = useState(false);
+    const { showNotification } = useNotification();
 
     // Handle file change event
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +22,7 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent }) => {
         if (selectedFile) {
             setFile(selectedFile);
             setPreviewVisible(false);
+            showNotification("¡Archivo cargado!", "success")
         }
     };
 
@@ -66,6 +70,17 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent }) => {
         });
     };
 
+    const handleStudentImport = (index: number) => {
+        const selectedStudent = studentsData[index];
+        
+        onImportStudent({
+            fullName: selectedStudent[0], // Assuming Full Name is in the first column
+            identificationNumber: selectedStudent[1], // Assuming ID is in the second column
+            email: selectedStudent[2], // Assuming Email is in the third column
+        });
+        console.log("handleStudentImport", selectedStudent);
+    };
+
     // Delete selected rows
     const deleteSelectedRows = () => {
         const newStudentsData = studentsData.filter((_, index) => !selectedRows.has(index));
@@ -75,13 +90,12 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent }) => {
 
     // Confirm and save action (implement your logic here)
     const confirmAndSave = () => {
-        console.log('Confirmed and saved:', studentsData.filter((_, index) => selectedRows.has(index)));
+        const students = studentsData.filter((_, index) => selectedRows.has(index));
         // Implement your save logic here
     };
 
     return (
         <div>
-            <h2>Upload Students</h2>
             <form onSubmit={handleFileUpload}>
                 <input 
                     type="file" 
@@ -135,6 +149,7 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent }) => {
                                     <td>
                                         {/* Button to select this student and fill initialFormData */}
                                         <button onClick={() => handleStudentSelection(index)}>Select</button>
+                                        <button onClick={() => handleStudentImport(index)}>Import</button>
                                     </td>
                                 </tr>
                             ))}

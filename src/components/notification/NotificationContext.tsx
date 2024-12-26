@@ -11,8 +11,10 @@ interface NotificationData {
 }
 
 interface NotificationContextType {
-    addNotification: (message: string, type: 'success' | 'error' | 'info', timeout?: number) => void;
+    showNotification: (message: string, type: 'success' | 'error' | 'info', timeout?: number) => void;
 }
+
+
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
@@ -27,7 +29,7 @@ export const useNotification = () => {
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [notifications, setNotifications] = useState<NotificationData[]>([]);
 
-    const addNotification = (message: string, type: 'success' | 'error' | 'info', timeout?: number) => {
+    const showNotification = (message: string, type: 'success' | 'error' | 'info', timeout?: number) => {
         const id = Date.now();
         setNotifications((prev) => {
             const newNotifications = [...prev, { id, message, type, timeout }];
@@ -48,7 +50,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     };
 
     return (
-        <NotificationContext.Provider value={{ addNotification }}>
+        <NotificationContext.Provider value={{ showNotification }}>
             <div className="notification-container">
                 {notifications.map(notification => (
                     <Notification 

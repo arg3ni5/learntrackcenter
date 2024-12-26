@@ -55,3 +55,18 @@
 .base-module li button {
     background-color: #dc3545; /* Color rojo para eliminar */
 }
+
+.module-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between the form and the upload component */
+    padding: 20px; /* Optional padding */
+}
+
+.form-container {
+    flex: 1; /* Allow the form to take available space */
+    margin-right: 20px; /* Space between the form and upload component */
+}
+
+.upload-container {
+    flex: 0 0 300px; /* Fixed width for the upload component */
+}

@@ -1,26 +1,26 @@
 import React from 'react';
-import { deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../../services/firebase';
-import './ListBase.css'; // Importar archivo CSS para estilos
 import Loading from '../loading/Loading';
+import './ListBase.css'; // Importar archivo CSS para estilos
 
 interface ListBaseProps {
     items: any[]; // Puedes definir un tipo más específico según tu modelo de datos
-    collectionName: string;
     fields: { name: string; placeholder?: string }[]; // Agregar placeholder opcional si es necesario
-    onItemDeleted: (id: string) => void; // Callback para refrescar la lista después de eliminar un item
+    onImportItem?: (newItem: any) => void; // Callback para importar un item
+    onItemDeleted: (id: string) => void;
     loading: boolean; // Prop para indicar si los datos están cargando
 }
 
-const ListBase: React.FC<ListBaseProps> = ({ items, collectionName, fields, onItemDeleted, loading }) => {
+const ListBase: React.FC<ListBaseProps> = ({ items, fields, onItemDeleted, loading }) => {
     
     const deleteItem = async (id: string) => {
-        await deleteDoc(doc(db, collectionName, id));
+        if (id === '') {
+            return;            
+        }
         onItemDeleted(id); // Llama al callback para refrescar la lista
     };
 
     if (loading) {
-        return <div className="loading"><Loading /></div>; // Mensaje de carga
+        return <Loading />; // Mensaje de carga
     }
 
     return (

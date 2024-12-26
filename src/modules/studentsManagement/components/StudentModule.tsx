@@ -1,29 +1,28 @@
 // src/modules/studentsManagement/StudentModule.tsx
 
 import React, { useState } from "react";
-import BaseModule from "../../../components/BaseModule/BaseModule"; // Importing the reusable BaseModule component
-import { fetchStudents, addStudent, deleteStudent, Student } from "../services/studentService"; // Importing necessary functions and types
+import BaseModule from "../../../components/BaseModule/BaseModule"; 
+import { fetchStudents, addStudent, deleteStudent, Student } from "../services/studentService"; 
 import UploadStudents from "../../../components/uploadStudents/UploadStudents";
 import Loading from "../../../components/loading/Loading";
 
 const StudentModule: React.FC = () => {
-    const [initialStudentData, setInitialStudentData] = useState<Student | null>(null); // State to hold initial data for the form
-    const [loading, setLoading] = useState<boolean>(true); // State to handle loading
-    const [error, setError] = useState<string | null>(null); // State to handle errors
+    const [initialStudentData, setInitialStudentData] = useState<Student | null>(null);
+    const [importStudentData, setImportStudentData] = useState<Student | null>(null);
+    const [loading, setLoading] = useState<boolean>(true); 
+    const [error, setError] = useState<string | null>(null); 
 
-    // Define the fields for the form used to add new students
     const fields = [
-        { name: "fullName", placeholder: "Full Name" }, // Field for student's full name
-        { name: "identificationNumber", placeholder: "Identification Number" }, // Field for identification number
-        { name: "email", placeholder: "Email Address" }, // Field for email address
+        { name: "fullName", placeholder: "Full Name" },
+        { name: "identificationNumber", placeholder: "Identification Number" },
+        { name: "email", placeholder: "Email Address" },
     ];
 
-    // Function to fetch students from Firestore
     const fetchStudentsFromFirestore = async (): Promise<Student[]> => {
         try {
             setLoading(true);
-            const studentsData = await fetchStudents(); // Call the service to get students data
-            return studentsData; // Return the fetched data
+            const studentsData = await fetchStudents();
+            return studentsData;
         } catch (err) {
             setError("Error fetching students");
             return [];
@@ -32,23 +31,39 @@ const StudentModule: React.FC = () => {
         }
     };
 
+    const onImportStudent = async (student: Student) => {
+        try {
+            await addStudent(student); // Add the new student
+            await fetchStudentsFromFirestore(); // Refresh the list after adding
+            setInitialStudentData(student); // Set initial student data
+            setImportStudentData(null); // Reset import student data after import
+            console.log("Student imported successfully");
+            
+        } catch (error) {
+            setError("Error importing student");
+        }
+    };
+
     return (
         <>
             <BaseModule<Student>
-                collectionName="students" // Specify the Firestore collection name
-                title="Student Management" // Title for the module
-                fields={fields} // Fields to be displayed in the form
-                fetchItems={fetchStudentsFromFirestore} // Function to fetch items from Firestore
+                collectionName="students"
+                title="Student Management"
+                fields={fields}
+                fetchItems={fetchStudentsFromFirestore}
                 onItemAdded={async (newItem) => {
-                    await addStudent(newItem); // Add the new student using the service
+                    await addStudent(newItem);
+                    await fetchStudentsFromFirestore(); // Refresh the list after adding
                 }}
-                onItemDeleted={deleteStudent} // Function to delete a student using the service
-                initialFormData={initialStudentData} // Pass initial data to fill the form
-                loading={loading} // Pass loading state to BaseModule or directly to ListBase if needed
-            />
-            <UploadStudents onSelectStudent={setInitialStudentData} /> {/* Pass function to update initial form data */}
-            {loading && <div className="loading"><Loading /></div>} {/* Loading message */}
-            {error && <div className="error">{error}</div>} {/* Error message */}
+                onItemDeleted={deleteStudent}
+                initialFormData={initialStudentData}
+                importItem={importStudentData} // Pass the import item to BaseModule
+                loading={loading}
+            >
+                <UploadStudents onSelectStudent={setInitialStudentData} onImportStudent={setImportStudentData} />
+            </BaseModule>
+            {loading && <Loading />}
+            {error && <div className="error">{error}</div>}
         </>
     );
 };
