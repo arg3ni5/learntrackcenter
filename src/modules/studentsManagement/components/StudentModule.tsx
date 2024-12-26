@@ -31,19 +31,6 @@ const StudentModule: React.FC = () => {
         }
     };
 
-    const onImportStudent = async (student: Student) => {
-        try {
-            await addStudent(student); // Add the new student
-            await fetchStudentsFromFirestore(); // Refresh the list after adding
-            setInitialStudentData(student); // Set initial student data
-            setImportStudentData(null); // Reset import student data after import
-            console.log("Student imported successfully");
-            
-        } catch (error) {
-            setError("Error importing student");
-        }
-    };
-
     return (
         <>
             <BaseModule<Student>

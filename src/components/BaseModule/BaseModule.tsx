@@ -31,7 +31,6 @@ const BaseModule = <T extends { id?: string }>({ title, fields, fetchItems, onIt
     await onItemAdded(newItem); // Llama al callback para manejar la adición
     loadItems(); // Refresca la lista después de agregar
     showNotification("Elemento Importado", "info"); // Muestra la notificación
-    importItem = null; // Resetea el item importado
   };
 
   const handleItemAddImport = async (newItem: T) => {
@@ -48,7 +47,7 @@ const BaseModule = <T extends { id?: string }>({ title, fields, fetchItems, onIt
     if (importItem) {
         console.log("Importing item", importItem);
         initialFormData = importItem;     
-        handleItemAdded(importItem);
+        handleItemAddImport(importItem);
     }
 }, [importItem]);
 
@@ -58,11 +57,7 @@ const BaseModule = <T extends { id?: string }>({ title, fields, fetchItems, onIt
       <div className="module-container">
         <div className="form-container">
           <FormBase
-            onItemAdded={async (newItem: T) => {
-              await onItemAdded(newItem); // Llama al callback para manejar la adición
-              loadItems(); // Refresca la lista después de agregar
-              showNotification("Elemento agregado", "success"); // Muestra la notificación
-            }}
+            onItemAdded={handleItemAdded}
             fields={fields}
             initialData={initialFormData ?? importItem}
           />

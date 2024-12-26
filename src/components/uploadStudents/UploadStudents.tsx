@@ -90,7 +90,7 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent, onImpo
 
     // Confirm and save action (implement your logic here)
     const confirmAndSave = () => {
-        const students = studentsData.filter((_, index) => selectedRows.has(index));
+        studentsData.filter((_, index) => selectedRows.has(index));
         // Implement your save logic here
     };
 

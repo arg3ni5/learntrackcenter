@@ -6,7 +6,7 @@ import "./UserProfile.css";
 
 const UserProfile: React.FC = () => {
     const { user } = useAuth();
-    const { addNotification } = useNotification();
+    const { showNotification } = useNotification();
     
     const handleLogout = async () => {
         try {
@@ -14,7 +14,7 @@ const UserProfile: React.FC = () => {
           console.log("Usuario cerrado sesión");
         } catch (error) {
           console.error("Error cerrando sesión:", error);
-          addNotification("Error al cerrar sesión.", "error")
+          showNotification("Error al cerrar sesión.", "error")
         }
       };
 
