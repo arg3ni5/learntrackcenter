@@ -1,6 +1,6 @@
 
 import { db } from '../../../services/firebase';
-import { collection, addDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 
 // Define la interfaz Course
 export interface Course {
@@ -32,4 +32,10 @@ export const addCourse = async (course: Course): Promise<void> => {
 export const deleteCourse = async (id: string): Promise<void> => {
     const courseDoc = doc(db, 'courses', id); // Referencia al documento del curso
     await deleteDoc(courseDoc); // Eliminar el documento
+};
+
+// Función para actualizar un curso por ID en Firestore
+export const updateCourse = async (id: string, updatedCourse: Partial<Course>): Promise<void> => {
+    const courseDoc = doc(db, 'courses', id); // Referencia al documento del curso
+    await updateDoc(courseDoc, updatedCourse); // Actualizar el documento con los nuevos datos
 };

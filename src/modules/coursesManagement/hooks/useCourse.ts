@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchCourses, addCourse, deleteCourse, Course } from '../services/courseService'; // Importar funciones del servicio
+import { fetchCourses, addCourse, deleteCourse, Course, updateCourse } from '../services/courseService'; // Importar funciones del servicio
 
 const useCourse = () => {
     const [courses, setCourses] = useState<Course[]>([]); // Estado para almacenar la lista de cursos
@@ -7,13 +7,15 @@ const useCourse = () => {
     const [error, setError] = useState<string | null>(null); // Estado para manejar errores
 
     // Función para cargar los cursos
-    const loadCourses = async () => {
+    const loadCourses = async () : Promise<Course[]> => {
         try {
             setLoading(true);
             const fetchedCourses = await fetchCourses(); // Obtener los cursos desde Firestore
             setCourses(fetchedCourses); // Actualizar el estado con los cursos obtenidos
+            return fetchedCourses; // Retornar los cursos
         } catch (err) {
             setError('Error fetching courses'); // Manejar errores
+            return [];
         } finally {
             setLoading(false); // Finalizar carga
         }
@@ -43,7 +45,16 @@ const useCourse = () => {
         }
     };
 
-    return { courses, loading, error, handleAddCourse, handleDeleteCourse }; // Retornar los datos y funciones necesarias
+    const handleUpdateCourse = async (id: string, course: Course) => {
+        try {
+            await updateCourse(id, course); // Eliminar curso por ID
+            loadCourses(); // Recargar la lista de cursos después de eliminar
+        } catch (err) {
+            setError('Error updating course'); // Manejar errores
+        }
+    };
+
+    return { courses, loadCourses, loading, error, setError, handleAddCourse, handleDeleteCourse, handleUpdateCourse }; // Retornar los datos y funciones necesarias
 };
 
 export default useCourse; // Exportar el hook personalizado
