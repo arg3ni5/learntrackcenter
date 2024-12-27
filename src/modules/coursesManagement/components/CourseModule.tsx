@@ -42,7 +42,6 @@ const CourseModule: React.FC = () => {
   return (
     <>
       <BaseModule<Course>
-        collectionName="courses" // Specify the Firestore collection name
         title="Course Management" // Title for the module
         fields={fields} // Fields to be displayed in the form
         fetchItems={loadCourses} // Use the courses from the custom hook

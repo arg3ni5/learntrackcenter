@@ -1,5 +1,5 @@
 import { db } from '../../../services/firebase';
-import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, writeBatch } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
 // Define la interfaz para una calificación
 export interface Student {

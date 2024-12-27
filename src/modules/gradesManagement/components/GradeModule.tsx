@@ -21,7 +21,6 @@ const GradeModule: React.FC = () => {
 
     return (
         <BaseModule<Grade>
-            collectionName="grades" // Specify the Firestore collection name
             title="Grade Management" // Title for the module
             fields={fields} // Pass the fields to be used in the form
             fetchItems={fetchGradesFromFirestore} // Function to fetch items from Firestore

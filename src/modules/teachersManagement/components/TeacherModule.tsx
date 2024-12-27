@@ -20,7 +20,6 @@ const TeacherModule: React.FC = () => {
   return (
     <>
       <BaseModule<Teacher>
-        collectionName="teachers" // Specify the Firestore collection name
         title="Gestión de Profesores" // Title for the module
         fields={fields} // Fields to be displayed in the form
         fetchItems={fetchTeachersFromFirestore} // Function to fetch items from Firestore
