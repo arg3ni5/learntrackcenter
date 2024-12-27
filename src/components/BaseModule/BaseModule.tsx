@@ -1,28 +1,31 @@
-// src/BaseModule/BaseModule.tsx
-
 import { useEffect, useState } from "react";
 import FormBase from "./FormBase";
 import ListBase from "./ListBase";
-import "./BaseModule.css"; // Importar el archivo CSS
+import "./BaseModule.css"; // Import the CSS file
 import { useNotification } from "../notification/NotificationContext";
 
+export interface Option {
+  value: string;
+  label: string;
+}
 export interface Field {
-  name: string; // Nombre del campo
-  placeholder: string; // Placeholder del campo
-  label?: string; // Etiqueta opcional del campo
-  type?: "input" | "select"; // Tipo del campo (input o select)
-  options?: { value: string; label: string }[]; // Opciones para el select
+  name: string; // Field name
+  placeholder: string; // Field placeholder
+  label?: string; // Optional field label
+  type?: "input" | "select"; // Field type (input or select)
+  options?: Option[]; // Options for the select
 }
 
 interface BaseModuleProps<T> {
   title?: string;
   fields: Field[];
-  fetchItems: () => Promise<T[]>; // Función para obtener los elementos
-  onItemAdded: (newItem: T) => Promise<void>; // Callback para manejar la adición de un item
-  onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Callback opcional para manejar la actualización
-  onItemDeleted?: (id: string) => Promise<void>; // Callback opcional para manejar la eliminación
-  importItem?: T | null; // Item a importar
-  initialFormData?: T | null; // Datos iniciales para el formulario
+  fetchItems: () => Promise<T[]>; // Function to fetch items
+  onEdit?: (id: string) => void; // Optional callback to handle editing
+  onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
+  onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
+  onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
+  importItem?: T | null; // Item to import
+  initialFormData?: T | null; // Initial data for the form
   loading?: boolean;
   children?: React.ReactNode;
 }
@@ -31,6 +34,7 @@ const BaseModule = <T extends { id?: string }>({
   title,
   fields,
   fetchItems,
+  onEdit,
   onItemAdded,
   onItemUpdated,
   onItemDeleted,
@@ -42,34 +46,34 @@ const BaseModule = <T extends { id?: string }>({
   const [items, setItems] = useState<T[]>([]);
   const { showNotification } = useNotification();
 
-  const [isEditing, setIsEditing] = useState<boolean>(false); // Estado para manejar el modo de edición
-  const [currentItemId, setCurrentItemId] = useState<string | null>(null); // ID del item actualmente en edición
+  const [isEditing, setIsEditing] = useState<boolean>(false); // State to manage editing mode
+  const [currentItemId, setCurrentItemId] = useState<string | null>(null); // ID of the currently editing item
 
   const loadItems = async () => {
-    const itemList = await fetchItems(); // Llama a la función proporcionada para obtener los elementos
+    const itemList = await fetchItems(); // Call the provided function to fetch items
     setItems(itemList);
   };
 
   const handleItemAdded = async (newItem: T) => {
-    await onItemAdded(newItem); // Llama al callback para manejar la adición
-    loadItems(); // Refresca la lista después de agregar
-    showNotification("Elemento agregado", "success"); // Muestra la notificación
-    resetEditing(); // Resetea el modo de edición después de agregar
+    await onItemAdded(newItem); // Call the callback to handle addition
+    loadItems(); // Refresh the list after adding
+    showNotification("Elemento agregado", "success"); // Show notification
+    resetEditing(); // Reset editing mode after adding
   };
 
   const handleItemAddImport = async (newItem: T) => {
-    await onItemAdded(newItem); // Llama al callback para manejar la adición
+    await onItemAdded(newItem); // Call the callback to handle addition
   };
 
   const handleItemUpdated = async (updatedItem: T) => {
     if (currentItemId && onItemUpdated) {
-      await onItemUpdated(currentItemId, updatedItem); // Llama al callback para manejar la actualización
-      loadItems(); // Refresca la lista después de actualizar
-      showNotification("Elemento actualizado", "success"); // Muestra la notificación
-      resetEditing(); // Resetea el modo de edición después de actualizar
+      await onItemUpdated(currentItemId, updatedItem); // Call the callback to handle update
+      loadItems(); // Refresh the list after updating
+      showNotification("Elemento actualizado", "success"); // Show notification
+      resetEditing(); // Reset editing mode after updating
     }
     if (!onItemUpdated) {
-      showNotification("Error al actualizar el elemento", "error"); // Muestra la notificación
+      showNotification("Error al actualizar el elemento", "error"); // Show notification for error
     }
   };
 
@@ -80,7 +84,7 @@ const BaseModule = <T extends { id?: string }>({
 
   useEffect(() => {    
     if (importItem) {
-      handleItemAddImport(importItem); // Manejar importación si hay un item importado
+      handleItemAddImport(importItem); // Handle import if there is an imported item
     }    
     loadItems();
   }, [importItem]);
@@ -92,28 +96,32 @@ const BaseModule = <T extends { id?: string }>({
         <div className="form-container">
           <FormBase
             onItemAdded={handleItemAdded}
-            onItemUpdated={handleItemUpdated} // Pasar función de actualización al formulario
+            onItemUpdated={handleItemUpdated} // Pass update function to the form
             fields={fields}
             isEditing={isEditing}
-            initialData={isEditing ? items.find((item) => item.id === currentItemId) : initialFormData} // Cargar datos iniciales o del item en edición
+            onCancelEdit={resetEditing} // Pass cancel function to the form
+            initialData={isEditing ? items.find((item) => item.id === currentItemId) : initialFormData} // Load initial data or data of the item being edited
           />
-          <ListBase
-            items={items}
-            fields={fields}
-            onItemDeleted={async (id) => {
-              if (onItemDeleted) {
-                await onItemDeleted(id); // Llama al callback si está definido
-              }
-              loadItems(); // Refresca la lista después de eliminar
-              showNotification("Elemento eliminado", "success"); // Muestra la notificación
-            }}
-            editable={onItemUpdated !== undefined} // Habilitar edición si la función de actualización está definida
-            loading={loading || false}
-            onEdit={(id) => {
-              setIsEditing(true);
-              setCurrentItemId(id); // Establecer el ID del item a editar
-            }}
-          />
+          {!isEditing && (
+            <ListBase
+              items={items}
+              fields={fields}
+              onItemDeleted={async (id) => {
+                if (onItemDeleted) {
+                  await onItemDeleted(id); // Call the callback if defined
+                }
+                loadItems(); // Refresh the list after deletion
+                showNotification("Elemento eliminado", "success"); // Show notification
+              }}
+              editable={onItemUpdated !== undefined} // Enable editing if update function is defined
+              loading={loading || false}
+              onEdit={(id) => {
+                setIsEditing(true);
+                setCurrentItemId(id); // Set the ID of the item to edit
+                onEdit && onEdit(id); // Call edit callback if defined
+              }}
+            />
+          )}
         </div>
         <div className="upload-container">{children}</div>
       </div>
@@ -121,4 +129,4 @@ const BaseModule = <T extends { id?: string }>({
   );
 };
 
-export default BaseModule;
+export default BaseModule; // Export the BaseModule component

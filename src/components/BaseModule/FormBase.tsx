@@ -2,22 +2,23 @@
 
 import React, { useState, useEffect } from "react";
 import "./FormBase.css"; // Importing CSS styles
-import SelectInput from "./SelectInput"; // Asegúrate de importar tu componente SelectInput
+import SelectInput from "./SelectInput"; // Ensure you import your SelectInput component
 
 interface FormBaseProps<T> {
-  onItemAdded: (newItem: T) => Promise<void>; // Callback para manejar la adición de un item
-  onItemUpdated?: (updatedItem: T) => Promise<void>; // Callback opcional para manejar la actualización
   fields: { label?: string; name: string; placeholder: string; type?: "input" | "select"; options?: { value: string; label: string }[] }[];
   initialData?: T | null;
   isEditing?: boolean;
+  onItemUpdated?: (updatedItem: T) => Promise<void>; // Optional callback to handle updating
+  onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
+  onCancelEdit?: () => void; // Callback for canceling edit
 }
 
-const FormBase = <T extends {}>({ onItemAdded, onItemUpdated, isEditing, fields, initialData }: FormBaseProps<T>) => {
+const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, onItemUpdated, onCancelEdit }: FormBaseProps<T>) => {
   const [formData, setFormData] = useState<Record<string, string | null>>({});
 
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData as Record<string, string | null>); // Cargar datos iniciales en el formulario
+      setFormData(initialData as Record<string, string | null>); // Load initial data into the form
     }
   }, [initialData]);
 
@@ -27,19 +28,26 @@ const FormBase = <T extends {}>({ onItemAdded, onItemUpdated, isEditing, fields,
   };
 
   const handleSelectChange = (selectedOption: any) => {
-    setFormData({ ...formData, [selectedOption.name]: selectedOption.value }); // Actualiza el estado con la opción seleccionada
+    setFormData({ ...formData, [selectedOption.name]: selectedOption.value }); // Update state with selected option
   };
 
   const addItem = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Evitar el comportamiento por defecto del formulario
+    e.preventDefault(); // Prevent default form behavior
 
     if (initialData && isEditing) {
-      await onItemUpdated?.(formData as T); // Llama al callback para manejar la actualización si existe
+      await onItemUpdated?.(formData as T); // Call the callback to handle the update if it exists
     } else {
-      await onItemAdded(formData as T); // Llama al callback para manejar la adición
+      await onItemAdded(formData as T); // Call the callback to handle adding
     }
 
-    setFormData({}); // Resetea el formulario después de agregar o actualizar
+    setFormData({}); // Reset form after adding or updating
+  };
+
+  const handleCancelEdit = () => {
+    setFormData({}); // Reset form data
+    if (onCancelEdit) {
+      onCancelEdit(); // Notify parent to cancel editing
+    }
   };
 
   return (
@@ -60,9 +68,14 @@ const FormBase = <T extends {}>({ onItemAdded, onItemUpdated, isEditing, fields,
             />
           );
         }
-        return null; // En caso de que no haya un tipo válido
+        return null; // In case there is no valid type
       })}
-      <button type="submit">{isEditing ? "Editar" : "Agregar"}</button>
+      <button type="submit">{isEditing ? "Edit" : "Add"}</button>
+      {isEditing && (
+        <>
+          <button type="button" onClick={handleCancelEdit}>Cancel</button> {/* Button to cancel editing */}
+        </>
+      )}
     </form>
   );
 };
