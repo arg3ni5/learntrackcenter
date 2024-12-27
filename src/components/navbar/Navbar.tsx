@@ -13,8 +13,13 @@ const Navbar: React.FC = () => {
 
   const studentItems = [
     { label: "Estudiantes", to: "/students", icon: <FaUserGraduate /> },
-    { label: "Profesores", to: "/teachers", icon: <FaChalkboardTeacher /> },
     { label: "Calificaciones", to: "/grades", icon: <FaBook /> },
+  ];
+
+  const paramsItems = [    
+    { label: "Periods", to: "/periods" },    
+    { label: "Courses", to: "/courses" },
+    { label: "Profesores", to: "/teachers", icon: <FaChalkboardTeacher /> },
   ];
 
   const userItems = [
@@ -24,14 +29,14 @@ const Navbar: React.FC = () => {
 
   const navbarItems = [
     { label: "Dashboard", to: "/dashboard" },
-    { label: "Courses", to: "/courses" },
-    { label: "Periods", to: "/periods" },
   ];
 
   return (
     <header>
       <ul>
         <Dropdown title="Estudiantes" items={studentItems} />
+
+        <Dropdown title="Parametros" items={paramsItems} />
         
         {!user && <Dropdown title="Usuarios" items={userItems} />}
 
