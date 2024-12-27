@@ -8,6 +8,7 @@ export interface Course {
     title: string; // Título del curso
     description?: string; // Descripción del curso
     duration?: number; // Duración del curso en horas
+    teacherId?: string; // ID del profesor relacionado
 }
 
 // Función para obtener la lista de cursos desde Firestore
