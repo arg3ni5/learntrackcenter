@@ -4,7 +4,7 @@ import './ListBase.css'; // Importar archivo CSS para estilos
 
 interface ListBaseProps {
     items: any[]; // Puedes definir un tipo más específico según tu modelo de datos
-    fields: { name: string; placeholder?: string }[]; // Agregar placeholder opcional si es necesario
+    fields: { label?: string; name: string; placeholder?: string }[]; // Agregar placeholder opcional si es necesario
     onImportItem?: (newItem: any) => void; // Callback para importar un item
     onItemDeleted: (id: string) => void;
     loading: boolean; // Prop para indicar si los datos están cargando
@@ -29,7 +29,7 @@ const ListBase: React.FC<ListBaseProps> = ({ items, fields, onItemDeleted, loadi
                 <thead>
                 <tr>
                     {fields.map(field => (
-                        <th key={field.name}>{field.placeholder || field.name}</th>
+                        <th key={field.name}>{field.label || field.placeholder || field.name}</th>
                     ))}
                     <th>Acciones</th> {/* Columna para acciones */}
                 </tr>

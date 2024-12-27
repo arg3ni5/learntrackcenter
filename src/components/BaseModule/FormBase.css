@@ -37,3 +37,7 @@ button {
 button:hover {
     background-color: #0056b3; /* Darker blue on hover */
 }
+
+.select-input{ 
+    padding: 0 0 10px ;
+}
