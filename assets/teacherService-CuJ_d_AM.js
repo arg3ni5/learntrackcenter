@@ -1,1 +1,0 @@
-import{f as s,k as o,l as r,m as h,h as t,i as n}from"./index-xBWYQws9.js";const l=async()=>{const a=s(t,"teachers");return(await n(a)).docs.map(c=>({id:c.id,...c.data()}))},p=async a=>{const e=s(t,"teachers");await o(e,a)},f=async a=>{const e=r(t,"teachers",a);await h(e)};export{p as a,f as d,l as f};
