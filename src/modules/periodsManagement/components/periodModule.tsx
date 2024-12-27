@@ -7,24 +7,23 @@ import usePeriods from "../hooks/usePeriod";
 import Loading from "../../../components/loading/Loading";
 
 const PeriodsModule: React.FC = () => {
-    const { periods, loading, error, handleAddPeriod, handleDeletePeriod } = usePeriods(); 
+    const { loadPeriods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdateCourse } = usePeriods(); 
 
     return (
         <>
-            <BaseModule<Period> 
-                collectionName="periods" // Specify the Firestore collection name
+            <BaseModule<Period>
                 title="Manage Academic Periods" // Title for the module
                 fields={[
                     { name: "periodId", placeholder: "ID Periodo" },
                     { name: "periodName", placeholder: "Nombre del Periodo" },
                     { name: "startDate", placeholder: "Fecha de Inicio" },
                     { name: "endDate", placeholder: "Fecha de Fin" },
-                    { name: "description", placeholder: "Descripción" },
                     { name: "status", placeholder: "Estado" }
                 ]} 
-                fetchItems={async () => periods} // Fetch current periods
+                fetchItems={loadPeriods} // Fetch current periods
                 onItemAdded={handleAddPeriod} // Handle adding a new period
                 onItemDeleted={handleDeletePeriod} // Handle deleting a period
+                onItemUpdated={handleUpdateCourse} // Handle deleting a period
                 initialFormData={null} // No initial data for the form
                 loading={loading} // Loading state
             />
