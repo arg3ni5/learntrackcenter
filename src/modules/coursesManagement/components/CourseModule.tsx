@@ -46,9 +46,7 @@ const CourseModule: React.FC = () => {
         title="Course Management" // Title for the module
         fields={fields} // Fields to be displayed in the form
         fetchItems={loadCourses} // Use the courses from the custom hook
-        onItemAdded={async (newItem) => {
-          await handleAddCourse(newItem); // Use the add course function from the hook
-        }}
+        onItemAdded={handleAddCourse}
         onItemDeleted={handleDeleteCourse} // Use the delete course function from the hook
         onItemUpdated={handleUpdateCourse}
         loading={loading} // Pass loading state to BaseModule or directly to ListBase if needed

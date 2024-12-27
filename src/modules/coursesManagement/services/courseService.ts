@@ -36,6 +36,7 @@ export const deleteCourse = async (id: string): Promise<void> => {
 
 // Función para actualizar un curso por ID en Firestore
 export const updateCourse = async (id: string, updatedCourse: Partial<Course>): Promise<void> => {
+    const { id: _, ...course } = updatedCourse;    
     const courseDoc = doc(db, 'courses', id); // Referencia al documento del curso
-    await updateDoc(courseDoc, updatedCourse); // Actualizar el documento con los nuevos datos
+    await updateDoc(courseDoc, course); // Actualizar el documento con los nuevos datos
 };
