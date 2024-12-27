@@ -10,6 +10,7 @@ interface SelectInputProps {
     isMulti?: boolean; // Permitir selección múltiple
     defaultValue?: any; // Valor por defecto
     label?: string; // Etiqueta opcional
+    value: string;
 }
 
 const SelectInput: React.FC<SelectInputProps> = ({
@@ -19,11 +20,13 @@ const SelectInput: React.FC<SelectInputProps> = ({
     isMulti = false,
     defaultValue,
     label,
+    value
 }) => {
     return (
         <div className="select-input">
             {label && <label>{label}</label>}
             <Select
+                value={options.find(option => option.value === value)}
                 options={options}
                 onChange={onChange}
                 placeholder={placeholder}
