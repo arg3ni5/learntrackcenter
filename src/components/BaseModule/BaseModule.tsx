@@ -15,7 +15,6 @@ export interface Field {
 }
 
 interface BaseModuleProps<T> {
-  collectionName: string;
   title?: string;
   fields: Field[];
   fetchItems: () => Promise<T[]>; // Función para obtener los elementos
@@ -58,6 +57,10 @@ const BaseModule = <T extends { id?: string }>({
     resetEditing(); // Resetea el modo de edición después de agregar
   };
 
+  const handleItemAddImport = async (newItem: T) => {
+    await onItemAdded(newItem); // Llama al callback para manejar la adición
+  };
+
   const handleItemUpdated = async (updatedItem: T) => {
     if (currentItemId && onItemUpdated) {
       await onItemUpdated(currentItemId, updatedItem); // Llama al callback para manejar la actualización
@@ -75,12 +78,12 @@ const BaseModule = <T extends { id?: string }>({
     setCurrentItemId(null);
   };
 
-  useEffect(() => {
-    loadItems();
+  useEffect(() => {    
     if (importItem) {
-      handleItemAdded(importItem); // Manejar importación si hay un item importado
-    }
-  }, []);
+      handleItemAddImport(importItem); // Manejar importación si hay un item importado
+    }    
+    loadItems();
+  }, [importItem]);
 
   return (
     <div>

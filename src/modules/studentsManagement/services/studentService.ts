@@ -1,5 +1,5 @@
 import { db } from '../../../services/firebase';
-import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, writeBatch } from 'firebase/firestore';
 
 // Define la interfaz para una calificación
 export interface Student {
@@ -29,9 +29,13 @@ export const fetchStudents = async (): Promise<Student[]> => {
     })) as Student[];
 };
 
-// Función para eliminar una calificación por ID
 export const deleteStudent = async (id: string): Promise<void> => {
     const studentDoc = doc(db, 'students', id);
     await deleteDoc(studentDoc);
 };
 
+export const updateStudent = async (id: string, updatedStudent: Partial<Student>): Promise<void> => {
+    const { id: _, ...student } = updatedStudent;    
+    const studentDoc = doc(db, 'students', id); // Referencia al documento del curso
+    await updateDoc(studentDoc, student); // Actualizar el documento con los nuevos datos
+};

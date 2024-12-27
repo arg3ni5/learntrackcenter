@@ -2,15 +2,15 @@
 
 import React, { useState } from "react";
 import BaseModule from "../../../components/BaseModule/BaseModule"; 
-import { fetchStudents, addStudent, deleteStudent, Student } from "../services/studentService"; 
+import { Student } from "../services/studentService"; 
 import UploadStudents from "../../../components/uploadStudents/UploadStudents";
 import Loading from "../../../components/loading/Loading";
+import useStudents from '../hooks/useStudents';
 
 const StudentModule: React.FC = () => {
+    const {loadStudents, loading, error, handleAddStudent, handleRemoveStudent, handleUpdateStudent} = useStudents();
     const [initialStudentData, setInitialStudentData] = useState<Student | null>(null);
     const [importStudentData, setImportStudentData] = useState<Student | null>(null);
-    const [loading, setLoading] = useState<boolean>(true); 
-    const [error, setError] = useState<string | null>(null); 
 
     const fields = [
         { name: "fullName", placeholder: "Full Name" },
@@ -18,35 +18,18 @@ const StudentModule: React.FC = () => {
         { name: "email", placeholder: "Email Address" },
     ];
 
-    const fetchStudentsFromFirestore = async (): Promise<Student[]> => {
-        try {
-            setLoading(true);
-            const studentsData = await fetchStudents();
-            return studentsData;
-        } catch (err) {
-            setError("Error fetching students");
-            return [];
-        } finally {
-            setLoading(false);
-        }
-    };
-
     return (
         <>
             <BaseModule<Student>
-                collectionName="students"
                 title="Student Management"
                 fields={fields}
-                fetchItems={fetchStudentsFromFirestore}
-                onItemAdded={async (newItem) => {
-                    await addStudent(newItem);
-                    await fetchStudentsFromFirestore(); // Refresh the list after adding
-                }}
-                onItemDeleted={deleteStudent}
+                fetchItems={loadStudents}
+                onItemAdded={handleAddStudent}
+                onItemDeleted={handleRemoveStudent}
+                onItemUpdated={handleUpdateStudent}
                 initialFormData={initialStudentData}
                 importItem={importStudentData} // Pass the import item to BaseModule
-                loading={loading}
-            >
+                loading={loading}>
                 <UploadStudents onSelectStudent={setInitialStudentData} onImportStudent={setImportStudentData} />
             </BaseModule>
             {loading && <Loading />}

@@ -70,15 +70,14 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent, onImpo
         });
     };
 
-    const handleStudentImport = (index: number) => {
-        const selectedStudent = studentsData[index];
-        
+    const handleStudentImport = (index: number) => {    
+        const selectedStudent = studentsData[index];        
         onImportStudent({
             fullName: selectedStudent[0], // Assuming Full Name is in the first column
             identificationNumber: selectedStudent[1], // Assuming ID is in the second column
             email: selectedStudent[2], // Assuming Email is in the third column
         });
-        console.log("handleStudentImport", selectedStudent);
+        deleteStudentByIndex(index);
     };
 
     // Delete selected rows
@@ -86,6 +85,12 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent, onImpo
         const newStudentsData = studentsData.filter((_, index) => !selectedRows.has(index));
         setStudentsData(newStudentsData);
         setSelectedRows(new Set()); // Clear selection after deletion
+    };
+
+    const deleteStudentByIndex = (index: number) => { 
+        const newStudentsData = studentsData.filter((_, i) => i !== index); // Filtra el estudiante en el índice proporcionado
+        setStudentsData(newStudentsData);
+        setSelectedRows(new Set()); // Limpia la selección después de la eliminación
     };
 
     // Confirm and save action (implement your logic here)
@@ -149,7 +154,7 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent, onImpo
                                     <td>
                                         {/* Button to select this student and fill initialFormData */}
                                         <button onClick={() => handleStudentSelection(index)}>Select</button>
-                                        <button onClick={() => handleStudentImport(index)}>Import</button>
+                                        <button onClick={() => {handleStudentImport(index)}}>Import</button>
                                     </td>
                                 </tr>
                             ))}

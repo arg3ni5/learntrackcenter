@@ -1,51 +1,66 @@
 // src/modules/studentsManagement/hooks/useStudents.ts
 import { useEffect, useState } from 'react';
-import { fetchStudents, addStudent, deleteStudent, Student } from '../services/studentService';
+import { fetchStudents, addStudent, deleteStudent, Student, updateStudent } from '../services/studentService';
+import { useNotification } from '../../../components/notification/NotificationContext';
 
 const useStudents = () => {
     const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const { showNotification } = useNotification();
 
-    // Función para cargar las calificaciones
-    const loadStudents = async () => {
+    const loadStudents = async (): Promise<Student[]> => {
         try {
             setLoading(true);
             const studentsData = await fetchStudents();
             setStudents(studentsData);
+            return studentsData; // Devuelve el array de estudiantes
         } catch (err) {
             setError('Error al cargar las calificaciones');
+            return []; // Devuelve un array vacío en caso de error
         } finally {
             setLoading(false);
         }
     };
+    
 
-    // Efecto para cargar las calificaciones al montar el hook
     useEffect(() => {
         loadStudents();
     }, []);
 
-    // Función para agregar una nueva calificación
-    const addNewStudent = async (newStudent: Student) => {
+    const handleAddStudent = async (newStudent: Student) => {
         try {
-            await addStudent(newStudent);
-            loadStudents(); // Refresca la lista después de agregar
+            if (students.filter(student => student.fullName === newStudent.fullName).length > 0) {
+                showNotification('El estudiante ya existe', 'error');
+                return;
+            }
+            await addStudent(newStudent);            
+            showNotification("Elemento agregado", "success"); // Muestra la notificación
+            loadStudents();
         } catch (err) {
             setError('Error al agregar la calificación');
         }
     };
 
-    // Función para eliminar una calificación
-    const removeStudent = async (id: string) => {
+    const handleRemoveStudent = async (id: string) => {
         try {
             await deleteStudent(id);
-            loadStudents(); // Refresca la lista después de eliminar
+            loadStudents();
         } catch (err) {
             setError('Error al eliminar la calificación');
         }
     };
 
-    return { students, loading, error, addNewStudent, removeStudent };
+    const handleUpdateStudent = async (id: string, student: Student) => {
+        try {
+            await updateStudent(id, student); // Eliminar curso por ID
+            loadStudents(); // Recargar la lista de cursos después de eliminar
+        } catch (err) {
+            setError('Error updating period'); // Manejar errores
+        }
+    };
+
+    return { students, loadStudents, loading, error, handleAddStudent, handleRemoveStudent, handleUpdateStudent };
 };
 
 export default useStudents;
