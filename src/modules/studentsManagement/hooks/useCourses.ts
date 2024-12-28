@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { addCourse, AvailableCourses, deleteCourse, fetchAvailableCourses, fetchCourses } from '../services/courseService'; // Import your service to fetch available courses
 import useLocalStorage from '../../../hooks/useLocalStorage'; // Import the local storage hook
 import { Course, CourseWithDetails } from '../types'; // Import the Course interface
+import { useNotification } from '../../../components/notification/NotificationContext';
 
 const useCourses = (studentId: string, periodId: string) => {
     const [courses, setCourses] = useState<CourseWithDetails[]>([]); // State for storing student's courses
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
     const [error, setError] = useState<string | null>(null); // State to manage errors
     const [availableCourses, setAvailableCourses] = useLocalStorage<AvailableCourses[]>('availableCourses', []); // Use local storage for available courses
+    const { showNotification } = useNotification(); // Use the notification context
 
     // Function to load available courses
     const loadAvailableCourses = async () => {
@@ -27,13 +29,16 @@ const useCourses = (studentId: string, periodId: string) => {
         try {
             setLoading(true);
             const fetchedCourses = await fetchCourses(studentId, periodId);
-            console.log('Fetched courses', fetchedCourses);
+            console.log({fetchedCourses, availableCourses});
             
             const detailedCourses = fetchedCourses.map(course => {
-                const availableCourse = availableCourses.find(ac => ac.id === course.id);
+                const availableCourse = availableCourses.find(ac => ac.id === course.courseId);
+                console.log({course, availableCourse});
+                
                 return {
                     ...course,
                     name: availableCourse ? availableCourse.name : 'Unknown Course', // Get name from available courses
+                    description: availableCourse ? availableCourse.description : 'No description available', // Get description from available courses
                 };
             });
             setCourses(detailedCourses); 
@@ -51,6 +56,11 @@ const useCourses = (studentId: string, periodId: string) => {
 
     const handleAddCourse = async (newCourse: Course) => {
         try {
+            if(courses.filter(course => course.courseId === newCourse.courseId).length > 0 )
+            {
+                showNotification('Course already added', 'error');
+                return;
+            }
             setLoading(true);            
             await addCourse(studentId, periodId, newCourse);
             loadStudentCourses();

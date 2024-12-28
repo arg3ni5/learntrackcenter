@@ -5,7 +5,7 @@ import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase
 export interface Course {
     id?: string; // Optional ID for Firestore
     name: string; // Course title
-    description?: string; // Course description
+    description: string; // Course description
     duration?: number; // Course duration in weeks
     hours?: number; // Hours per week
     teacherId?: string; // Related teacher ID

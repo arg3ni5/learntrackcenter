@@ -37,7 +37,7 @@
     margin-bottom: 5px;
 }
 
-.period-list {
+.periods-list {
     padding: 20px; /* Espaciado interno */
     border: 1px solid #ccc; /* Borde del formulario */
     border-radius: 8px; /* Bordes redondeados */
@@ -47,6 +47,14 @@
 .delete-button {
     background-color: #f44336 !important; /* Red */
     margin-left: 5px;
+}
+
+.courses-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
 }
 
 

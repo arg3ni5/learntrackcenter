@@ -6,7 +6,7 @@ import PeriodsManager from './PeriodsManager';
 const StudentDetailsManagement: React.FC<{ studentId: string }> = ({ studentId }) => {
     return (
         <div>
-            <h2>Student Details Management</h2>
+            <h2 className='title'>Student Details Management</h2>
             <PeriodsManager studentId={studentId} />
         </div>
     );

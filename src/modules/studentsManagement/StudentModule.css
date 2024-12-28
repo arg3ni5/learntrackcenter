@@ -29,3 +29,10 @@
 .upload-container {
     flex: 0 0 300px; /* Fixed width for the upload component */
 }
+
+.title {
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    width: 100%;
+    border-bottom: 3px solid #ccc; /* Borde del formulario */
+}

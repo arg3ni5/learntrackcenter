@@ -11,10 +11,11 @@ const CourseModule: React.FC = () => {
   const { loadCourses, loading, error, handleAddCourse, handleDeleteCourse, handleUpdateCourse } = useCourse(); // Use the custom hook
   const { teachers } = useTeachers(); // Use the custom hook to manage teachers
 
+
   // Define the fields for the form used to add new courses
   const fields: Field[] = [
-    { name: "title", placeholder: "Course Title" },
-    { name: "description", placeholder: "Course Description" },
+    { name: "name", placeholder: "Course name" },
+    { name: "description", placeholder: "Course description" },
     { name: "duration", placeholder: "Duration (weeks)" },
     { name: "hours", placeholder: "Hours per week" },
     {

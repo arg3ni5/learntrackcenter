@@ -29,12 +29,16 @@ const CoursesManager: React.FC<{ studentId: string; periodId: string }> = ({ stu
                     </option>
                 ))}
             </select>
-            <button onClick={assignCourseToStudent}>Assign Course</button> {/* Button to assign selected course */}
-            <ul>
+            <button onClick={assignCourseToStudent} disabled={selectedCourseId==null}>Assign Course</button> {/* Button to assign selected course */}
+            <ul className="courses-list">
                 {courses.map(course => (
                     <li key={course.id}>
-                        {course.name} - {course.status} - {course.finalGrade}
-                        {course.id && <button onClick={() => handleDeleteCourse(course.id)}>Delete</button>}
+                        <span>{course.name}({course.description}) - {course.status} - {course.finalGrade}%</span>
+                        <div className="button-container">
+                            <button className='add-button' onClick={() => setCourseId(course.id ?? null)}>Add</button>
+                            {course.id && <button className='delete-button' onClick={() => handleDeleteCourse(course.id)}>Delete</button>}
+                        </div>
+                        
                     </li>
                 ))}
             </ul>

@@ -7,6 +7,7 @@ import UploadStudents from "../../components/uploadStudents/UploadStudents";
 import Loading from "../../components/loading/Loading";
 import useStudents from './hooks/useStudents';
 import StudentDetailsManagement from "./components/StudentDetailsManagement";
+import './StudentModule.css';
 
 const StudentModule: React.FC = () => {
     const {loadStudents, loading, error, handleAddStudent, handleRemoveStudent, handleUpdateStudent} = useStudents();

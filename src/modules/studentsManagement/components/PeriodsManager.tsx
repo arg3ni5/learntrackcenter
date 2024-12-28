@@ -13,7 +13,7 @@ const PeriodsManager: React.FC<{ studentId: string }> = ({ studentId }) => {
         if (selectedPeriodId) {
             const newPeriod = {
                 periodId: selectedPeriodId,
-                courses: [], // You can initialize with an empty array or fetch courses associated with the period
+                coursesIds: [], // You can initialize with an empty array or fetch courses associated with the period
             };
             await handleAddPeriod(newPeriod); // Call the function to add the new period to the student
             setSelectedPeriodId(null); // Reset selected period after assignment
@@ -35,13 +35,13 @@ const PeriodsManager: React.FC<{ studentId: string }> = ({ studentId }) => {
                 ))}
             </select>
             <button onClick={assignPeriodToStudent}>Assign Period</button> {/* Button to assign selected period */}
-            <div className="period-list">
+            <div className="periods-list">
                 <ul>
                     {periods.map(period => (
                         <li key={period.periodId}>
                             <h3>{period.name}
 
-                            {period.courses && period.courses.length == 0 &&<button className='delete-button' onClick={() => handleDeletePeriod(period.id)}>Delete</button>}
+                            {period.coursesIds && period.coursesIds.length == 0 &&<button className='delete-button' onClick={() => handleDeletePeriod(period.id)}>Delete</button>}
                             </h3>
                             {period && period.id && <CoursesManager studentId={studentId} periodId={period.id}/>}
                         </li>

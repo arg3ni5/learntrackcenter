@@ -23,12 +23,13 @@ export interface Course { // Renamed from Materia to Course
 
 export interface CourseWithDetails extends Course {
     name: string; // Name of the course
+    description: string; // Description of the course
 }
 
 export interface Period { // Renamed from Periodo to Period
     id?: string; // Optional ID property, used when fetching from Firestore
     periodId: string; // Reference to the Period document
-    courses: string[]; // List of courses for the period
+    coursesIds: string[]; // List of courses for the period
 }
 
 export interface PeriodWithDetails extends Period {
