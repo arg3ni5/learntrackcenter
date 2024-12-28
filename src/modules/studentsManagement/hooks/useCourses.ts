@@ -20,7 +20,7 @@ const useCourses = (studentId: string, periodId: string) => {
                 const fetchedAvailableCourses = await fetchAvailableCourses(); // Fetch available courses from service
                 setAvailableCourses(fetchedAvailableCourses); // Store in local storage
             } catch (err) {
-                setError('Error fetching available courses');
+                showNotification('Error fetching available courses', 'error'); // Show notification on error
             }
         }
     };
@@ -28,13 +28,9 @@ const useCourses = (studentId: string, periodId: string) => {
     const loadStudentCourses = async () => {
         try {
             setLoading(true);
-            const fetchedCourses = await fetchCourses(studentId, periodId);
-            console.log({fetchedCourses, availableCourses});
-            
+            const fetchedCourses = await fetchCourses(studentId, periodId);            
             const detailedCourses = fetchedCourses.map(course => {
-                const availableCourse = availableCourses.find(ac => ac.id === course.courseId);
-                console.log({course, availableCourse});
-                
+                const availableCourse = availableCourses.find(ac => ac.id === course.courseId);                
                 return {
                     ...course,
                     name: availableCourse ? availableCourse.name : 'Unknown Course', // Get name from available courses
@@ -43,7 +39,7 @@ const useCourses = (studentId: string, periodId: string) => {
             });
             setCourses(detailedCourses); 
         } catch (err) {
-            setError('Error fetching courses'); 
+            showNotification('Error fetching courses', 'error'); 
         } finally {
             setLoading(false); 
         }
@@ -65,7 +61,7 @@ const useCourses = (studentId: string, periodId: string) => {
             await addCourse(studentId, periodId, newCourse);
             loadStudentCourses();
         } catch (err) {
-            setError('Error adding course');
+            showNotification('Error adding course', 'error');
         } finally {
             setLoading(false);
         }
@@ -79,6 +75,7 @@ const useCourses = (studentId: string, periodId: string) => {
             loadStudentCourses();
         } catch (err) {
             setError('Error deleting course');
+            showNotification('Error deleting course', 'error');
         } finally {
             setLoading(false);
         }
