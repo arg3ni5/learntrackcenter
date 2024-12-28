@@ -51,7 +51,7 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
   };
 
   return (
-    <form onSubmit={addItem}>
+    <form onSubmit={addItem} className={isEditing ? 'editing' : ''}>
       {fields.map((field) => {
         const fieldType = field.type || "input";
         if (fieldType === "input") {
@@ -70,12 +70,16 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
         }
         return null; // In case there is no valid type
       })}
-      <button type="submit">{isEditing ? "Edit" : "Add"}</button>
-      {isEditing && (
-        <>
-          <button type="button" onClick={handleCancelEdit}>Cancel</button> {/* Button to cancel editing */}
-        </>
-      )}
+      <div className="buttons-container">
+        <button className="save-button" type="submit">
+          {isEditing ? "Save" : "Add"}
+        </button>
+        {isEditing && (
+          <button className="cancel-button" type="button" onClick={handleCancelEdit}>
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 };

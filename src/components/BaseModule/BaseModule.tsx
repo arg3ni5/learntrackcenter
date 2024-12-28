@@ -91,7 +91,7 @@ const BaseModule = <T extends { id?: string }>({
 
   return (
     <div>
-      {title && <h2>{title}</h2>}
+      {title && <h1 className="title">{title}</h1>}
       <div className="module-container">
         <div className="form-container">
           <FormBase

@@ -41,3 +41,31 @@ button:hover {
 .select-input{ 
     padding: 0 0 10px ;
 }
+
+.cancel-button {
+    background-color: #f44336 !important; /* Red */
+    margin-left: 5px;
+}
+
+.save-button {
+    background-color: #4CAF50; /* Green */
+    width: 100%; /* 50% del ancho menos el margen */
+}
+
+form.editing .save-button,
+form.editing .cancel-button {
+    width: calc(50% - 5px); /* 50% del ancho menos el margen */
+    margin-left: 0;
+    margin-right: 5px; /* Pequeño margen entre los botones */
+}
+
+form.editing .cancel-button {
+    margin-left: 5px;
+    margin-right: 0;
+}
+
+/* Contenedor para los botones */
+form.editing .buttons-container {
+    display: flex;
+    justify-content: space-between;
+}
