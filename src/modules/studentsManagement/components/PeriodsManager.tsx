@@ -43,6 +43,7 @@ const PeriodsManager: React.FC<{ studentId: string }> = ({ studentId }) => {
 
                             {period.courses && period.courses.length == 0 &&<button className='delete-button' onClick={() => handleDeletePeriod(period.id)}>Delete</button>}
                             </h3>
+                            {period && period.id && <CoursesManager studentId={studentId} periodId={period.id}/>}
                         </li>
                     ))}
                 </ul>

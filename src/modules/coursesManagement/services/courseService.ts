@@ -1,42 +1,42 @@
-
 import { db } from '../../../services/firebase';
 import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 
-// Define la interfaz Course
+// Define the Course interface
 export interface Course {
-    id?: string; // ID opcional para Firestore
-    title: string; // Título del curso
-    description?: string; // Descripción del curso
-    duration?: number; // Duración del curso en horas
-    teacherId?: string; // ID del profesor relacionado
+    id?: string; // Optional ID for Firestore
+    name: string; // Course title
+    description?: string; // Course description
+    duration?: number; // Course duration in weeks
+    hours?: number; // Hours per week
+    teacherId?: string; // Related teacher ID
 }
 
-// Función para obtener la lista de cursos desde Firestore
+// Function to fetch the list of courses from Firestore
 export const fetchCourses = async (): Promise<Course[]> => {
-    const coursesCollection = collection(db, 'courses'); // Colección de cursos en Firestore
-    const courseSnapshot = await getDocs(coursesCollection); // Obtener los documentos
+    const coursesCollection = collection(db, 'courses'); // Courses collection in Firestore
+    const courseSnapshot = await getDocs(coursesCollection); // Get the documents
     const courseList: Course[] = courseSnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data() as Omit<Course, 'id'> // Excluir el ID al mapear los datos
+        ...doc.data() as Omit<Course, 'id'> // Exclude ID when mapping data
     }));
     return courseList;
 };
 
-// Función para agregar un nuevo curso a Firestore
+// Function to add a new course to Firestore
 export const addCourse = async (course: Course): Promise<void> => {
-    const coursesCollection = collection(db, 'courses'); // Colección de cursos en Firestore
-    await addDoc(coursesCollection, course); // Agregar el nuevo documento
+    const coursesCollection = collection(db, 'courses'); // Courses collection in Firestore
+    await addDoc(coursesCollection, course); // Add the new document
 };
 
-// Función para eliminar un curso por ID en Firestore
+// Function to delete a course by ID in Firestore
 export const deleteCourse = async (id: string): Promise<void> => {
-    const courseDoc = doc(db, 'courses', id); // Referencia al documento del curso
-    await deleteDoc(courseDoc); // Eliminar el documento
+    const courseDoc = doc(db, 'courses', id); // Reference to the course document
+    await deleteDoc(courseDoc); // Delete the document
 };
 
-// Función para actualizar un curso por ID en Firestore
+// Function to update a course by ID in Firestore
 export const updateCourse = async (id: string, updatedCourse: Partial<Course>): Promise<void> => {
     const { id: _, ...course } = updatedCourse;    
-    const courseDoc = doc(db, 'courses', id); // Referencia al documento del curso
-    await updateDoc(courseDoc, course); // Actualizar el documento con los nuevos datos
+    const courseDoc = doc(db, 'courses', id); // Reference to the course document
+    await updateDoc(courseDoc, course); // Update the document with new data
 };
