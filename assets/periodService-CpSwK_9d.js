@@ -1,1 +1,0 @@
-import{f as e,h as c,i as n,k as r,l as t,m as p,n as l}from"./index-Cl8Z4pzY.js";const D=async()=>{const o=e(c,"periods");return(await n(o)).docs.map(a=>({id:a.id,...a.data()}))},f=async o=>{const s=e(c,"periods");await r(s,o)},h=async o=>{const s=t(c,"periods",o);await p(s)},m=async(o,s)=>{const{id:d,...a}=s,i=t(c,"periods",o);await l(i,a)};export{f as a,h as d,D as f,m as u};
