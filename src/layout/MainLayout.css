@@ -2,19 +2,24 @@
     display: grid;
     grid-template-areas:
         "header"
-        "main"; /* Solo header y main */
-    grid-template-columns: 1fr; /* Solo una columna */
-    grid-template-rows: 60px 1fr; /* Header y contenido */
-    height: 100vh; /* Altura completa de la ventana */
+        "main";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr; /* Cambiado de 60px a auto */
+    min-height: 100vh; /* Cambiado de height a min-height */
+    overflow-y: auto; /* Añadido para permitir scroll */
 }
 
 .header {
     grid-area: header;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #007bff; /* Asegúrate de que tenga un color de fondo */
     color: white;
 }
 
 .main {
-    margin: 20px 10px;
     grid-area: main;
-    padding: 10px;
+    padding: 20px 10px;
+    overflow-y: auto; /* Permite scroll dentro del contenido principal si es necesario */
 }

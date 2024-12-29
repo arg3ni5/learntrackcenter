@@ -3,33 +3,52 @@
 .list-base-table {
     margin-top: 20px;
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
 }
 
 .list-base-table th,
 .list-base-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px 15px;
     text-align: left;
 }
 
 .list-base-table th {
     background-color: #007bff;
-}
-
-.actions button {  
-    margin-right: 5px;
-    margin-bottom: 5px;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.delete-button {
-    background-color: #f44336; /* Color rojo */
     color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.delete-button:hover {
-    background-color: #d32f2f; /* Color rojo más oscuro al pasar el mouse */
+.list-base-table tr:nth-child(odd) {
+    background-color: #363636;
+}
+
+.list-base-table tr:hover {
+    background-color: #757575;
+    transition: background-color 0.3s ease;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.actions button {
+    margin-right: 8px;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.actions button:hover {
+    transform: translateY(-1px);
 }

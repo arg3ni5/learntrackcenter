@@ -14,6 +14,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+
 *{
   margin: 0;
   padding: 0;
@@ -65,4 +71,28 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.delete-button {
+  background-color: #f44336 !important;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f !important;
+  transform: translateY(-1px);
+}
+
+.edit-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+}
+
+.buttons-container button:hover, .add-button:hover {
+  transform: translateY(-1px);
 }
