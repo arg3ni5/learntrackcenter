@@ -19,8 +19,9 @@ export interface Field {
 interface BaseModuleProps<T> {
   title?: string;
   fields: Field[];
-  fetchItems: () => Promise<T[]>; // Function to fetch items
-  onEdit?: (id: string) => void; // Optional callback to handle editing
+  items?: T[]; // Function to fetch items
+  fetchItems?: () => Promise<T[]>; // Function to fetch items
+  onEdit?: (id: T) => void; // Optional callback to handle editing
   onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
@@ -30,9 +31,10 @@ interface BaseModuleProps<T> {
   children?: React.ReactNode;
 }
 
-const BaseModule = <T extends { id?: string }>({
+const BaseModule = <T extends Record<string, any>>({
   title,
   fields,
+  items,
   fetchItems,
   onEdit,
   onItemAdded,
@@ -43,15 +45,15 @@ const BaseModule = <T extends { id?: string }>({
   loading,
   children,
 }: BaseModuleProps<T>) => {
-  const [items, setItems] = useState<T[]>([]);
   const { showNotification } = useNotification();
 
   const [isEditing, setIsEditing] = useState<boolean>(false); // State to manage editing mode
-  const [currentItemId, setCurrentItemId] = useState<string | null>(null); // ID of the currently editing item
+  const [currentItem, setCurrentItem] = useState<T | null>(null); // ID of the currently editing item
 
   const loadItems = async () => {
-    const itemList = await fetchItems(); // Call the provided function to fetch items
-    setItems(itemList);
+    if (fetchItems) {
+      await fetchItems();
+    }
   };
 
   const handleItemAdded = async (newItem: T) => {
@@ -66,9 +68,8 @@ const BaseModule = <T extends { id?: string }>({
   };
 
   const handleItemUpdated = async (updatedItem: T) => {
-    if (currentItemId && onItemUpdated) {
-      await onItemUpdated(currentItemId, updatedItem); // Call the callback to handle update
-      loadItems(); // Refresh the list after updating
+    if (currentItem && onItemUpdated) {
+      await onItemUpdated(currentItem.id, updatedItem); // Call the callback to handle update
       showNotification("Elemento actualizado", "success"); // Show notification
       resetEditing(); // Reset editing mode after updating
     }
@@ -77,15 +78,29 @@ const BaseModule = <T extends { id?: string }>({
     }
   };
 
+  const handleItemDelete = async (id: string) => {
+    if (onItemDeleted) {
+      await onItemDeleted(id); // Call the callback if defined
+      loadItems(); // Refresh the list after deletion
+      showNotification("Elemento eliminado", "success"); // Show notification
+    }
+  }
+
+  const handleOnEdit = (item: T) => {
+    setIsEditing(true);
+    setCurrentItem(item); // Set the ID of the item to edit
+    onEdit && onEdit(item); // Call edit callback if defined
+  }
+
   const resetEditing = () => {
     setIsEditing(false);
-    setCurrentItemId(null);
+    setCurrentItem(null);
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     if (importItem) {
       handleItemAddImport(importItem); // Handle import if there is an imported item
-    }    
+    }
     loadItems();
   }, [importItem]);
 
@@ -100,30 +115,20 @@ const BaseModule = <T extends { id?: string }>({
             fields={fields}
             isEditing={isEditing}
             onCancelEdit={resetEditing} // Pass cancel function to the form
-            initialData={isEditing ? items.find((item) => item.id === currentItemId) : initialFormData} // Load initial data or data of the item being edited
+            initialData={isEditing ? items && currentItem && items.find((item) => item.id === currentItem.id) : initialFormData} // Load initial data or data of the item being edited
           />
           {!isEditing && (
-            <ListBase
+            <ListBase<T>
               items={items}
               fields={fields}
-              onItemDeleted={async (id) => {
-                if (onItemDeleted) {
-                  await onItemDeleted(id); // Call the callback if defined
-                }
-                loadItems(); // Refresh the list after deletion
-                showNotification("Elemento eliminado", "success"); // Show notification
-              }}
+              onItemDeleted={handleItemDelete}
               editable={onItemUpdated !== undefined} // Enable editing if update function is defined
               loading={loading || false}
-              onEdit={(id) => {
-                setIsEditing(true);
-                setCurrentItemId(id); // Set the ID of the item to edit
-                onEdit && onEdit(id); // Call edit callback if defined
-              }}
+              onEdit={handleOnEdit}
             />
           )}
         </div>
-        <div className="upload-container">{children}</div>
+        {children && <div className="upload-container">{children}</div>}
       </div>
     </div>
   );
