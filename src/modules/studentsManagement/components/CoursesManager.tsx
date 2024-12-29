@@ -33,7 +33,6 @@ const CoursesManager: React.FC<{ studentId: string; periodId: string }> = ({ stu
                 ))}
             </select>
             <button onClick={assignCourseToStudent} disabled={selectedCourseId==null}>Assign Course</button>
-            
             {courseId && <button className='delete-button' onClick={() => setCourseId(null)}>Cancel</button>}
             <ul className="courses-list">
                 {courses.map(course => (

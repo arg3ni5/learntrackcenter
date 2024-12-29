@@ -6,8 +6,8 @@ import { Assignment } from '../types';
 
 export const fetchAssignments = async (studentId: string, periodId: string, courseId: string): Promise<Assignment[]> => {
     const assignmentsCollection = collection(db, `students/${studentId}/periods/${periodId}/courses/${courseId}/assignments`);
-    const assignmentsSnapshot = await getDocs(assignmentsCollection);
-    return assignmentsSnapshot.docs.map(doc => ({
+    const coursesSnapshot = await getDocs(assignmentsCollection);    
+    return coursesSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data() as Omit<Assignment, 'id'>
     }));

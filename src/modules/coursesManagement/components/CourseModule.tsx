@@ -2,13 +2,12 @@
 
 import React from "react";
 import BaseModule, { Field } from "../../../components/BaseModule/BaseModule";
-import Loading from "../../../components/loading/Loading";
 import useCourse from "../hooks/useCourse"; // Import the custom hook
 import { Course } from "../services/courseService";
 import useTeachers from "../../teachersManagement/hooks/useTeachers";
 
 const CourseModule: React.FC = () => {
-  const { loadCourses, loading, error, handleAddCourse, handleDeleteCourse, handleUpdateCourse } = useCourse(); // Use the custom hook
+  const { courses, loading, error, handleAddCourse, handleDeleteCourse, handleUpdateCourse } = useCourse(); // Use the custom hook
   const { teachers } = useTeachers(); // Use the custom hook to manage teachers
 
 
@@ -32,18 +31,12 @@ const CourseModule: React.FC = () => {
       <BaseModule<Course>
         title="Course Management" // Title for the module
         fields={fields} // Fields to be displayed in the form
-        fetchItems={loadCourses} // Use the courses from the custom hook
+        items={courses} // Use the courses from the custom hook
         onItemAdded={handleAddCourse}
         onItemDeleted={handleDeleteCourse} // Use the delete course function from the hook
         onItemUpdated={handleUpdateCourse}
         loading={loading} // Pass loading state to BaseModule or directly to ListBase if needed
       />
-      {loading && (
-        <div className="loading">
-          <Loading />
-        </div>
-      )}{" "}
-      {/* Loading message */}
       {error && <div className="error">{error}</div>} {/* Error message */}
     </>
   );
