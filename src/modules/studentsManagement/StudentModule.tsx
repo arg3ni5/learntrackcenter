@@ -1,17 +1,16 @@
-// src/modules/studentsManagement/StudentModule.tsx
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BaseModule from "../../components/BaseModule/BaseModule"; 
-import { Student } from "./services/studentService"; 
 import UploadStudents from "../../components/uploadStudents/UploadStudents";
-import Loading from "../../components/loading/Loading";
 import useStudents from './hooks/useStudents';
 import StudentDetailsManagement from "./components/StudentDetailsManagement";
 import './StudentModule.css';
+import { useLoading } from "../../components/loading/LoadingContext";
+import { Student } from "./types";
 
 const StudentModule: React.FC = () => {
-    const {loadStudents, loading, error, handleAddStudent, handleRemoveStudent, handleUpdateStudent} = useStudents();
-    const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
+    const { setIsLoading } = useLoading();
+    const {students, loading, error, handleAddStudent, handleRemoveStudent, handleUpdateStudent} = useStudents();
+    const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
     const [initialStudentData, setInitialStudentData] = useState<Student | null>(null);
     const [importStudentData, setImportStudentData] = useState<Student | null>(null);
 
@@ -21,30 +20,30 @@ const StudentModule: React.FC = () => {
         { name: "email", placeholder: "Email Address" },
     ];
 
+    useEffect(() => {
+        setIsLoading(loading);
+    }, [loading, setIsLoading]);
+    
+
     return (
         <>
             <BaseModule<Student>
                 title="Student Management"
                 fields={fields}
-                fetchItems={loadStudents}
-                onEdit={(id) => setSelectedStudentId(id)} // Set selected student ID when editing
+                items={students}
                 onItemAdded={handleAddStudent}
                 onItemDeleted={handleRemoveStudent}
-                onItemUpdated={async (studentId, updatedData) => {
-                    setSelectedStudentId(studentId);
-                    console.log('Student ID:', studentId);
-                    handleUpdateStudent(studentId, updatedData);
-                }}
+                onItemUpdated={handleUpdateStudent}
+                onEdit={setSelectedStudent}
                 initialFormData={initialStudentData}
                 importItem={importStudentData} // Pass the import item to BaseModule
                 loading={loading}>
                 <UploadStudents onSelectStudent={setInitialStudentData} onImportStudent={setImportStudentData} />
             </BaseModule>
 
-            {selectedStudentId && (
-                <StudentDetailsManagement studentId={selectedStudentId} /> // Render the management component for selected student
+            {selectedStudent && (
+                <StudentDetailsManagement student={selectedStudent} /> // Render the management component for selected student
             )}
-            {loading && <Loading />}
             {error && <div className="error">{error}</div>}
         </>
     );

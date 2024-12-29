@@ -2,12 +2,13 @@
 
 import React from 'react';
 import PeriodsManager from './PeriodsManager';
+import { Student } from '../types';
 
-const StudentDetailsManagement: React.FC<{ studentId: string }> = ({ studentId }) => {
+const StudentDetailsManagement: React.FC<{ student: Student }> = ({ student }) => {
     return (
         <div>
             <h2 className='title'>Student Details Management</h2>
-            <PeriodsManager studentId={studentId} />
+            {student.id && <PeriodsManager studentId={student.id} />}
         </div>
     );
 };

@@ -1,13 +1,6 @@
 import { db } from '../../../services/firebase';
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-
-// Define la interfaz para una calificación
-export interface Student {
-    id?: string; // Optional ID property, used when fetching from Firestore
-    fullName: string; // Full name of the student
-    identificationNumber?: string; // Unique identification number for the student
-    email?: string; // Email address of the student
-}
+import { Student } from '../types';
 
 // Función para agregar una nueva calificación
 export const addStudent = async (student: Student): Promise<void> => {

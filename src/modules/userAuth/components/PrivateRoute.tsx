@@ -12,7 +12,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     const { user, loading } = useAuth();
 
     if (loading) {
-        return <Loading />; // Muestra un mensaje mientras se verifica la autenticación
+        return <Loading />;
     }
 
     return user ? <>{element}</> : <Navigate to="/" replace />;

@@ -43,3 +43,10 @@ export interface Student {
     email?: string; // Email address of the student
     periods: string[]; // List of periods for the student (renamed from periodos to periods)
 }
+
+
+export interface AssignmentsManagerProps {
+    studentId: string;
+    periodId: string;
+    courseId: string;
+}

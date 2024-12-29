@@ -1,7 +1,8 @@
 // src/modules/studentsManagement/hooks/useStudents.ts
 import { useEffect, useState } from 'react';
-import { fetchStudents, addStudent, deleteStudent, Student, updateStudent } from '../services/studentService';
+import { fetchStudents, addStudent, deleteStudent, updateStudent } from '../services/studentService';
 import { useNotification } from '../../../components/notification/NotificationContext';
+import { Student } from '../types';
 
 const useStudents = () => {
     const [students, setStudents] = useState<Student[]>([]);
@@ -9,15 +10,13 @@ const useStudents = () => {
     const [error, setError] = useState<string | null>(null);
     const { showNotification } = useNotification();
 
-    const loadStudents = async (): Promise<Student[]> => {
+    const loadStudents = async () => {
         try {
             setLoading(true);
             const studentsData = await fetchStudents();
             setStudents(studentsData);
-            return studentsData; // Devuelve el array de estudiantes
         } catch (err) {
-            setError('Error al cargar las calificaciones');
-            return []; // Devuelve un array vacío en caso de error
+            setError('Error al cargar los estudiantes');
         } finally {
             setLoading(false);
         }
