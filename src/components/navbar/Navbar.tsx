@@ -3,9 +3,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import './Navbar.css'; // Importar el archivo CSS
-import Dropdown from "./dropdown";
 import { useAuth } from "../../modules/userAuth/hooks/useAuth";
 import { FaBook, FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
+import Dropdown from "./dropdown";
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
@@ -13,6 +13,11 @@ const Navbar: React.FC = () => {
 
   const studentItems = [
     { label: "Estudiantes", to: "/students", icon: <FaUserGraduate /> },
+    { label: "Calificaciones", to: "/grades", icon: <FaBook /> },
+  ];
+
+  const periodsItems = [
+    { label: "Courses", to: "/courses-period", icon: <FaUserGraduate /> },
     { label: "Calificaciones", to: "/grades", icon: <FaBook /> },
   ];
 
@@ -34,11 +39,13 @@ const Navbar: React.FC = () => {
   return (
     <header>
       <ul>
-        <Dropdown title="Estudiantes" items={studentItems} />
+        <Dropdown id="estudiantes" title="Estudiantes" items={studentItems} />
 
-        <Dropdown title="Parametros" items={paramsItems} />
+        <Dropdown id="periodos" title="Periodos" items={periodsItems} />
+
+        <Dropdown id="parametros" title="Parametros" items={paramsItems} />
         
-        {!user && <Dropdown title="Usuarios" items={userItems} />}
+        {!user && <Dropdown id="usuarios" title="Usuarios" items={userItems} />}
 
         {navbarItems.map((item, index) => (
           <li key={index} className={location.pathname === item.to ? 'active' : ''}>
