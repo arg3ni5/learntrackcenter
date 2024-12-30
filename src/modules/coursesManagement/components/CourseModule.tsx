@@ -4,13 +4,11 @@ import React, { useEffect } from "react";
 import BaseModule, { Field } from "../../../components/BaseModule/BaseModule";
 import useCourse from "../hooks/useCourse"; // Import the custom hook
 import { Course } from "../services/courseService";
-import useTeachers from "../../teachersManagement/hooks/useTeachers";
 import { useLoading } from "../../../components/loading/LoadingContext";
 
 const CourseModule: React.FC = () => {
   const { setIsLoading } = useLoading();
   const { courses, loading, error, handleAddCourse, handleDeleteCourse, handleUpdateCourse } = useCourse(); // Use the custom hook
-  const { teachers } = useTeachers(); // Use the custom hook to manage teachers
 
     useEffect(() => {
         setIsLoading(loading);
@@ -22,14 +20,7 @@ const CourseModule: React.FC = () => {
     { name: "name", placeholder: "Course name" },
     { name: "description", placeholder: "Course description" },
     { name: "duration", placeholder: "Duration (weeks)" },
-    { name: "hours", placeholder: "Hours per week" },
-    {
-      name: "teacherId",
-      label: "Teacher",
-      placeholder: "Select Teacher",
-      type: "select",      
-      options: teachers.map((teacher) => ({ value: teacher.id!, label: teacher.name })),
-    },
+    { name: "hours", placeholder: "Hours per week" }
   ];
 
   return (

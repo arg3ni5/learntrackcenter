@@ -8,7 +8,6 @@ export interface Course {
     description: string; // Course description
     duration?: number; // Course duration in weeks
     hours?: number; // Hours per week
-    teacherId?: string; // Related teacher ID
 }
 
 // Function to fetch the list of courses from Firestore
