@@ -21,7 +21,8 @@ interface BaseModuleProps<T> {
   fields: Field[];
   items?: T[]; // Function to fetch items
   fetchItems?: () => Promise<T[]>; // Function to fetch items
-  onEdit?: (id: T) => void; // Optional callback to handle editing
+  onEdit?: (item: T) => void; // Optional callback to handle editing
+  onView?: (item: T) => void; // Optional callback to handle view
   onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
@@ -37,6 +38,7 @@ const BaseModule = <T extends Record<string, any>>({
   items,
   fetchItems,
   onEdit,
+  onView,
   onItemAdded,
   onItemUpdated,
   onItemDeleted,
@@ -92,6 +94,11 @@ const BaseModule = <T extends Record<string, any>>({
     onEdit && onEdit(item); // Call edit callback if defined
   }
 
+  const handleOnView = (item: T) => {
+    setCurrentItem(item); // Set the ID of the item to edit
+    onView && onView(item); // Call edit callback if defined
+  }
+
   const resetEditing = () => {
     setIsEditing(false);
     setCurrentItem(null);
@@ -117,16 +124,19 @@ const BaseModule = <T extends Record<string, any>>({
             onCancelEdit={resetEditing} // Pass cancel function to the form
             initialData={isEditing ? items && currentItem && items.find((item) => item.id === currentItem.id) : initialFormData} // Load initial data or data of the item being edited
           />
-          {!isEditing && (
+          
+        </div>
+        <div className="list-container">
             <ListBase<T>
               items={items}
               fields={fields}
               onItemDeleted={handleItemDelete}
               editable={onItemUpdated !== undefined} // Enable editing if update function is defined
+              seeable={onView !== undefined} // Enable editing if update function is defined
               loading={loading || false}
               onEdit={handleOnEdit}
+              onView={handleOnView}
             />
-          )}
         </div>
         {children && <div className="upload-container">{children}</div>}
       </div>
