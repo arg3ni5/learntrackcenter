@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { fetchGrades, addGrade, deleteGrade, Grade } from '../services/gradeService';
 
 const useGrades = () => {
-    const [grades, setGrades] = useState<Grade[]>([]);
+    const [data, setData] = useState<Grade[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -11,8 +11,8 @@ const useGrades = () => {
     const loadGrades = async () => {
         try {
             setLoading(true);
-            const gradesData = await fetchGrades();
-            setGrades(gradesData);
+            const data = await fetchGrades();
+            setData(data);
         } catch (err) {
             setError('Error al cargar las calificaciones');
         } finally {
@@ -45,7 +45,7 @@ const useGrades = () => {
         }
     };
 
-    return { grades, loading, error, addNewGrade, removeGrade };
+    return { grades: data, loading, error, addNewGrade, removeGrade };
 };
 
 export default useGrades;
