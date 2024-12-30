@@ -25,7 +25,6 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
                 ...courseWithoutId,
                 courseId: id!,
                 status: 'Not Started',
-                finalGrade: 0,
                 assignments: [],
             };
             await handleAddCourse(course); // Call the function to add the new period to the student
