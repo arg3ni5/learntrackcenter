@@ -75,7 +75,7 @@ const usePeriods = (studentId: string) => {
         }
     };
 
-    return { availablePeriods,periods, loading, error, fetchAvailablePeriods, handleAddPeriod, handleDeletePeriod }; 
+    return { availablePeriods, periods, loading, error, fetchAvailablePeriods, handleAddPeriod, handleDeletePeriod }; 
 };
 
 export default usePeriods; 

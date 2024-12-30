@@ -6,11 +6,13 @@ import StudentDetailsManagement from "./components/StudentDetailsManagement";
 import './StudentModule.css';
 import { useLoading } from "../../components/loading/LoadingContext";
 import { Student } from "./types";
+import CoursesSelector from './components/CoursesSelector';
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const StudentModule: React.FC = () => {
     const { setIsLoading } = useLoading();
     const {students, loading, error, handleAddStudent, handleRemoveStudent, handleUpdateStudent} = useStudents();
-    const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+    const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent",null);
     const [initialStudentData, setInitialStudentData] = useState<Student | null>(null);
     const [importStudentData, setImportStudentData] = useState<Student | null>(null);
 
@@ -40,7 +42,7 @@ const StudentModule: React.FC = () => {
                 loading={loading}>
                 <UploadStudents onSelectStudent={setInitialStudentData} onImportStudent={setImportStudentData} />
             </BaseModule>
-
+            <CoursesSelector></CoursesSelector>
             {selectedStudent && (
                 <StudentDetailsManagement student={selectedStudent} /> // Render the management component for selected student
             )}

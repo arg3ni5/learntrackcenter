@@ -5,6 +5,7 @@ import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase
 import { Course as AvailableCourses } from '../../coursesManagement/services/courseService';
 import { Course } from '../types';
 import { arrayUnion, arrayRemove  } from 'firebase/firestore';
+import { StudentCourse } from '../../../types/types';
 
 
 
@@ -19,18 +20,18 @@ export const fetchAvailableCourses = async (): Promise<AvailableCourses[]> => {
 };
 
 // Function to fetch courses for a specific student
-export const fetchCourses = async (studentId: string, periodId: string): Promise<Course[]> => {
-   const coursesCollection = collection(db, `students/${studentId}/periods/${periodId}/courses`);
+export const fetchCourses = async (studentId: string): Promise<StudentCourse[]> => {
+   const coursesCollection = collection(db, `students/${studentId}/courses`);
    const coursesSnapshot = await getDocs(coursesCollection);
    return coursesSnapshot.docs.map(doc => ({
        id: doc.id,
-       ...doc.data() as Omit<Course, 'id'>,
+       ...doc.data() as Omit<StudentCourse, 'id'>,
    }));
 };
 
 // Function to add a new course for a specific student
-export const addCourse = async (studentId: string, periodId: string, newCourse: Course): Promise<void> => {
-   const coursesCollection = collection(db, `students/${studentId}/periods/${periodId}/courses`);
+export const addCourse = async (studentId: string, newCourse: StudentCourse): Promise<void> => {
+   const coursesCollection = collection(db, `students/${studentId}/courses`);
 
    // Add the new course document
    const courseDoc = await addDoc(coursesCollection, newCourse);
@@ -38,7 +39,7 @@ export const addCourse = async (studentId: string, periodId: string, newCourse: 
    
     
    // Update the coursesIds in the period document
-   const periodDocRef = doc(db, `students/${studentId}/periods/${periodId}`);
+   const periodDocRef = doc(db, `students/${studentId}`);
    await updateDoc(periodDocRef, {
       coursesIds: arrayUnion(courseDoc.id) // Add the new course ID to the array
    });
@@ -46,12 +47,12 @@ export const addCourse = async (studentId: string, periodId: string, newCourse: 
 };
 
 // Function to delete a course by ID for a specific student
-export const deleteCourse = async (studentId: string, periodId: string, courseId: string): Promise<void> => {
-   const courseDoc = doc(db, `students/${studentId}/periods/${periodId}/courses`, courseId);
+export const deleteCourse = async (studentId: string, courseId: string): Promise<void> => {
+   const courseDoc = doc(db, `students/${studentId}/courses`, courseId);
    await deleteDoc(courseDoc);
 
    // Update the coursesIds in the period document
-   const periodDocRef = doc(db, `students/${studentId}/periods/${periodId}`);
+   const periodDocRef = doc(db, `students/${studentId}`);
    await updateDoc(periodDocRef, {
        coursesIds: arrayRemove(courseId) // Remove the course ID from the array
    });
