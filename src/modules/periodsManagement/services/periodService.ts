@@ -2,17 +2,7 @@
 
 import { db } from '../../../services/firebase'; // Adjust the import according to your Firebase setup
 import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
-
-// Define the interface for Period
-export interface Period {
-    id?: string; // Optional ID for Firestore
-    periodId: string; // Unique identifier for the academic period
-    periodName: string; // Descriptive name of the period
-    startDate: Date; // Start date of the academic period
-    endDate: Date; // End date of the academic period
-    status: number; // Current status of the period (e.g., "Active", "Finished", "Upcoming") 0, 1, 2
-    assignedSubjects: string[]; // List of subject IDs associated with this academic period
-}
+import { Period } from '../types';
 
 // Función para obtener la lista de cursos desde Firestore
 export const fetchPeriods = async (): Promise<Period[]> => {

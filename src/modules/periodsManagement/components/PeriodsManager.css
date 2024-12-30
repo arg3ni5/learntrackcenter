@@ -1,0 +1,59 @@
+/* src/modules/studentsManagement/components/PeriodsManager.css */
+.periods-manager {
+    margin: 20px;
+}
+
+.periods-manager h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.periods-manager select {
+    min-width: 250px;
+    padding: 8px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.periods-manager button {
+    padding: 8px 12px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.periods-manager button:hover {
+    background-color: #45a049; /* Darker green */
+}
+
+.periods-manager ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.periods-manager li {
+    margin-bottom: 5px;
+}
+
+.periods-list {
+    padding: 20px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde del formulario */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.delete-button {
+    margin-left: 5px;
+}
+
+.courses-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+

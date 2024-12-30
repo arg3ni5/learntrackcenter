@@ -1,30 +1,40 @@
 // src/modules/periodsManagement/PeriodsModule.tsx
 
 import React from "react";
-import BaseModule from "../../../components/BaseModule/BaseModule"; 
-import { Period } from "../services/periodService"; 
-import usePeriods from "../hooks/usePeriod";
+import BaseModule from "../../../components/BaseModule/BaseModule";
+import usePeriods from "../hooks/usePeriods";
 import Loading from "../../../components/loading/Loading";
+import { useNavigate } from 'react-router-dom';
+import { Period } from "../types";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 
 const PeriodsModule: React.FC = () => {
-    const { loadPeriods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdateCourse } = usePeriods(); 
+    const { periods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod } = usePeriods();
+    const [selectPeriod, setSelectPeriod] = useLocalStorage<Period|null>('selectPeriod', null);
+    const navigate = useNavigate();
+    
+    const handleOnEdit = (item: Period) => {
+        navigate(`/periods/${item.id}/courses`);
+        setSelectPeriod(item);
+    }
 
     return (
         <>
             <BaseModule<Period>
                 title="Manage Academic Periods" // Title for the module
                 fields={[
-                    { name: "periodId", placeholder: "ID Periodo" },
-                    { name: "periodName", placeholder: "Nombre del Periodo" },
+                    { name: "code", placeholder: "ID Periodo" },
+                    { name: "name", placeholder: "Nombre del Periodo" },
                     { name: "startDate", placeholder: "Fecha de Inicio" },
                     { name: "endDate", placeholder: "Fecha de Fin" },
                     { name: "status", placeholder: "Estado" }
                 ]} 
-                fetchItems={loadPeriods} // Fetch current periods
+                items={periods} // Fetch current periods
                 onItemAdded={handleAddPeriod} // Handle adding a new period
                 onItemDeleted={handleDeletePeriod} // Handle deleting a period
-                onItemUpdated={handleUpdateCourse} // Handle deleting a period
+                onItemUpdated={handleUpdatePeriod} // Handle deleting a period
                 initialFormData={null} // No initial data for the form
+                onView={handleOnEdit}
                 loading={loading} // Loading state
             />
             

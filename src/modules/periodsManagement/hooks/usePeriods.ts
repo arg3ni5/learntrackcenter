@@ -1,7 +1,8 @@
 // src/modules/periodsManagement/hooks/usePeriods.ts
 
 import { useState, useEffect } from 'react';
-import { fetchPeriods, addPeriod, deletePeriod, Period, updatePeriod } from '../services/periodService';
+import { fetchPeriods, addPeriod, deletePeriod, updatePeriod } from '../services/periodService';
+import { Period } from '../types';
 
 
 const usePeriods = () => {
@@ -45,7 +46,7 @@ const usePeriods = () => {
         }
     };
 
-    const handleUpdateCourse = async (id: string, period: Period) => {
+    const handleUpdatePeriod = async (id: string, period: Period) => {
         try {
             await updatePeriod(id, period); // Eliminar curso por ID
             loadPeriods(); // Recargar la lista de cursos después de eliminar
@@ -54,7 +55,7 @@ const usePeriods = () => {
         }
     };
 
-    return { periods, loadPeriods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdateCourse};
+    return { periods, loadPeriods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod};
 };
 
 export default usePeriods;
