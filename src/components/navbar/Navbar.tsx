@@ -3,13 +3,12 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import './Navbar.css'; // Importar el archivo CSS
-import { useAuth } from "../../modules/userAuth/hooks/useAuth";
 import Dropdown from "../dropdown/Dropdown"; // Asegúrate de que Dropdown esté importado
 import { useLoading } from "../loading/LoadingContext";
 import { FaBars, FaTimes } from "react-icons/fa"; // Iconos para abrir y cerrar
 
 const Navbar: React.FC = () => {
-    const { user } = useAuth();
+    // const { user } = useAuth();
     const location = useLocation();
     const { isLoading } = useLoading();
     const [isSidebarOpen, setSidebarOpen] = useState(false); // Estado para controlar el sidebar

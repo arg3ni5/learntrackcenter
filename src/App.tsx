@@ -6,7 +6,7 @@ import AppRoutes from './routes/AppRoutes';
 import MainLayout from './layout/MainLayout';
 import { NotificationProvider } from './components/notification/NotificationContext';
 import { LoadingProvider } from './components/loading/LoadingContext';
-import { DropdownProvider } from './components/navbar/DropdownContext';
+import { DropdownProvider } from './components/dropdown/DropdownContext';
 
 const App: React.FC = () => {
     return (
