@@ -8,6 +8,7 @@ import { Course, Period } from '../../../types/types';
 import useCourses from '../hooks/useCourses';
 import SelectInput from '../../../components/BaseModule/SelectInput';
 import useTeachers from '../../teachersManagement/hooks/useTeachers';
+import AssignmentsManager from './AssignmentsManager';
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
     const navigate = useNavigate();
@@ -85,7 +86,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
                                 onChange={(selectedOption) => setSelectedTeacher(selectedOption.value)}
                                 placeholder="Select Teacher"
                             />)}
-                            {/* {period && period.id && <CoursesManager studentId={studentId} periodId={period.id}/>} */}
+                            <AssignmentsManager courseId={course.courseId} periodId={period?.id!}></AssignmentsManager>
                         </li>
                     ))}
                 </ul>

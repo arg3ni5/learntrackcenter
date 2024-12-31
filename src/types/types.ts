@@ -1,17 +1,21 @@
 export interface Assignment {
     id?: string; // Optional ID property, used when fetching from Firestore
     title: string; // Title of the assignment
-    grade: number; // Grade obtained for the assignment
     contributionPercentage: number; // Contribution percentage to final grade
 }
+export interface AssignmentStudent extends Assignment {
+    id?: string; // Optional ID property, used when fetching from Firestore
+    assignmentId: string; // Title of the assignment
+    grade: number; // Grade obtained for the assignment
+    percentage: number; // Contribution percentage to final grade
+}
+
 export type CourseStatus = 
     | 'Passed' 
     | 'Failed' 
     | 'In Progress' 
     | 'Not Started' 
     | 'Withdrawn';
-
-
 
 export interface AvailableCourse {
     id?: string; // Optional ID for Firestore

@@ -1,29 +1,33 @@
-// src/modules/studentsManagement/components/AssignmentsManager.tsx
-
-import React from 'react';
-import { Assignment, AssignmentsManagerProps } from '../types';
+import React, { useMemo } from 'react';
 import BaseModule from '../../../components/BaseModule/BaseModule';
-import useAssignments from '../hooks/useAssignments';
+import useAssignments, { AssignmentsManagerProps } from '../hooks/useAssignments';
+import { Assignment } from '../../../types/types';
 
-const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ studentId, periodId, courseId }) => {
-    const { assignments, loading, error, handleAddAssignment } = useAssignments({ studentId, periodId, courseId });
+const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, courseId }) => {
+    const { assignments, loading, error, handleAddAssignment, handleDeleteAssignment } = useAssignments({ periodId, courseId });
 
-    if (loading) return <div>Loading assignments...</div>;
-    if (error) return <div>Error: {error}</div>;
+    const totalPercentage = useMemo(() => {
+        return assignments.reduce((sum, assignment) => sum + (Number(assignment.contributionPercentage) || 0), 0);
+    }, [assignments]);
+
     const fields = [
         { name: "title", placeholder: "Title of the assignment" },
-        { name: "grade", placeholder: "Grade obtained for the assignment" },
         { name: "contributionPercentage", placeholder: "Contribution percentage to final grade" },
     ];
 
+    if (loading) return <div>Loading assignments...</div>;
+    if (error) return <div>Error: {error}</div>;
+
     return (
         <>
-            {!loading && <BaseModule<Assignment>
+            <p><b>Total Percentage: ({totalPercentage})</b></p>
+            <BaseModule<Assignment>
                 fields={fields}
                 items={assignments}
                 onItemAdded={handleAddAssignment}
-                loading={loading}>
-            </BaseModule>}
+                onItemDeleted={handleDeleteAssignment}
+                loading={loading}
+            />
         </>
     );
 };

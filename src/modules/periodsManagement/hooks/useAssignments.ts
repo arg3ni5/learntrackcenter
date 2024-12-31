@@ -1,9 +1,15 @@
 import { useEffect, useState, useCallback } from "react";
-import { Assignment, AssignmentsManagerProps } from "../types";
 import { addAssignment, deleteAssignment, fetchAssignments, updateAssignment } from "../services/assignmentService";
+import { Assignment } from "../../../types/types";
+
+
+export interface AssignmentsManagerProps {
+    periodId: string;
+    courseId: string;
+}
 
 const useAssignments = (props: AssignmentsManagerProps) => {
-  const { courseId, studentId, periodId } = props;
+  const { courseId, periodId } = props;
   const [data, setData] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -11,14 +17,14 @@ const useAssignments = (props: AssignmentsManagerProps) => {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const fetchedData = await fetchAssignments(studentId, periodId, courseId);
+      const fetchedData = await fetchAssignments(periodId, courseId);
       setData(fetchedData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al cargar las calificaciones");
     } finally {
       setLoading(false);
     }
-  }, [studentId, periodId, courseId, setLoading]);
+  }, [periodId, courseId, setLoading]);
 
   useEffect(() => {
     let isMounted = true;
@@ -35,7 +41,7 @@ const useAssignments = (props: AssignmentsManagerProps) => {
     async (newAssignment: Assignment) => {
       setLoading(true);
       try {
-        await addAssignment(studentId, periodId, courseId, newAssignment);
+        await addAssignment(periodId, courseId, newAssignment);
         await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error adding assignment");
@@ -43,14 +49,14 @@ const useAssignments = (props: AssignmentsManagerProps) => {
         setLoading(false);
       }
     },
-    [studentId, periodId, courseId, loadData, setLoading]
+    [periodId, courseId, loadData, setLoading]
   );
 
   const handleUpdateAssignment = useCallback(
     async (assignmentId: string, updatedAssignment: Partial<Assignment>) => {
       setLoading(true);
       try {
-        await updateAssignment(studentId, periodId, courseId, assignmentId, updatedAssignment);
+        await updateAssignment(periodId, courseId, assignmentId, updatedAssignment);
         await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error updating assignment");
@@ -58,14 +64,14 @@ const useAssignments = (props: AssignmentsManagerProps) => {
         setLoading(false);
       }
     },
-    [studentId, periodId, courseId, loadData, setLoading]
+    [periodId, courseId, loadData, setLoading]
   );
 
   const handleDeleteAssignment = useCallback(
     async (assignmentId: string) => {
       setLoading(true);
       try {
-        await deleteAssignment(studentId, periodId, courseId, assignmentId);
+        await deleteAssignment(periodId, courseId, assignmentId);
         await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error deleting assignment");
@@ -73,7 +79,7 @@ const useAssignments = (props: AssignmentsManagerProps) => {
         setLoading(false);
       }
     },
-    [studentId, periodId, courseId, loadData, setLoading]
+    [periodId, courseId, loadData, setLoading]
   );
 
   return {
