@@ -1,40 +1,43 @@
-/* Navbar.css */
+/* Menu.css */
 
-/* Estilos generales del navbar */
+/* General styles for the navbar */
 .navbar {
-    display: flex; /* Usar flexbox para alinear los elementos horizontalmente */
-    justify-content: space-around; /* Espaciado equitativo entre los elementos */
-    align-items: center; /* Centrar verticalmente los elementos */
-    height: 60px; /* Altura fija del navbar */
-    background-color: #007bff; /* Color de fondo del navbar */
-    padding: 0 20px; /* Espaciado interno horizontal */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    display: flex; /* Use flexbox to align items horizontally */
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Center items vertically */
+    height: 60px; /* Fixed height for the navbar */
+    background-color: #007bff; /* Background color of the navbar */
+    padding: 0 20px; /* Horizontal padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow */
 }
 
-/* Estilos para los elementos del navbar */
+/* Styles for the navbar items */
 .navbar ul {
-    list-style-type: none; /* Eliminar viñetas */
-    padding: 0; /* Eliminar padding por defecto */
-    margin: 0; /* Eliminar margen por defecto */
-    display: flex; /* Usar flexbox para alinear los elementos */
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    display: flex; /* Use flexbox to align items */
 }
 
 .navbar li {
-    margin: 0 15px; /* Margen horizontal entre los elementos */
+    margin: 0 15px; /* Horizontal margin between items */
 }
 
 .navbar a {
-    color: white; /* Color del texto */
-    text-decoration: none; /* Sin subrayado en los enlaces */
-    font-weight: bold; /* Texto en negrita */
+    color: white; /* Text color */
+    text-decoration: none; /* No underline on links */
+    font-weight: bold; /* Bold text */
+    padding: 10px; /* Padding for clickable area */
+    border-radius: 4px; /* Rounded corners for links */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
-/* Efecto hover para enlaces en el navbar */
+/* Hover effect for links in the navbar */
 .navbar a:hover {
-    color: #f1f1f1; /* Color al pasar el mouse sobre el texto */
+    background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
 }
 
-/* Estilos del sidebar (sin cambios) */
+/* Sidebar styles (unchanged) */
 .sidebar {
     position: fixed;
     top: 0;
@@ -64,21 +67,30 @@
     color: white;
 }
 
-/* Botón para abrir/cerrar el sidebar */
+/* Button to open/close the sidebar */
 .toggle-button {
     position: absolute;
     top: 10px;
-    left: 10px;
+    left: 10px; /* Adjust position as needed */
 }
 
-/* Media query para pantallas pequeñas */
+/* Close button in the sidebar */
+.close-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Media query for small screens */
 @media (max-width: 768px) {
    .navbar {
-      display: none; /* Oculta el navbar en pantallas pequeñas */
+      display: none; /* Hide the navbar on small screens */
    }
 
    .toggle-button {
-      display: block; /* Muestra el botón en pantallas pequeñas */
+      display: block; /* Show button on small screens */
       background-color: #007bff;
       border-radius: 4px;
       color:white;
@@ -89,10 +101,10 @@
 
 @media (min-width: 769px) {
    .sidebar {
-      display:none; /* Oculta el sidebar en pantallas grandes */
+      display:none; /* Hide the sidebar on large screens */
    }
 
    .toggle-button {
-      display:none; /* Oculta el botón en pantallas grandes */
+      display:none; /* Hide button on large screens */
    }
 }

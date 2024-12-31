@@ -16,6 +16,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ items }) => {
     const location = useLocation();
+    const isActive = items.some(item => location.pathname === item.to);
 
     return (
         <header className="navbar">
@@ -26,7 +27,9 @@ const Navbar: React.FC<NavbarProps> = ({ items }) => {
                         {item.children ? (
                             <Dropdown id={`${item.label.toLowerCase()}-dropdown-desktop`} title={item.label} items={item.children} />
                         ) : (
-                            <Link to={item.to}>{item.label}</Link>
+                            <button className={`${isActive ? 'active' : ''}`}>
+                                <Link to={item.to}>{item.label}</Link>
+                            </button>
                         )}
                     </li>
                 ))}
