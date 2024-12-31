@@ -24,6 +24,8 @@ export interface AvailableCourse {
 export interface Course extends AvailableCourse{
     status?: CourseStatus; // Approved or Reprobated status
     courseId: string; // Reference to the Course document
+    teacherId?: string; // Reference to the Teacher document
+    teacherName?: string; // To show name of teacher
     assignments: string[]; // List of assignments for the course
 }
 

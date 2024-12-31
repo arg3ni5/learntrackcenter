@@ -3,14 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useNotification } from '../../../components/notification/NotificationContext';
 import useLocalStorage from '../../../hooks/useLocalStorage'; // Import the local storage hook
-import { addCourse, deleteCourse, fetchAvailableCourses, fetchCourses } from '../services/courseService';
+import { addCourse, deleteCourse, updateCourse, fetchAvailableCourses, fetchCourses } from '../services/courseService';
 import { AvailableCourse, Course } from '../../../types/types'; // Import the Course interface
 import { useLoading } from '../../../components/loading/LoadingContext';
+import { fetchTeachers, Teacher } from '../../teachersManagement/services/teacherService';
 
 const useCourses = (periodId: string) => {
     const [data, setData] = useState<Course[]>([]); // State for storing student's courses
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
     const [error, setError] = useState<string | null>(null); // State to manage errors
+    const [ availableTeachers, setAvailableTeachers ] = useLocalStorage<Teacher[]>('availableTeachers', []); // Use local storage for available courses
     const [ availableCourses, setAvailableCourses ] = useLocalStorage<AvailableCourse[]>('availableCourses', []); // Use local storage for available courses
     const { showNotification } = useNotification();
     const { setIsLoading } = useLoading();
@@ -23,7 +25,14 @@ const useCourses = (periodId: string) => {
         try {
             setLoading(true);
             const data = await fetchCourses(periodId);
-            setData(data); 
+            const detailedData = data.map(course => {
+                const teacher = availableTeachers.find(t => t.id === course.teacherId);                
+                return {
+                    ...course,
+                    teacherName: teacher ? teacher.name : 'Unknown Course',
+                };
+            });
+            setData(detailedData); 
         } catch (err) {
             showNotification('Error fetching courses', 'error'); 
         } finally {
@@ -43,9 +52,22 @@ const useCourses = (periodId: string) => {
         }
     };
 
+    const loadAvailableTeachers = async () => {
+        try {
+            setLoading(true);
+            const data = await fetchTeachers();
+            setAvailableTeachers(data); 
+        } catch (err) {
+            showNotification('Error fetching courses', 'error'); 
+        } finally {
+            setLoading(false); 
+        }
+    };
+
     useEffect(() => {
         loadData(); // Load student's courses if needed
         loadAvailableCourses()
+        loadAvailableTeachers()
     }, []);
 
     const handleAddCourse = async (newCourse: Course) => {
@@ -65,8 +87,7 @@ const useCourses = (periodId: string) => {
     };
 
     const handleDeleteCourse = async (courseId: string | undefined) => {
-        try {
-            console.log(courseId);            
+        try {        
             if (!courseId) return;
             setLoading(true);
             await deleteCourse(periodId, courseId);
@@ -79,7 +100,27 @@ const useCourses = (periodId: string) => {
         }
     };
 
-    return { courses: data, availableCourses, loading, error, handleAddCourse, handleDeleteCourse }; // Return necessary data and functions
+    const handleUpdateCourse = async (courseId: string, course: Course) => {
+        try {        
+            if (!periodId) return;
+            setLoading(true);            
+            await updateCourse(periodId, courseId, course);
+            loadData();
+        } catch (err) {
+            setError('Error update course');
+            showNotification('Error update course', 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+
+    return { courses: data, availableCourses, availableTeachers,
+        loading, error, 
+        handleAddCourse, 
+        handleDeleteCourse,
+        handleUpdateCourse }; // Return necessary data and functions
 };
 
 export default useCourses;
