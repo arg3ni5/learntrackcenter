@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormBase from "./FormBase";
 import ListBase from "./ListBase";
 import "./BaseModule.css"; // Import the CSS file
@@ -111,9 +111,14 @@ const BaseModule = <T extends Record<string, any>>({
     loadItems();
   }, [importItem]);
 
+  const childrenArray = React.Children.toArray(children);
+
+
   return (
     <div>
       {title && <h1 className="title">{title}</h1>}
+      
+                  <button>Import</button>
       <div className="module-container">
         <div className="form-container">
           <FormBase
@@ -124,21 +129,21 @@ const BaseModule = <T extends Record<string, any>>({
             onCancelEdit={resetEditing} // Pass cancel function to the form
             initialData={isEditing ? items && currentItem && items.find((item) => item.id === currentItem.id) : initialFormData} // Load initial data or data of the item being edited
           />
-          
+          {childrenArray[0]}
         </div>
         <div className="list-container">
-            <ListBase<T>
-              items={items}
-              fields={fields}
-              onItemDeleted={handleItemDelete}
-              editable={onItemUpdated !== undefined} // Enable editing if update function is defined
-              seeable={onView !== undefined} // Enable editing if update function is defined
-              loading={loading || false}
-              onEdit={handleOnEdit}
-              onView={handleOnView}
-            />
+          {children && <div className="upload-container">{childrenArray[1]}</div>}
+          <ListBase<T>
+            items={items}
+            fields={fields}
+            onItemDeleted={handleItemDelete}
+            editable={onItemUpdated !== undefined} // Enable editing if update function is defined
+            seeable={onView !== undefined} // Enable editing if update function is defined
+            loading={loading || false}
+            onEdit={handleOnEdit}
+            onView={handleOnView}
+          />            
         </div>
-        {children && <div className="upload-container">{children}</div>}
       </div>
     </div>
   );

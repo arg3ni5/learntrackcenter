@@ -10,9 +10,19 @@
     }
 }
 
+.table-container {
+    max-height: 400px;
+    /* Ajusta este valor según tus necesidades */
+    overflow-y: auto;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* scrollbar-color: #007bff #f1f1f1; */
+    /* Thumb y track color */
+}
+
 
 .list-base-table {
-    margin-top: 20px;
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
