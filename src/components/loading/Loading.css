@@ -1,29 +1,18 @@
 .loading-container {
   display: flex;
-  /* Usar flexbox para centrar el contenido */
-  flex-direction: column;
-  /* Colocar el spinner y el texto en columna */
   justify-content: center;
-  /* Centrar verticalmente */
   align-items: center;
-  /* Centrar horizontalmente */
   height: 100vh;
-  /* Ocupa toda la altura de la ventana */
+  overflow: hidden !important;
 }
 
 .spinner {
   border: 8px solid rgba(255, 255, 255, 0.3);
-  /* Borde blanco con transparencia */
   border-top: 8px solid #007bff;
-  /* Color del spinner */
   border-radius: 50%;
-  /* Hacerlo circular */
   width: 50px;
-  /* Ancho del spinner */
   height: 50px;
-  /* Alto del spinner */
   animation: spin 1s linear infinite;
-  /* Animación de rotación infinita */
 }
 
 @keyframes spin {
@@ -38,25 +27,65 @@
 
 .loading-container p {
   margin-top: 10px;
-  /* Espacio entre el spinner y el texto */
   color: #007bff;
-  /* Color del texto */
 }
 
+.loading-text {
+  padding: 20px;
+  color: white;
+  position: absolute;
+  width: 50%; /* O cualquier ancho deseado */
+  margin: 0 auto; /* Esto centra el div horizontalmente */
+}
 
-/* From Uiverse.io by alexruix */
+.loading-text p {
+  width: 100%;
+  color: white;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;  
+  margin-top: 135px;
+}
+
+.loading-text p::after {
+  position: absolute;
+  animation: b 3s infinite linear;
+  color: white;
+  content: "";
+}
+
+@keyframes b {
+  0% {
+    content: "";
+  }
+
+  10% {
+    content: ".";
+  }
+
+  40% {
+    content: "..";
+  }
+
+  70% {
+    content: "...";
+  }
+
+  100% {
+    content: "";
+  }
+}
+
 .loader {
   position: relative;
-  width: 120px;
   height: 90px;
-  margin: 0 auto;
 }
 
 .loader:before {
   content: "";
   position: absolute;
   bottom: 30px;
-  left: 50px;
+  left: -15px;
   height: 30px;
   width: 30px;
   border-radius: 50%;
@@ -66,13 +95,16 @@
 
 .loader:after {
   content: "";
-  position: absolute;
-  right: 0;
+  position: absolute;  
+  right: -60px;
   top: 0;
   height: 7px;
-  width: 45px;
+  width: 50px;
   border-radius: 4px;
-  box-shadow: 0 5px 0 #f2f2f2, -35px 50px 0 #f2f2f2, -70px 95px 0 #f2f2f2;
+  box-shadow:
+    0 5px 0 #f2f2f2,
+    -35px 50px 0 #f2f2f2,
+    -70px 95px 0 #f2f2f2;
   animation: loading-step 1s ease-in-out infinite;
 }
 
@@ -96,14 +128,16 @@
 
 @keyframes loading-step {
   0% {
-    box-shadow: 0 10px 0 rgba(0, 0, 0, 0),
+    box-shadow:
+      0 10px 0 rgba(0, 0, 0, 0),
       0 10px 0 #f2f2f2,
       -35px 50px 0 #f2f2f2,
       -70px 90px 0 #f2f2f2;
   }
 
   100% {
-    box-shadow: 0 10px 0 #f2f2f2,
+    box-shadow:
+      0 10px 0 #f2f2f2,
       -35px 50px 0 #f2f2f2,
       -70px 90px 0 #f2f2f2,
       -70px 90px 0 rgba(0, 0, 0, 0);
