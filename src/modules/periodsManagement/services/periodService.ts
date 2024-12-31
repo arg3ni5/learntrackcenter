@@ -1,35 +1,58 @@
-// src/modules/periodsManagement/services/periodService.ts
+/**
+ * Manages period-related operations in Firestore.
+ * @module periodService
+ */
 
-import { db } from '../../../services/firebase'; // Adjust the import according to your Firebase setup
+import { db } from '../../../services/firebase';
 import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
-import { Period } from '../types';
+import { Period } from '../../../types/types';
 
-// Función para obtener la lista de cursos desde Firestore
+/**
+ * Fetches all periods from Firestore.
+ * @async
+ * @returns {Promise<Period[]>} A promise that resolves to an array of Period objects.
+ */
 export const fetchPeriods = async (): Promise<Period[]> => {
-    const periodsCollection = collection(db, 'periods'); // Colección de cursos en Firestore
-    const courseSnapshot = await getDocs(periodsCollection); // Obtener los documentos
-    const courseList: Period[] = courseSnapshot.docs.map(doc => ({
+    const periodsCollection = collection(db, 'periods');
+    const periodSnapshot = await getDocs(periodsCollection);
+    const periodList: Period[] = periodSnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data() as Omit<Period, 'id'> // Excluir el ID al mapear los datos
+        ...doc.data() as Omit<Period, 'id'>
     }));
-    return courseList;
+    return periodList;
 };
 
-// Función para agregar un nuevo curso a Firestore
-export const addPeriod = async (course: Period): Promise<void> => {
-    const periodsCollection = collection(db, 'periods'); // Colección de cursos en Firestore
-    await addDoc(periodsCollection, course); // Agregar el nuevo documento
+/**
+ * Adds a new period to Firestore.
+ * @async
+ * @param {Period} period - The period object to be added.
+ * @returns {Promise<void>} A promise that resolves when the operation is complete.
+ */
+export const addPeriod = async (period: Period): Promise<void> => {
+    const periodsCollection = collection(db, 'periods');
+    await addDoc(periodsCollection, period);
 };
 
-// Función para eliminar un curso por ID en Firestore
+/**
+ * Deletes a period from Firestore by its ID.
+ * @async
+ * @param {string} id - The ID of the period to be deleted.
+ * @returns {Promise<void>} A promise that resolves when the operation is complete.
+ */
 export const deletePeriod = async (id: string): Promise<void> => {
-    const courseDoc = doc(db, 'periods', id); // Referencia al documento del curso
-    await deleteDoc(courseDoc); // Eliminar el documento
+    const periodDoc = doc(db, 'periods', id);
+    await deleteDoc(periodDoc);
 };
 
-// Función para actualizar un curso por ID en Firestore
+/**
+ * Updates a period in Firestore by its ID.
+ * @async
+ * @param {string} id - The ID of the period to be updated.
+ * @param {Partial<Period>} updatedPeriod - The partial Period object containing the fields to be updated.
+ * @returns {Promise<void>} A promise that resolves when the operation is complete.
+ */
 export const updatePeriod = async (id: string, updatedPeriod: Partial<Period>): Promise<void> => {
     const { id: _, ...period } = updatedPeriod;    
-    const periodDoc = doc(db, 'periods', id); // Referencia al documento del curso
-    await updateDoc(periodDoc, period); // Actualizar el documento con los nuevos datos
+    const periodDoc = doc(db, 'periods', id);
+    await updateDoc(periodDoc, period);
 };

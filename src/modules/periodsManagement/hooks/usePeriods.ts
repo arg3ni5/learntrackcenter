@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { fetchPeriods, addPeriod, deletePeriod, updatePeriod } from '../services/periodService';
-import { Period } from '../types';
+import { Period } from '../../../types/types';
 
 
 const usePeriods = () => {

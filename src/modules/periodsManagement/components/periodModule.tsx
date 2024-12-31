@@ -5,12 +5,12 @@ import BaseModule from "../../../components/BaseModule/BaseModule";
 import usePeriods from "../hooks/usePeriods";
 import Loading from "../../../components/loading/Loading";
 import { useNavigate } from 'react-router-dom';
-import { Period } from "../types";
 import useLocalStorage from "../../../hooks/useLocalStorage";
+import { Period } from "../../../types/types";
 
 const PeriodsModule: React.FC = () => {
     const { periods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod } = usePeriods();
-    const [selectPeriod, setSelectPeriod] = useLocalStorage<Period|null>('selectPeriod', null);
+    const [, setSelectPeriod] = useLocalStorage<Period|null>('selectPeriod', null);
     const navigate = useNavigate();
     
     const handleOnEdit = (item: Period) => {

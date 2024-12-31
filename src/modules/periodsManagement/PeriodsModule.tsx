@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from "react";
-import BaseModule from "../../components/BaseModule/BaseModule"; 
-import UploadStudents from "../../components/uploadStudents/UploadStudents";
+import React, { useEffect } from "react";
+import BaseModule from "../../components/BaseModule/BaseModule";
 import './StudentModule.css';
 import { useLoading } from "../../components/loading/LoadingContext";
-import { Period } from "./types";
 import usePeriods from "./hooks/usePeriods";
+import { Period } from "../../types/types";
 
 
 const PeriodModule: React.FC = () => {
     const { setIsLoading } = useLoading();
     const {periods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod} = usePeriods();
-    const [selectedStudent, setSelectedStudent] = useState<Period | null>(null);
-    const [initialStudentData, setInitialStudentData] = useState<Period | null>(null);
-    const [importStudentData, setImportStudentData] = useState<Period | null>(null);
 
     const fields = [
         { name: "fullName", placeholder: "Full Name" },
@@ -34,9 +30,6 @@ const PeriodModule: React.FC = () => {
                 onItemAdded={handleAddPeriod}
                 onItemDeleted={handleDeletePeriod}
                 onItemUpdated={handleUpdatePeriod}
-                onEdit={setSelectedStudent}
-                initialFormData={initialStudentData}
-                importItem={importStudentData} // Pass the import item to BaseModule
                 loading={loading}>
             </BaseModule>
             {error && <div className="error">{error}</div>}
