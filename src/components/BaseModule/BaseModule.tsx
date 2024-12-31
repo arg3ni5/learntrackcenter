@@ -116,9 +116,8 @@ const BaseModule = <T extends Record<string, any>>({
 
   return (
     <div className="base-module-container">
-      {title && <h1 className="title">{title}</h1>}
-      
-                  <button>Import</button>
+      {title && <h1 className="title">{title}</h1>}      
+      {importItem && (<button>Import</button>)}
       <div className="module-container">
         <div className="form-container">
           <FormBase
