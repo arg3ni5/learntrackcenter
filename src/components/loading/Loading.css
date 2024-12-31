@@ -1,93 +1,111 @@
 .loading-container {
-    display: flex; /* Usar flexbox para centrar el contenido */
-    flex-direction: column; /* Colocar el spinner y el texto en columna */
-    justify-content: center; /* Centrar verticalmente */
-    align-items: center; /* Centrar horizontalmente */
-    height: 100vh; /* Ocupa toda la altura de la ventana */
+  display: flex;
+  /* Usar flexbox para centrar el contenido */
+  flex-direction: column;
+  /* Colocar el spinner y el texto en columna */
+  justify-content: center;
+  /* Centrar verticalmente */
+  align-items: center;
+  /* Centrar horizontalmente */
+  height: 100vh;
+  /* Ocupa toda la altura de la ventana */
 }
 
 .spinner {
-    border: 8px solid rgba(255, 255, 255, 0.3); /* Borde blanco con transparencia */
-    border-top: 8px solid #007bff; /* Color del spinner */
-    border-radius: 50%; /* Hacerlo circular */
-    width: 50px; /* Ancho del spinner */
-    height: 50px; /* Alto del spinner */
-    animation: spin 1s linear infinite; /* Animación de rotación infinita */
+  border: 8px solid rgba(255, 255, 255, 0.3);
+  /* Borde blanco con transparencia */
+  border-top: 8px solid #007bff;
+  /* Color del spinner */
+  border-radius: 50%;
+  /* Hacerlo circular */
+  width: 50px;
+  /* Ancho del spinner */
+  height: 50px;
+  /* Alto del spinner */
+  animation: spin 1s linear infinite;
+  /* Animación de rotación infinita */
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-p {
-    margin-top: 10px; /* Espacio entre el spinner y el texto */
-    color: #007bff; /* Color del texto */
+.loading-container p {
+  margin-top: 10px;
+  /* Espacio entre el spinner y el texto */
+  color: #007bff;
+  /* Color del texto */
 }
 
 
-/* From Uiverse.io by alexruix */ 
+/* From Uiverse.io by alexruix */
 .loader {
-    position: relative;
-    width: 120px;
-    height: 90px;
-    margin: 0 auto;
+  position: relative;
+  width: 120px;
+  height: 90px;
+  margin: 0 auto;
+}
+
+.loader:before {
+  content: "";
+  position: absolute;
+  bottom: 30px;
+  left: 50px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background: #2a9d8f;
+  animation: loading-bounce 0.5s ease-in-out infinite alternate;
+}
+
+.loader:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 7px;
+  width: 45px;
+  border-radius: 4px;
+  box-shadow: 0 5px 0 #f2f2f2, -35px 50px 0 #f2f2f2, -70px 95px 0 #f2f2f2;
+  animation: loading-step 1s ease-in-out infinite;
+}
+
+@keyframes loading-bounce {
+  0% {
+    transform: scale(1, 0.7);
   }
-  
-  .loader:before {
-    content: "";
-    position: absolute;
-    bottom: 30px;
-    left: 50px;
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    background: #2a9d8f;
-    animation: loading-bounce 0.5s ease-in-out infinite alternate;
+
+  40% {
+    transform: scale(0.8, 1.2);
   }
-  
-  .loader:after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 7px;
-    width: 45px;
-    border-radius: 4px;
-    box-shadow: 0 5px 0 #f2f2f2, -35px 50px 0 #f2f2f2, -70px 95px 0 #f2f2f2;
-    animation: loading-step 1s ease-in-out infinite;
+
+  60% {
+    transform: scale(1, 1);
   }
-  
-  @keyframes loading-bounce {
-    0% {
-      transform: scale(1, 0.7);
-    }
-  
-    40% {
-      transform: scale(0.8, 1.2);
-    }
-  
-    60% {
-      transform: scale(1, 1);
-    }
-  
-    100% {
-      bottom: 140px;
-    }
+
+  100% {
+    bottom: 140px;
   }
-  
-  @keyframes loading-step {
-    0% {
-      box-shadow: 0 10px 0 rgba(0, 0, 0, 0),
-              0 10px 0 #f2f2f2,
-              -35px 50px 0 #f2f2f2,
-              -70px 90px 0 #f2f2f2;
-    }
-  
-    100% {
-      box-shadow: 0 10px 0 #f2f2f2,
-              -35px 50px 0 #f2f2f2,
-              -70px 90px 0 #f2f2f2,
-              -70px 90px 0 rgba(0, 0, 0, 0);
-    }
+}
+
+@keyframes loading-step {
+  0% {
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0),
+      0 10px 0 #f2f2f2,
+      -35px 50px 0 #f2f2f2,
+      -70px 90px 0 #f2f2f2;
   }
+
+  100% {
+    box-shadow: 0 10px 0 #f2f2f2,
+      -35px 50px 0 #f2f2f2,
+      -70px 90px 0 #f2f2f2,
+      -70px 90px 0 rgba(0, 0, 0, 0);
+  }
+}

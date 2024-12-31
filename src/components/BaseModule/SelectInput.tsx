@@ -1,7 +1,6 @@
-// src/components/SelectInput.tsx
-
 import React from 'react';
 import Select from 'react-select';
+import './SelectInput.css'; // Import the CSS file
 
 interface SelectInputProps {
     options: { value: string; label: string }[]; // Opciones para el select
@@ -32,8 +31,8 @@ const SelectInput: React.FC<SelectInputProps> = ({
                 placeholder={placeholder}
                 isMulti={isMulti}
                 defaultValue={defaultValue}
-                className="basic-single"
-                classNamePrefix="select"
+                className="select-input"
+                classNamePrefix="react-select"
             />
         </div>
     );
