@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { addCourse, deleteCourse, fetchCourses } from '../services/courseService'; // Import your service to fetch available courses
-import useLocalStorage from '../../../hooks/useLocalStorage'; // Import the local storage hook
+import { fetchCourses as fetchAvailableCourses } from '../../periodsManagement/services/courseService';
 import { CourseWithDetails, AvailableCourse, StudentCourse, Student } from '../../../types/types'; // Import the Course interface
 import { useNotification } from '../../../components/notification/NotificationContext';
-import { fetchCourses as fetchAvailableCourses } from '../../periodsManagement/services/courseService';
+import useLocalStorage from '../../../hooks/useLocalStorage'; // Import the local storage hook
 
 const useCourses = () => {
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);
@@ -23,9 +23,7 @@ const useCourses = () => {
         try {
             if(periodId){
                 setSelectedPeriodId(periodId);
-                const fetchedAvailableCourses = await fetchAvailableCourses(periodId); // Fetch available courses from service
-                console.log({periodId, fetchedAvailableCourses});
-                
+                const fetchedAvailableCourses = await fetchAvailableCourses(periodId); // Fetch available courses from service                
                 setAvailableCourses(fetchedAvailableCourses); // Store in local storage
             }else{
                 setAvailableCourses([]) // Fetch available empty
@@ -56,7 +54,6 @@ const useCourses = () => {
     };
 
     useEffect(() => {
-        console.log({selectedPeriodId});
         if (selectedPeriodId) {            
             loadAvailableCourses(selectedPeriodId);
         }

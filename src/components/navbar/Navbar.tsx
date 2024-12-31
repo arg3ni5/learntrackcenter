@@ -1,65 +1,117 @@
 // src/components/Navbar.tsx
 
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import './Navbar.css'; // Importar el archivo CSS
 import { useAuth } from "../../modules/userAuth/hooks/useAuth";
-import { FaBook, FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
-import Dropdown from "./dropdown";
+import Dropdown from "../dropdown/Dropdown"; // Asegúrate de que Dropdown esté importado
+import { useLoading } from "../loading/LoadingContext";
+import { FaBars, FaTimes } from "react-icons/fa"; // Iconos para abrir y cerrar
 
 const Navbar: React.FC = () => {
-  const { user } = useAuth();
-  const location = useLocation();
+    const { user } = useAuth();
+    const location = useLocation();
+    const { isLoading } = useLoading();
+    const [isSidebarOpen, setSidebarOpen] = useState(false); // Estado para controlar el sidebar
 
-  const studentItems = [
-    { label: "Estudiantes", to: "/students", icon: <FaUserGraduate /> },
-    { label: "Calificaciones", to: "/grades", icon: <FaBook /> },
-  ];
+    const toggleSidebar = () => {
+        setSidebarOpen(!isSidebarOpen);
+    };
 
-  const periodsItems = [
-    { label: "Courses", to: "/courses-period", icon: <FaUserGraduate /> },
-    { label: "Calificaciones", to: "/grades", icon: <FaBook /> },
-  ];
+    const closeSidebar = () => {
+        setSidebarOpen(false);
+    };
 
-  const paramsItems = [    
-    { label: "Periods", to: "/periods" },    
-    { label: "Courses", to: "/courses" },
-    { label: "Profesores", to: "/teachers", icon: <FaChalkboardTeacher /> },
-  ];
+    const navbarItems = [
+        { label: "Dashboard", to: "/dashboard" },
+        { 
+            label: "Students", 
+            to: "", // Un enlace vacío si se usa como encabezado de dropdown
+            children: [
+                { label: "Estudiantes", to: "/students" },
+                { label: "Calificaciones", to: "/grades" },
+            ]
+        },
+        { 
+            label: "Periods", 
+            to: "", // Un enlace vacío si se usa como encabezado de dropdown
+            children: [
+                { label: "Courses", to: "/courses-period" },
+                { label: "Calificaciones", to: "/grades" },
+            ]
+        },
+        { 
+            label: "Params", 
+            to: "", // Un enlace vacío si se usa como encabezado de dropdown
+            children: [
+                { label: "Periods", to: "/periods" },
+                { label: "Courses", to: "/courses" },
+                { label: "Profesores", to: "/teachers" },
+            ]
+        },
+        { 
+            label: "User", 
+            to: "", // Un enlace vacío si se usa como encabezado de dropdown
+            children: [
+                { label: "Login", to: "/login" },
+                { label: "Register", to: "/register" },
+            ]
+        }
+    ];
 
-  const userItems = [
-    { label: "Login", to: "/login" },
-    { label: "Register", to: "/register" },
-  ];
+    return (
+        !isLoading && (
+            <div>
+                {/* Botón para abrir/cerrar el sidebar en móviles */}
+                <button className="toggle-button" onClick={toggleSidebar}>
+                    <FaBars /> {/* Icono de menú */}
+                </button>
 
-  const navbarItems = [
-    { label: "Dashboard", to: "/dashboard" },
-  ];
+                {/* Sidebar */}
+                <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+                    <button className="close-button" onClick={closeSidebar}>
+                        <FaTimes /> {/* Icono para cerrar */}
+                    </button>
+                    <ul>
+                        {navbarItems.map((item) => (
+                            <li key={item.label} className={location.pathname === item.to ? 'active' : ''}>
+                                {/* Si hay hijos, renderiza un Dropdown */}
+                                {item.children ? (
+                                    <Dropdown 
+                                        id={`${item.label.toLowerCase()}-dropdown`} 
+                                        title={item.label} 
+                                        items={item.children} 
+                                    />
+                                ) : (
+                                    <Link to={item.to} onClick={closeSidebar}>{item.label}</Link> // Cierra al hacer clic
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
-  return (
-    <header>
-      <ul>
-        <Dropdown id="estudiantes" title="Estudiantes" items={studentItems} />
-
-        <Dropdown id="periodos" title="Periodos" items={periodsItems} />
-
-        <Dropdown id="parametros" title="Parametros" items={paramsItems} />
-        
-        {!user && <Dropdown id="usuarios" title="Usuarios" items={userItems} />}
-
-        {navbarItems.map((item, index) => (
-          <li key={index} className={location.pathname === item.to ? 'active' : ''}>
-            <Link to={item.to}>
-              {item.label}
-            </Link>
-          </li>
-        ))}
-
-      </ul>
-    </header>
-  );
+                {/* Navbar para pantallas grandes */}
+                <header className="navbar">
+                    <ul>
+                        {navbarItems.map((item) => (
+                            <li key={item.label} className={location.pathname === item.to ? 'active' : ''}>
+                                {/* Si hay hijos, renderiza un Dropdown */}
+                                {item.children ? (
+                                    <Dropdown 
+                                        id={`${item.label.toLowerCase()}-dropdown-desktop`} 
+                                        title={item.label} 
+                                        items={item.children} 
+                                    />
+                                ) : (
+                                    <Link to={item.to} onClick={closeSidebar}>{item.label}</Link> // Cierra al hacer clic
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </header>
+            </div>
+        )
+    );
 };
-
-
 
 export default Navbar;

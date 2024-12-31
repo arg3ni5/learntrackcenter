@@ -7,6 +7,7 @@ import PrivateRoute from "../modules/userAuth/components/PrivateRoute";
 import PeriodCourses from "../pages/PeriodCourses";
 import Loading from "../components/loading/Loading";
 import { useLoading } from "../components/loading/LoadingContext";
+import StudentsCourses from "../pages/StudentsCourses";
 
 const Login = lazy(() => import("../components/Login"));
 const Register = lazy(() => import("../components/Register"));
@@ -52,6 +53,8 @@ const AppRoutes: React.FC = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
         <Route path="/students" element={<PrivateRoute element={<Students />} />} />
+        <Route path="/students/:id/periods" element={<PrivateRoute element={<StudentsCourses />} />} />
+        <Route path="/students/:id/courses" element={<PrivateRoute element={<StudentsCourses />} />} />
         <Route path="/teachers" element={<PrivateRoute element={<Teachers />} />} />
         <Route path="/courses" element={<PrivateRoute element={<Courses />} />} />
         <Route path="/grades" element={<PrivateRoute element={<Grades />} />} />

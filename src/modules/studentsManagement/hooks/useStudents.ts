@@ -1,11 +1,12 @@
 // src/modules/studentsManagement/hooks/useStudents.ts
 import { useEffect, useState } from 'react';
-import { fetchStudents, addStudent, deleteStudent, updateStudent } from '../services/studentService';
+import { fetchStudents, addStudent, deleteStudent, updateStudent, fetchStudentById } from '../services/studentService';
 import { useNotification } from '../../../components/notification/NotificationContext';
 import { Student } from '../types';
 
 const useStudents = () => {
     const [students, setStudents] = useState<Student[]>([]);
+    const [student, setStudent] = useState<Student | null>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const { showNotification } = useNotification();
@@ -15,6 +16,18 @@ const useStudents = () => {
             setLoading(true);
             const studentsData = await fetchStudents();
             setStudents(studentsData);
+        } catch (err) {
+            setError('Error al cargar los estudiantes');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loadStudent = async (id: string) => {
+        try {
+            setLoading(true);
+            const studentData = await fetchStudentById(id);
+            setStudent(studentData);
         } catch (err) {
             setError('Error al cargar los estudiantes');
         } finally {
@@ -59,7 +72,7 @@ const useStudents = () => {
         }
     };
 
-    return { students, loadStudents, loading, error, handleAddStudent, handleRemoveStudent, handleUpdateStudent };
+    return { students, student, loadStudents, loadStudent, loading, error, handleAddStudent, handleRemoveStudent, handleUpdateStudent };
 };
 
 export default useStudents;
