@@ -1,5 +1,5 @@
 import { db } from '../../../services/firebase';
-import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { Student } from '../types';
 
 // Función para agregar una nueva calificación
@@ -21,6 +21,23 @@ export const fetchStudents = async (): Promise<Student[]> => {
         email: doc.data().email,
     })) as Student[];
 };
+
+export const fetchStudentById = async (studentId: string) => {
+    try {
+      const docRef = doc(db, "students", studentId);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        return { id: docSnap.id, ...docSnap.data() } as Student;
+      } else {
+        console.log("No such document!");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching student:", error);
+      throw error;
+    }
+  };
 
 export const deleteStudent = async (id: string): Promise<void> => {
     const studentDoc = doc(db, 'students', id);

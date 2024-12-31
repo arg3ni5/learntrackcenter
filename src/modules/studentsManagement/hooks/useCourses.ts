@@ -3,20 +3,35 @@
 import { useState, useEffect } from 'react';
 import { addCourse, deleteCourse, fetchCourses } from '../services/courseService'; // Import your service to fetch available courses
 import { fetchCourses as fetchAvailableCourses } from '../../periodsManagement/services/courseService';
-import { CourseWithDetails, AvailableCourse, StudentCourse, Student } from '../../../types/types'; // Import the Course interface
+import { CourseWithDetails, AvailableCourse, StudentCourse, Student, Period } from '../../../types/types'; // Import the Course interface
 import { useNotification } from '../../../components/notification/NotificationContext';
 import useLocalStorage from '../../../hooks/useLocalStorage'; // Import the local storage hook
+import { fetchPeriods } from '../../periodsManagement/services/periodService';
 
 const useCourses = () => {
+    const [selectedStudent] = useLocalStorage<Student | null>("selectedStudent",null);
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);
-    const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent",null);
 
-    const [courses, setCourses] = useState<CourseWithDetails[]>([]); // State for storing student's courses
+    const [courses] = useState<CourseWithDetails[]>([]); // State for storing student's courses
     const [studentCourses, setStudentCourses] = useState<StudentCourse[]>([]); // State for storing student's courses
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
     const [error, setError] = useState<string | null>(null); // State to manage errors
     const [availableCourses, setAvailableCourses] = useState<AvailableCourse[]>([]); // Use local storage for available courses
+    const [availablePeriods, setAvailablePeriods] = useLocalStorage<Period[]>('availablePeriods', []);
     const { showNotification } = useNotification(); // Use the notification context
+
+    // Function to load available periods
+    const loadAvailablePeriods = async () => {
+        if (availablePeriods.length === 0) { // Only fetch if not already in local storage
+            try {
+                const fetchedAvailablePeriods = await fetchPeriods(); // Fetch available periods from service
+                setAvailablePeriods(fetchedAvailablePeriods); // Store in local storage
+            } catch (err) {
+                setError('Error fetching available periods');
+                showNotification('Error fetching available periods', 'error');
+            }
+        }
+    };
 
     // Function to load available courses
     const loadAvailableCourses = async (periodId: string) => {
@@ -52,6 +67,10 @@ const useCourses = () => {
             setLoading(false); 
         }
     };
+
+    useEffect(() => {
+        loadAvailablePeriods();
+    }, []);  
 
     useEffect(() => {
         if (selectedPeriodId) {            
@@ -91,7 +110,12 @@ const useCourses = () => {
         }
     };
 
-    return { courses, studentCourses, loading, error, handleAddCourse, handleDeleteCourse, availableCourses, loadAvailableCourses, setPeriodId: setSelectedPeriodId }; // Return necessary data and functions
+    return { 
+        loading, error,
+        courses, studentCourses, availablePeriods,
+        handleAddCourse, handleDeleteCourse, availableCourses, 
+        loadAvailableCourses, loadAvailablePeriods,
+        setPeriodId: setSelectedPeriodId }; // Return necessary data and functions
 };
 
 export default useCourses;

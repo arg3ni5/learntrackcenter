@@ -3,7 +3,6 @@
 import { db } from '../../../services/firebase'; 
 import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { Course as AvailableCourses } from '../../coursesManagement/services/courseService';
-import { Course } from '../types';
 import { arrayUnion, arrayRemove  } from 'firebase/firestore';
 import { StudentCourse } from '../../../types/types';
 

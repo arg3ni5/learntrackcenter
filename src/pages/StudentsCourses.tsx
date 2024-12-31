@@ -1,22 +1,23 @@
 import React, { useEffect } from 'react';
-import StudentManager from '../modules/studentsManagement/components/StudentManager';
 import { useParams } from 'react-router-dom';
 import useStudents from '../modules/studentsManagement/hooks/useStudents';
+import StudentManager from '../modules/studentsManagement/components/StudentManager';
 
 const StudentsCourses: React.FC = () => {
-    const { loadStudent, student } = useStudents();
+    const { loadStudent, student, loading } = useStudents();
     const { id } = useParams<{ id: string }>();
     
     useEffect(() => {
-        if (id && !student) {            
+        if (id && !student) {
             loadStudent(id);
         }
-    }, []);
+    }, [id, student]);
+    
 
     return (
-        <div>
-            {student && <StudentManager student={student}/>}
-        </div>
+        <>
+            {!loading && student && <StudentManager student={student}/>}
+        </>
     );
 };
 

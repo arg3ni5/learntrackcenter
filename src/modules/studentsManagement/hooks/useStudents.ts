@@ -3,13 +3,21 @@ import { useEffect, useState } from 'react';
 import { fetchStudents, addStudent, deleteStudent, updateStudent, fetchStudentById } from '../services/studentService';
 import { useNotification } from '../../../components/notification/NotificationContext';
 import { Student } from '../types';
+import { useLoading } from '../../../components/loading/LoadingContext';
 
 const useStudents = () => {
+    const { setIsLoading, setLoadingText } = useLoading();
     const [students, setStudents] = useState<Student[]>([]);
     const [student, setStudent] = useState<Student | null>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const { showNotification } = useNotification();
+
+    useEffect(() => {
+        setLoadingText("Loading Student");
+        setIsLoading(loading);
+    }, [loading, setIsLoading]);
+    
 
     const loadStudents = async () => {
         try {
@@ -25,11 +33,19 @@ const useStudents = () => {
 
     const loadStudent = async (id: string) => {
         try {
+            if (!id) {
+                console.error(`id Student null or undefined`);
+                return
+            }
             setLoading(true);
             const studentData = await fetchStudentById(id);
+            console.log("studentData",studentData);            
             setStudent(studentData);
         } catch (err) {
-            setError('Error al cargar los estudiantes');
+            setError('Error al cargar el estudiante');
+            showNotification('Error al cargar el estudiante', 'error');
+            console.error(`Error al cargar el estudiante ${id}`);
+            
         } finally {
             setLoading(false);
         }
