@@ -66,7 +66,7 @@ const AppRoutes: React.FC = () => {
   );
 
   return (
-    <Suspense fallback={<Loading>Cargando componente...</Loading>}>
+    <Suspense fallback={<Loading text="Cargando componente..."></Loading>}>
       {showContent ? routes : null}
     </Suspense>
   );
