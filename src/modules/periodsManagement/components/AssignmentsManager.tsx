@@ -20,7 +20,7 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
 
     return (
         <>
-            <p><b>Total Percentage: ({totalPercentage})</b></p>
+            <p><b>Total Percentage: </b>({totalPercentage})%</p>
             <BaseModule<Assignment>
                 fields={fields}
                 items={assignments}
