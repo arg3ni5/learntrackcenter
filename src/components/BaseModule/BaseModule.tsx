@@ -115,7 +115,7 @@ const BaseModule = <T extends Record<string, any>>({
 
 
   return (
-    <div>
+    <div className="base-module-container">
       {title && <h1 className="title">{title}</h1>}
       
                   <button>Import</button>

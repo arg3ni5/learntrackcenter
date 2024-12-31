@@ -13,11 +13,17 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --odd-row-bg: #f2f2f2;
+  --bg-color-hover: #dadada;
+  --bg-color: #f2f2f2;
+  --border-color: #ccc;
 }
 
 html,
 body {
   max-width: 100%;
+  overflow-y: hidden;
   overflow-x: hidden;
 }
 
@@ -67,6 +73,16 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+      --odd-row-bg: #363636;
+      --bg: #363636;
+      --bg-color-hover: #757575;      
+      --border-color: black;
+  }
 }
 
 @media (prefers-color-scheme: light) {
