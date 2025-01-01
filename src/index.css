@@ -112,12 +112,12 @@ button:focus-visible {
   background-color: black !important;
 }
 
-.delete-button {
+.delete-button, .cancel-button {
   background-color: #f44336 !important;
   color: white;
 }
 
-.delete-button:hover {
+.delete-button:hover, .cancel-button:hover {
   background-color: #d32f2f !important;
   transform: translateY(-1px);
 }
@@ -153,16 +153,36 @@ button:focus-visible {
   width: 100%;
   border-bottom: 3px solid #ccc;
   /* Borde del formulario */
-}
-.button-container button {
+}container
+.button- button {
   margin: 10px 5px;
   border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
 }
 
-.button-container .active {
-  background-color: #4CAF50 !important;
+.buttons-container .active {
+  background-color: #45a049 !important;
   border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
   font-weight: bold;
+}
+
+.buttons-container.flex {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.buttons-container.flex button {
+  flex: 1;
+  border: 1px solid var(--border-color-highlight);
+}
+.buttons-container.flex button:nth-child(n+2) {
+  margin-left: 5px;
+}
+.buttons-container button:hover {
+  background-color: var(--bg-color-hover) !important;
+}
+.buttons-container .active:hover {
+  background-color: #4CAF50 !important;
 }
 
 .container {
