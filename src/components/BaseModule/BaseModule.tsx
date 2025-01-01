@@ -8,7 +8,7 @@ export interface Option {
   value: string;
   label: string;
 }
-type FieldType = "input" | "select" | "date";
+type FieldType = "input" | "select" | "date" | "number";
 
 export interface Field {
   name: string; // Field name
@@ -33,6 +33,7 @@ interface BaseModuleProps<T> {
   loading?: boolean;
   children?: React.ReactNode;
   hideOnEdit?: boolean;
+  clearFormAfterAdd?: boolean;
 }
 
 const BaseModule = <T extends Record<string, any>>({
@@ -49,6 +50,8 @@ const BaseModule = <T extends Record<string, any>>({
   initialFormData,
   loading,
   children,
+  hideOnEdit,
+  clearFormAfterAdd = true,
 }: BaseModuleProps<T>) => {
   const { showNotification } = useNotification();
 
@@ -64,7 +67,7 @@ const BaseModule = <T extends Record<string, any>>({
   const handleItemAdded = async (newItem: T) => {
     await onItemAdded(newItem); // Call the callback to handle addition
     loadItems(); // Refresh the list after adding
-    showNotification("Elemento agregado", "success"); // Show notification
+    showNotification("Elemento agregado", "success"); // Show notification    
     resetEditing(); // Reset editing mode after adding
   };
 
@@ -130,12 +133,13 @@ const BaseModule = <T extends Record<string, any>>({
             isEditing={isEditing}
             onCancelEdit={resetEditing} // Pass cancel function to the form
             initialData={isEditing ? items && currentItem && items.find((item) => item.id === currentItem.id) : initialFormData} // Load initial data or data of the item being edited
+            clearFormAfterAdd={clearFormAfterAdd} 
           />
           {childrenArray[0]}
         </div>
         <div className="list-container">
           {children && <div className="upload-container">{childrenArray[1]}</div>}
-          {!isEditing && (<ListBase<T>
+          {!hideOnEdit && !isEditing && (<ListBase<T>
             items={items}
             fields={fields}
             onItemDeleted={handleItemDelete}

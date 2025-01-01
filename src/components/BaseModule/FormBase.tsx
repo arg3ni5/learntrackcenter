@@ -12,9 +12,10 @@ interface FormBaseProps<T> {
   onItemUpdated?: (updatedItem: T) => Promise<void>; // Optional callback to handle updating
   onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
   onCancelEdit?: () => void; // Callback for canceling edit
+  clearFormAfterAdd?: boolean;
 }
 
-const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, onItemUpdated, onCancelEdit }: FormBaseProps<T>) => {
+const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, onItemUpdated, onCancelEdit, clearFormAfterAdd }: FormBaseProps<T>) => {
   const [formData, setFormData] = useState<Record<string, string | null>>({});
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
       await onItemAdded(formData as T); // Call the callback to handle adding
     }
 
-    setFormData({}); // Reset form after adding or updating
+    clearFormAfterAdd === true && setFormData({}); // Reset form after adding or updating
   };
 
   const handleCancelEdit = () => {
@@ -52,29 +53,39 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
   };
 
   return (
-    <form onSubmit={addItem} className={isEditing ? 'editing' : ''}>
+    <form onSubmit={addItem} className={isEditing ? "editing" : ""}>
       {fields.map((field) => {
         const fieldType = field.type || "input";
         switch (fieldType) {
           case "select":
-            return field.options && (
-              <SelectInput
-                label={field.label}
-                key={field.name}
-                options={field.options}
-                value={formData[field.name] || ""} 
-                onChange={(selectedOption) => handleSelectChange({ name: field.name, ...selectedOption })}
-                placeholder={field.placeholder}
-              />
+            return (
+              field.options && (
+                <SelectInput
+                  label={field.label}
+                  key={field.name}
+                  options={field.options}
+                  value={formData[field.name] || ""}
+                  onChange={(selectedOption) => handleSelectChange({ name: field.name, ...selectedOption })}
+                  placeholder={field.placeholder}
+                />
+              )
+            );
+          case "number":
+            return (
+              <input key={field.name} type="number" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />
             );
 
           case "date":
-            return <input key={field.name} type="date" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />;
+            return (
+              <input key={field.name} type="date" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />
+            );
 
-          break;
+            break;
           case "input":
-            return <input key={field.name} type="text" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />;
-  
+            return (
+              <input key={field.name} type="text" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />
+            );
+
           default:
             break;
         }
