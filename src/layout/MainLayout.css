@@ -22,9 +22,15 @@
 .main {
     margin-top: 5px;
     grid-area: main;
-    padding: 20px 10px;
+    padding: 20px 250px;
     overflow-y: auto; /* Permite scroll dentro del contenido principal si es necesario */
     min-height: calc(100vh - 60px);
+}
+
+@media (max-width: 768px) {
+    .main {
+        padding: 10px; /* Menos padding en pantallas pequeñas */
+    }
 }
 
 /* Customization for WebKit browsers (Chrome, Safari) */

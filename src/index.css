@@ -17,7 +17,10 @@
   --odd-row-bg: #f2f2f2;
   --bg-color-hover: #dadada;
   --bg-color: #f2f2f2;
+  --bg-color-highlight: #007bff;
   --border-color: #ccc;
+  --border-color-highlight: #363636;  
+  --color: black;
 }
 
 html,
@@ -77,11 +80,16 @@ button:focus-visible {
 
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root {    
+      --color: white;
       --odd-row-bg: #363636;
       --bg: #363636;
       --bg-color-hover: #757575;      
       --border-color: black;
+      --border-color-highlight: #f2f2f2;
+  }
+  .button {
+    background-color: var(--bg) !important;
   }
 }
 
@@ -100,6 +108,10 @@ button:focus-visible {
   }
 }
 
+.button-black {
+  background-color: black !important;
+}
+
 .delete-button {
   background-color: #f44336 !important;
   color: white;
@@ -110,12 +122,12 @@ button:focus-visible {
   transform: translateY(-1px);
 }
 
-.edit-button {
+.edit-button, .add-button {
   background-color: #4CAF50;
   color: white;
 }
 
-.edit-button:hover {
+.edit-button:hover, .add-button:hover {
   background-color: #45a049;
   transform: translateY(-1px);
 }
@@ -141,4 +153,43 @@ button:focus-visible {
   width: 100%;
   border-bottom: 3px solid #ccc;
   /* Borde del formulario */
+}
+.button-container button {
+  margin: 10px 5px;
+  border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
+}
+
+.button-container .active {
+  background-color: #4CAF50 !important;
+  border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
+  font-weight: bold;
+}
+
+.container {
+  display: flex; /* Enable flexbox */
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+  padding: 10px; /* Optional padding */
+}
+
+.item {
+  flex: 1; /* Make items grow equally */
+  margin: 0 10px; /* Optional margin between items */
+  padding: 20px; /* Padding inside items */
+  color: var(--color); /* Text color */
+  background-color: var(--bg);
+  text-align: center; /* Center text */
+  border-radius: 4px; /* Rounded corners */
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .item {
+    margin: 10px 0;
+    width: 100%;
+  }
 }
