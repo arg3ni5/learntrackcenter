@@ -1,9 +1,9 @@
-// src/components/Teacher/TeacherModule.tsx
-
-import { fetchTeachers, addTeacher, deleteTeacher, Teacher } from "../services/teacherService"; // Importing necessary functions and types
 import BaseModule from "../../../components/BaseModule/BaseModule";
+import useTeachers from "../hooks/useTeachers";
+import { Teacher } from "../services/teacherService";
 
 const TeacherModule: React.FC = () => {
+  const {teachers, handleAddTeacher, handleDeleteTeacher} = useTeachers(); // Custom hook to fetch teachers from Firestore
   // Define the fields for the form used to add new teachers
   const fields = [
     { name: "name", placeholder: "Nombre Completo" }, // Field for teacher's full name
@@ -11,22 +11,14 @@ const TeacherModule: React.FC = () => {
     { name: "specialty", placeholder: "Especialidad" }, // Field for specialty
   ];
 
-  // Function to fetch teachers from Firestore
-  const fetchTeachersFromFirestore = async (): Promise<Teacher[]> => {
-    const teachersData = await fetchTeachers(); // Call the service to get teachers data
-    return teachersData; // Return the fetched data
-  };
-
   return (
     <>
       <BaseModule<Teacher>
         title="Gestión de Profesores" // Title for the module
         fields={fields} // Fields to be displayed in the form
-        fetchItems={fetchTeachersFromFirestore} // Function to fetch items from Firestore
-        onItemAdded={async (newItem) => {
-          await addTeacher(newItem); // Add the new teacher using the service
-        }}
-        onItemDeleted={deleteTeacher} // Function to delete a teacher using the service
+        items={teachers} // Function to fetch items from Firestore
+        onItemAdded={handleAddTeacher}
+        onItemDeleted={handleDeleteTeacher} // Function to delete a teacher using the service
       />
       {/* Aquí puedes agregar el componente UploadTeachers si es necesario */}
       {/* <UploadTeachers onSelectTeacher={setInitialTeacherData} /> */}
