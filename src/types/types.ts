@@ -30,18 +30,14 @@ export interface Course extends AvailableCourse{
     courseId: string; // Reference to the Course document
     teacherId?: string; // Reference to the Teacher document
     teacherName?: string; // To show name of teacher
-    assignments: string[]; // List of assignments for the course
+    assignmentsIds: string[]; // List of assignments for the course
 }
 
 export interface StudentCourse extends Omit<AvailableCourse, 'duration' | 'hours'>{
-    courseId: string; // Reference to the Course document
     periodId: string; // Reference to the Period document
     finalGrade: number; // Final grade for the course
     status: CourseStatus; // Approved or Reprobated status
-    assignments: string[]; // List of assignments for the course
 }
-
-
 
 export interface CourseWithDetails extends Course {
 
@@ -56,6 +52,7 @@ export type PeriodStatus =
 // Define the interface for Period
 export interface Period {
     id?: string; // Optional ID for Firestore
+    code: string; // code of the period
     name: string; // Descriptive name of the period
     startDate: Date; // Start date of the academic period
     endDate: Date; // End date of the academic period
@@ -72,7 +69,7 @@ export interface Student {
     fullName: string; // Full name of the student
     identificationNumber?: string; // Unique identification number for the student
     email?: string; // Email address of the student
-    periods: string[]; // List of periods for the student (renamed from periodos to periods)
+    coursesIds: string[]; // List of periods for the student (renamed from periodos to periods)
 }
 
 
