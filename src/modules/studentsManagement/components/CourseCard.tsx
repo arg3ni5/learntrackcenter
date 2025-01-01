@@ -18,8 +18,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onEdit, onDelete }) => 
             {course.status && (
                 <p><strong>Status:</strong> {course.status}</p>
             )}
+            
 
-            <p><strong>Assignments:</strong> {course.assignmentsIds.length}</p>
+            <p><strong>Assignments:</strong> {course.assignmentsIds?.length || 0}</p>
             
             <div className="course-card-actions">
                 {onEdit && (
