@@ -2,14 +2,15 @@ import React from 'react';
 import './Loading.css'; // Asegúrate de tener estilos para el componente
 
 interface LoadingProps {
+  className?: string
   text?: string
   type?: 'spinner' | 'loader';
   children?: any;
 }
 
-const Loading: React.FC<LoadingProps> = ({ type = 'loader', children, text }) => {
+const Loading: React.FC<LoadingProps> = ({ type = 'loader', children, text, className }) => {
   return (
-    <div className="loading-container">
+    <div className={`loading-container ${className}`}>
       {type === 'spinner' || children  ? (
         <>
           <div className="spinner"></div>

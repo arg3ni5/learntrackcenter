@@ -6,6 +6,10 @@
   overflow: hidden !important;
 }
 
+.loading-container.h30vh {
+  height: 30vh !important;
+}
+
 .spinner {
   border: 8px solid rgba(255, 255, 255, 0.3);
   border-top: 8px solid #007bff;
