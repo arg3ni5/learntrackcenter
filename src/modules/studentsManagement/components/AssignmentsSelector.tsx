@@ -4,11 +4,12 @@ import React from 'react';
 import './CoursesManager.css';
 import ListBase from '../../../components/BaseModule/ListBase';
 import { Field } from '../../../components/BaseModule/BaseModule';
-import { AvailableCourse, Student } from '../../../types/types';
-import useCourses from '../hooks/useCourses';
+import { Assignment } from '../../../types/types';
+import useAssignments from '../../periodsManagement/hooks/useAssignments';
+import { AssignmentsSelectorProps } from '../types';
 
-const CoursesSelector: React.FC<{ student: Student }> = ({ student }) => {
-    const { availableCourses } = useCourses(student.id!); // Use the custom hook
+const AssignmentsSelector: React.FC<AssignmentsSelectorProps> = ({ periodId, courseId }) => {
+    const { assignments, loading } = useAssignments({periodId, courseId}); // Use the custom hook
     // const [selectedCourseId, setSelectedCourseId] = React.useState<string | null>(null); // State to hold selected course ID
     // const [courseId, setCourseId] = React.useState<string | null>(null); 
 
@@ -29,12 +30,12 @@ const CoursesSelector: React.FC<{ student: Student }> = ({ student }) => {
     return (
         <div>
             <div className="list-container">
-                <ListBase<AvailableCourse>
-                items={availableCourses}
+                <ListBase<Assignment>
+                items={assignments}
                 fields={fields}
                 editable={false} // Enable editing if update function is defined
                 seeable={false} // Enable editing if update function is defined
-                loading={false}
+                loading={loading}
                 onEdit={handleOnEdit}
                 onView={handleOnView}
                 />
@@ -43,4 +44,4 @@ const CoursesSelector: React.FC<{ student: Student }> = ({ student }) => {
     );
 };
 
-export default CoursesSelector;
+export default AssignmentsSelector;

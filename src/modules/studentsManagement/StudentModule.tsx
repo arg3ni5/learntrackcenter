@@ -45,9 +45,7 @@ const StudentModule: React.FC = () => {
         setStudentsData(newStudentsData);
     };
 
-    const handleOnView = (item: Student) => {
-        console.log(`/students/${item.id}/courses`);
-        
+    const handleOnView = (item: Student) => {        
         navigate(`/students/${item.id}/courses`);
         setSelectedStudent(item);
     }

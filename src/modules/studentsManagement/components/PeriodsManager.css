@@ -16,6 +16,7 @@
 }
 
 .periods-manager button {
+    font-weight: normal;
     padding: 8px 12px;
     background-color: #4CAF50; /* Green */
     color: white;
@@ -54,5 +55,28 @@
     padding: 10px;
     border-bottom: 1px solid #ccc;
 }
+
+.periods-manager .card {
+    display: flex;
+    justify-content: space-between;
+}
+
+.periods-manager .card {
+    display: flex;
+    justify-content: space-between;
+}
+
+.active {
+    background-color: #4CAF50 !important;
+}
+
+.empty {
+    height: 53px;
+    padding: 12px 15px;
+    margin: 10px 5px;
+}
+
+
+
 
 

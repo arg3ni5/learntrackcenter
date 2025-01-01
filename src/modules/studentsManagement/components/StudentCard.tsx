@@ -1,13 +1,6 @@
 import React from 'react';
-import './StudentCard.css'; // Asegúrate de crear este archivo CSS para los estilos
-
-interface Student {
-    id?: string;
-    fullName: string;
-    identificationNumber?: string;
-    email?: string;
-    periods: string[];
-}
+import './StudentCard.css';
+import { Student } from '../../../types/types';
 
 interface StudentCardProps {
     student: Student;

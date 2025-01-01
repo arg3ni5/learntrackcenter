@@ -4,16 +4,16 @@ import React from 'react';
 import './PeriodsManager.css';
 import useCourses from '../hooks/useCourses';
 import useLocalStorage from '../../../hooks/useLocalStorage';
-import { StudentCourse } from '../../../types/types';
+import { Student, StudentCourse } from '../../../types/types';
 import CoursesSelector from './CoursesSelector';
+import CourseCard from './CourseCard';
+import AssignmentsSelector from './AssignmentsSelector';
 
-const PeriodsManager: React.FC<{ studentId: string }> = ({ studentId }) => {
+const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);
     const [selectedCourseId, setSelectedCourseId] = useLocalStorage<string|null>('selectedCourseId', null);
-    const { loading, error, availableCourses, availablePeriods, studentCourses, handleAddCourse, setPeriodId } = useCourses();
+    const { loading, error, availableCourses, availablePeriods, studentCourses, handleAddCourse, setPeriodId } = useCourses(student.id!);
     
-
-
     const assignPeriodToStudent = async () => {
         if (selectedPeriodId && selectedCourseId) {
             const {id, duration, hours, ...selectedCourse} = availableCourses.filter(course => course.id === selectedCourseId)[0];
@@ -24,66 +24,57 @@ const PeriodsManager: React.FC<{ studentId: string }> = ({ studentId }) => {
                 status: 'Not Started',
                 finalGrade: 0,
                 assignments: [],
-            }; 
-                <CoursesSelector />
-            await handleAddCourse(studentId, newCourse); // Call the function to add the new period to the student
+            };
+            await handleAddCourse(student.id!, newCourse); // Call the function to add the new period to the student
             setSelectedPeriodId(null); // Reset selected period after assignment
         }
     };
 
-    const handleOnChangePeriod = (e: any) => {
-        const periodId = e.target.value;
+    const handleOnChangePeriod = (periodId: any) => {
         console.log(periodId);
         setSelectedPeriodId(periodId);
         setPeriodId(periodId);
         setSelectedCourseId(null);
     };
-    const handleOnChangeCourse = (e: any) => {
-        console.log(e.target.value);
-        setSelectedCourseId(e.target.value);
-    };
-        
-    if (loading) return <div>Loading...</div>; 
+
+    const isEqual = (id1:any, id2: any) => id1 && id2 && String(id1) === String(id2);
+
     if (error) return <div className="error">{error}</div>; 
 
     return (
         <>
-            <div className='periods-manager card'>
-                <h3>Manage Periods</h3>
-                <p>{selectedPeriodId} - {selectedCourseId}</p>
-                <select value={selectedPeriodId || ''} onChange={handleOnChangePeriod}>
-                    <option value="">Select a Period</option>
-                    {availablePeriods.map(period => (
-                        <option key={period.id} value={period.id}>
-                            {period.name}
-                        </option>
-                    ))}
-                </select>
-                
-               
-
-                {selectedPeriodId && (<select value={selectedCourseId || ''} onChange={handleOnChangeCourse}>
-                    <option value="">Select a Course</option>
-                    {availableCourses.map(course => (
-                        <option key={course.id} value={course.id}>
-                            {course.name}
-                        </option>
-                    ))}
-                </select>)}
-                <button onClick={assignPeriodToStudent}>Assign course</button> {/* Button to assign selected period */}
-                <div className="periods-list">
-                    <ul>
-                        {studentCourses.map(period => (
-                            <li key={period.periodId}>
-                                <h3>{period.name}</h3> 
-
-                                {/* {period.coursesIds && period.coursesIds.length == 0 &&<button className='delete-button' onClick={() => handleDeletePeriod(period.id)}>Delete</button>}
-                                </h3> */}
-                                {/* {period && period.id && <CoursesManager studentId={studentId} periodId={period.id}/>} */}
-                            </li>
+            <div className="container">
+                <div className="item">
+                    <h3>Periods</h3>
+                    <div className="button-container">
+                        {availablePeriods.map(period => (
+                            <button key={period.id} className={`button ${isEqual(selectedPeriodId, period.id) ? 'active' : ''}`} onClick={() => handleOnChangePeriod(period.id!)}>
+                                {period.code}
+                            </button>
                         ))}
-                    </ul>
+                    </div>
                 </div>
+                {selectedPeriodId && 
+                (<div className="item">
+                    <h3>Available Courses</h3>
+                    <div className="button-container">
+                        {availableCourses.map(course => (
+                            <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
+                                {course.name}
+                            </button>
+                        ))}
+                    </div>
+                    {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
+                </div>)}
+                {selectedPeriodId && selectedCourseId && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
+            </div>
+
+            {selectedPeriodId && selectedCourseId &&<AssignmentsSelector courseId={selectedPeriodId} periodId={selectedPeriodId}/>}
+            <div className="container">
+                
+                {studentCourses.map(course => (
+                    <CourseCard key={`card-${course.id}`} course={course}/>
+                ))}
                 
             </div>
         </>

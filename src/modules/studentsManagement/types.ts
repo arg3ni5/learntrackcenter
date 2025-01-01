@@ -26,27 +26,22 @@ export interface CourseWithDetails extends Course {
     description: string; // Description of the course
 }
 
-export interface Period { // Renamed from Periodo to Period
-    id?: string; // Optional ID property, used when fetching from Firestore
-    periodId: string; // Reference to the Period document
-    coursesIds: string[]; // List of courses for the period
-}
-
-export interface PeriodWithDetails extends Period {
-    name: string; // Name of the course
-}
-
 export interface Student {
     id?: string; // Optional ID property, used when fetching from Firestore
     fullName: string; // Full name of the student
     identificationNumber?: string; // Unique identification number for the student
     email?: string; // Email address of the student
-    periods: string[]; // List of periods for the student (renamed from periodos to periods)
+    coursesIds: string[]; // List of periods for the student (renamed from periodos to periods)
 }
 
 
 export interface AssignmentsManagerProps {
     studentId: string;
+    periodId: string;
+    courseId: string;
+}
+
+export interface AssignmentsSelectorProps {
     periodId: string;
     courseId: string;
 }
