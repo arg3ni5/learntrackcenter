@@ -9,6 +9,13 @@
     /* Thumb y track color */
 }
 
+.table-top{
+    width: 100%;
+    height: 20px;
+    background-color: #007bff;
+    margin-bottom: 10px;
+    border-radius: 8px 8px 0 0;
+}
 
 .list-base-table {
     width: 100%;
@@ -26,11 +33,22 @@
 }
 
 .list-base-table th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
     background-color: #007bff;
     color: white;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+.list-base-table th[scope=row] {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    z-index: 1;
 }
 
 .list-base-table tr:nth-child(odd) {
@@ -59,4 +77,13 @@
 
 .actions button:hover {
     transform: translateY(-1px);
+}
+
+.main::-webkit-scrollbar {
+    width: 12px;
+    right: 5px; /* Mueve el scrollbar 5px hacia la izquierda */
+}
+.main::-webkit-scrollbar-thumb {
+    background: #007bff; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
 }

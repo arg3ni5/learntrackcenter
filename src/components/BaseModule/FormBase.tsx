@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from "react";
 import "./FormBase.css"; // Importing CSS styles
 import SelectInput from "./SelectInput"; // Ensure you import your SelectInput component
+import { Field } from "./BaseModule";
 
 interface FormBaseProps<T> {
-  fields: { label?: string; name: string; placeholder: string; type?: "input" | "select"; options?: { value: string; label: string }[] }[];
+  fields: Field[];
   initialData?: T | null;
   isEditing?: boolean;
   onItemUpdated?: (updatedItem: T) => Promise<void>; // Optional callback to handle updating
@@ -54,21 +55,29 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
     <form onSubmit={addItem} className={isEditing ? 'editing' : ''}>
       {fields.map((field) => {
         const fieldType = field.type || "input";
-        if (fieldType === "input") {
-          return <input key={field.name} type="text" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />;
-        } else if (fieldType === "select" && field.options) {
-          return (
-            <SelectInput
-              label={field.label}
-              key={field.name}
-              options={field.options}
-              value={formData[field.name] || ""} 
-              onChange={(selectedOption) => handleSelectChange({ name: field.name, ...selectedOption })}
-              placeholder={field.placeholder}
-            />
-          );
+        switch (fieldType) {
+          case "select":
+            return field.options && (
+              <SelectInput
+                label={field.label}
+                key={field.name}
+                options={field.options}
+                value={formData[field.name] || ""} 
+                onChange={(selectedOption) => handleSelectChange({ name: field.name, ...selectedOption })}
+                placeholder={field.placeholder}
+              />
+            );
+
+          case "date":
+            return <input key={field.name} type="date" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />;
+
+          break;
+          case "input":
+            return <input key={field.name} type="text" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />;
+  
+          default:
+            break;
         }
-        return null; // In case there is no valid type
       })}
       <div className="buttons-container">
         <button className="save-button" type="submit">

@@ -1,5 +1,4 @@
 :root {
-    --color: black;
     --bg-color: #f2f2f2;
     --bg-color-hover: #dadada;
     --border-color: #007bff;
@@ -8,7 +7,6 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color: white;
         --bg-color: black;
         --bg-color-hover: #757575;
         --border-color: black;

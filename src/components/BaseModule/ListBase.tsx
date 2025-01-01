@@ -73,7 +73,7 @@ const ListBase = <T extends Record<string, any>>({ items, fields, onItemDeleted,
             </tbody>
           )}
         </table>
-      </div> 
+      </div>
     )
   );
 };

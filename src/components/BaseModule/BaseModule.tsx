@@ -8,11 +8,13 @@ export interface Option {
   value: string;
   label: string;
 }
+type FieldType = "input" | "select" | "date";
+
 export interface Field {
   name: string; // Field name
   placeholder: string; // Field placeholder
   label?: string; // Optional field label
-  type?: "input" | "select"; // Field type (input or select)
+  type?: FieldType; // Field type (input or select)
   options?: Option[]; // Options for the select
 }
 
@@ -30,6 +32,7 @@ interface BaseModuleProps<T> {
   initialFormData?: T | null; // Initial data for the form
   loading?: boolean;
   children?: React.ReactNode;
+  hideOnEdit?: boolean;
 }
 
 const BaseModule = <T extends Record<string, any>>({
@@ -132,7 +135,7 @@ const BaseModule = <T extends Record<string, any>>({
         </div>
         <div className="list-container">
           {children && <div className="upload-container">{childrenArray[1]}</div>}
-          <ListBase<T>
+          {!isEditing && (<ListBase<T>
             items={items}
             fields={fields}
             onItemDeleted={handleItemDelete}
@@ -141,7 +144,7 @@ const BaseModule = <T extends Record<string, any>>({
             loading={loading || false}
             onEdit={handleOnEdit}
             onView={handleOnView}
-          />            
+          />)}
         </div>
       </div>
     </div>
