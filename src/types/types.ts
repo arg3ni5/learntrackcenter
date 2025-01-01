@@ -34,9 +34,11 @@ export interface Course extends AvailableCourse{
 }
 
 export interface StudentCourse extends Omit<AvailableCourse, 'duration' | 'hours'>{
+    courseId: string; // Reference to the Course document
     periodId: string; // Reference to the Period document
     finalGrade: number; // Final grade for the course
     status: CourseStatus; // Approved or Reprobated status
+    assignmentsIds: string[]; // List of assignments for the course
 }
 
 export interface CourseWithDetails extends Course {

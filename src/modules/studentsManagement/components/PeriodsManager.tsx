@@ -22,7 +22,7 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                 periodId: selectedPeriodId,
                 status: 'Not Started',
                 finalGrade: 0,
-                assignments: [],
+                assignmentsIds: [],
             };
             await handleAddCourse(student.id!, newCourse); // Call the function to add the new period to the student
             setSelectedPeriodId(null); // Reset selected period after assignment
