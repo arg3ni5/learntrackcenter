@@ -12,8 +12,8 @@ const useCourses = (periodId: string) => {
     const [data, setData] = useState<Course[]>([]); // State for storing student's courses
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
     const [error, setError] = useState<string | null>(null); // State to manage errors
-    const [ availableTeachers, setAvailableTeachers ] = useLocalStorage<Teacher[]>('availableTeachers', []); // Use local storage for available courses
-    const [ availableCourses, setAvailableCourses ] = useLocalStorage<AvailableCourse[]>('availableCourses', []); // Use local storage for available courses
+    const [ availableTeachers, setAvailableTeachers ] = useLocalStorage<Teacher[]>('availableTeachers', []); 
+    const [ availableCourses, setAvailableCourses ] = useLocalStorage<AvailableCourse[]>('availableCourses', []);
     const { showNotification } = useNotification();
     const { setIsLoading } = useLoading();
 
@@ -32,6 +32,9 @@ const useCourses = (periodId: string) => {
                     teacherName: teacher ? teacher.name : 'Unknown Course',
                 };
             });
+            console.log({data,
+                detailedData});
+            
             setData(detailedData); 
         } catch (err) {
             showNotification('Error fetching courses', 'error'); 
@@ -44,6 +47,7 @@ const useCourses = (periodId: string) => {
         try {
             setLoading(true);
             const data = await fetchAvailableCourses();
+            console.log({data});            
             setAvailableCourses(data); 
         } catch (err) {
             showNotification('Error fetching courses', 'error'); 
