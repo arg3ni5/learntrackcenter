@@ -5,14 +5,13 @@ import './PeriodsManager.css';
 import useCourses from '../hooks/useCourses';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Student, StudentCourse } from '../../../types/types';
-import CoursesSelector from './CoursesSelector';
 import CourseCard from './CourseCard';
 import AssignmentsSelector from './AssignmentsSelector';
 
 const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);
     const [selectedCourseId, setSelectedCourseId] = useLocalStorage<string|null>('selectedCourseId', null);
-    const { loading, error, availableCourses, availablePeriods, studentCourses, handleAddCourse, setPeriodId } = useCourses(student.id!);
+    const { error, availableCourses, availablePeriods, studentCourses, handleAddCourse, setPeriodId } = useCourses(student.id!);
     
     const assignPeriodToStudent = async () => {
         if (selectedPeriodId && selectedCourseId) {
@@ -46,7 +45,7 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
             <div className="container">
                 <div className="item">
                     <h3>Periods</h3>
-                    <div className="button-container">
+                    <div className="buttons-container">
                         {availablePeriods.map(period => (
                             <button key={period.id} className={`button ${isEqual(selectedPeriodId, period.id) ? 'active' : ''}`} onClick={() => handleOnChangePeriod(period.id!)}>
                                 {period.code}
@@ -57,7 +56,7 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                 {selectedPeriodId && 
                 (<div className="item">
                     <h3>Available Courses</h3>
-                    <div className="button-container">
+                    <div className="buttons-container">
                         {availableCourses.map(course => (
                             <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
                                 {course.name}

@@ -10,7 +10,7 @@ import { fetchPeriods } from "../../periodsManagement/services/periodService";
 import { useLoading } from "../../../components/loading/LoadingContext";
 
 const useCourses = (studentId: string) => {
-  const { isLoading, setIsLoading } = useLoading();
+  const { setIsLoading } = useLoading();
   const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string | null>("selectedPeriodId", null);
 
   const [courses] = useState<CourseWithDetails[]>([]); // State for storing student's courses
