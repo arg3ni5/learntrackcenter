@@ -112,3 +112,103 @@
         margin-top: 0;
     }
 }
+
+.table-top{
+    width: 100%;
+    height: 20px;
+    background-color: #007bff;
+    margin-bottom: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.list-base-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+}
+
+.list-base-table th,
+.list-base-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.list-base-table th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.list-base-table th[scope=row] {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
+
+.list-base-table tr:nth-child(odd) {
+    background-color: var(--odd-row-bg);
+}
+
+.list-base-table tr:hover {
+    background-color: var(--bg-color-hover);
+    transition: background-color 0.3s ease;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.actions button {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.actions button:hover {
+    transform: translateY(-1px);
+}
+
+.main::-webkit-scrollbar {
+    width: 12px;
+    right: 5px; /* Mueve el scrollbar 5px hacia la izquierda */
+}
+.main::-webkit-scrollbar-thumb {
+    background: #007bff; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.list-base .actions-row {
+margin-bottom: 10px;
+}
+
+.list-base .actions-row button {
+margin-right: 5px;
+padding: 5px 10px;
+}
+
+table tr {
+cursor: pointer;
+}
+
+.list-base table tr.selected-row {
+background-color: #e0e0e0;
+}
+
+.selected-row{
+background-color: #4CAF50 !important;
+}
+  

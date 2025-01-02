@@ -16,6 +16,7 @@ export interface Field {
   label?: string; // Optional field label
   type?: FieldType; // Field type (input or select)
   options?: Option[]; // Options for the select
+  view? : boolean;
 }
 
 interface BaseModuleProps<T> {
@@ -25,6 +26,7 @@ interface BaseModuleProps<T> {
   fetchItems?: () => Promise<T[]>; // Function to fetch items
   onEdit?: (item: T) => void; // Optional callback to handle editing
   onView?: (item: T) => void; // Optional callback to handle view
+  onSelect?: (item: T | null) => void; // Optional callback to handle select
   onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
@@ -43,6 +45,7 @@ const BaseModule = <T extends Record<string, any>>({
   fetchItems,
   onEdit,
   onView,
+  onSelect,
   onItemAdded,
   onItemUpdated,
   onItemDeleted,
@@ -104,6 +107,10 @@ const BaseModule = <T extends Record<string, any>>({
     setCurrentItem(item); // Set the ID of the item to edit
     onView && onView(item); // Call edit callback if defined
   }
+  const handleOnSelect = (item: T | null) => {
+    setCurrentItem(item); // Set the ID of the item to edit
+    onSelect && onSelect(item); // Call edit callback if defined
+  }
 
   const resetEditing = () => {
     setIsEditing(false);
@@ -118,6 +125,9 @@ const BaseModule = <T extends Record<string, any>>({
   }, [importItem]);
 
   const childrenArray = React.Children.toArray(children);
+
+  if(fields.filter(f=>f.view===true).length === 0)
+    fields.map(f=>f.view=true)
 
 
   return (
@@ -139,7 +149,7 @@ const BaseModule = <T extends Record<string, any>>({
         </div>
         <div className="list-container">
           {children && <div className="upload-container">{childrenArray[1]}</div>}
-          {!hideOnEdit && !isEditing && (<ListBase<T>
+          {items?.length! > 0 && (<ListBase<T>
             items={items}
             fields={fields}
             onItemDeleted={handleItemDelete}
@@ -148,6 +158,7 @@ const BaseModule = <T extends Record<string, any>>({
             loading={loading || false}
             onEdit={handleOnEdit}
             onView={handleOnView}
+            onSelect={handleOnSelect}
           />)}
         </div>
       </div>

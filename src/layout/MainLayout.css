@@ -54,5 +54,5 @@
 
 /* Customization for Firefox */
 .main {
-    scrollbar-color: #007bff var(--bg);; /* Thumb color and track color */
+    scrollbar-color: #007bff var(--bg); /* Thumb color and track color */
 }
