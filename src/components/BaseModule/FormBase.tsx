@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import "./FormBase.css"; // Importing CSS styles
 import SelectInput from "./SelectInput"; // Ensure you import your SelectInput component
-import { Field } from "./BaseModule";
+import { Field } from "./types";
 
 interface FormBaseProps<T> {
   fields: Field[];

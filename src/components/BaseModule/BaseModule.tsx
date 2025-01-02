@@ -3,61 +3,20 @@ import FormBase from "./FormBase";
 import ListBase from "./ListBase";
 import "./BaseModule.css"; // Import the CSS file
 import { useNotification } from "../notification/NotificationContext";
+import { BaseModuleProps } from "./types";
 
-export interface Option {
-  value: string;
-  label: string;
-}
-type FieldType = "input" | "select" | "date" | "number";
+const BaseModule = <T extends Record<string, any>>({ hideForm = true, clearFormAfterAdd = true, ...rest }: BaseModuleProps<T>) => {
+  const { title, fields, items, fetchItems, initialFormData, loading, children,
+    onEdit, onView, onSelect, onItemAdded, 
+    onItemUpdated, onItemDeleted, importItem, 
+    } = rest;
 
-export interface Field {
-  name: string; // Field name
-  placeholder: string; // Field placeholder
-  label?: string; // Optional field label
-  type?: FieldType; // Field type (input or select)
-  options?: Option[]; // Options for the select
-  view? : boolean;
-}
+  const { showNotification } = useNotification();  
 
-interface BaseModuleProps<T> {
-  title?: string;
-  fields: Field[];
-  items?: T[]; // Function to fetch items
-  fetchItems?: () => Promise<T[]>; // Function to fetch items
-  onEdit?: (item: T) => void; // Optional callback to handle editing
-  onView?: (item: T) => void; // Optional callback to handle view
-  onSelect?: (item: T | null) => void; // Optional callback to handle select
-  onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
-  onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
-  onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
-  importItem?: T | null; // Item to import
-  initialFormData?: T | null; // Initial data for the form
-  loading?: boolean;
-  children?: React.ReactNode;
-  hideOnEdit?: boolean;
-  clearFormAfterAdd?: boolean;
-}
+  const childrenArray = React.Children.toArray(children);
+  const isEmpty = items?.length === 0;
 
-const BaseModule = <T extends Record<string, any>>({
-  title,
-  fields,
-  items,
-  fetchItems,
-  onEdit,
-  onView,
-  onSelect,
-  onItemAdded,
-  onItemUpdated,
-  onItemDeleted,
-  importItem,
-  initialFormData,
-  loading,
-  children,
-  hideOnEdit,
-  clearFormAfterAdd = true,
-}: BaseModuleProps<T>) => {
-  const { showNotification } = useNotification();
-
+  const [showForm, setShowForm] = useState<boolean>(true); // State to manage editing mode
   const [isEditing, setIsEditing] = useState<boolean>(false); // State to manage editing mode
   const [currentItem, setCurrentItem] = useState<T | null>(null); // ID of the currently editing item
 
@@ -70,7 +29,7 @@ const BaseModule = <T extends Record<string, any>>({
   const handleItemAdded = async (newItem: T) => {
     await onItemAdded(newItem); // Call the callback to handle addition
     loadItems(); // Refresh the list after adding
-    showNotification("Elemento agregado", "success"); // Show notification    
+    showNotification("Elemento agregado", "success"); // Show notification
     resetEditing(); // Reset editing mode after adding
   };
 
@@ -95,27 +54,36 @@ const BaseModule = <T extends Record<string, any>>({
       loadItems(); // Refresh the list after deletion
       showNotification("Elemento eliminado", "success"); // Show notification
     }
-  }
+  };
 
   const handleOnEdit = (item: T) => {
-    setIsEditing(true);
+    setShowForm(true);
+    setIsEditing(true);    
     setCurrentItem(item); // Set the ID of the item to edit
     onEdit && onEdit(item); // Call edit callback if defined
-  }
-
+  };
   const handleOnView = (item: T) => {
     setCurrentItem(item); // Set the ID of the item to edit
     onView && onView(item); // Call edit callback if defined
-  }
+  };
   const handleOnSelect = (item: T | null) => {
     setCurrentItem(item); // Set the ID of the item to edit
     onSelect && onSelect(item); // Call edit callback if defined
-  }
+  };
+
+  const handleOnAdd = (state: boolean) => {
+    setShowForm(state);
+  };
 
   const resetEditing = () => {
     setIsEditing(false);
     setCurrentItem(null);
+    setShowForm(hideForm ? false : true);
   };
+
+  useEffect(() => {
+    !isEmpty && setShowForm(hideForm ? false : true);
+  }, [items]);
 
   useEffect(() => {
     if (importItem) {
@@ -124,45 +92,49 @@ const BaseModule = <T extends Record<string, any>>({
     loadItems();
   }, [importItem]);
 
-  const childrenArray = React.Children.toArray(children);
-
-  if(fields.filter(f=>f.view===true).length === 0)
-    fields.map(f=>f.view=true)
-
+  if (fields.filter((f) => f.view === true).length === 0) fields.map((f) => (f.view = true));
 
   return (
-    <div className="base-module-container">
-      {title && <h1 className="title">{title}</h1>}      
-      {importItem && (<button>Import</button>)}
+    <>
+      {title && <h1 className="title">{title}</h1>}
+      {importItem && <button>Import</button>}
       <div className="module-container">
-        <div className="form-container">
-          <FormBase
-            onItemAdded={handleItemAdded}
-            onItemUpdated={handleItemUpdated} // Pass update function to the form
-            fields={fields}
-            isEditing={isEditing}
-            onCancelEdit={resetEditing} // Pass cancel function to the form
-            initialData={isEditing ? items && currentItem && items.find((item) => item.id === currentItem.id) : initialFormData} // Load initial data or data of the item being edited
-            clearFormAfterAdd={clearFormAfterAdd} 
-          />
-          {childrenArray[0]}
-        </div>
-        <div className="list-container">
-          {children && <div className="upload-container">{childrenArray[1]}</div>}
-          {items?.length! > 0 && (<ListBase<T>
-            items={items}
-            fields={fields}
-            onItemDeleted={handleItemDelete}
-            editable={onItemUpdated !== undefined} // Enable editing if update function is defined
-            seeable={onView !== undefined} // Enable editing if update function is defined
-            loading={loading || false}
-            onEdit={handleOnEdit}
-            onView={handleOnView}
-            onSelect={handleOnSelect}
-          />)}
-        </div>
+        {!loading && showForm && (
+          <div className="form-container">
+            <FormBase
+              onItemAdded={handleItemAdded}
+              onItemUpdated={handleItemUpdated} // Pass update function to the form
+              fields={fields}
+              isEditing={isEditing}
+              onCancelEdit={resetEditing} // Pass cancel function to the form
+              initialData={isEditing ? items && currentItem && items.find((item) => item.id === currentItem.id) : initialFormData} // Load initial data or data of the item being edited
+              clearFormAfterAdd={clearFormAfterAdd}
+            />
+            {childrenArray[0]}
+          </div>
+        )}
+        { (
+          <div className="list-container">
+            {children && <div className="upload-container">{childrenArray[1]}</div>}
+            { items?.length! > 0 &&
+              <ListBase<T>
+                items={items}
+                fields={fields}
+                onItemDeleted={handleItemDelete}
+                editable={onItemUpdated !== undefined} // Enable editing if update function is defined
+                seeable={onView !== undefined} // Enable editing if update function is defined
+                hideForm={hideForm}
+                loading={loading || false}
+                onAdd={handleOnAdd}
+                onEdit={handleOnEdit}
+                onView={handleOnView}
+                onSelect={handleOnSelect}
+              />
+            }
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
