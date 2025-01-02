@@ -19,8 +19,12 @@
   --bg-color-delete-hover: #d32f2f;
   --bg-color-edit: #4CAF50;
   --bg-color-edit-hover: #45a049;
-  --bg-color-view: #007bff;
-  --bg-color-view-hover: #0068d8;
+  --bg-color-save: #007bff;
+  --bg-color-save-hover: #0068d8;
+  --bg-color-add: #FFA500;
+  --bg-color-add-hover: #FF8C00;
+  --bg-color-view: #008080;
+  --bg-color-view-hover: #006666;
   --bg-color-hover: #dadada;
   --bg-color: #f2f2f2;
   --bg-color-highlight: #007bff;
@@ -35,7 +39,6 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
 }
-
 
 * {
   margin: 0;
@@ -64,7 +67,6 @@ button {
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 16px;
-  font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
@@ -73,10 +75,6 @@ button {
   font-weight: bold;
   letter-spacing: 0.5px;
   transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-button:hover {
-  border-color: #646cff;
 }
 
 button:focus,
@@ -118,34 +116,73 @@ button:focus-visible {
   background-color: black !important;
 }
 
+/* Base styles for all buttons */
+.delete-button,
+.edit-button,
+.add-button,
+.view-button,
+.save-button {
+  color: white; /* Set text color to white */
+}
+
+/* Specific styles for delete button */
 .delete-button {
-  background-color: var(--bg-color-delete) !important;
-  color: white;
+  background-color: var(--bg-color-delete) !important; /* Background color for delete */
 }
 
 .delete-button:hover {
-  background-color: var(--bg-color-delete-hover) !important;
-  transform: translateY(-1px);
+  background-color: var(--bg-color-delete-hover) !important; /* Background color on hover for delete */
 }
 
-.edit-button, .add-button {
-  background-color: var(--bg-color-edit);
-  color: white;
+/* Specific styles for edit button */
+.edit-button {
+  background-color: var(--bg-color-edit); /* Background color for edit */
 }
 
-.edit-button:hover, .add-button:hover {
-  background-color: var(--bg-color-edit-hover);
-  transform: translateY(-1px);
+.edit-button:hover {
+  background-color: var(--bg-color-edit-hover); /* Background color on hover for edit */
 }
 
+/* Specific styles for view button */
 .view-button {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--bg-color-view); /* Background color for view */
 }
 
 .view-button:hover {
-  background-color: #0068d8;
-  transform: translateY(-1px);
+  background-color: var(--bg-color-view-hover); /* Background color on hover for view */
+}
+
+/* Specific styles for save button */
+.save-button {
+  background-color: var(--bg-color-save) !important; /* Background color for save */
+}
+
+.save-button:hover {
+  background-color: var(--bg-color-save-hover) !important; /* Background color on hover for save */
+}
+
+/* Specific styles for add button */
+.add-button {
+  background-color: var(--bg-color-add) !important; /* Background color for add */
+}
+
+.add-button:hover {
+  background-color: var(--bg-color-add-hover) !important; /* Background color on hover for add */
+}
+
+button[disabled], button[disabled]:hover {
+  background-color: var(--odd-row-bg) !important;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Apply transform to all buttons on hover */
+.delete-button:hover,
+.edit-button:hover,
+.add-button:hover,
+.view-button:hover,
+.save-button:hover {
+  transform: translateY(-1px); /* Lift the button slightly on hover */
 }
 
 .buttons-container button:hover,
@@ -181,10 +218,10 @@ button:focus-visible {
   flex: 1;
   border: 1px solid var(--border-color-highlight);
 }
-.buttons-container.flex button:nth-child(n+2) {
+.buttons-container button:nth-child(n+2) {
   margin-left: 5px;
 }
-.buttons-container button:hover {
+.buttons-container button:not([class]) {
   background-color: var(--bg-color-hover) !important;
 }
 .buttons-container .active:hover {
@@ -223,7 +260,7 @@ button:focus-visible {
 .table-container {
   max-height: 400px;
   overflow-y: auto;
-  margin-top: 10px;
+  margin: 10px 0;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
