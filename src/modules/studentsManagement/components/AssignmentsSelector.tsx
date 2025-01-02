@@ -3,10 +3,10 @@
 import React from 'react';
 import './CoursesManager.css';
 import ListBase from '../../../components/BaseModule/ListBase';
-import { Field } from '../../../components/BaseModule/BaseModule';
 import { Assignment } from '../../../types/types';
 import useAssignments from '../../periodsManagement/hooks/useAssignments';
 import { AssignmentsSelectorProps } from '../types';
+import { BaseField } from '../../../components/BaseModule/types';
 
 const AssignmentsSelector: React.FC<AssignmentsSelectorProps> = ({ periodId, courseId }) => {
     const { assignments, loading } = useAssignments({periodId, courseId}); // Use the custom hook
@@ -14,7 +14,7 @@ const AssignmentsSelector: React.FC<AssignmentsSelectorProps> = ({ periodId, cou
     // const [courseId, setCourseId] = React.useState<string | null>(null); 
 
       // Define the fields for the form used to add new courses
-      const fields: Field[] = [
+      const fields: BaseField[] = [
         { name: "name", placeholder: "Course name" },
         { name: "description", placeholder: "Course description" }
       ];

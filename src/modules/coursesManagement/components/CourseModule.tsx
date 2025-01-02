@@ -1,10 +1,11 @@
 // src/modules/courseManagement/CourseModule.tsx
 
 import React, { useEffect } from "react";
-import BaseModule, { Field } from "../../../components/BaseModule/BaseModule";
+import BaseModule from "../../../components/BaseModule/BaseModule";
 import useCourse from "../hooks/useCourse"; // Import the custom hook
 import { Course } from "../services/courseService";
 import { useLoading } from "../../../components/loading/LoadingContext";
+import { BaseField } from "../../../components/BaseModule/types";
 
 const CourseModule: React.FC = () => {
   const { setIsLoading } = useLoading();
@@ -16,7 +17,7 @@ const CourseModule: React.FC = () => {
 
 
   // Define the fields for the form used to add new courses
-  const fields: Field[] = [
+  const fields: BaseField[] = [
     { name: "name", placeholder: "Course name" },
     { name: "description", placeholder: "Course description" },
     { name: "duration", placeholder: "Duration (weeks)" },

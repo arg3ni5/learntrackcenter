@@ -3,7 +3,7 @@
 import React from 'react';
 import './CoursesManager.css';
 import ListBase from '../../../components/BaseModule/ListBase';
-import { Field } from '../../../components/BaseModule/BaseModule';
+import { BaseField } from '../../../components/BaseModule/types';
 import { AvailableCourse, Student } from '../../../types/types';
 import useCourses from '../hooks/useCourses';
 
@@ -13,7 +13,7 @@ const CoursesSelector: React.FC<{ student: Student }> = ({ student }) => {
     // const [courseId, setCourseId] = React.useState<string | null>(null); 
 
       // Define the fields for the form used to add new courses
-      const fields: Field[] = [
+      const fields: BaseField[] = [
         { name: "name", placeholder: "Course name" },
         { name: "description", placeholder: "Course description" }
       ];
