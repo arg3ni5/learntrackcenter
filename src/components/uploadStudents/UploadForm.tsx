@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
 interface UploadFormProps {
-    onFileUpload: (file: File | null, hasHeaders: boolean) => void; // Callback para manejar la carga del archivo
+    onFileUpload: (file: File | null) => void; // Callback para manejar la carga del archivo
 }
 
 const UploadForm: React.FC<UploadFormProps> = ({ onFileUpload }) => {
     const [file, setFile] = useState<File | null>(null);
-    const [hasHeaders, setHasHeaders] = useState(false);
 
     // Handle file change event
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,7 +16,7 @@ const UploadForm: React.FC<UploadFormProps> = ({ onFileUpload }) => {
     // Handle form submission
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onFileUpload(file, hasHeaders); // Llamar al callback con el archivo y las opciones
+        onFileUpload(file); // Llamar al callback con el archivo y las opciones
     };
 
     return (
@@ -28,16 +27,6 @@ const UploadForm: React.FC<UploadFormProps> = ({ onFileUpload }) => {
                 onChange={handleFileChange} 
                 required 
             />
-            <div>
-                <label>
-                    <input 
-                        type="checkbox" 
-                        checked={hasHeaders} 
-                        onChange={() => setHasHeaders(!hasHeaders)} 
-                    />
-                    The file has headers
-                </label>
-            </div>
             <button type="submit">Load Students</button>
         </form>
     );

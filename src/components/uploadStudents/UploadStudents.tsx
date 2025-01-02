@@ -3,6 +3,7 @@ import { useNotification } from '../notification/NotificationContext';
 import './UploadStudents.css';
 import UploadTable from './UploadTable';
 import UploadOptions from './UploadOptions';
+import { Student } from '../../types/types';
 
 interface UploadStudentsProps {
     onSelectStudent: (student: any) => void;
@@ -30,15 +31,23 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent, onImpo
         console.log("Confirmed and saved!");
     };
 
+    const fields = [
+        { name: "fullName", placeholder: "Full Name", view: true },
+        { name: "identificationNumber", placeholder: "Identification Number" },
+        { name: "email", placeholder: "Email Address" },
+    ];
+    const columnNames = ["fullName", "identificationNumber", "email"];
+
     return (
         <div>
-            <UploadOptions onFileUpload={handleFileUpload} />
+            <UploadOptions<Student> onFileUpload={handleFileUpload} columnNames={columnNames} />
             {previewVisible && (
-                <UploadTable
+                <UploadTable<Student>
+                    fields={fields}
                     studentsData={studentsData}
-                    onSelectStudent={onSelectStudent}
-                    onImportStudent={onImportStudent}
-                    onDeleteStudent={deleteStudentByIndex}
+                    onSelect={onSelectStudent}
+                    onImport={onImportStudent}
+                    onDelete={deleteStudentByIndex}
                     confirmAndSave={handleConfirmAndSave}
                 />
             )}

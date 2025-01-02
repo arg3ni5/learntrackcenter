@@ -1,21 +1,28 @@
+import UploadForm from '../uploadStudents/UploadForm';
 export interface Option {
   value: string;
   label: string;
 }
 type FieldType = "input" | "select" | "date" | "number";
 
-export interface Field {
+interface Field {
   name: string; // Field name
   placeholder: string; // Field placeholder
+}
+
+export interface BaseField extends Field {
   label?: string; // Optional field label
   type?: FieldType; // Field type (input or select)
   options?: Option[]; // Options for the select
   view?: boolean;
 }
 
+export interface UploadField extends Field{
+}
+
 export interface BaseModuleProps<T> {
   title?: string;
-  fields: Field[];
+  fields: BaseField[];
   items?: T[]; // Function to fetch items
   fetchItems?: () => Promise<T[]>; // Function to fetch items
   onEdit?: (item: T) => void; // Optional callback to handle editing
@@ -33,7 +40,7 @@ export interface BaseModuleProps<T> {
 }
 
 export interface ListBaseProps<T> {
-  fields: Field[];
+  fields: BaseField[];
   loading: boolean;
   items?: T[];
   hideForm?: boolean;
@@ -41,8 +48,8 @@ export interface ListBaseProps<T> {
   onItemDeleted?: (id: string) => void;
   editable: boolean;
   seeable: boolean;  
-  onAdd: (state: boolean) => void;
-  onView: (item: T) => void;
-  onEdit: (item: T) => void;
-  onSelect: (item: T | null) => void;
+  onAdd?: (state: boolean) => void;
+  onSelect?: (item: T | null) => void;
+  onView?: (item: T) => void;
+  onEdit?: (item: T) => void;
 }

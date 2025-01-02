@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Checkbox from '../checkbox/Checkbox';
 import ConfirmationModal from '../confirmationModal/ConfirmationModal';
+import { BaseField } from '../BaseModule/types';
 
-interface StudentsTableProps {
-    studentsData: any[]; // Array of student data
-    onSelectStudent: (student: any) => void; // Callback for selecting a student
-    onImportStudent: (student: any) => void; // Callback for importing a student
-    onDeleteStudent: (index: number) => void; // Callback for deleting a student
+interface UploadTableProps<T> {
+    data: T[]; // Array of data of type T
+    onSelect: (item: T) => void; // Callback for selecting a item
+    onImport: (item: T) => void; // Callback for importing a item
+    onDelete: (index: number) => void; // Callback for deleting a item
     confirmAndSave?: () => void; // Optional callback for confirming and saving changes
+    fields: BaseField[];
 }
 
-const UploadTable: React.FC<StudentsTableProps> = ({ 
-    studentsData, 
-    onSelectStudent, 
-    onImportStudent, 
-    onDeleteStudent,
+const UploadTable = <T extends Record<string, any>>({
+    fields, 
+    data, 
+    onSelect, 
+    onImport, 
+    onDelete,
     confirmAndSave
-}) => {
+}: UploadTableProps<T>) => {
     const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set()); // State to track selected rows
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+
+    useEffect(() => {
+        console.log("Students data updated:", data); // Log updated students data
+        
+    }, [data]);
 
     // Function to toggle selection of a specific row
     const toggleRowSelection = (index: number) => {
@@ -33,41 +41,33 @@ const UploadTable: React.FC<StudentsTableProps> = ({
 
     // Function to toggle selection of all rows
     const toggleAllSelection = () => {
-        if (selectedRows.size === studentsData.length) {
+        if (selectedRows.size === data.length) {
             // If all are selected, deselect all
             setSelectedRows(new Set());
         } else {
             // Otherwise, select all
-            setSelectedRows(new Set(studentsData.map((_, index) => index)));
+            setSelectedRows(new Set(data.map((_, index) => index)));
         }
     };
 
     // Function to handle student selection
-    const handleStudentSelection = (index: number) => {
-        const selectedStudent = studentsData[index];
-        onSelectStudent({
-            fullName: selectedStudent[0],
-            identificationNumber: selectedStudent[1],
-            email: selectedStudent[2],
-        });
+    const handleSelection = (index: number) => {
+        const selected = data[index];
+        onSelect(selected); // Call the onSelect callback with the selected student
     };
 
     // Function to handle importing a student
-    const handleStudentImport = (index: number) => {    
-        const selectedStudent = studentsData[index];        
-        onImportStudent({
-            fullName: selectedStudent[0],
-            identificationNumber: selectedStudent[1],
-            email: selectedStudent[2],
-        });
-        onDeleteStudent(index); // Delete the student after importing
+    const handleImport = (index: number) => {    
+        const selected = data[index];        
+        onImport(selected); // Call the onImport callback with the selected student
+        onDelete(index); // Delete the student after importing
     };
 
     // Function to delete selected rows
     const deleteSelectedRows = () => {
-        studentsData.forEach((_, index) => {
+        data.forEach((_, index) => {
             if (selectedRows.has(index)) {
-                onDeleteStudent(index); // Call delete callback for each selected row
+                onDelete(index); // Call delete callback for each selected row
             }
         });
         setSelectedRows(new Set()); // Reset selection after deletion
@@ -86,7 +86,7 @@ const UploadTable: React.FC<StudentsTableProps> = ({
     };
 
     return (
-        <>
+        data && data.length> 0 &&<>
             <div className="actions buttons-container">
                 <button className="delete-button" onClick={deleteSelectedRows} aria-label="Delete selected rows">Delete Selected Rows</button>
                 {confirmAndSave && (
@@ -95,25 +95,25 @@ const UploadTable: React.FC<StudentsTableProps> = ({
             </div>
             
             <div className="table-container">
-                <table className="upload-table" aria-label="Students table">
+                <table className="upload-table" aria-label="table data to import">
                     <thead>
                         <tr>
                             <th>
                                 <Checkbox
-                                    checked={selectedRows.size === studentsData.length} // Check if all rows are selected
+                                    checked={selectedRows.size === data.length} // Check if all rows are selected
                                     onChange={toggleAllSelection} // Toggle selection of all rows
                                     aria-label="Select all students"
                                 />
                             </th>
-                            <th>Full Name</th>
-                            <th>Identification Number</th>
-                            <th>Email</th>
+                            {fields.map(({name, placeholder}) => (
+                                <th key={`up-th-${name}`}>{placeholder}</th>  
+                            ))}
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {studentsData.map((row, index) => (
-                            <tr key={index} aria-selected={selectedRows.has(index)} onClick={() => toggleRowSelection(index)}>
+                        {data.map((row, index) => (
+                            <tr key={`up-row-${index}`} aria-selected={selectedRows.has(index)} onClick={() => toggleRowSelection(index)}>
                                 <td>
                                     <div onClick={(e) => e.stopPropagation()} aria-hidden="true"> {/* Prevent row click when clicking checkbox */}
                                         <Checkbox
@@ -123,12 +123,12 @@ const UploadTable: React.FC<StudentsTableProps> = ({
                                         />
                                     </div>
                                 </td>
-                                {row.map((cell: any, cellIndex: number) => (
-                                    <td key={cellIndex}>{cell}</td> // Display cell data or N/A if undefined
+                                {fields.map(({name}) => (
+                                    <td key={`${name}-${index}`}>{row[name]}</td>  
                                 ))}
                                 <td className="actions" onClick={(e) => e.stopPropagation()} aria-hidden="true">
-                                    <button className='edit-button' onClick={() => handleStudentSelection(index)} aria-label={`Select ${row[0]}`}>Select</button>
-                                    <button className='view-button' onClick={() => handleStudentImport(index)} aria-label={`Import ${row[0]}`}>Import</button>
+                                    <button className='edit-button' onClick={() => handleSelection(index)} aria-label={`Select ${row[0]}`}>Select</button>
+                                    <button className='view-button' onClick={() => handleImport(index)} aria-label={`Import ${row[0]}`}>Import</button>
                                 </td>
                             </tr>
                         ))}
