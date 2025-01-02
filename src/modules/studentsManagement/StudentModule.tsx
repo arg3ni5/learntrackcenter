@@ -15,7 +15,7 @@ import PeriodsManager from "./components/PeriodsManager";
 
 const StudentModule: React.FC = () => {
     const { setIsLoading } = useLoading();
-    const {students, loading, error, handleAddStudent, handleRemoveStudent, handleUpdateStudent} = useStudents();
+    const {students, loading, error, handleAddStudent, handleAddStudents, handleRemoveStudent, handleUpdateStudent} = useStudents();
     const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent",null);
     const [initialStudentData, setInitialStudentData] = useState<Student | null>(null);
     const [importStudentData, setImportStudentData] = useState<Student | null>(null);
@@ -58,6 +58,25 @@ const StudentModule: React.FC = () => {
         setSelectedStudent(item);
     }
 
+    const handleRemove = async(id: string) => {
+        setSelectedStudent(null);
+        if (id) {
+            setSelectedStudent(null);
+            await handleRemoveStudent(id);
+        }
+    }
+
+    const handleConfirmAndSave = () => {
+        // Lógica para confirmar y guardar
+        console.log("Confirmed and saved!");
+        const transformedStudentsData = studentsDataImport.map((student) =>  ({
+            fullName: student[0],
+            identificationNumber: student[1],
+            email: student[2],
+        })) as Student[];        
+        handleAddStudents(transformedStudentsData);      
+    };
+
     return (
         <>
             <h1 className='title'>Student Management</h1>
@@ -72,7 +91,7 @@ const StudentModule: React.FC = () => {
                 fields={fields}
                 items={students}
                 onItemAdded={handleAddStudent}
-                onItemDeleted={handleRemoveStudent}
+                onItemDeleted={handleRemove}
                 onItemUpdated={handleUpdateStudent}
                 onView={handleOnView}
                 onSelect={handleOnSelect}
@@ -87,6 +106,7 @@ const StudentModule: React.FC = () => {
                             onSelectStudent={setInitialStudentData}
                             onImportStudent={setImportStudentData}
                             onDeleteStudent={deleteStudentByIndex}
+                            confirmAndSave={handleConfirmAndSave}
                         />
                     )}
             </BaseModule>
