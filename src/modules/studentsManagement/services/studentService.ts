@@ -1,19 +1,38 @@
 import { db } from '../../../services/firebase';
-import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, writeBatch } from 'firebase/firestore';
 import { Student } from '../../../types/types';
 
-// Función para agregar una nueva calificación
+// Function to add a new student
 export const addStudent = async (student: Student): Promise<void> => {
-    const studentsCollection = collection(db, 'students');
-    await addDoc(studentsCollection, student);
+    const studentsCollection = collection(db, 'students'); // Reference to the students collection
+    await addDoc(studentsCollection, student); // Add the student document to the collection
 };
 
-// Función para obtener todas las calificaciones
+// Function to add multiple students in a batch
+export const addStudentsBatch = async (students: Student[]): Promise<void> => {
+    const batch = writeBatch(db); // Create a new batch instance
+    const studentsCollection = collection(db, 'students'); // Reference to the students collection
+
+    // Add students to the batch
+    students.forEach(student => {
+        const studentRef = doc(studentsCollection); // Create a new reference with a unique ID
+        batch.set(studentRef, student); // Add the operation to the batch
+    });
+
+    try {
+        await batch.commit(); // Execute all operations in the batch
+    } catch (error) {
+        console.error('Error committing batch:', error);
+        throw new Error('Error adding students'); // Throw an error to handle it in the component
+    }
+};
+
+// Function to fetch all students
 export const fetchStudents = async (): Promise<Student[]> => {
-    const studentsCollection = collection(db, 'students');
-    const studentsSnapshot = await getDocs(studentsCollection);
+    const studentsCollection = collection(db, 'students'); // Reference to the students collection
+    const studentsSnapshot = await getDocs(studentsCollection); // Get all documents in the collection
     
-    // Asegúrate de mapear correctamente los campos a la interfaz Student
+    // Map documents to Student interface
     return studentsSnapshot.docs.map(doc => ({
         id: doc.id,
         fullName: doc.data().fullName,
@@ -22,30 +41,33 @@ export const fetchStudents = async (): Promise<Student[]> => {
     })) as Student[];
 };
 
-export const fetchStudentById = async (studentId: string) => {
+// Function to fetch a student by ID
+export const fetchStudentById = async (studentId: string): Promise<Student | null> => {
     try {
-      const docRef = doc(db, "students", studentId);
-      const docSnap = await getDoc(docRef);
-      
-      if (docSnap.exists()) {
-        return { id: docSnap.id, ...docSnap.data() } as Student;
-      } else {
-        console.log("No such document!");
-        return null;
-      }
+        const docRef = doc(db, "students", studentId); // Reference to the specific student document
+        const docSnap = await getDoc(docRef); // Get the document snapshot
+        
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() } as Student; // Return the student data with ID
+        } else {
+            console.log("No such document!"); // Log if no document exists
+            return null; // Return null if no document found
+        }
     } catch (error) {
-      console.error("Error fetching student:", error);
-      throw error;
+        console.error("Error fetching student:", error);
+        throw error; // Throw error for handling in the calling code
     }
-  };
-
-export const deleteStudent = async (id: string): Promise<void> => {
-    const studentDoc = doc(db, 'students', id);
-    await deleteDoc(studentDoc);
 };
 
+// Function to delete a student by ID
+export const deleteStudent = async (id: string): Promise<void> => {
+    const studentDoc = doc(db, 'students', id); // Reference to the specific student document
+    await deleteDoc(studentDoc); // Delete the document from Firestore
+};
+
+// Function to update a student's details by ID
 export const updateStudent = async (id: string, updatedStudent: Partial<Student>): Promise<void> => {
     const { id: _, ...student } = updatedStudent;    
-    const studentDoc = doc(db, 'students', id); // Referencia al documento del curso
-    await updateDoc(studentDoc, student); // Actualizar el documento con los nuevos datos
+    const studentDoc = doc(db, 'students', id); // Reference to the specific student document
+    await updateDoc(studentDoc, student); // Update the document with new data
 };
