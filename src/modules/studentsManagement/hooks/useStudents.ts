@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import { fetchStudents, addStudent, deleteStudent, updateStudent, fetchStudentById } from '../services/studentService';
 import { useNotification } from '../../../components/notification/NotificationContext';
-import { Student } from '../types';
 import { useLoading } from '../../../components/loading/LoadingContext';
+import { Student } from '../../../types/types';
 
 const useStudents = () => {
     const { setIsLoading, setLoadingText } = useLoading();

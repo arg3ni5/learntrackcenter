@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import BaseModule from "../../components/BaseModule/BaseModule";
 import useStudents from './hooks/useStudents';
-import StudentDetailsManagement from "./components/StudentDetailsManagement";
 import { useLoading } from "../../components/loading/LoadingContext";
-import { Student } from "./types";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import UploadOptions from "../../components/uploadStudents/UploadOptions";
 import { useNotification } from "../../components/notification/NotificationContext";
 import UploadTable from "../../components/uploadStudents/UploadTable";
+import { useNavigate } from "react-router-dom";
+import { Student } from "../../types/types";
 import './StudentModule.css';
 import '../../components/uploadStudents/UploadStudents.css';
-import { useNavigate } from "react-router-dom";
+import StudentCard from "./components/StudentCard";
+import PeriodsManager from "./components/PeriodsManager";
 
 const StudentModule: React.FC = () => {
     const { setIsLoading } = useLoading();
@@ -19,47 +20,62 @@ const StudentModule: React.FC = () => {
     const [initialStudentData, setInitialStudentData] = useState<Student | null>(null);
     const [importStudentData, setImportStudentData] = useState<Student | null>(null);
 
-    const [studentsData, setStudentsData] = useState<any[]>([]);
+    const [studentsDataImport, setStudentsDataImport] = useState<any[]>([]);
     const [previewVisible, setPreviewVisible] = useState(false);
+
     const { showNotification } = useNotification();
     const navigate = useNavigate();
 
     const fields = [
-        { name: "fullName", placeholder: "Full Name" },
-        { name: "identificationNumber", placeholder: "Identification Number" },
+        { name: "fullName", placeholder: "Full Name", view: true },
+        { name: "identificationNumber", placeholder: "Identification Number"},
         { name: "email", placeholder: "Email Address" },
     ];
+    useEffect(() => {
+        setSelectedStudent(null);
+    }, []);
 
     useEffect(() => {
         setIsLoading(loading);
     }, [loading, setIsLoading]);
     
     const handleFileUpload = (jsonData: any[]) => {
-        setStudentsData(jsonData);
+        setStudentsDataImport(jsonData);
         setPreviewVisible(true);
         showNotification("¡Archivo cargado!", "success");
     };
 
     const deleteStudentByIndex = (index: number) => {
-        const newStudentsData = studentsData.filter((_, i) => i !== index);
-        setStudentsData(newStudentsData);
+        const newStudentsData = studentsDataImport.filter((_, i) => i !== index);
+        setStudentsDataImport(newStudentsData);
     };
 
     const handleOnView = (item: Student) => {        
         navigate(`/students/${item.id}/courses`);
         setSelectedStudent(item);
     }
+    const handleOnSelect = (item: Student | null) => {
+        setSelectedStudent(item);
+    }
 
     return (
         <>
+            <h1 className='title'>Student Management</h1>
+            {selectedStudent && <StudentCard student={selectedStudent} />}
+
+            {selectedStudent && (
+                <>
+                    {selectedStudent.id && <PeriodsManager student={selectedStudent} />}
+                </>
+            )}
             <BaseModule<Student>
-                title="Student Management"
                 fields={fields}
                 items={students}
                 onItemAdded={handleAddStudent}
                 onItemDeleted={handleRemoveStudent}
                 onItemUpdated={handleUpdateStudent}
                 onView={handleOnView}
+                onSelect={handleOnSelect}
                 onEdit={setSelectedStudent}
                 initialFormData={initialStudentData}
                 importItem={importStudentData} // Pass the import item to BaseModule
@@ -67,21 +83,16 @@ const StudentModule: React.FC = () => {
                     <UploadOptions onFileUpload={handleFileUpload} />
                     {previewVisible && (
                         <UploadTable
-                            studentsData={studentsData}
+                            studentsData={studentsDataImport}
                             onSelectStudent={setInitialStudentData}
                             onImportStudent={setImportStudentData}
                             onDeleteStudent={deleteStudentByIndex}
                         />
                     )}
             </BaseModule>
-            {selectedStudent && selectedStudent.id && (
-                <>                    
-                    <StudentDetailsManagement student={selectedStudent} />
-                </>
-            )}
             {error && <div className="error">{error}</div>}
         </>
     );
 };
 
-export default StudentModule; // Exporting the StudentModule component for use in other parts of the application
+export default StudentModule;
