@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from "react";
 import "./FormBase.css"; // Importing CSS styles
 import SelectInput from "./SelectInput"; // Ensure you import your SelectInput component
-import { Field } from "./types";
+import { BaseField } from "./types";
 
 interface FormBaseProps<T> {
-  fields: Field[];
+  fields: BaseField[];
   initialData?: T | null;
   isEditing?: boolean;
   onItemUpdated?: (updatedItem: T) => Promise<void>; // Optional callback to handle updating

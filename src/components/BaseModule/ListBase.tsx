@@ -21,7 +21,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   // Function to toggle form visibility
   const handleShowForm = (state: boolean) => {
     setShowForm(state); // Update the form visibility state
-    onAdd(state); // Call the onAdd callback with the new state
+    onAdd && onAdd(state); // Call the onAdd callback with the new state
   };
 
   // Effect to hide the form if hideForm prop changes
@@ -48,7 +48,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
                 {!showForm ? "Add" : "Hide Form"} {/* Toggle button text based on form visibility */}
               </button>
             )}
-            {seeable && (
+            {seeable && onView &&(
               <button 
                 disabled={!selectedItem} 
                 className="view-button" 
@@ -58,7 +58,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
                 View {/* Button to view the selected item */}
               </button>
             )}
-            {editable && (
+            {editable && onEdit &&(
               <button 
                 disabled={!selectedItem} 
                 className="edit-button" 
