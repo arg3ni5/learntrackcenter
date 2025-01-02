@@ -25,6 +25,11 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent, onImpo
         setStudentsData(newStudentsData);
     };
 
+    const handleConfirmAndSave = () => {
+        // Lógica para confirmar y guardar
+        console.log("Confirmed and saved!");
+    };
+
     return (
         <div>
             <UploadOptions onFileUpload={handleFileUpload} />
@@ -34,6 +39,7 @@ const UploadStudents: React.FC<UploadStudentsProps> = ({ onSelectStudent, onImpo
                     onSelectStudent={onSelectStudent}
                     onImportStudent={onImportStudent}
                     onDeleteStudent={deleteStudentByIndex}
+                    confirmAndSave={handleConfirmAndSave}
                 />
             )}
         </div>
