@@ -15,6 +15,12 @@
   -moz-osx-font-smoothing: grayscale;
 
   --odd-row-bg: #f2f2f2;
+  --bg-color-delete: #f44336;
+  --bg-color-delete-hover: #d32f2f;
+  --bg-color-edit: #4CAF50;
+  --bg-color-edit-hover: #45a049;
+  --bg-color-view: #007bff;
+  --bg-color-view-hover: #0068d8;
   --bg-color-hover: #dadada;
   --bg-color: #f2f2f2;
   --bg-color-highlight: #007bff;
@@ -113,22 +119,22 @@ button:focus-visible {
 }
 
 .delete-button {
-  background-color: #f44336 !important;
+  background-color: var(--bg-color-delete) !important;
   color: white;
 }
 
 .delete-button:hover {
-  background-color: #d32f2f !important;
+  background-color: var(--bg-color-delete-hover) !important;
   transform: translateY(-1px);
 }
 
 .edit-button, .add-button {
-  background-color: #4CAF50;
+  background-color: var(--bg-color-edit);
   color: white;
 }
 
 .edit-button:hover, .add-button:hover {
-  background-color: #45a049;
+  background-color: var(--bg-color-edit-hover);
   transform: translateY(-1px);
 }
 
@@ -192,4 +198,12 @@ button:focus-visible {
     margin: 10px 0;
     width: 100%;
   }
+}
+
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }

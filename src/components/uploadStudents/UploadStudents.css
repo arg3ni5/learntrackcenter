@@ -11,17 +11,6 @@
     /* Color rojo más oscuro al pasar el mouse */
 }
 
-.table-container {
-    max-height: 400px;
-    /* Ajusta este valor según tus necesidades */
-    overflow-y: auto;
-    margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    /* scrollbar-color: #007bff #f1f1f1; */
-    /* Thumb y track color */
-}
-
 .container::-webkit-scrollbar {
     width: 12px;
 }
@@ -113,7 +102,6 @@
 .actions button {
     margin-right: 8px;
     border: none;
-    padding: 6px 12px;
     border-radius: 4px;
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.1s ease;
