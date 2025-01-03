@@ -9,7 +9,7 @@ import useLocalStorage from "../../../hooks/useLocalStorage"; // Import the loca
 import { fetchPeriods } from "../../periodsManagement/services/periodService";
 import { useLoading } from "../../../components/loading/LoadingContext";
 
-const useCourses = (studentId: string) => {
+const useStudentCourses = (studentId: string) => {
   const { setIsLoading } = useLoading();
   const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string | null>("selectedPeriodId", null);
 
@@ -134,4 +134,4 @@ const useCourses = (studentId: string) => {
   }; // Return necessary data and functions
 };
 
-export default useCourses;
+export default useStudentCourses;

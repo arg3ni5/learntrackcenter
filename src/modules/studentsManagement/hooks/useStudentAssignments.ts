@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Assignment, StudentAssignmentsManagerProps } from "../types";
 import { addAssignment, deleteAssignment, fetchAssignments, loadAssignment, updateAssignment } from "../services/assignmentService";
 
-const useAssignments = (props: StudentAssignmentsManagerProps) => {
+const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
   const { courseId, studentId, periodId, periodCourseId } = props;
   const [data, setData] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -104,4 +104,4 @@ const useAssignments = (props: StudentAssignmentsManagerProps) => {
   };
 };
 
-export default useAssignments;
+export default useStudentAssignments;

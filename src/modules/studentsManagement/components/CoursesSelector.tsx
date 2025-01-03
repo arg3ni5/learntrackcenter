@@ -4,11 +4,11 @@ import React from 'react';
 import './CoursesManager.css';
 import { BaseField } from '../../../components/BaseModule/types';
 import { AvailableCourse, Student } from '../../../types/types';
-import useCourses from '../hooks/useCourses';
+import useStudentCourses from '../hooks/useStudentCourses';
 import BaseModule from '../../../components/BaseModule/BaseModule';
 
 const CoursesSelector: React.FC<{ student: Student }> = ({ student }) => {
-    const { availableCourses, loading } = useCourses(student.id!); // Use the custom hook
+    const { availableCourses, loading } = useStudentCourses(student.id!); // Use the custom hook
     // const [selectedCourseId, setSelectedCourseId] = React.useState<string | null>(null); // State to hold selected course ID
     // const [courseId, setCourseId] = React.useState<string | null>(null); 
 

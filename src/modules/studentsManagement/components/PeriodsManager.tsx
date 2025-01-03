@@ -2,7 +2,7 @@
 
 import React from 'react';
 import './PeriodsManager.css';
-import useCourses from '../hooks/useCourses';
+import useStudentCourses from '../hooks/useStudentCourses';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Student, StudentCourse } from '../../../types/types';
 import CourseCard from './CourseCard';
@@ -12,7 +12,7 @@ import AssignmentsManager from './AssignmentsManager';
 const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);
     const [selectedCourseId, setSelectedCourseId] = useLocalStorage<string|null>('selectedCourseId', null);
-    const { error, availableCourses, availablePeriods, studentCourses, handleAddCourse, setPeriodId } = useCourses(student.id!);
+    const { error, availableCourses, availablePeriods, studentCourses, handleAddCourse, setPeriodId } = useStudentCourses(student.id!);
     
     const assignPeriodToStudent = async () => {
         if (selectedPeriodId && selectedCourseId) {

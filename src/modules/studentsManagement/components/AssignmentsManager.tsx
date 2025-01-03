@@ -3,10 +3,10 @@
 import React from 'react';
 import { Assignment, StudentAssignmentsManagerProps } from '../types';
 import BaseModule from '../../../components/BaseModule/BaseModule';
-import useAssignments from '../hooks/useAssignments';
+import useStudentAssignments from '../hooks/useAssignments';
 
 const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentId, periodId, periodCourseId, courseId }) => {
-    const { assignments, loading, error, handleAddAssignment } = useAssignments({ studentId, periodId, periodCourseId, courseId });
+    const { assignments, loading, error, handleAddAssignment } = useStudentAssignments({ studentId, periodId, periodCourseId, courseId });
 
     if (loading) return <div>Loading assignments...</div>;
     if (error) return <div>Error: {error}</div>;
