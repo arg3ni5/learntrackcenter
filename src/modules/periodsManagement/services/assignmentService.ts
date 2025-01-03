@@ -32,7 +32,8 @@ export const addAssignment = async (periodId: string, courseId: string, newAssig
 
 export const updateAssignment = async (periodId: string, courseId: string, assignmentId: string, updatedAssignment: Partial<Assignment>, sync?:boolean): Promise<void> => {
     const assignmentDocRef = doc(db, `periods/${periodId}/courses/${courseId}/assignments/${assignmentId}`);
-    await updateDoc(assignmentDocRef, updatedAssignment);
+    const {id,...assignment} = updatedAssignment;
+    await updateDoc(assignmentDocRef, assignment);
 
     sync && await syncAssignments(periodId, courseId);
 };

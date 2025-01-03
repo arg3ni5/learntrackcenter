@@ -41,7 +41,8 @@ const useAssignments = (props: AssignmentsManagerProps) => {
     async (newAssignment: Assignment) => {
       setLoading(true);
       try {
-        await addAssignment(periodId, courseId, newAssignment);
+        const {id, ...assignment} = newAssignment;
+        await addAssignment(periodId, courseId, assignment);
         await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error adding assignment");
@@ -55,8 +56,8 @@ const useAssignments = (props: AssignmentsManagerProps) => {
   const handleUpdateAssignment = useCallback(
     async (assignmentId: string, updatedAssignment: Partial<Assignment>) => {
       setLoading(true);
-      try {
-        await updateAssignment(periodId, courseId, assignmentId, updatedAssignment, true);
+      try {        
+        await updateAssignment(periodId, courseId, assignmentId, updatedAssignment);
         await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error updating assignment");

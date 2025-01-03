@@ -30,7 +30,9 @@ const PeriodModule: React.FC = () => {
                 onItemAdded={handleAddPeriod}
                 onItemDeleted={handleDeletePeriod}
                 onItemUpdated={handleUpdatePeriod}
-                loading={loading}>
+                loading={loading}
+                hideForm={true} // Show the form
+            >
             </BaseModule>
             {error && <div className="error">{error}</div>}
         </>
