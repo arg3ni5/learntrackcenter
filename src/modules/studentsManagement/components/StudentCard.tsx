@@ -1,6 +1,6 @@
 import React from 'react';
-import './StudentCard.css';
 import { Student } from '../../../types/types';
+import './StudentCard.css';
 
 interface StudentCardProps {
     student: Student;
