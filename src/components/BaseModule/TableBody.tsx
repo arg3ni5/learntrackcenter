@@ -1,4 +1,3 @@
-import React from "react";
 import { BaseField } from "./types";
 
 interface TableBodyProps<T> {

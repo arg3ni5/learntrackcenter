@@ -2,7 +2,6 @@ import "./BaseModule.css";
 import "./ListBase.css";
 import { useEffect, useMemo, useState } from "react";
 import { ListBaseProps } from "./types";
-import { Link } from "react-router-dom";
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import ActionButtons from "./ActionButtons";
@@ -38,7 +37,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   const [selectedItem, setSelectedItem] = useState<T | null>(initialSelectedItem); // State to store the currently selected item
   const [sortConfig, setSortConfig] = useState<{ key: keyof T; direction: "ascending" | "descending" } | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(20);
+  const [itemsPerPage, ] = useState<number>(20);
   const [filterText, setFilterText] = useState<string>("");
 
   /**

@@ -164,7 +164,7 @@ button:focus-visible,
   background-color: var(--bg-color-add-hover) !important; /* Background color on hover for add */
 }
 
-button[disabled], button[disabled]:hover {
+button[disabled], button[disabled]:hover, .disabled-link {
   background-color: var(--odd-row-bg) !important;
   cursor: not-allowed;
   transform: none !important;
@@ -257,4 +257,8 @@ button[disabled], button[disabled]:hover {
   margin: 10px 0;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.disabled-link {
+  pointer-events: none;
 }

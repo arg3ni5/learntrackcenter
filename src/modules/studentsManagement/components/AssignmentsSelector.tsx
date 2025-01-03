@@ -19,13 +19,13 @@ const AssignmentsSelector: React.FC<AssignmentsSelectorProps> = ({ periodId, cou
           { name: "contributionPercentage", placeholder: "Contribution percentage to final grade", type: "number" },
       ];
 
-      const handleOnEdit = (item: Assignment) => {
-          console.log(item);
-      }
+    //   const handleOnEdit = (item: Assignment) => {
+    //       console.log(item);
+    //   }
     
-      const handleOnView = (item: Assignment) => {
-        console.log(item);        
-      }
+    //   const handleOnView = (item: Assignment) => {
+    //     console.log(item);        
+    //   }
 
     return (
         <div>
