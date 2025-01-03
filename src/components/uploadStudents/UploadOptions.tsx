@@ -37,27 +37,27 @@ const UploadOptions = <T extends Record<string, any>>({ onFileUpload, columnName
                     let jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 }); // Convert sheet to JSON
 
                     
-                    const headers = jsonData.shift() as string[]; // Get and remove the header row
+                        const headers = jsonData.shift() as string[]; // Get and remove the header row
 
-                    console.log('Headers:', headers);
-                    
+                        console.log('Headers:', headers);
+                        
 
-                    // Validate that the headers match the expected column names
-                    const missingHeaders = columnNames.filter(header => !headers.includes(header));
-                    if (missingHeaders.length > 0) {
-                        setError(`Missing headers: ${missingHeaders.join(', ')}`); // Notify about missing headers
-                        return;
-                    }
+                        // Validate that the headers match the expected column names
+                        const missingHeaders = columnNames.filter(header => !headers.includes(header));
+                        if (missingHeaders.length > 0) {
+                            setError(`Missing headers: ${missingHeaders.join(', ')}`); // Notify about missing headers
+                            return;
+                        }
 
-                    // Transform the imported data to match type T using headers
-                    const transformedData: T[] = (jsonData as any[][]).map((row: any[]) => {
-                        return headers.reduce((acc, header, index) => {
-                            (acc as any)[header] = row[index]; // Map each header to the corresponding value in the row
-                            return acc;
-                        }, {} as T); // Ensure the accumulator is of type T
-                    });
+                        // Transform the imported data to match type T using headers
+                        const transformedData: T[] = (jsonData as any[][]).map((row: any[]) => {
+                            return headers.reduce((acc, header, index) => {
+                                (acc as any)[header] = row[index]; // Map each header to the corresponding value in the row
+                                return acc;
+                            }, {} as T); // Ensure the accumulator is of type T
+                        });
 
-                    onFileUpload(transformedData);
+                        onFileUpload(transformedData);
                 } catch (error) {
                     console.error('Error processing file:', error);
                     setError('Error processing file'); // Set error message if processing fails

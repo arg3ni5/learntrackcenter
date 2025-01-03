@@ -7,8 +7,7 @@ interface UploadTableProps<T> {
     data: T[]; // Array of data of type T
     onSelect: (item: T) => void; // Callback for selecting a item
     onImport: (item: T) => void; // Callback for importing a item
-    onDelete: (index: number) => void; // Callback for deleting a item
-    confirmAndSave?: () => void; // Optional callback for confirming and saving changes
+    onImportMulti?: (item: T[]) => void; // Optional callback for confirming and saving changes
     fields: BaseField[];
 }
 
@@ -16,16 +15,15 @@ const UploadTable = <T extends Record<string, any>>({
     fields, 
     data, 
     onSelect, 
-    onImport, 
-    onDelete,
-    confirmAndSave
+    onImport,
+    onImportMulti
 }: UploadTableProps<T>) => {
+    const [dataImport, setDataImport] = useState<T[]>(data||[]); // State to control modal visibility
     const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set()); // State to track selected rows
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
 
     useEffect(() => {
-        console.log("Students data updated:", data); // Log updated students data
-        
+        setDataImport(data);
     }, [data]);
 
     // Function to toggle selection of a specific row
@@ -41,42 +39,44 @@ const UploadTable = <T extends Record<string, any>>({
 
     // Function to toggle selection of all rows
     const toggleAllSelection = () => {
-        if (selectedRows.size === data.length) {
+        if (selectedRows.size === dataImport.length) {
             // If all are selected, deselect all
             setSelectedRows(new Set());
         } else {
             // Otherwise, select all
-            setSelectedRows(new Set(data.map((_, index) => index)));
+            setSelectedRows(new Set(dataImport.map((_, index) => index)));
         }
     };
 
     // Function to handle student selection
     const handleSelection = (index: number) => {
-        const selected = data[index];
+        const selected = dataImport[index];
         onSelect(selected); // Call the onSelect callback with the selected student
     };
 
     // Function to handle importing a student
     const handleImport = (index: number) => {    
-        const selected = data[index];        
+        const selected = dataImport[index];        
         onImport(selected); // Call the onImport callback with the selected student
-        onDelete(index); // Delete the student after importing
+        // onDelete(index); // Delete the student after importing
     };
 
-    // Function to delete selected rows
+    // Handle deletion of selected rows
     const deleteSelectedRows = () => {
-        data.forEach((_, index) => {
-            if (selectedRows.has(index)) {
-                onDelete(index); // Call delete callback for each selected row
-            }
-        });
+        const newData = dataImport.filter((_, index) => !selectedRows.has(index));
+        setDataImport(newData); // Update state with the remaining students
         setSelectedRows(new Set()); // Reset selection after deletion
     };
 
     // Function to handle confirmation in the modal
     const handleConfirm = () => {
         setIsModalOpen(false); // Close the modal
-        confirmAndSave && confirmAndSave(); // Call the confirm and save callback if provided
+        const dataToImport = dataImport.filter((_, index) => selectedRows.has(index));
+        if (dataImport.length === dataToImport.length) {
+            console.log("No changes to save!"); // Log if no changes to save
+            return;            
+        }
+        onImportMulti && onImportMulti(dataToImport); // Call the confirm and save callback if provided
     };
 
     // Function to handle cancellation in the modal
@@ -86,10 +86,10 @@ const UploadTable = <T extends Record<string, any>>({
     };
 
     return (
-        data && data.length> 0 &&<>
+        dataImport && dataImport.length> 0 &&<>
             <div className="actions buttons-container">
                 <button className="delete-button" onClick={deleteSelectedRows} aria-label="Delete selected rows">Delete Selected Rows</button>
-                {confirmAndSave && (
+                {onImportMulti && (
                     <button className="edit-button" onClick={() => setIsModalOpen(true)} aria-label="Confirm and save changes">Confirm and Save</button>
                 )}
             </div>
@@ -100,7 +100,7 @@ const UploadTable = <T extends Record<string, any>>({
                         <tr>
                             <th>
                                 <Checkbox
-                                    checked={selectedRows.size === data.length} // Check if all rows are selected
+                                    checked={selectedRows.size === dataImport.length} // Check if all rows are selected
                                     onChange={toggleAllSelection} // Toggle selection of all rows
                                     aria-label="Select all students"
                                 />
@@ -112,7 +112,7 @@ const UploadTable = <T extends Record<string, any>>({
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((row, index) => (
+                        {dataImport.map((row, index) => (
                             <tr key={`up-row-${index}`} aria-selected={selectedRows.has(index)} onClick={() => toggleRowSelection(index)}>
                                 <td>
                                     <div onClick={(e) => e.stopPropagation()} aria-hidden="true"> {/* Prevent row click when clicking checkbox */}
