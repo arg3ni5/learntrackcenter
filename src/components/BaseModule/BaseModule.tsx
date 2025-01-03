@@ -52,7 +52,7 @@ const BaseModule = <T extends Record<string, any>>({
    * @param {T} newItem - The new item to be added.
    */
   const handleItemAdded = async (newItem: T) => {
-    await onItemAdded(newItem);
+    onItemAdded && await onItemAdded(newItem);
     loadItems();
     setImportData(null);
     clearFormAfterAdd && resetEditing();
@@ -180,18 +180,19 @@ const BaseModule = <T extends Record<string, any>>({
               items={items}
               selectedItem={iniFormData || currentItem}
               fields={fields}
+              removeable={!!onItemDeleted}
               editable={!!onItemUpdated}
               seeable={!!onView}
               ableForm={ableForm}
               ableImport={ableImport}
               showForm={showForm}
               showImportForm={showImportForm}
-              loading={loading || false}
               onAdd={setShowForm}
               onHandleImport={setShowImportForm}
               onSelect={handleOnSelect}
               onItemDeleted={handleItemDelete}
               viewLinkFormat={viewLinkFormat}
+              loading={loading || false}
             />
           )}
         </div>

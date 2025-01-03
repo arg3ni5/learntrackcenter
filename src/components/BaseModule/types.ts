@@ -26,7 +26,7 @@ export interface BaseModuleProps<T> {
   fetchItems?: () => Promise<T[]>; // Function to fetch items
   onView?: (item: T) => void; // Optional callback to handle view
   onSelect?: (item: T | null) => void; // Optional callback to handle select
-  onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
+  onItemAdded?: (newItem: T) => Promise<void>; // Callback to handle adding an item
   onItemsAdded?: (items: T[]) => Promise<void>; // Callback to handle adding an item
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
@@ -52,6 +52,7 @@ export interface ListBaseProps<T> {
   ableForm: boolean;
   ableImport: boolean;
   editable: boolean;
+  removeable: boolean;
   seeable: boolean;  
   viewLinkFormat?: string;
   onHandleImport?: (state: boolean) => void;
