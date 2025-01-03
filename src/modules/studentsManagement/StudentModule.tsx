@@ -63,6 +63,8 @@ const StudentModule: React.FC = () => {
                 initialFormData={selectedStudent}
                 onView={handleOnView}
                 onSelect={handleOnSelect}
+                showForm={false}
+                ableForm={true}
                 ableImport={true}
                 clearFormAfterAdd={true}
                 loading={loading}>

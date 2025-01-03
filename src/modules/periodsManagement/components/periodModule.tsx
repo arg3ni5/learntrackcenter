@@ -37,7 +37,7 @@ const PeriodsModule: React.FC = () => {
                 viewLinkFormat="/periods/:id/courses" // Link format for viewing a period
                 onView={handleOnEdit}
                 loading={loading} // Loading state
-                hideForm={true} // Show the form
+                showForm={false} // Show the form
             />
             
             {loading && <div className="loading"><Loading /></div>} {/* Loading message */}
