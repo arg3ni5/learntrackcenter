@@ -5,6 +5,8 @@ import { BaseField } from '../BaseModule/types';
 
 interface UploadTableProps<T> {
     data: T[]; // Array of data of type T
+    titleModal?: string;
+    messageModal?: string; 
     onSelect: (item: T) => void; // Callback for selecting a item
     onImport: (item: T) => void; // Callback for importing a item
     onDelete?: (selectedRows: Set<number>) => void; // Callback for deleting a item
@@ -17,7 +19,9 @@ const UploadTable = <T extends Record<string, any>>({
     data, 
     onSelect, 
     onImport,
-    onImportMulti
+    onImportMulti,
+    titleModal,
+    messageModal
 }: UploadTableProps<T>) => {
     const [dataImport, setDataImport] = useState<T[]>(data||[]); // State to control modal visibility
     const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set()); // State to track selected rows
@@ -74,7 +78,9 @@ const UploadTable = <T extends Record<string, any>>({
     const handleConfirm = () => {
         setIsModalOpen(false); // Close the modal
         const dataToImport = dataImport.filter((_, index) => selectedRows.has(index));
-        if (dataImport.length === dataToImport.length) {
+        console.log({dataToImport, selectedRows}); // Log if no changes to save
+
+        if (dataToImport.length === 0) {
             console.log("No changes to save!"); // Log if no changes to save
             return;            
         }
@@ -129,8 +135,8 @@ const UploadTable = <T extends Record<string, any>>({
                                     <td key={`${name}-${index}`}>{row[name]}</td>  
                                 ))}
                                 <td className="actions" onClick={(e) => e.stopPropagation()} aria-hidden="true">
-                                    <button className='edit-button' onClick={() => handleSelection(index)} aria-label={`Select ${row[0]}`}>Select</button>
-                                    <button className='view-button' onClick={() => handleImport(index)} aria-label={`Import ${row[0]}`}>Import</button>
+                                    <button className='save-button' onClick={() => handleSelection(index)} aria-label={`Select ${row["id"]}`}>Select</button>
+                                    <button className='view-button' onClick={() => handleImport(index)} aria-label={`Import ${row["id"]}`}>Import</button>
                                 </td>
                             </tr>
                         ))}
@@ -140,8 +146,8 @@ const UploadTable = <T extends Record<string, any>>({
 
             {isModalOpen && (
                 <ConfirmationModal
-                    title="Confirm Action"
-                    message="Are you sure you want to proceed?"
+                    title={titleModal||"Confirm Import"}
+                    message={messageModal||"Are you sure you want to proceed import?"}
                     onConfirm={handleConfirm}
                     onCancel={handleCancel}
                 />
