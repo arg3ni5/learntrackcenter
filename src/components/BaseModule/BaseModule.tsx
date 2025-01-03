@@ -123,6 +123,7 @@ const BaseModule = <T extends Record<string, any>>({
   useEffect(() => {
     if (isEmpty && !loading) {
       setShowForm(true);
+      setShowImportForm(true);
     }
     else {
       setShowForm(initialShowForm);

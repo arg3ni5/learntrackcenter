@@ -19,6 +19,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
     items,
     onItemDeleted,
     onHandleImport,
+    ableFilter = false,
     ableForm,
     ableImport,
     removeable,
@@ -138,10 +139,11 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
     !loading && (
       <>
       
-        {/* Filter input */}
-        <div className="filter-container">
-          <input type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
-        </div>
+        {ableFilter && 
+          <div className="filter-container">
+            <input type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
+          </div>
+        }
 
         {/* Action buttons */}
         {showActions && (

@@ -34,6 +34,7 @@ export interface BaseModuleProps<T> {
   loading?: boolean;
   children?: React.ReactNode;
   showForm?: boolean;
+  ableFilter?: boolean;
   ableForm?: boolean;
   ableImport?: boolean;
   clearFormAfterAdd?: boolean;
@@ -49,6 +50,7 @@ export interface ListBaseProps<T> {
   showImportForm?: boolean;
   onImportItem?: (newItem: any) => void;
   onItemDeleted?: (id: string) => void;
+  ableFilter?: boolean;
   ableForm: boolean;
   ableImport: boolean;
   editable: boolean;
