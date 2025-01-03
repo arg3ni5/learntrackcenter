@@ -1,7 +1,11 @@
 import "./BaseModule.css";
+import "./ListBase.css";
 import { useEffect, useMemo, useState } from "react";
 import { ListBaseProps } from "./types";
 import { Link } from "react-router-dom";
+import TableHeader from "./TableHeader";
+import TableBody from "./TableBody";
+import ActionButtons from "./ActionButtons";
 
 /**
  * ListBase Component
@@ -32,36 +36,52 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   const [showForm, setShowForm] = useState<boolean>(isShowForm || false); // State to manage form visibility
   const [showImportForm, setShowImportForm] = useState<boolean>(isShowImportForm || false); // State to manage import form visibility
   const [selectedItem, setSelectedItem] = useState<T | null>(initialSelectedItem); // State to store the currently selected item
-  const [sortConfig, setSortConfig] = useState<{ key: keyof T; direction: 'ascending' | 'descending' } | null>(null);
+  const [sortConfig, setSortConfig] = useState<{ key: keyof T; direction: "ascending" | "descending" } | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(20);
+  const [filterText, setFilterText] = useState<string>("");
 
   /**
    * Handles the sorting of items when a column header is clicked.
    * @param {keyof T} key - The key to sort by.
    */
   const handleSort = (key: keyof T) => {
-    let direction: 'ascending' | 'descending' = 'ascending';
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
+    let direction: "ascending" | "descending" = "ascending";
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
     }
     setSortConfig({ key, direction });
   };
 
+  const filterItems = (items: T[]): T[] => {
+    if (!filterText) return items;
+    return items.filter((item) => Object.values(item).some((value) => value.toString().toLowerCase().includes(filterText.toLowerCase())));
+  };
+
   // Memoized sorted items
-  const sortedItems = useMemo(() => {
-    let sortableItems = items ? [...items] : [];
+  // Memoized sorted and filtered items
+  const sortedAndFilteredItems = useMemo(() => {
+    let processedItems = items ? [...items] : [];
+    processedItems = filterItems(processedItems);
     if (sortConfig !== null) {
-      sortableItems.sort((a, b) => {
+      processedItems.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
+          return sortConfig.direction === "ascending" ? -1 : 1;
         }
         if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
+          return sortConfig.direction === "ascending" ? 1 : -1;
         }
         return 0;
       });
     }
-    return sortableItems;
-  }, [items, sortConfig]);
+    return processedItems;
+  }, [items, sortConfig, filterText]);
+
+  // Paginated items
+  const paginatedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return sortedAndFilteredItems.slice(startIndex, startIndex + itemsPerPage);
+  }, [sortedAndFilteredItems, currentPage, itemsPerPage]);
 
   /**
    * Handles the click event on a row, selecting or deselecting the item.
@@ -92,6 +112,14 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
     onHandleImport && onHandleImport(!state);
   };
 
+  /**
+   * Handles page change in pagination.
+   * @param {number} pageNumber - The new page number.
+   */
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   // Effect to update form visibility when isShowForm changes
   useEffect(() => {
     setShowForm(isShowForm);
@@ -103,102 +131,47 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   }, [isShowImportForm]);
 
   const showActions = removeable || seeable; // Determine if action buttons should be shown
+  // Calculate total pages
+  const totalPages = Math.ceil(sortedAndFilteredItems.length / itemsPerPage);
 
   // Render component
   return (
     !loading && (
       <>
+      
+        {/* Filter input */}
+        <div className="filter-container">
+          <input type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
+        </div>
+
         {/* Action buttons */}
         {showActions && (
-          <div className="actions buttons-container">
-            {/* Add button */}
-            {ableForm === true && (
-              <button
-                className={!showForm ? "save-button" : "add-button"}
-                onClick={() => handleShowForm(showForm)}
-                aria-expanded={showForm}
-                aria-label={!showForm ? "Show the form" : "Hide the form"}>
-                {!showForm ? "Add" : "Hide Form"}
-              </button>
-            )}
-            {/* Import button */}
-            {ableForm === true && ableImport === true && !showImportForm && (
-              <button
-                onClick={() => handleShowImportForm(showImportForm)}
-                aria-expanded={showImportForm}
-                aria-label={showImportForm ? "Add a new item" : "Hide the form"}>
-                Import
-              </button>
-            )}
-            {/* View button */}
-            {seeable && viewLinkFormat && (
-              <Link
-                to={selectedItem ? viewLinkFormat.replace(":id", selectedItem.id) : "#"}
-                className={`button view-button ${!selectedItem ? "disabled-link" : ""}`}
-                aria-label="View selected item"
-                onClick={(e) => !selectedItem && e.preventDefault()}>
-                View
-              </Link>
-            )}
-            {/* Delete button */}
-            {removeable && onItemDeleted && (
-              <button 
-                disabled={!selectedItem} 
-                className="delete-button" 
-                onClick={() => selectedItem?.id && onItemDeleted(selectedItem.id)} 
-                aria-label="Delete selected item">
-                Delete
-              </button>
-            )}
-          </div>
+          <ActionButtons
+            ableForm={ableForm}
+            ableImport={ableImport}
+            seeable={seeable}
+            removeable={removeable}
+            showForm={showForm}
+            showImportForm={showImportForm}
+            selectedItem={selectedItem}
+            viewLinkFormat={viewLinkFormat}
+            handleShowForm={handleShowForm}
+            handleShowImportForm={handleShowImportForm}
+            onItemDeleted={onItemDeleted}
+          />
         )}
-        <div className="list-header"></div>
         {/* Table container */}
-        <div className="table-container">
-          <table className="list-base-table" aria-label="List of items">
-            {/* Table header */}
-            {items && items.length > 0 && (
-              <thead>
-                <tr>
-                  {fields.map((field) => 
-                    field.view && (
-                      <th key={field.name} onClick={() => handleSort(field.name as keyof T)}>
-                        {field.label || field.placeholder || field.name}
-                        {sortConfig?.key === field.name && (
-                          <span>{sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}</span>
-                        )}
-                      </th>
-                    )
-                  )}
-                </tr>
-              </thead>
-            )}
-            {/* Table body */}
-            {items && items.length > 0 && (
-              <tbody>
-                {sortedItems.map((item) => (
-                  <tr
-                    key={item.id}
-                    onClick={() => handleRowClick(item)}
-                    className={selectedItem?.id === item.id ? "selected-row" : ""}
-                    aria-selected={selectedItem?.id === item.id}
-                  >
-                    {fields.map((field) => {
-                      if (field.view) {
-                        if (field.type === "select" && field.options) {
-                          const fieldValue = item[field.name];
-                          const option = field.options.find((t) => t.value === fieldValue);
-                          return <td key={field.name}>{option ? option.label : "Unknown"}</td>;
-                        }
-                        return <td key={field.name}>{item[field.name] !== undefined ? item[field.name] : "N/A"}</td>;
-                      }
-                      return null;
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            )}
-          </table>
+        <div className={`table-container ${showActions ? "with-actions" : ""}`}>
+          <TableHeader fields={fields} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} />
+          <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} handleRowClick={handleRowClick} />
+        </div>
+        {/* Pagination */}
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button key={page} onClick={() => handlePageChange(page)} className={currentPage === page ? "active" : ""}>
+              {page}
+            </button>
+          ))}
         </div>
       </>
     )
