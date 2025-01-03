@@ -7,6 +7,7 @@ interface UploadTableProps<T> {
     data: T[]; // Array of data of type T
     onSelect: (item: T) => void; // Callback for selecting a item
     onImport: (item: T) => void; // Callback for importing a item
+    onDelete?: (selectedRows: Set<number>) => void; // Callback for deleting a item
     onImportMulti?: (item: T[]) => void; // Optional callback for confirming and saving changes
     fields: BaseField[];
 }
@@ -50,6 +51,7 @@ const UploadTable = <T extends Record<string, any>>({
 
     // Function to handle student selection
     const handleSelection = (index: number) => {
+        setSelectedRows(new Set([index])); // Select the row
         const selected = dataImport[index];
         onSelect(selected); // Call the onSelect callback with the selected student
     };
