@@ -28,12 +28,14 @@ export interface BaseModuleProps<T> {
   onView?: (item: T) => void; // Optional callback to handle view
   onSelect?: (item: T | null) => void; // Optional callback to handle select
   onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
+  onItemsAdded: (items: T[]) => Promise<void>; // Callback to handle adding an item
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
   importItem?: T | null; // Item to import
   initialFormData?: T | null; // Initial data for the form
   loading?: boolean;
   children?: React.ReactNode;
+  ableImport?: boolean;
   hideForm?: boolean;
   clearFormAfterAdd?: boolean;
 }
