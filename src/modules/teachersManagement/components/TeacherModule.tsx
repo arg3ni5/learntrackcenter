@@ -19,6 +19,7 @@ const TeacherModule: React.FC = () => {
         items={teachers} // Function to fetch items from Firestore
         onItemAdded={handleAddTeacher}
         onItemDeleted={handleDeleteTeacher} // Function to delete a teacher using the service
+        hideForm={true} // Show the form
       />
       {/* Aquí puedes agregar el componente UploadTeachers si es necesario */}
       {/* <UploadTeachers onSelectTeacher={setInitialTeacherData} /> */}

@@ -22,11 +22,6 @@ const StudentModule: React.FC = () => {
         { name: "email", placeholder: "Email Address" },
     ];
 
-    // Effect to reset selected student on mount
-    useEffect(() => {
-        setSelectedStudent(null);
-    }, []);
-
     // Effect to manage loading state
     useEffect(() => {
         setIsLoading(loading);
@@ -56,12 +51,8 @@ const StudentModule: React.FC = () => {
         <>
             <h1 className='title'>Student Management</h1>
             {selectedStudent && <StudentCard student={selectedStudent} />}
+            {selectedStudent && <>{selectedStudent.id && <PeriodsManager student={selectedStudent} />}</>}
 
-            {selectedStudent && (
-                <>
-                    {selectedStudent.id && <PeriodsManager student={selectedStudent} />}
-                </>
-            )}
             <BaseModule<Student>
                 fields={fields}
                 items={students}
@@ -69,9 +60,11 @@ const StudentModule: React.FC = () => {
                 onItemsAdded={handleAddStudents}
                 onItemDeleted={handleRemove}
                 onItemUpdated={handleUpdateStudent}
+                initialFormData={selectedStudent}
                 onView={handleOnView}
                 onSelect={handleOnSelect}
-                onEdit={setSelectedStudent}
+                ableImport={true}
+                clearFormAfterAdd={true}
                 loading={loading}>
             </BaseModule>
             {error && <div className="error">{error}</div>} {/* Display error message if exists */}

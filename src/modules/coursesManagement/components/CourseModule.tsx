@@ -34,6 +34,7 @@ const CourseModule: React.FC = () => {
         onItemDeleted={handleDeleteCourse} // Use the delete course function from the hook
         onItemUpdated={handleUpdateCourse}
         loading={loading} // Pass loading state to BaseModule or directly to ListBase if needed
+        hideForm={true} // Show the form
       />
       {error && <div className="error">{error}</div>} {/* Error message */}
     </>

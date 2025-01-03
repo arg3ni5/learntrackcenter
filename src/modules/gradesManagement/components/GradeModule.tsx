@@ -28,6 +28,7 @@ const GradeModule: React.FC = () => {
                 await addGrade(newItem); // Add a new grade using the service
             }} 
             onItemDeleted={deleteGrade} // Function to delete a grade using the service
+            hideForm={true} // Show the form
         />
     );
 };
