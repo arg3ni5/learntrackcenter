@@ -35,9 +35,10 @@ export interface Student {
 }
 
 
-export interface AssignmentsManagerProps {
+export interface StudentAssignmentsManagerProps {
     studentId: string;
     periodId: string;
+    periodCourseId: string;
     courseId: string;
 }
 

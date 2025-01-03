@@ -1,17 +1,19 @@
 import { useEffect, useState, useCallback } from "react";
-import { Assignment, AssignmentsManagerProps } from "../types";
-import { addAssignment, deleteAssignment, fetchAssignments, updateAssignment } from "../services/assignmentService";
+import { Assignment, StudentAssignmentsManagerProps } from "../types";
+import { addAssignment, deleteAssignment, fetchAssignments, loadAssignment, updateAssignment } from "../services/assignmentService";
 
-const useAssignments = (props: AssignmentsManagerProps) => {
-  const { courseId, studentId, periodId } = props;
+const useAssignments = (props: StudentAssignmentsManagerProps) => {
+  const { courseId, studentId, periodId, periodCourseId } = props;
   const [data, setData] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const fetchedData = await fetchAssignments(studentId, periodId, courseId);
+      console.log("fetchedData", fetchedData);
+      
       setData(fetchedData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al cargar las calificaciones");
@@ -26,6 +28,7 @@ const useAssignments = (props: AssignmentsManagerProps) => {
       if (isMounted) await loadData();
     };
     fetchData();
+    handleLoadAssignment();
     return () => {
       isMounted = false;
     };
@@ -37,6 +40,19 @@ const useAssignments = (props: AssignmentsManagerProps) => {
       try {
         await addAssignment(studentId, periodId, courseId, newAssignment);
         await loadData();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Error adding assignment");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [studentId, periodId, courseId, loadData, setLoading]
+  );
+
+  const handleLoadAssignment = useCallback(async () => {
+      setLoading(true);
+      try {
+        await loadAssignment(studentId, periodId, periodCourseId);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error adding assignment");
       } finally {
@@ -79,6 +95,7 @@ const useAssignments = (props: AssignmentsManagerProps) => {
   return {
     assignments: data,
     loadAssignments: loadData,
+    handleLoadAssignment,
     loading,
     error,
     handleAddAssignment,

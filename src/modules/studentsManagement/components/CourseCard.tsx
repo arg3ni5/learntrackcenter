@@ -11,7 +11,7 @@ interface CourseCardProps {
 const CourseCard: React.FC<CourseCardProps> = ({ course, onEdit, onDelete }) => {
     return (
         <div className="course-card">
-            <h3>{course.name}</h3>
+            <h3>{course.name} - {course.id}</h3>
             {course.description && (
                 <p><strong>Description:</strong> {course.description}</p>
             )}

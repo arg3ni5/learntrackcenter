@@ -7,6 +7,7 @@ import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Student, StudentCourse } from '../../../types/types';
 import CourseCard from './CourseCard';
 import AssignmentsSelector from './AssignmentsSelector';
+import AssignmentsManager from './AssignmentsManager';
 
 const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);
@@ -30,7 +31,6 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     };
 
     const handleOnChangePeriod = (periodId: any) => {
-        console.log(periodId);
         setSelectedPeriodId(periodId);
         setPeriodId(periodId);
         setSelectedCourseId(null);
@@ -68,11 +68,22 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                 {selectedPeriodId && selectedCourseId && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
             </div>
 
-            {selectedPeriodId && selectedCourseId &&<AssignmentsSelector courseId={selectedPeriodId} periodId={selectedPeriodId}/>}
+            {selectedPeriodId }-{ selectedCourseId}
+
+            {selectedPeriodId && selectedCourseId &&<AssignmentsSelector courseId={selectedCourseId} periodId={selectedPeriodId}/>}
             <div className="container">
                 
                 {studentCourses.map(course => (
-                    <CourseCard key={`card-${course.id}`} course={course}/>
+                    <>
+                        <CourseCard key={`card-${course.id}`} course={course}/>
+                        {selectedPeriodId && selectedCourseId &&
+                        <AssignmentsManager 
+                        periodCourseId={course.id!}
+                        studentId={selectedCourseId!} 
+                        periodId={selectedPeriodId!}
+                        courseId={course.id!}></AssignmentsManager>}
+                        
+                    </>                    
                 ))}
                 
             </div>

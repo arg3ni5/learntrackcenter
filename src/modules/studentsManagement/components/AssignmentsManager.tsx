@@ -1,12 +1,12 @@
 // src/modules/studentsManagement/components/AssignmentsManager.tsx
 
 import React from 'react';
-import { Assignment, AssignmentsManagerProps } from '../types';
+import { Assignment, StudentAssignmentsManagerProps } from '../types';
 import BaseModule from '../../../components/BaseModule/BaseModule';
 import useAssignments from '../hooks/useAssignments';
 
-const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ studentId, periodId, courseId }) => {
-    const { assignments, loading, error, handleAddAssignment } = useAssignments({ studentId, periodId, courseId });
+const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentId, periodId, periodCourseId, courseId }) => {
+    const { assignments, loading, error, handleAddAssignment } = useAssignments({ studentId, periodId, periodCourseId, courseId });
 
     if (loading) return <div>Loading assignments...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -22,6 +22,8 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ studentId, peri
                 fields={fields}
                 items={assignments}
                 onItemAdded={handleAddAssignment}
+                showForm={true}
+                ableForm={true}
                 loading={loading}>
             </BaseModule>}
         </>
