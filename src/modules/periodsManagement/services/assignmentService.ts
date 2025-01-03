@@ -1,16 +1,19 @@
 // src/modules/studentsManagement/services/assignmentService.ts
 
 import { db } from '../../../services/firebase';
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, arrayUnion, arrayRemove, writeBatch } from 'firebase/firestore';
 import { Assignment } from '../../../types/types';
 
 export const fetchAssignments = async (periodId: string, courseId: string): Promise<Assignment[]> => {
     const assignmentsCollection = collection(db, `periods/${periodId}/courses/${courseId}/assignments`);
     const assignmentsSnapshot = await getDocs(assignmentsCollection);
+    
     const docs = assignmentsSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data() as Omit<Assignment, 'id'>
     }))  
+    console.log({periodId,
+        courseId, docs});
     return docs;
 };
 
@@ -29,6 +32,27 @@ export const addAssignment = async (periodId: string, courseId: string, newAssig
     });
     
 };
+
+export const addAssignmentsBatch = async (assignments: Assignment[], periodId: string, courseId: string): Promise<void> => {
+    const batch = writeBatch(db);
+    const assignmentsCollection = collection(db, `periods/${periodId}/courses/${courseId}/assignments`);
+
+    assignments.forEach(assignment => {
+        const assignmentRef = doc(assignmentsCollection);
+        batch.set(assignmentRef, {
+            title: assignment.title,
+            contributionPercentage: assignment.contributionPercentage
+        });
+    });
+
+    try {
+        await batch.commit();
+    } catch (error) {
+        console.error('Error committing batch:', error);
+        throw new Error('Error adding assignments');
+    }
+};
+
 
 export const updateAssignment = async (periodId: string, courseId: string, assignmentId: string, updatedAssignment: Partial<Assignment>, sync?:boolean): Promise<void> => {
     const assignmentDocRef = doc(db, `periods/${periodId}/courses/${courseId}/assignments/${assignmentId}`);

@@ -6,7 +6,7 @@ import Loading from '../../../components/loading/Loading';
 import { BaseField } from '../../../components/BaseModule/types';
 
 const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, courseId }) => {
-    const { assignments, loading, error, handleAddAssignment, handleDeleteAssignment, handleUpdateAssignment } = useAssignments({ periodId, courseId });
+    const { assignments, loading, error, handleAddAssignment, handleAddAssignments, handleDeleteAssignment, handleUpdateAssignment } = useAssignments({ periodId, courseId });
 
     const totalPercentage = useMemo(() => {
         return assignments.reduce((sum, assignment) => sum + (Number(assignment.contributionPercentage) || 0), 0);
@@ -22,16 +22,19 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
     return (
         <>
             <p><b>Total Percentage: </b>({totalPercentage})%</p>
+            {totalPercentage < 100 && <p><b>Pending Percentage: </b>({100-totalPercentage})%</p>}
             <BaseModule<Assignment>
                 fields={fields}
                 items={assignments}
                 onItemAdded={handleAddAssignment}
+                onItemsAdded={handleAddAssignments}
                 onItemUpdated={handleUpdateAssignment}
                 onItemDeleted={handleDeleteAssignment}
                 loading={loading}
                 clearFormAfterAdd={false}
                 showForm={true}
                 ableForm={true}
+                ableImport={true}
             />
         </>
     );
