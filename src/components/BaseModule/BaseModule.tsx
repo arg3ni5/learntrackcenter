@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FormBase from "./FormBase";
 import ListBase from "./ListBase";
-import "./BaseModule.css"; // Import the CSS file
+import "./BaseModule.css";
 import { useNotification } from "../notification/NotificationContext";
 import { BaseModuleProps } from "./types";
 import UploadOptions from "../uploadStudents/UploadOptions";
@@ -15,28 +15,27 @@ import '../../components/uploadStudents/UploadTable.css';
  * @template T - The type of items managed by the module.
  * @param {BaseModuleProps<T>} props - The props for the BaseModule component.
  */
-const BaseModule = <T extends Record<string, any>>({ hideForm = false, clearFormAfterAdd = false, ableImport = false, ...rest }: BaseModuleProps<T>) => {
+const BaseModule = <T extends Record<string, any>>({ 
+  showForm: initialShowForm = false,
+  clearFormAfterAdd = false,
+  ableImport = false, 
+  ableForm = true, 
+  ...rest 
+}: BaseModuleProps<T>) => {
   const { title, fields, items, fetchItems, initialFormData: iniFormData, loading, onView,
-    viewLinkFormat, 
-    onSelect, onItemAdded, onItemsAdded, onItemUpdated, onItemDeleted } = rest;
+    viewLinkFormat, onSelect, onItemAdded, onItemsAdded, onItemUpdated, onItemDeleted } = rest;
 
   const { showNotification } = useNotification();
   const isEmpty = items?.length === 0;
   const [initialFormData, setInitialFormData] = useState<T | null>(iniFormData || null);
 
-  // State to store imported data for a single item
+  // State management
   const [importData, setImportData] = useState<T | null>(null);
-  // State to manage form visibility
-  const [showForm, setShowForm] = useState<boolean>(true);
-  // State to manage import form visibility
+  const [showForm, setShowForm] = useState<boolean>(initialShowForm!);
   const [showImportForm, setShowImportForm] = useState<boolean>(false);
-  // State to manage editing mode
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  // State to store the currently selected item
   const [currentItem, setCurrentItem] = useState<T | null>(null);
-  // State to manage imported data
   const [dataImport, setDataImport] = useState<T[]>([]);
-  // State to manage preview visibility
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
 
   /**
@@ -72,17 +71,17 @@ const BaseModule = <T extends Record<string, any>>({ hideForm = false, clearForm
       showNotification("Error updating item", "error");
     }
   };
+
   /**
-   * Handle select an item.
-   * @param {T} item - The updated item data.
+   * Handle selecting an item.
+   * @param {T | null} item - The selected item or null if deselected.
    */
   const handleOnSelect = async (item: T | null) => {
-    setIsEditing(true);
+    setIsEditing(!!item);
     setCurrentItem(item);
     onSelect && onSelect(item);
-    console.log("item", item);
     
-    if (item === null || item === undefined) {      
+    if (!item) {      
       setCurrentItem(null);
       setInitialFormData(null);      
       resetEditing();
@@ -107,7 +106,7 @@ const BaseModule = <T extends Record<string, any>>({ hideForm = false, clearForm
   const resetEditing = () => {
     setIsEditing(false);
     setCurrentItem(null);
-    setShowForm(hideForm ? false : true);
+    setShowForm(initialShowForm);
   };
 
   /**
@@ -120,12 +119,16 @@ const BaseModule = <T extends Record<string, any>>({ hideForm = false, clearForm
     showNotification("File uploaded successfully!", "success");
   };
 
-  // Effect to manage form visibility based on whether items exist
+  // Effects
   useEffect(() => {
-    !isEmpty && setShowForm(hideForm ? false : true);
+    if (isEmpty && !loading) {
+      setShowForm(true);
+    }
+    else {
+      setShowForm(initialShowForm);
+    }
   }, [items]);
 
-  // Effect to handle imported items and load existing items
   useEffect(() => {
     if (importData) {
       handleItemAdded(importData);
@@ -134,38 +137,32 @@ const BaseModule = <T extends Record<string, any>>({ hideForm = false, clearForm
   }, [importData]);
 
   // Ensure at least one field is visible
-  if (fields.filter((f) => f.view === true).length === 0) fields.map((f) => (f.view = true));
+  if (fields.filter((f) => f.view === true).length === 0) fields.forEach((f) => f.view = true);
 
   return (
     <>
-      {/* Render the title */}
       {title && <h1 className="title">{title}</h1>}
       
-      <div className="module-container">        
-        {/* Render the form container */}
-        {!loading && showForm && (
-          <div className="form-container">
-            <FormBase
-              onItemAdded={handleItemAdded}
-              onItemUpdated={handleItemUpdated}
-              fields={fields}
-              isEditing={isEditing}
-              onCancelEdit={resetEditing}
-              initialData={initialFormData||currentItem} // Load initial data or data of the item being edited
-              clearFormAfterAdd={clearFormAfterAdd}
-            />
-            
-            {/* Render import options */}
-            {!showImportForm && (
-              <div className="actions buttons-container">
-                {ableImport && <button aria-label="open form import" onClick={() => setShowImportForm(true)}>Import</button>}
-              </div>
-            )}
-            {showImportForm && <UploadOptions<T> onFileUpload={handleFileUpload} columnNames={fields.map((f) => f.name)} />}
-          </div>
+      <div className="module-container">
+        {!loading && ableForm && (          
+          showForm && <>
+            <div className="form-container">
+              <FormBase
+                onItemAdded={handleItemAdded}
+                onItemUpdated={handleItemUpdated}
+                fields={fields}
+                isEditing={isEditing}
+                onCancelEdit={resetEditing}
+                initialData={initialFormData || currentItem}
+                clearFormAfterAdd={clearFormAfterAdd}
+              />
+              {ableImport && <>
+                {showImportForm && <UploadOptions<T> onFileUpload={handleFileUpload} columnNames={fields.map((f) => f.name)} />}
+              </>}              
+            </div>
+          </>
         )}
 
-        {/* Render the list container */}
         <div className="list-container">
           {ableImport && previewVisible && (
             <div className="upload-container">
@@ -183,12 +180,15 @@ const BaseModule = <T extends Record<string, any>>({ hideForm = false, clearForm
               items={items}
               selectedItem={iniFormData || currentItem}
               fields={fields}
-              editable={onItemUpdated !== undefined}
-              seeable={onView !== undefined}
-              hideForm={hideForm}
+              editable={!!onItemUpdated}
+              seeable={!!onView}
+              ableForm={ableForm}
+              ableImport={ableImport}
+              showForm={showForm}
+              showImportForm={showImportForm}
               loading={loading || false}
-              onAdd={(state) => setShowForm(state)}
-              onView={onView}
+              onAdd={setShowForm}
+              onHandleImport={setShowImportForm}
               onSelect={handleOnSelect}
               onItemDeleted={handleItemDelete}
               viewLinkFormat={viewLinkFormat}
@@ -200,4 +200,4 @@ const BaseModule = <T extends Record<string, any>>({ hideForm = false, clearForm
   );
 };
 
-export default BaseModule; // Export the BaseModule component
+export default BaseModule;

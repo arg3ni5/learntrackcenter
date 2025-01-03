@@ -108,12 +108,12 @@
 /* Desktop screens */
 @media (min-width: 1024px) {
     .form-container {
-        flex: 1 1 30%;
+        flex: 1;
         /* Adjust for 3-column layout */
     }
 
     .list-container {
-        flex: 1 1 30%;
+        flex: 2 1 30%;
         /* Adjust for 3-column layout */
     }
 

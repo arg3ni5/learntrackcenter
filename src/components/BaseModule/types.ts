@@ -33,8 +33,9 @@ export interface BaseModuleProps<T> {
   initialFormData?: T | null; // Initial data for the form
   loading?: boolean;
   children?: React.ReactNode;
+  showForm?: boolean;
+  ableForm?: boolean;
   ableImport?: boolean;
-  hideForm?: boolean;
   clearFormAfterAdd?: boolean;
   viewLinkFormat?: string;
 }
@@ -44,13 +45,16 @@ export interface ListBaseProps<T> {
   loading: boolean;
   items?: T[];
   selectedItem: T | null;
-  hideForm?: boolean;
+  showForm?: boolean;
+  showImportForm?: boolean;
   onImportItem?: (newItem: any) => void;
   onItemDeleted?: (id: string) => void;
+  ableForm: boolean;
+  ableImport: boolean;
   editable: boolean;
   seeable: boolean;  
   viewLinkFormat?: string;
+  onHandleImport?: (state: boolean) => void;
   onAdd?: (state: boolean) => void;
   onSelect?: (item: T | null) => void;
-  onView?: (item: T) => void;
 }
