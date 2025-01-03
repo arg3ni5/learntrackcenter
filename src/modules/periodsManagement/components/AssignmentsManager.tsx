@@ -30,7 +30,8 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
                 onItemDeleted={handleDeleteAssignment}
                 loading={loading}
                 clearFormAfterAdd={false}
-                showForm={false} // Show the form
+                showForm={true}
+                ableForm={true}
             />
         </>
     );
