@@ -182,16 +182,12 @@
     align-items: center;
 }
 
-.actions button {
+.actions button, .actions .button {
     border: none;
     padding: 6px 12px;
     border-radius: 4px;
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-.actions button:hover {
-    transform: translateY(-1px);
 }
 
 .main::-webkit-scrollbar {

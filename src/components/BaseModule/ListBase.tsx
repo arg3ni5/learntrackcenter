@@ -1,21 +1,18 @@
 import "./BaseModule.css";
 import { useEffect, useState } from "react";
 import { ListBaseProps } from "./types";
+import { Link } from "react-router-dom";
 
 const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: ListBaseProps<T>) => {
-  const { fields, items, onItemDeleted, editable, seeable, onAdd, onEdit, onView, onSelect, hideForm } = rest;
+  const { fields, items, selectedItem: initialSelectedItem, onItemDeleted, editable, seeable, onAdd, viewLinkFormat, onSelect, hideForm } = rest;
   const [showForm, setShowForm] = useState<boolean>(hideForm || false); // State to manage form visibility
-  const [selectedItem, setSelectedItem] = useState<T | null>(null); // State to store the currently selected item
+  const [selectedItem, setSelectedItem] = useState<T | null>(initialSelectedItem); // State to store the currently selected item
 
   // Function to handle row click
   const handleRowClick = (item: T) => {
-    if (selectedItem?.id === item.id) {
-      setSelectedItem(null); // Deselect the item if it's already selected
-      onSelect && onSelect(null); // Call the onSelect callback with null
-    } else {
-      setSelectedItem(item); // Select the new item
-      onSelect && onSelect(item); // Call the onSelect callback with the selected item
-    }
+    const newSelection = selectedItem?.id === item.id ? null : item;
+    setSelectedItem(newSelection);
+    onSelect?.(newSelection);
   };
 
   // Function to toggle form visibility
@@ -31,7 +28,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
     }
   }, [hideForm]);
 
-  const showActions = onItemDeleted !== undefined || seeable || editable; // Determine if action buttons should be shown
+  const showActions = onItemDeleted !== undefined || seeable; // Determine if action buttons should be shown
 
   return (
     !loading && (
@@ -48,25 +45,15 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
                 {!showForm ? "Add" : "Hide Form"} {/* Toggle button text based on form visibility */}
               </button>
             )}
-            {seeable && onView &&(
-              <button 
-                disabled={!selectedItem} 
-                className="view-button" 
-                onClick={() => selectedItem && onView(selectedItem)} 
+            {seeable && viewLinkFormat && (
+              <Link 
+                to={selectedItem ? viewLinkFormat.replace(':id', selectedItem.id) : '#'}
+                className={`button view-button ${!selectedItem ? 'disabled-link' : ''}`}
                 aria-label="View selected item"
+                onClick={(e) => !selectedItem && e.preventDefault()}
               >
-                View {/* Button to view the selected item */}
-              </button>
-            )}
-            {editable && onEdit &&(
-              <button 
-                disabled={!selectedItem} 
-                className="edit-button" 
-                onClick={() => selectedItem && onEdit(selectedItem)} 
-                aria-label="Edit selected item"
-              >
-                Edit {/* Button to edit the selected item */}
-              </button>
+                View
+              </Link>
             )}
             {onItemDeleted && (
               <button 
