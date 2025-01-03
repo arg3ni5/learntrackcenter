@@ -49,7 +49,6 @@ const useCourses = (studentId: string) => {
       if (periodId) {
         setSelectedPeriodId(periodId);
         const fetchedAvailableCourses = await fetchAvailableCourses(periodId);
-        console.log({ periodId, fetchedAvailableCourses });
         setAvailableCourses(fetchedAvailableCourses); // Store in local storage
       } else {
         setAvailableCourses([]); // Fetch available empty
