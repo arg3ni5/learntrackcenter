@@ -11,14 +11,6 @@ export const menuItems = [
         ]
     },
     { 
-        label: "Periods", 
-        to: "", // Un enlace vacío si se usa como encabezado de dropdown
-        children: [
-            { label: "Courses", to: "/courses-period" },
-            { label: "Calificaciones", to: "/grades" },
-        ]
-    },
-    { 
         label: "Params", 
         to: "", // Un enlace vacío si se usa como encabezado de dropdown
         children: [

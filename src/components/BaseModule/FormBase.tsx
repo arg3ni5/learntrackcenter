@@ -55,8 +55,8 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
   return (
     <form onSubmit={addItem} className={isEditing ? "editing" : ""}>
       {fields.map((field) => {
-        const fieldType = field.type || "input";
-        switch (fieldType) {
+        const type = field.type || "input";
+        switch (type) {
           case "select":
             return (
               field.options && (
