@@ -9,7 +9,7 @@ import useCourses from "../hooks/useCourses";
 import SelectInput from "../../../components/BaseModule/SelectInput";
 import useTeachers from "../../teachersManagement/hooks/useTeachers";
 import AssignmentsManager from "./AssignmentsManager";
-import Card, { Field } from "../../../components/card/card";
+import Card, { CardField } from "../../../components/card/card";
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const navigate = useNavigate();
@@ -40,20 +40,21 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
         courseId: id!,
         status: "Not Started",
         assignmentsIds: [],
-      };
+      };      
       await handleAddCourse(course); // Call the function to add the new period to the student
       setSelectedCourseId(null); // Reset selected period after assignment
     }
   };
   const isEqual = (id1: any, id2: any) => id1 && id2 && String(id1) === String(id2);
 
-  const fields: Field[] = [
+  const fields: CardField[] = [
     { name: "name", placeholder: "name" },
     { name: "description", placeholder: "description" },
     { name: "duration", placeholder: "duration" },
     { name: "hours", placeholder: "hours" },
     { name: "status", placeholder: "status" },
-    { name: "courseId", placeholder: "courseId" },
+    // { name: "courseId", placeholder: "courseId" },
+    { name: "assignmentsIds", placeholder: "assignments", type:"array" },
     { name: "teacherName", placeholder: "teacherName" },
   ];
 
@@ -69,8 +70,8 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
           <div className="item">
             <h3>Available Courses</h3>
             <div className="buttons-container flex">
-              {availableCourses.map((course) => (
-                <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? "active" : ""}`} onClick={() => setSelectedCourseId(course.id!)}>
+              {availableCourses.map((course, idx) => (
+                <button key={`ac-${idx}`} className={`button ${isEqual(selectedCourseId, course.id) ? "active" : ""}`} onClick={() => setSelectedCourseId(course.id!)}>
                   {course.name}
                 </button>
               ))}
@@ -101,11 +102,11 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
                 )}
               </div>
 
-              <Card titleName="name" fields={fields} data={course} />
-
-              <h3>{course.name}</h3>
-              <p>{course.description}</p>
-              <p>Teacher: {course.teacherName}</p>
+              <Card<Course> 
+              titleName="name"
+              fields={fields}
+              data={course} 
+              viewLink={`/period/${periodId}/course/${course.id}`}/>
 
               {!course.teacherId && (
                 <SelectInput
@@ -117,7 +118,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
                   placeholder="Select Teacher"
                 />
               )}
-              <AssignmentsManager courseId={course.id!} periodId={period?.id!}></AssignmentsManager>
+              {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
             </li>
           ))}
         </ul>
