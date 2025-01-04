@@ -2,14 +2,14 @@
 
 import React, { useEffect } from "react";
 import BaseModule from "../../../components/BaseModule/BaseModule";
-import useCourse from "../hooks/useCourse"; // Import the custom hook
+import useCourses from "../hooks/useCourses"; // Import the custom hook
 import { Course } from "../services/courseService";
 import { useLoading } from "../../../components/loading/LoadingContext";
 import { BaseField } from "../../../components/BaseModule/types";
 
 const CourseModule: React.FC = () => {
   const { setIsLoading } = useLoading();
-  const { courses, loading, error, handleAddCourse, handleDeleteCourse, handleUpdateCourse } = useCourse(); // Use the custom hook
+  const { courses, loading, error, handleAddCourse, handleDeleteCourse, handleUpdateCourse } = useCourses(); // Use the custom hook
 
     useEffect(() => {
         setIsLoading(loading);

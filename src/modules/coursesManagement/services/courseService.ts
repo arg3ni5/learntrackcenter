@@ -1,5 +1,6 @@
 import { db } from '../../../services/firebase';
-import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc, getDoc } from 'firebase/firestore';
+import { PeriodCourse } from '../../../types/types';
 
 // Define the Course interface
 export interface Course {
@@ -38,4 +39,25 @@ export const updateCourse = async (id: string, updatedCourse: Partial<Course>): 
     const { id: _, ...course } = updatedCourse;    
     const courseDoc = doc(db, 'courses', id); // Reference to the course document
     await updateDoc(courseDoc, course); // Update the document with new data
+};
+
+
+export const fetchPeriodCourseById = async (
+    periodId: string ,
+    courseId: string ,
+): Promise<PeriodCourse | null> => {
+    try {
+        const docRef = doc(db, `periods/${periodId}/courses`, courseId); // Reference to the specific student document
+        const docSnap = await getDoc(docRef); // Get the document snapshot
+        
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() } as PeriodCourse; // Return the student data with ID
+        } else {
+            console.log("No such document!"); // Log if no document exists
+            return null; // Return null if no document found
+        }
+    } catch (error) {
+        console.error("Error fetching student:", error);
+        throw error; // Throw error for handling in the calling code
+    }
 };
