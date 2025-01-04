@@ -55,4 +55,20 @@ export const updatePeriod = async (id: string, updatedPeriod: Partial<Period>): 
     const { id: _, ...period } = updatedPeriod;    
     const periodDoc = doc(db, 'periods', id);
     await updateDoc(periodDoc, period);
+    syncCourses(id);
+};
+
+
+export const syncCourses = async (periodId: string): Promise<void> => {
+    const coursesCollection = collection(db, `periods/${periodId}/courses`);
+    const coursesSnapshot = await getDocs(coursesCollection);
+    const ids = coursesSnapshot.docs.map(doc => doc.id);
+
+    console.log({ids, periodId});
+    
+
+    const periodDocRef = doc(db, `periods/${periodId}`);
+    await updateDoc(periodDocRef, {
+        coursesIds: ids 
+    });
 };

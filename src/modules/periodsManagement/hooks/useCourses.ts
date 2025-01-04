@@ -29,12 +29,9 @@ const useCourses = (periodId: string) => {
                 const teacher = availableTeachers.find(t => t.id === course.teacherId);                
                 return {
                     ...course,
-                    teacherName: teacher ? teacher.name : 'Unknown Course',
+                    teacherName: teacher ? teacher.name : 'Unknown Teacher',
                 };
-            });
-            console.log({data,
-                detailedData});
-            
+            });            
             setData(detailedData); 
         } catch (err) {
             showNotification('Error fetching courses', 'error'); 
@@ -46,8 +43,7 @@ const useCourses = (periodId: string) => {
     const loadAvailableCourses = async () => {
         try {
             setLoading(true);
-            const data = await fetchAvailableCourses();
-            console.log({data});            
+            const data = await fetchAvailableCourses();         
             setAvailableCourses(data); 
         } catch (err) {
             showNotification('Error fetching courses', 'error'); 

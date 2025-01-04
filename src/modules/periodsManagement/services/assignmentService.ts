@@ -11,9 +11,7 @@ export const fetchAssignments = async (periodId: string, courseId: string): Prom
     const docs = assignmentsSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data() as Omit<Assignment, 'id'>
-    }))  
-    console.log({periodId,
-        courseId, docs});
+    })) as Assignment[];
     return docs;
 };
 
@@ -25,10 +23,10 @@ export const addAssignment = async (periodId: string, courseId: string, newAssig
     console.log('Assignment added with ID: ', assignmentDoc.id);    
        
         
-    // Update the assignmentIds in the period document
+    // Update the assignmentsIds in the period document
     const courseDocRef = doc(db, `periods/${periodId}/courses/${courseId}`);
     await updateDoc(courseDocRef, {
-        assignmentIds: arrayUnion(assignmentDoc.id) // Add the new course ID to the array
+        assignmentsIds: arrayUnion(assignmentDoc.id) // Add the new course ID to the array
     });
     
 };
@@ -66,20 +64,23 @@ export const deleteAssignment = async (periodId: string, courseId: string, assig
     const assignmentDocRef = doc(db, `periods/${periodId}/courses/${courseId}/assignments/${assignmentId}`);
     await deleteDoc(assignmentDocRef);
 
-    // Update the coursesIds in the period document
+    // Update the assignmentsIds in the period document
     const periodDocRef = doc(db, `periods/${periodId}`);
     await updateDoc(periodDocRef, {
-        coursesIds: arrayRemove(courseId) // Remove the course ID from the array
+        assignmentsIds: arrayRemove(courseId) // Remove the course ID from the array
     });
 };
 
-const syncAssignments = async (periodId: string, courseId: string,): Promise<void> => {
+export const syncAssignments = async (periodId: string, courseId: string,): Promise<void> => {
     const assignmentsCollection = collection(db, `periods/${periodId}/courses/${courseId}/assignments`);
     const assignmentsSnapshot = await getDocs(assignmentsCollection);
-    const ids = assignmentsSnapshot.docs.map(doc => doc.id);    
+    const ids = assignmentsSnapshot.docs.map(doc => doc.id);
 
-    const periodDocRef = doc(db, `periods/${periodId}`);
+    console.log({ids, periodId, courseId});
+    
+
+    const periodDocRef = doc(db, `periods/${periodId}/courses/${courseId}`);
     await updateDoc(periodDocRef, {
-        coursesIds: ids 
+        assignmentsIds: ids 
     });
 };

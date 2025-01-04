@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { addAssignment, addAssignmentsBatch, deleteAssignment, fetchAssignments, updateAssignment } from "../services/assignmentService";
+import { addAssignment, addAssignmentsBatch, deleteAssignment, fetchAssignments, updateAssignment, syncAssignments } from "../services/assignmentService";
 import { Assignment } from "../../../types/types";
 import { useNotification } from "../../../components/notification/NotificationContext";
 
@@ -89,20 +89,22 @@ const useAssignments = (props: AssignmentsManagerProps) => {
 
   const validateAssignment = (assignment: Assignment): boolean => {
     // Check if the assignment already exists
-    const exists = data.some(existingAssignment => existingAssignment.title === assignment.title);
-    if (exists) {
-        showNotification('The assignment already exists', 'error');
-        return false;
-    }
+      const exists = data.some(existingAssignment => existingAssignment.title === assignment.title);
+      if (exists) {
+          showNotification('The assignment already exists', 'error');
+          return false;
+      }
 
-    // Validate assignment data
-    if (!assignment.title || typeof assignment.contributionPercentage !== 'number' || assignment.contributionPercentage < 0 || assignment.contributionPercentage > 100) {
-        showNotification('Invalid assignment data', 'error');
-        return false;
-    }
+      // Validate assignment data
+      if (!assignment.title || typeof assignment.contributionPercentage !== 'number' || assignment.contributionPercentage < 0 || assignment.contributionPercentage > 100) {
+          showNotification('Invalid assignment data', 'error');
+          return false;
+      }
 
-    return true;
-};
+      return true;
+  };
+
+
 
 
   const handleUpdateAssignment = useCallback(
@@ -135,6 +137,25 @@ const useAssignments = (props: AssignmentsManagerProps) => {
     [periodId, courseId, loadData, setLoading]
   );
 
+  const handleSyncAssignments = async () => {
+    try {
+      console.log('Syncing assignments for period:', periodId, 'course:', courseId);
+      if (!periodId || !courseId) {
+        setError('Invalid period or course ID');
+        return;
+      }
+      setLoading(true);
+      
+      await syncAssignments(periodId, courseId);
+      // Optionally, you can reload students or perform any other necessary actions after syncing
+      await loadData();
+    } catch (err) {
+      setError('Error syncing assignments');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     assignments: data,
     loadAssignments: loadData,
@@ -145,6 +166,7 @@ const useAssignments = (props: AssignmentsManagerProps) => {
     handleAddAssignments,
     handleUpdateAssignment,
     handleDeleteAssignment,
+    handleSyncAssignments
   };
 };
 
