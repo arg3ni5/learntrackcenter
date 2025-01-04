@@ -1,11 +1,3 @@
-// src/modules/studentsManagement/types.ts
-
-export interface Assignment {
-    id?: string; // Optional ID property, used when fetching from Firestore
-    title: string; // Title of the assignment
-    grade: number; // Grade obtained for the assignment
-    contributionPercentage: number; // Contribution percentage to final grade
-}
 export type CourseStatus = 
     | 'Passed' 
     | 'Failed' 
@@ -18,7 +10,7 @@ export interface Course { // Renamed from Materia to Course
     courseId: string; // Reference to the Course document
     finalGrade: number; // Final grade for the course
     status: CourseStatus; // Approved or Reprobated status
-    assignments: string[]; // List of assignments for the course
+    assignmentsIds: string[]; // List of assignments for the course
 }
 
 export interface CourseWithDetails extends Course {

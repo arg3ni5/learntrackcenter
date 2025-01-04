@@ -1,5 +1,5 @@
 import { db } from '../../../services/firebase';
-import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, writeBatch } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, writeBatch, query, where } from 'firebase/firestore';
 import { Student } from '../../../types/types';
 
 // Function to add a new student
@@ -70,4 +70,18 @@ export const updateStudent = async (id: string, updatedStudent: Partial<Student>
     const { id: _, ...student } = updatedStudent;    
     const studentDoc = doc(db, 'students', id); // Reference to the specific student document
     await updateDoc(studentDoc, student); // Update the document with new data
+};
+
+export const fetchStudentsByCourseId = async (courseId: string): Promise<Student[]> => {
+    const studentsCollection = collection(db, 'students');
+    const q = query(studentsCollection, where('coursesIds', 'array-contains', courseId));
+    const studentsSnapshot = await getDocs(q);
+    console.log(studentsSnapshot.docs.map(doc => doc.data()));
+    
+    return studentsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        fullName: doc.data().fullName,
+        identificationNumber: doc.data().identificationNumber,
+        email: doc.data().email,
+    })) as Student[];
 };

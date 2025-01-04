@@ -90,11 +90,10 @@ const useStudentCourses = (studentId: string) => {
 
   const handleAddCourse = async (studentId: string, newCourse: StudentCourse) => {
     try {
-      // if(courses.filter(course => course.courseId === newCourse.courseId).length > 0 )
-      // {
-      //     showNotification('Course already added', 'error');
-      //     return;
-      // }
+      if (studentCourses.filter((course) => course.periodId === newCourse.periodId).length > 0) {
+        showNotification("Course already added", "error");
+        return;
+      }
       setLoading(true);
       await addCourse(studentId, newCourse);
       loadStudentCourses(studentId);

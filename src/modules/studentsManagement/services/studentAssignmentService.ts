@@ -2,36 +2,36 @@
 
 import { db } from '../../../services/firebase';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-import { Assignment } from '../types';
-import { fetchAssignments as fetchAvalaibleAssignments } from '../../periodsManagement/services/assignmentService';
+import { fetchAssignments } from '../../periodsManagement/services/assignmentService';
+import { Assignment, StudentAssignment } from '../../../types/types';
 
-export const fetchAssignments = async (studentId: string, periodId: string, courseId: string): Promise<Assignment[]> => {
+export const fetchStudentAssignment = async (studentId: string, periodId: string, courseId: string): Promise<StudentAssignment[]> => {
     const assignmentsCollection = collection(db, `students/${studentId}/periods/${periodId}/courses/${courseId}/assignments`);
     const coursesSnapshot = await getDocs(assignmentsCollection);    
     return coursesSnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data() as Omit<Assignment, 'id'>
+        ...doc.data() as Omit<StudentAssignment, 'id'>
     }));
 };
 
-export const addAssignment = async (studentId: string, periodId: string, courseId: string, newAssignment: Assignment): Promise<void> => {
+export const addStudentAssignment = async (studentId: string, periodId: string, courseId: string, newAssignment: StudentAssignment): Promise<void> => {
     const assignmentsCollection = collection(db, `students/${studentId}/periods/${periodId}/courses/${courseId}/assignments`);
     await addDoc(assignmentsCollection, newAssignment);
 };
 
-export const loadAssignment = async (studentId: string, periodId: string, courseId: string): Promise<void> => {
-    console.log({periodId, courseId});    
-    const avalaibleAssignments = await fetchAvalaibleAssignments(periodId, courseId);
+export const fetchAvalaibleAssignments = async (studentId: string, periodId: string, courseId: string): Promise<void> => {
+    console.log({periodId, studentId, courseId});    
+    const avalaibleAssignments = await fetchAssignments(periodId, courseId);
     console.log("avalaibleAssignments", avalaibleAssignments);
     return;
 };
 
-export const updateAssignment = async (studentId: string, periodId: string, courseId: string, assignmentId: string, updatedAssignment: Partial<Assignment>): Promise<void> => {
+export const updateStudentAssignment = async (studentId: string, periodId: string, courseId: string, assignmentId: string, updatedAssignment: Partial<Assignment>): Promise<void> => {
     const assignmentDocRef = doc(db, `students/${studentId}/periods/${periodId}/courses/${courseId}/assignments/${assignmentId}`);
     await updateDoc(assignmentDocRef, updatedAssignment);
 };
 
-export const deleteAssignment = async (studentId: string, periodId: string, courseId: string, assignmentId: string): Promise<void> => {
+export const deleteStudentAssignment = async (studentId: string, periodId: string, courseId: string, assignmentId: string): Promise<void> => {
     const assignmentDocRef = doc(db, `students/${studentId}/periods/${periodId}/courses/${courseId}/assignments/${assignmentId}`);
     await deleteDoc(assignmentDocRef);
 };

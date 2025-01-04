@@ -1,19 +1,18 @@
 import { useEffect, useState, useCallback } from "react";
-import { Assignment, StudentAssignmentsManagerProps } from "../types";
-import { addAssignment, deleteAssignment, fetchAssignments, loadAssignment, updateAssignment } from "../services/assignmentService";
+import { StudentAssignmentsManagerProps } from "../types";
+import { addStudentAssignment, deleteStudentAssignment, fetchStudentAssignment, fetchAvalaibleAssignments, updateStudentAssignment } from "../services/studentAssignmentService";
+import { StudentAssignment } from "../../../types/types";
 
 const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
   const { courseId, studentId, periodId, periodCourseId } = props;
-  const [data, setData] = useState<Assignment[]>([]);
+  const [data, setData] = useState<StudentAssignment[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const fetchedData = await fetchAssignments(studentId, periodId, courseId);
-      console.log("fetchedData", fetchedData);
-      
+      const fetchedData = await fetchStudentAssignment(studentId, periodId, courseId);      
       setData(fetchedData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al cargar las calificaciones");
@@ -28,17 +27,17 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
       if (isMounted) await loadData();
     };
     fetchData();
-    handleLoadAssignment();
+    handleLoadAvalaibleAssignment();
     return () => {
       isMounted = false;
     };
   }, [courseId, loadData]);
 
   const handleAddAssignment = useCallback(
-    async (newAssignment: Assignment) => {
+    async (newAssignment: StudentAssignment) => {
       setLoading(true);
       try {
-        await addAssignment(studentId, periodId, courseId, newAssignment);
+        await addStudentAssignment(studentId, periodId, courseId, newAssignment);
         await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error adding assignment");
@@ -49,10 +48,10 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
     [studentId, periodId, courseId, loadData, setLoading]
   );
 
-  const handleLoadAssignment = useCallback(async () => {
+  const handleLoadAvalaibleAssignment = useCallback(async () => {
       setLoading(true);
       try {
-        await loadAssignment(studentId, periodId, periodCourseId);
+        await fetchAvalaibleAssignments(studentId, periodId, periodCourseId);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error adding assignment");
       } finally {
@@ -63,10 +62,10 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
   );
 
   const handleUpdateAssignment = useCallback(
-    async (assignmentId: string, updatedAssignment: Partial<Assignment>) => {
+    async (assignmentId: string, updatedAssignment: Partial<StudentAssignment>) => {
       setLoading(true);
       try {
-        await updateAssignment(studentId, periodId, courseId, assignmentId, updatedAssignment);
+        await updateStudentAssignment(studentId, periodId, courseId, assignmentId, updatedAssignment);
         await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error updating assignment");
@@ -81,7 +80,7 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
     async (assignmentId: string) => {
       setLoading(true);
       try {
-        await deleteAssignment(studentId, periodId, courseId, assignmentId);
+        await deleteStudentAssignment(studentId, periodId, courseId, assignmentId);
         await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error deleting assignment");
@@ -93,9 +92,9 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
   );
 
   return {
-    assignments: data,
+    studentAssignment: data,
     loadAssignments: loadData,
-    handleLoadAssignment,
+    handleLoadAvalaibleAssignment,
     loading,
     error,
     handleAddAssignment,

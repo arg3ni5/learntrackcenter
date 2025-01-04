@@ -5,14 +5,12 @@ import './PeriodsManager.css';
 import useStudentCourses from '../hooks/useStudentCourses';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Student, StudentCourse } from '../../../types/types';
-import CourseCard from './CourseCard';
-import AssignmentsSelector from './AssignmentsSelector';
-import AssignmentsManager from './AssignmentsManager';
+import Card, { CardField } from '../../../components/card/card';
 
 const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);
     const [selectedCourseId, setSelectedCourseId] = useLocalStorage<string|null>('selectedCourseId', null);
-    const { error, availableCourses, availablePeriods, studentCourses, handleAddCourse, setPeriodId } = useStudentCourses(student.id!);
+    const { error, availableCourses, availablePeriods, studentCourses, handleAddCourse, handleDeleteCourse, setPeriodId } = useStudentCourses(student.id!);
     
     const assignPeriodToStudent = async () => {
         if (selectedPeriodId && selectedCourseId) {
@@ -24,9 +22,8 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                 status: 'Not Started',
                 finalGrade: 0,
                 assignmentsIds: [],
-            };
-            await handleAddCourse(student.id!, newCourse); // Call the function to add the new period to the student
-            setSelectedPeriodId(null); // Reset selected period after assignment
+            };            
+            await handleAddCourse(student.id!, newCourse); // Call the function to add the new period
         }
     };
 
@@ -37,6 +34,20 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     };
 
     const isEqual = (id1:any, id2: any) => id1 && id2 && String(id1) === String(id2);
+
+    const fields: CardField[] = [
+        { name: "name", placeholder: "name" },
+        { name: "description", placeholder: "description" },
+        { name: "duration", placeholder: "duration" },
+        { name: "hours", placeholder: "hours" },
+        { name: "status", placeholder: "status" },
+        { name: "teacherName", placeholder: "teacherName" },
+        { name: "assignmentsIds", placeholder: "Assignments", type: "array" },
+      ];
+
+    const onDelete = async (id: string) => {
+        await handleDeleteCourse(student.id!, id);
+    }
 
     if (error) return <div className="error">{error}</div>; 
 
@@ -68,22 +79,12 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                 {selectedPeriodId && selectedCourseId && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
             </div>
 
-            {selectedPeriodId }-{ selectedCourseId}
-
-            {selectedPeriodId && selectedCourseId &&<AssignmentsSelector courseId={selectedCourseId} periodId={selectedPeriodId}/>}
-            <div className="container">
-                
+            {/* {selectedPeriodId && selectedCourseId &&<AssignmentsSelector courseId={selectedCourseId} periodId={selectedPeriodId}/>} */}
+            <div className="container">                
                 {studentCourses.map(course => (
-                    <>
-                        <CourseCard key={`card-${course.id}`} course={course}/>
-                        {selectedPeriodId && selectedCourseId &&
-                        <AssignmentsManager 
-                        periodCourseId={course.id!}
-                        studentId={selectedCourseId!} 
-                        periodId={selectedPeriodId!}
-                        courseId={course.id!}></AssignmentsManager>}
-                        
-                    </>                    
+                    <div key={`div-${course.id}`}>
+                        <Card<StudentCourse> titleName="name" fields={fields} data={course} onDelete={onDelete} ableDelete={course.assignmentsIds.length === 0}/>
+                    </div>                    
                 ))}
                 
             </div>

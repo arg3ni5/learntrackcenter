@@ -52,16 +52,6 @@
     border-bottom: 1px solid #ccc;
 }
 
-.periods-manager .card {
-    display: flex;
-    justify-content: space-between;
-}
-
-.periods-manager .card {
-    display: flex;
-    justify-content: space-between;
-}
-
 .active {
     background-color: #4CAF50 !important;
 }
