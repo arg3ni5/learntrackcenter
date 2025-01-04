@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { BaseField } from "../../../components/BaseModule/types";
 import Card, { CardField } from "../../../components/card/card";
 import { PeriodCourse } from "../../../types/types";
 import AssignmentsManager from "../../periodsManagement/components/AssignmentsManager";
@@ -16,7 +15,7 @@ import CourseStudentsManager from "./CourseStudentsManager";
  */
 interface CourseManagerProps {
     periodId: string | undefined;
-    course: PeriodCourse | undefined;
+    periodCourse: PeriodCourse | undefined;
 }
 
 /**
@@ -34,7 +33,7 @@ interface CourseManagerProps {
  * @example
  * <CourseManager periodId="period123" course={courseObject} />
  */
-const CourseManager: React.FC<CourseManagerProps> = ({ periodId, course }) => {
+const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse }) => {
   // State to keep track of the active section
   const [activeSection, setActiveSection] = useState<string>("course");
 
@@ -70,7 +69,7 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, course }) => {
 
   return (
     <>
-      <h1 className="title">{course?.name} Course Manage</h1>
+      <h1 className="title">{periodCourse?.name} Course Manage</h1>
       
       {/* Navigation buttons for different sections */}
       <div className="section-buttons">
@@ -95,18 +94,18 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, course }) => {
       </div>
 
       {/* Course details section */}
-      {activeSection === "course" && course && (
-        <Card<PeriodCourse> titleName="name" fields={fieldsCard} data={course}/>
+      {activeSection === "course" && periodCourse && (
+        <Card<PeriodCourse> titleName="name" fields={fieldsCard} data={periodCourse}/>
       )}
       
       {/* Assignments section */}
       {activeSection === "assignments" && (
-        <AssignmentsManager courseId={course?.id!} periodId={periodId!} />
+        <AssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />
       )}
       
       {/* Students section (placeholder) */}
       {activeSection === "students" && (
-        <CourseStudentsManager courseId={course?.id!} periodId={periodId!} />
+        <CourseStudentsManager periodCourse={periodCourse!} periodId={periodId!} />
       )}
     </>
   );
