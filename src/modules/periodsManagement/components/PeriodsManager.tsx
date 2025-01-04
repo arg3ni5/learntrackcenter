@@ -9,7 +9,7 @@ import useCourses from "../hooks/useCourses";
 import SelectInput from "../../../components/BaseModule/SelectInput";
 import useTeachers from "../../teachersManagement/hooks/useTeachers";
 import AssignmentsManager from "./AssignmentsManager";
-import Card, { CardField } from "../../../components/card/card";
+import CourseCard from "./CourseCard";
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const navigate = useNavigate();
@@ -46,17 +46,6 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
     }
   };
   const isEqual = (id1: any, id2: any) => id1 && id2 && String(id1) === String(id2);
-
-  const fields: CardField[] = [
-    { name: "name", placeholder: "name" },
-    { name: "description", placeholder: "description" },
-    { name: "duration", placeholder: "duration" },
-    { name: "hours", placeholder: "hours" },
-    { name: "status", placeholder: "status" },
-    // { name: "courseId", placeholder: "courseId" },
-    { name: "assignmentsIds", placeholder: "assignments", type:"array" },
-    { name: "teacherName", placeholder: "teacherName" },
-  ];
 
   return (
     <div className="periods-manager card">
@@ -102,9 +91,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
                 )}
               </div>
 
-              <Card<Course> 
-              titleName="name"
-              fields={fields}
+              <CourseCard
               data={course} 
               viewLink={`/period/${periodId}/course/${course.id}`}/>
 

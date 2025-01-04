@@ -81,9 +81,9 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
 
             {/* {selectedPeriodId && selectedCourseId &&<AssignmentsSelector courseId={selectedCourseId} periodId={selectedPeriodId}/>} */}
             <div className="container">                
-                {studentCourses.map(course => (
-                    <div key={`div-${course.id}`}>
-                        <Card<StudentCourse> titleName="name" fields={fields} data={course} onDelete={onDelete} ableDelete={course.assignmentsIds.length === 0}/>
+                {studentCourses.map(student => (
+                    <div key={`div-${student.id}`}>
+                        <Card<StudentCourse> titleName="name" fields={fields} data={student} onDelete={onDelete} ableDelete={student.assignmentsIds.length === 0}/>
                     </div>                    
                 ))}
                 
