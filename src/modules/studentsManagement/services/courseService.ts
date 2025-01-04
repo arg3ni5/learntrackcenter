@@ -4,7 +4,7 @@ import { db } from "../../../services/firebase";
 import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc, getDoc } from "firebase/firestore";
 import { Course as AvailableCourses } from "../../coursesManagement/services/courseService";
 import { arrayUnion, arrayRemove } from "firebase/firestore";
-import { StudentCourse } from "../../../types/types";
+import { Assignment, StudentCourse } from "../../../types/types";
 
 // Function to fetch available courses
 export const fetchAvailableCourses = async (): Promise<AvailableCourses[]> => {
@@ -39,6 +39,22 @@ export const addCourse = async (studentId: string, newCourse: StudentCourse): Pr
   await updateDoc(periodDocRef, {
     coursesIds: arrayUnion(newCourse.courseId),
   });
+
+  // Fetch assignments from the original course
+  const originalAssignmentsCollection = collection(db, `periods/${newCourse.periodId}/courses/${newCourse.courseId}/assignments`);
+  const assignmentsSnapshot = await getDocs(originalAssignmentsCollection);
+
+  assignmentsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...(doc.data() as Omit<Assignment, "id">),
+  }));
+
+  // Add assignments to the student's course
+  const studentCourseAssignmentsCollection = collection(db, `students/${studentId}/courses/${courseDoc.id}/assignments`);
+  for (const assignmentDoc of assignmentsSnapshot.docs) {
+    const assignmentData = assignmentDoc.data();
+    await addDoc(studentCourseAssignmentsCollection, assignmentData);
+  }
 };
 
 // Function to delete a course by ID for a specific student
