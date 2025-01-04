@@ -8,6 +8,7 @@ import PeriodCourses from "../pages/PeriodCourses";
 import Loading from "../components/loading/Loading";
 import { useLoading } from "../components/loading/LoadingContext";
 import StudentsCourses from "../pages/StudentsCourses";
+import CourseStudents from "../pages/CourseStudents";
 
 const Login = lazy(() => import("../components/Login"));
 const Register = lazy(() => import("../components/Register"));
@@ -60,7 +61,9 @@ const AppRoutes: React.FC = () => {
         <Route path="/grades" element={<PrivateRoute element={<Grades />} />} />
         <Route path="/periods" element={<PrivateRoute element={<Periods />} />} />
         <Route path="/periods/courses" element={<PrivateRoute element={<Periods />} />} />
-        <Route path="/periods/:id/courses" element={<PrivateRoute element={<PeriodCourses />} />} />
+        <Route path="/period/:id/courses" element={<PrivateRoute element={<PeriodCourses />} />} />
+        <Route path="/period/:periodId/course/:courseId" element={<PrivateRoute element={<CourseStudents />} />} />
+        <Route path="/course/:id/students" element={<PrivateRoute element={<CourseStudents />} />} />
         <Route path="*" element={<Navigate to="/" />} /> {/* Redirigir a la página de inicio */}
       </Routes>
   );
