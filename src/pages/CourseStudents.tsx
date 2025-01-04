@@ -9,7 +9,7 @@ const CourseStudents: React.FC = () => {
 
     return (
         <>
-            {!loading && course && <CourseManager periodId={periodId} course={course!}/>}
+            {!loading && course && <CourseManager periodId={periodId} periodCourse={course!}/>}
         </>
     );
 };
