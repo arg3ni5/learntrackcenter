@@ -3,8 +3,7 @@ export interface Assignment {
     title: string; // Title of the assignment
     contributionPercentage: number; // Contribution percentage to final grade
 }
-export interface AssignmentStudent extends Assignment {
-    id?: string; // Optional ID property, used when fetching from Firestore
+export interface StudentAssignment extends Assignment {
     assignmentId: string; // Title of the assignment
     grade: number; // Grade obtained for the assignment
     percentage: number; // Contribution percentage to final grade
@@ -32,6 +31,7 @@ export interface Course extends AvailableCourse{
     teacherName?: string; // To show name of teacher
     assignmentsIds: string[]; // List of assignments for the course
 }
+export interface PeriodCourse extends Course{}
 
 export interface StudentCourse extends Omit<AvailableCourse, 'duration' | 'hours'>{
     courseId: string; // Reference to the Course document
