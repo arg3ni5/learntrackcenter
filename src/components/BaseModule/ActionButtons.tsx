@@ -1,19 +1,27 @@
 import { Link } from "react-router-dom";
-import { ActionButtonsProps } from "./types";
+import { ActionButtonsProps } from "./types/types";
 
 const ActionButtons = <T extends Record<string, any>>({
-  ableForm,
-  ableImport,
-  seeable,
-  removeable,
-  showForm,
-  showImportForm,
-  selectedItem,
-  viewLinks,
-  handleShowForm,
-  handleShowImportForm,
-  onItemDeleted,
+  config,
+  handlers
 }: ActionButtonsProps<T>) => {
+  const {
+    ableForm,
+    ableImport,
+    seeable,
+    removeable,
+    showForm,
+    showImportForm,
+    selectedItem,
+    viewLinks
+  } = config;
+
+  const {
+    handleShowForm,
+    handleShowImportForm,
+    onItemDeleted
+  } = handlers;
+
   return (
     <div className="actions buttons-container compact">
       {ableForm && (

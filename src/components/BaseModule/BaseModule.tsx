@@ -3,7 +3,7 @@ import FormBase from "./FormBase";
 import ListBase from "./ListBase";
 import "./BaseModule.css";
 import { useNotification } from "../notification/NotificationContext";
-import { BaseModuleProps } from "./types";
+import { BaseModuleProps } from "./types/types";
 import UploadOptions from "../uploadStudents/UploadOptions";
 import UploadTable from "../uploadStudents/UploadTable";
 import '../../components/uploadStudents/UploadTable.css';

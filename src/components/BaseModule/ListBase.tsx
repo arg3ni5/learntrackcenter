@@ -1,11 +1,16 @@
 import "./BaseModule.css";
 import "./ListBase.css";
-import { useEffect, useMemo, useState } from "react";
-import { ListBaseProps } from "./types";
+
+import { useEffect, useState } from "react";
+import { ListBaseProps } from "./types/types";
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import ActionButtons from "./ActionButtons";
 import Pagination from "./Pagination";
+import { useFormVisibility } from "./hooks/useFormVisibility";
+import { useSorting } from "./hooks/useSorting";
+import { useFiltering } from "./hooks/useFiltering";
+import { usePagination } from "./hooks/usePagination";
 
 /**
  * ListBase Component
@@ -34,55 +39,12 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   } = rest;
 
   // State management
-  const [showForm, setShowForm] = useState<boolean>(isShowForm || false); // State to manage form visibility
-  const [showImportForm, setShowImportForm] = useState<boolean>(isShowImportForm || false); // State to manage import form visibility
+  const [showForm, setShowForm] = useFormVisibility(isShowForm);
+  const [showImportForm, setShowImportForm] = useFormVisibility(isShowImportForm);
   const [selectedItem, setSelectedItem] = useState<T | null>(initialSelectedItem); // State to store the currently selected item
-  const [sortConfig, setSortConfig] = useState<{ key: keyof T; direction: "ascending" | "descending" } | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage] = useState<number>(20);
-  const [filterText, setFilterText] = useState<string>("");
-
-  /**
-   * Handles the sorting of items when a column header is clicked.
-   * @param {keyof T} key - The key to sort by.
-   */
-  const handleSort = (key: keyof T) => {
-    let direction: "ascending" | "descending" = "ascending";
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
-  const filterItems = (items: T[]): T[] => {
-    if (!filterText) return items;
-    return items.filter((item) => Object.values(item).some((value) => value.toString().toLowerCase().includes(filterText.toLowerCase())));
-  };
-
-  // Memoized sorted items
-  // Memoized sorted and filtered items
-  const sortedAndFilteredItems = useMemo(() => {
-    let processedItems = items ? [...items] : [];
-    processedItems = filterItems(processedItems);
-    if (sortConfig !== null) {
-      processedItems.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return processedItems;
-  }, [items, sortConfig, filterText]);
-
-  // Paginated items
-  const paginatedItems = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    return sortedAndFilteredItems.slice(startIndex, startIndex + itemsPerPage);
-  }, [sortedAndFilteredItems, currentPage, itemsPerPage]);
+  const { sortConfig, handleSort, sortedItems } = useSorting(items!);
+  const { filterText, setFilterText, filteredItems } = useFiltering(sortedItems);
+  const { currentPage, paginatedItems, totalPages, handlePageChange } = usePagination(filteredItems, 20);
 
   /**
    * Handles the click event on a row, selecting or deselecting the item.
@@ -113,14 +75,6 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
     onHandleImport && onHandleImport(!state);
   };
 
-  /**
-   * Handles page change in pagination.
-   * @param {number} pageNumber - The new page number.
-   */
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
   // Effect to update form visibility when isShowForm changes
   useEffect(() => {
     setShowForm(isShowForm);
@@ -132,11 +86,26 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   }, [isShowImportForm]);
 
   const showActions = removeable || seeable; // Determine if action buttons should be shown
-  // Calculate total pages
-  const totalPages = Math.ceil(sortedAndFilteredItems.length / itemsPerPage);
   // Calculate item counts
   const totalItems = items ? items.length : 0;
-  const filteredItemsCount = sortedAndFilteredItems.length;
+  const filteredItemsCount = sortedItems.length;
+
+  const config = {
+    ableForm,
+    ableImport,
+    seeable,
+    removeable,
+    showForm,
+    showImportForm,
+    selectedItem,
+    viewLinks,
+  };
+
+  const handlers = {
+    handleShowForm,
+    handleShowImportForm,
+    onItemDeleted,
+  };
 
   // Render component
   return (
@@ -155,21 +124,8 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
         )}
 
         {/* Action buttons */}
-        {showActions && (
-          <ActionButtons
-            ableForm={ableForm}
-            ableImport={ableImport}
-            seeable={seeable}
-            removeable={removeable}
-            showForm={showForm}
-            showImportForm={showImportForm}
-            selectedItem={selectedItem}
-            viewLinks={viewLinks}
-            handleShowForm={handleShowForm}
-            handleShowImportForm={handleShowImportForm}
-            onItemDeleted={onItemDeleted}
-          />
-        )}
+        {showActions && <ActionButtons config={config} handlers={handlers} />}
+
         {/* Table container */}
         <div className={`table-container ${showActions ? "with-actions" : ""}`}>
           <TableHeader fields={fields} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} />

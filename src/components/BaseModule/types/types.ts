@@ -70,6 +70,15 @@ export interface LinkItem {
 }
 
 export interface ActionButtonsProps<T> {
+  config:ActionButtonsConfig<T>,
+  handlers:{
+    handleShowForm: (state: boolean) => void,
+    handleShowImportForm: (state: boolean) => void,
+    onItemDeleted?: (id: string) => void
+  }
+}
+
+export interface ActionButtonsConfig<T> {
   ableForm: boolean;
   ableImport: boolean;
   seeable: boolean;
@@ -78,7 +87,4 @@ export interface ActionButtonsProps<T> {
   showImportForm: boolean;
   selectedItem: T | null;
   viewLinks?: LinkItem[];
-  handleShowForm: (state: boolean) => void;
-  handleShowImportForm: (state: boolean) => void;
-  onItemDeleted?: (id: string) => void;
 }
