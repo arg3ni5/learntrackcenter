@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import Card, { CardField } from "../../../components/card/card";
+import React from "react";
 import { PeriodCourse } from "../../../types/types";
 import AssignmentsManager from "../../periodsManagement/components/AssignmentsManager";
 import CourseStudentsManager from "./CourseStudentsManager";
 import AvalibleStudents from "./AvalibleStudents";
 import useLocalStorage from "../../../hooks/useLocalStorage";
+import Card, { CardField } from "../../../components/card/Card";
 
 /**
  * CourseManagerProps Interface

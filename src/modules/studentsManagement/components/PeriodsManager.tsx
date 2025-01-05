@@ -5,7 +5,7 @@ import './PeriodsManager.css';
 import useStudentCourses from '../hooks/useStudentCourses';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Student, StudentCourse } from '../../../types/types';
-import Card, { CardField } from '../../../components/card/card';
+import Card, { CardField } from '../../../components/card/Card';
 
 const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);

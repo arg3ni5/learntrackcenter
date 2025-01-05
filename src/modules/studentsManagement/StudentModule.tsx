@@ -11,7 +11,7 @@ import './StudentModule.css';
 
 const StudentModule: React.FC = () => {
     const { setIsLoading } = useLoading();
-    const { students, loading, error, handleAddStudent, handleAddStudents, handleRemoveStudent, handleUpdateStudent } = useStudents();
+    const { students, loading, handleAddStudent, handleAddStudents, handleRemoveStudent, handleUpdateStudent } = useStudents();
     const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent", null);
     const navigate = useNavigate();
 

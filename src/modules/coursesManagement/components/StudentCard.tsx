@@ -1,6 +1,6 @@
 import React from 'react';
 import { Student } from '../../../types/types';
-import Card, { CardField } from '../../../components/card/card';
+import Card, { CardField } from '../../../components/card/Card';
 
 interface StudentCardProps {
     student: Student;

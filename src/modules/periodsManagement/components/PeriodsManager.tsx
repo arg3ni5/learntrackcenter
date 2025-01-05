@@ -37,6 +37,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
     if (selectedCourseId) {
       const course: Course = {
         ...courseWithoutId,
+        periodId,
         courseId: id!,
         status: "Not Started",
         assignmentsIds: [],

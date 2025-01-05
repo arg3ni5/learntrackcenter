@@ -1,6 +1,6 @@
 import { db } from '../../../services/firebase';
-import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc, getDoc, query, where } from 'firebase/firestore';
-import { PeriodCourse, StudentCourse } from '../../../types/types';
+import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc, getDoc } from 'firebase/firestore';
+import { PeriodCourse } from '../../../types/types';
 
 // Define the Course interface
 export interface Course {

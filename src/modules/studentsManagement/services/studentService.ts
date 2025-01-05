@@ -1,6 +1,6 @@
 import { db } from "../../../services/firebase";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, writeBatch, query, where } from "firebase/firestore";
-import { Student, StudentsCourse } from "../../../types/types";
+import { Student } from "../../../types/types";
 
 // Function to add a new student
 export const addStudent = async (student: Student): Promise<void> => {
