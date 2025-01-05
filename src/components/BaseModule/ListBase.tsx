@@ -5,6 +5,7 @@ import { ListBaseProps } from "./types";
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import ActionButtons from "./ActionButtons";
+import Pagination from "./Pagination";
 
 /**
  * ListBase Component
@@ -166,15 +167,11 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
           <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} handleRowClick={handleRowClick} />
         </div>
         {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="pagination">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button key={page} onClick={() => handlePageChange(page)} className={currentPage === page ? "active" : ""}>
-                {page}
-              </button>
-            ))}
-          </div>
-        )}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </>
     )
   );
