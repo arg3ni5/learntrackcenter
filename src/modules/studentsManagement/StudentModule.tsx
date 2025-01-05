@@ -63,13 +63,13 @@ const StudentModule: React.FC = () => {
                 initialFormData={selectedStudent}
                 onView={handleOnView}
                 onSelect={handleOnSelect}
+                ableFilter={true}
                 showForm={false}
                 ableForm={true}
                 ableImport={true}
                 clearFormAfterAdd={true}
                 loading={loading}>
             </BaseModule>
-            {error && <div className="error">{error}</div>} {/* Display error message if exists */}
         </>
     );
 };

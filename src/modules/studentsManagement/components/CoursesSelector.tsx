@@ -2,7 +2,7 @@
 
 import React from 'react';
 import './CoursesManager.css';
-import { BaseField } from '../../../components/BaseModule/types';
+import { BaseField } from '../../../components/BaseModule/types/types';
 import { AvailableCourse, Student } from '../../../types/types';
 import useStudentCourses from '../hooks/useStudentCourses';
 import BaseModule from '../../../components/BaseModule/BaseModule';

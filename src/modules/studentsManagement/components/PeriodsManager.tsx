@@ -17,8 +17,9 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
             const {id, duration, hours, ...selectedCourse} = availableCourses.filter(course => course.id === selectedCourseId)[0];
             const newCourse : StudentCourse = {
                 ...selectedCourse,
-                courseId: id!,
                 periodId: selectedPeriodId,
+                periodCourseId: selectedCourseId,
+                courseId: selectedCourseId,
                 status: 'Not Started',
                 finalGrade: 0,
                 assignmentsIds: [],

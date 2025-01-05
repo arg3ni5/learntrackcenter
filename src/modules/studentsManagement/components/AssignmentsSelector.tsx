@@ -5,7 +5,7 @@ import './CoursesManager.css';
 import { Assignment } from '../../../types/types';
 import useAssignments from '../../periodsManagement/hooks/useAssignments';
 import { AssignmentsSelectorProps } from '../types';
-import { BaseField } from '../../../components/BaseModule/types';
+import { BaseField } from '../../../components/BaseModule/types/types';
 import BaseModule from '../../../components/BaseModule/BaseModule';
 
 const AssignmentsSelector: React.FC<AssignmentsSelectorProps> = ({ periodId, courseId }) => {

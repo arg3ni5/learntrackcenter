@@ -3,11 +3,6 @@ export interface Assignment {
     title: string; // Title of the assignment
     contributionPercentage: number; // Contribution percentage to final grade
 }
-export interface StudentAssignment extends Assignment {
-    assignmentId: string; // Title of the assignment
-    grade: number; // Grade obtained for the assignment
-    percentage: number; // Contribution percentage to final grade
-}
 
 export type CourseStatus = 
     | 'Passed' 
@@ -27,18 +22,13 @@ export interface AvailableCourse {
 export interface Course extends AvailableCourse{
     status?: CourseStatus; // Approved or Reprobated status
     courseId: string; // Reference to the Course document
+    periodId: string; // Reference to the Period document
     teacherId?: string; // Reference to the Teacher document
     teacherName?: string; // To show name of teacher
     assignmentsIds: string[]; // List of assignments for the course
 }
-export interface PeriodCourse extends Course{}
-
-export interface StudentCourse extends Omit<AvailableCourse, 'duration' | 'hours'>{
-    courseId: string; // Reference to the Course document
-    periodId: string; // Reference to the Period document
-    finalGrade: number; // Final grade for the course
-    status: CourseStatus; // Approved or Reprobated status
-    assignmentsIds: string[]; // List of assignments for the course
+export interface PeriodCourse extends Course{
+    periodCourseId: string; // Reference to the PeriodCourse document
 }
 
 export interface CourseWithDetails extends Course {
@@ -74,6 +64,35 @@ export interface Student {
     coursesIds: string[]; // List of periods for the student (renamed from periodos to periods)
 }
 
+
+
+export interface StudentCourse extends Omit<AvailableCourse, 'duration' | 'hours'>{
+    courseId: string; // Reference to the Course document
+    periodId: string; // Reference to the Period document
+    periodCourseId: string; // Reference to the Period/Course document
+    finalGrade: number; // Final grade for the course
+    status: CourseStatus; // Approved or Reprobated status
+    assignmentsIds: string[]; // List of assignments for the course
+}
+
+export interface StudentCourseDetails extends Omit<AvailableCourse, 'duration' | 'hours'>{
+    studentid?: string; // Optional ID property, used when fetching from Firestore
+    fullName: string; // Full name of the student
+    identificationNumber?: string; // Unique identification number for the student
+    email?: string;
+}
+
+
+export interface StudentsCourse extends Student {
+}
+
+export interface StudentAssignment extends Omit<Assignment, "contributionPercentage"> {
+    assignmentId: string; // Title of the assignment
+    grade: number; // Grade obtained for the assignment
+    gradeMax?: number; // Grade obtained for the assignment
+    percentage: number; // Contribution percentage to final grade
+    percentageMax?: number; // Maximum grade for the assignment
+}
 
 export interface AssignmentsManagerProps {
     studentId: string;

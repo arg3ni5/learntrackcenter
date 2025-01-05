@@ -2,7 +2,7 @@
 
 import { db } from '../../../services/firebase';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-import { fetchAssignments } from '../../periodsManagement/services/assignmentService';
+import { fetchAssignments } from '../../periodsManagement/services/periodAssignmentService';
 import { Assignment, StudentAssignment } from '../../../types/types';
 
 export const fetchStudentAssignment = async (studentId: string, periodId: string, courseId: string): Promise<StudentAssignment[]> => {

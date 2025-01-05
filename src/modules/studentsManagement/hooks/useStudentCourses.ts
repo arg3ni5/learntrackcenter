@@ -1,8 +1,8 @@
 // src/modules/studentsManagement/hooks/useCourses.ts
 
 import { useState, useEffect } from "react";
-import { addCourse, deleteCourse, fetchCourses } from "../services/courseService"; // Import your service to fetch available courses
-import { fetchCourses as fetchAvailableCourses } from "../../periodsManagement/services/courseService";
+import { addCourse, deleteCourse, fetchCourses } from "../services/studentCourseService"; // Import your service to fetch available courses
+import { fetchCourses as fetchAvailableCourses } from "../../periodsManagement/services/periodCourseService";
 import { CourseWithDetails, AvailableCourse, StudentCourse, Period } from "../../../types/types"; // Import the Course interface
 import { useNotification } from "../../../components/notification/NotificationContext";
 import useLocalStorage from "../../../hooks/useLocalStorage"; // Import the local storage hook
@@ -61,9 +61,13 @@ const useStudentCourses = (studentId: string) => {
   };
 
   const loadStudentCourses = async (studentId: string) => {
+    if(!selectedPeriodId){
+      showNotification("Not period selected", "error");
+      return;
+    }
     try {
       setLoading(true);
-      const studentCourses = await fetchCourses(studentId);
+      const studentCourses = await fetchCourses(studentId, selectedPeriodId);
       setStudentCourses(studentCourses);
     } catch (err) {
       showNotification("Error fetching courses", "error");
@@ -90,7 +94,13 @@ const useStudentCourses = (studentId: string) => {
 
   const handleAddCourse = async (studentId: string, newCourse: StudentCourse) => {
     try {
-      if (studentCourses.filter((course) => course.periodId === newCourse.periodId).length > 0) {
+      if(!selectedPeriodId){
+        showNotification("Not period selected", "error");
+        return
+      }
+      console.log(studentCourses);
+      
+      if (studentCourses.filter((course) => course.id === newCourse.periodCourseId).length > 0) {
         showNotification("Course already added", "error");
         return;
       }
@@ -105,12 +115,21 @@ const useStudentCourses = (studentId: string) => {
   };
 
   const handleDeleteCourse = async (studentId: string, courseId: string | undefined) => {
+    if(!selectedPeriodId){
+      showNotification("Not period selected", "error");
+      return;
+    }
+    if(!selectedPeriodId){
+      showNotification("Not period selected", "error");
+      return;
+    }
     try {
       if (!courseId) return;
       setLoading(true);
-      await deleteCourse(studentId, courseId);
+      await deleteCourse(studentId, selectedPeriodId, courseId);
       loadStudentCourses(studentId);
     } catch (err) {
+      console.error(err);      
       setError("Error deleting course");
       showNotification("Error deleting course", "error");
     } finally {
