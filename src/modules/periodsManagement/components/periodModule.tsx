@@ -34,7 +34,10 @@ const PeriodsModule: React.FC = () => {
                 onItemDeleted={handleDeletePeriod} // Handle deleting a period
                 onItemUpdated={handleUpdatePeriod} // Handle deleting a period
                 initialFormData={null} // No initial data for the form
-                viewLinkFormat="/period/:id/courses" // Link format for viewing a period
+                viewLinks={[
+                    { label: "Courses", format:"/period/:id/courses" },
+                    // { label: "Students", format:"/period/:id/students" },
+                ]} // Link format for viewing a period
                 onView={handleOnEdit}
                 loading={loading} // Loading state
                 showForm={false} // Show the form

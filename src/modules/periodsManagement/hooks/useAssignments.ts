@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { addAssignment, addAssignmentsBatch, deleteAssignment, fetchAssignments, updateAssignment, syncAssignments } from "../services/assignmentService";
+import { addAssignment, addAssignmentsBatch, deleteAssignment, fetchAssignments, updateAssignment, syncAssignments } from "../services/periodAssignmentService";
 import { Assignment } from "../../../types/types";
 import { useNotification } from "../../../components/notification/NotificationContext";
 

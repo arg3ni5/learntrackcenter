@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useNotification } from '../../../components/notification/NotificationContext';
 import useLocalStorage from '../../../hooks/useLocalStorage'; // Import the local storage hook
-import { addCourse, deleteCourse, updateCourse, fetchAvailableCourses, fetchCourses } from '../services/courseService';
+import { addCourse, deleteCourse, updateCourse, fetchAvailableCourses, fetchCourses } from '../services/periodCourseService';
 import { AvailableCourse, Course } from '../../../types/types'; // Import the Course interface
 import { useLoading } from '../../../components/loading/LoadingContext';
 import { fetchTeachers, Teacher } from '../../teachersManagement/services/teacherService';

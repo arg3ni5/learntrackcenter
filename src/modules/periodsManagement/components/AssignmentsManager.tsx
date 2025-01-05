@@ -3,7 +3,7 @@ import BaseModule from '../../../components/BaseModule/BaseModule';
 import useAssignments, { AssignmentsManagerProps } from '../hooks/useAssignments';
 import { Assignment } from '../../../types/types';
 import Loading from '../../../components/loading/Loading';
-import { BaseField } from '../../../components/BaseModule/types';
+import { BaseField } from '../../../components/BaseModule/types/types';
 
 const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, courseId }) => {
     const { assignments, loading, error, handleAddAssignment, handleAddAssignments, handleDeleteAssignment, handleUpdateAssignment, handleSyncAssignments } = useAssignments({ periodId, courseId });
