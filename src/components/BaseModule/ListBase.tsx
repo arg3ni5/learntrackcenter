@@ -2,7 +2,7 @@ import "./BaseModule.css";
 import "./ListBase.css";
 
 import { useEffect, useState } from "react";
-import { ListBaseProps } from "./types/types";
+import { ActionButtonsConfig, ListBaseProps } from "./types/types";
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import ActionButtons from "./ActionButtons";
@@ -23,16 +23,18 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   const {
     fields,
     items,
-    onItemDeleted,
-    onHandleImport,
     ableFilter = false,
     ableForm,
     ableImport,
     removeable,
     seeable,
-    onAdd,
     viewLinks,
+    onAdd,
+    onImport,
     onSelect,
+    onItemDeleted,
+    onItemsUpdated,
+    tempChanges, setTempChanges,
     selectedItem: initialSelectedItem,
     showForm: isShowForm = false,
     showImportForm: isShowImportForm = false,
@@ -72,7 +74,14 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   const handleShowImportForm = (state: boolean) => {
     onAdd && onAdd(true);
     setShowImportForm(!state);
-    onHandleImport && onHandleImport(!state);
+    onImport && onImport(!state);
+  };
+
+  const handleSaveAllChanges = async () => {
+    if (onItemsUpdated) {
+      console.log("handleSaveAllChanges", tempChanges);      
+      await onItemsUpdated(tempChanges);
+    }
   };
 
   // Effect to update form visibility when isShowForm changes
@@ -90,7 +99,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   const totalItems = items ? items.length : 0;
   const filteredItemsCount = sortedItems.length;
 
-  const config = {
+  const config : ActionButtonsConfig<T> = {
     ableForm,
     ableImport,
     seeable,
@@ -99,12 +108,21 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
     showImportForm,
     selectedItem,
     viewLinks,
+    tempChanges,
+    setTempChanges
   };
 
   const handlers = {
     handleShowForm,
     handleShowImportForm,
     onItemDeleted,
+    setTempChanges,
+    onSaveAllChanges: handleSaveAllChanges, 
+  };
+
+  const handlersTbody = {
+    setTempChanges,
+    handleRowClick
   };
 
   // Render component
@@ -124,12 +142,15 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
         )}
 
         {/* Action buttons */}
-        {showActions && <ActionButtons config={config} handlers={handlers} />}
+        {showActions && <ActionButtons config={config} handlers={handlers} 
+        hasPendingChanges={Object.keys(tempChanges).length > 0}
+        />}
 
         {/* Table container */}
         <div className={`table-container ${showActions ? "with-actions" : ""}`}>
           <TableHeader fields={fields} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} />
-          <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} handleRowClick={handleRowClick} />
+          <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} 
+            tempChanges={tempChanges} handlers={handlersTbody}/>
         </div>
         {/* Pagination */}
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />

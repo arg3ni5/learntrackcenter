@@ -1,26 +1,24 @@
-// src/components/FormBase.tsx
-
 import React, { useState, useEffect } from "react";
-import "./FormBase.css"; // Importing CSS styles
-import SelectInput from "./SelectInput"; // Ensure you import your SelectInput component
+import "./FormBase.css";
+import SelectInput from "./SelectInput";
 import { BaseField } from "./types/types";
 
 interface FormBaseProps<T> {
   fields: BaseField[];
   initialData?: T | null;
   isEditing?: boolean;
-  onItemUpdated?: (updatedItem: T) => Promise<void>; // Optional callback to handle updating
-  onItemAdded: (newItem: T) => Promise<void>; // Callback to handle adding an item
-  onCancelEdit?: () => void; // Callback for canceling edit
+  onItemUpdated?: (updatedItem: T) => Promise<void>;
+  onItemAdded: (newItem: T) => Promise<void>;
+  onCancelEdit?: () => void;
   clearFormAfterAdd?: boolean;
 }
 
-const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, onItemUpdated, onCancelEdit, clearFormAfterAdd }: FormBaseProps<T>) => {
-  const [formData, setFormData] = useState<Record<string, string | null>>({});
+const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, onItemUpdated, onCancelEdit, clearFormAfterAdd = false }: FormBaseProps<T>) => {
+  const [formData, setFormData] = useState<Record<string, string | number>>({});
 
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData as Record<string, string | null>); // Load initial data into the form
+      setFormData(initialData as Record<string, string | number>);
     }
   }, [initialData]);
 
@@ -29,67 +27,80 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSelectChange = (selectedOption: any) => {
-    setFormData({ ...formData, [selectedOption.name]: selectedOption.value }); // Update state with selected option
+  const handleSelectChange = ({ name, value }: { name: string; value: string | number }) => {
+    setFormData({ ...formData, [name]: value });
   };
 
+  const resetForm = () => setFormData({});
+
   const addItem = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent default form behavior
+    e.preventDefault();
 
     if (initialData && isEditing) {
-      await onItemUpdated?.(formData as T); // Call the callback to handle the update if it exists
+      await onItemUpdated?.(formData as T);
     } else {
-      await onItemAdded(formData as T); // Call the callback to handle adding
+      await onItemAdded(formData as T);
     }
 
-    clearFormAfterAdd === true && setFormData({}); // Reset form after adding or updating
+    if (clearFormAfterAdd) resetForm();
   };
 
   const handleCancelEdit = () => {
-    setFormData({}); // Reset form data
-    if (onCancelEdit) {
-      onCancelEdit(); // Notify parent to cancel editing
+    resetForm();
+    if (onCancelEdit) onCancelEdit();
+  };
+
+  const renderInputField = (field: BaseField) => {
+    const commonProps = {
+      key: field.name,
+      name: field.name,
+      placeholder: field.placeholder,
+      value: formData[field.name] || "",
+      required: true,
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        // if (field.onChange) {
+        //   field.onChange(value); // Usar el onChange personalizado si está definido
+        // } else {
+        //   handleInputChange(e); // Usar el manejador por defecto
+        // }
+        handleInputChange(e);
+        field.onChange && field.onChange(value);
+      },
+    };
+
+    switch (field.type) {
+      case "select":
+        return (
+          field.options && (
+            <SelectInput
+              options={field.options}
+              label={field.label}
+              {...commonProps}
+              onChange={(selectedOption) => {
+                const value = selectedOption.value;
+                if (field.onChange) {
+                  field.onChange(value); // Usar el onChange personalizado
+                } else {
+                  handleSelectChange({ name: field.name, value });
+                }
+              }}
+            />
+          )
+        );
+      case "number":
+        return <input type="number" min="0" max={formData[`${field.name}Max`] || 100} {...commonProps} />;
+      case "date":
+        return <input type="date" {...commonProps} />;
+      case "input":
+      default:
+        return <input type="text" {...commonProps} />;
     }
   };
 
   return (
     <form onSubmit={addItem} className={isEditing ? "editing" : ""}>
-      {fields.map((field) => {
-        const type = field.type || "input";
-        switch (type) {
-          case "select":
-            return (
-              field.options && (
-                <SelectInput
-                  label={field.label}
-                  key={field.name}
-                  options={field.options}
-                  value={formData[field.name] || ""}
-                  onChange={(selectedOption) => handleSelectChange({ name: field.name, ...selectedOption })}
-                  placeholder={field.placeholder}
-                />
-              )
-            );
-          case "number":
-            return (
-              <input key={field.name} type="number" min="0" max={formData[`${field.name}Max`]||100} name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required/>
-            );
-
-          case "date":
-            return (
-              <input key={field.name} type="date" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required/>
-            );
-
-            break;
-          case "input":
-            return (
-              <input key={field.name} type="text" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required/>
-            );
-
-          default:
-            break;
-        }
-      })}
+      {fields.map(renderInputField)}
       <div className="buttons-container">
         <button className="save-button" type="submit">
           {isEditing ? "Save" : "Add"}

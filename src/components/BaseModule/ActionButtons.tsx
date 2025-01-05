@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { ActionButtonsProps } from "./types/types";
 
-const ActionButtons = <T extends Record<string, any>>({
+const ActionButtons = <T extends Record<string, any>>({  
+  hasPendingChanges,
   config,
   handlers
 }: ActionButtonsProps<T>) => {
@@ -13,14 +14,21 @@ const ActionButtons = <T extends Record<string, any>>({
     showForm,
     showImportForm,
     selectedItem,
-    viewLinks
+    viewLinks,
+    tempChanges
   } = config;
 
   const {
     handleShowForm,
     handleShowImportForm,
-    onItemDeleted
+    onItemDeleted,
+    onSaveAllChanges
   } = handlers;
+
+  const handleSaveAllChanges = (event: React.MouseEvent<HTMLButtonElement>, changes: Record<string, Record<string, number>>) => {
+    console.log("ActionButtons", changes);
+    onSaveAllChanges && onSaveAllChanges(event, changes);
+  };
 
   return (
     <div className="actions buttons-container compact">
@@ -50,10 +58,14 @@ const ActionButtons = <T extends Record<string, any>>({
             {link.label}
           </Link>
         ))}
-
       {removeable && onItemDeleted && (
         <button disabled={!selectedItem} className="delete-button" onClick={() => selectedItem?.id && onItemDeleted(selectedItem.id)} aria-label="Delete selected item">
           Delete
+        </button>
+      )}
+      {hasPendingChanges && (
+        <button onClick={(e) => handleSaveAllChanges(e, tempChanges)} className="save-all-button" aria-label="Save all changes">
+          Save All Changes
         </button>
       )}
     </div>

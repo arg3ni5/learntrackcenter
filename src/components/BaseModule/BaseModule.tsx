@@ -24,7 +24,7 @@ const BaseModule = <T extends Record<string, any>>({
   ...rest 
 }: BaseModuleProps<T>) => {
   const { title, fields, items, fetchItems, initialFormData: iniFormData, loading, onView,
-    viewLinks, onSelect, onItemAdded, onItemsAdded, onItemUpdated, onItemDeleted } = rest;
+    viewLinks, onSelect, onItemAdded, onItemsAdded, onItemUpdated, onItemsUpdated, onItemDeleted } = rest;
 
   const { showNotification } = useNotification();
   const isEmpty = items?.length === 0;
@@ -38,6 +38,8 @@ const BaseModule = <T extends Record<string, any>>({
   const [currentItem, setCurrentItem] = useState<T | null>(null);
   const [dataImport, setDataImport] = useState<T[]>([]);
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
+  const [tempChanges, setTempChanges] = useState<Record<string, Record<string, number>>>({});
+
 
   /**
    * Load items by calling the fetchItems callback.
@@ -120,6 +122,20 @@ const BaseModule = <T extends Record<string, any>>({
     showNotification("File uploaded successfully!", "success");
   };
 
+  const handleSaveAllChanges = async () => {
+    try {
+      if (onItemsUpdated) {
+        console.log("BaseModule",tempChanges);        
+        onItemsUpdated && onItemsUpdated(tempChanges); // Llama al callback con los cambios temporales
+      }
+      setTempChanges({}); // Limpiar los cambios temporales después de guardar
+    } catch (error) {
+      console.error("Error saving changes:", error);
+      showNotification("Error saving changes", "error");
+    }
+  };
+  
+
   // Effects
   useEffect(() => {
     if (isEmpty && !loading) {
@@ -137,6 +153,13 @@ const BaseModule = <T extends Record<string, any>>({
     }
     loadItems();
   }, [importData]);
+  
+  useEffect(() => {
+    if (!!onItemAdded) {
+      setIsEditing(true);
+    }
+    loadItems();
+  }, [isEditing]);
 
   // Ensure at least one field is visible
   if (fields.filter((f) => f.view === true).length === 0) fields.forEach((f) => f.view = true);
@@ -190,10 +213,13 @@ const BaseModule = <T extends Record<string, any>>({
               ableImport={ableImport}
               showForm={showForm}
               showImportForm={showImportForm}
+              tempChanges={tempChanges}
+              setTempChanges={setTempChanges}
               onAdd={setShowForm}
-              onHandleImport={setShowImportForm}
+              onImport={setShowImportForm}
               onSelect={handleOnSelect}
               onItemDeleted={handleItemDelete}
+              onItemsUpdated={handleSaveAllChanges}
               viewLinks={viewLinks}
               loading={loading || false}
             />

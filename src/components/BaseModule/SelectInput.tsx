@@ -9,7 +9,7 @@ interface SelectInputProps {
     isMulti?: boolean; // Permitir selección múltiple
     defaultValue?: any; // Valor por defecto
     label?: string; // Etiqueta opcional
-    value: string;
+    value: string | number; // Cambiar a string | number
 }
 
 const SelectInput: React.FC<SelectInputProps> = ({

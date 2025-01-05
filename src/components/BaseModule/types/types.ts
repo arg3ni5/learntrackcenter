@@ -14,77 +14,91 @@ export interface BaseField extends Field {
   type?: FieldType; // Field type (input or select)
   options?: Option[]; // Options for the select
   view?: boolean;
+  onChange?: (value: any) => void;
 }
 
-export interface UploadField extends Field{
-}
-
-export interface BaseModuleProps<T> {
-  title?: string;
+export interface CommonProps<T> {
   fields: BaseField[];
-  items?: T[]; // Function to fetch items
+  alias?: string; // Use for saving in local storage
+  loading?: boolean;
+  items?: T[];
+  ableForm?: boolean;
+  showForm?: boolean;
+  ableFilter?: boolean;
+  ableImport?: boolean;
+  viewLinks?: LinkItem[];
+}
+
+
+export interface UploadField extends Field {}
+
+export interface BaseModuleProps<T> extends CommonProps<T> {
+  title?: string;
   fetchItems?: () => Promise<T[]>; // Function to fetch items
   onView?: (item: T) => void; // Optional callback to handle view
   onSelect?: (item: T | null) => void; // Optional callback to handle select
   onItemAdded?: (newItem: T) => Promise<void>; // Callback to handle adding an item
-  onItemsAdded?: (items: T[]) => Promise<void>; // Callback to handle adding an item
+  onItemsAdded?: (items: T[]) => Promise<void>; // Callback to handle adding multiple items
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
+  onItemsUpdated?: (changes: Record<string, Record<string, number>>) => void;
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
   initialFormData?: T | null; // Initial data for the form
-  loading?: boolean;
   children?: React.ReactNode;
-  showForm?: boolean;
-  ableFilter?: boolean;
-  ableForm?: boolean;
-  ableImport?: boolean;
   clearFormAfterAdd?: boolean;
-  viewLinks?: LinkItem[];
 }
 
-export interface ListBaseProps<T> {
-  fields: BaseField[];
-  loading: boolean;
-  items?: T[];
+export interface ListBaseProps<T> extends CommonProps<T> {
   selectedItem: T | null;
-  showForm?: boolean;
-  showImportForm?: boolean;
-  onImportItem?: (newItem: any) => void;
-  onItemDeleted?: (id: string) => void;
-  ableFilter?: boolean;
-  ableForm: boolean;
-  ableImport: boolean;
+  showImportForm: boolean;
   editable: boolean;
   removeable: boolean;
-  seeable: boolean;  
-  viewLinks?: LinkItem[];
-  onHandleImport?: (state: boolean) => void;
+  seeable: boolean;
+  tempChanges: Record<string, Record<string, number>>;
+  setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
   onAdd?: (state: boolean) => void;
-  onSelect?: (item: T | null) => void;
+  onSelect?: (item: T | null) => void;  
+  onImportItem?: (newItem: any) => void;
+  onItemDeleted?: (id: string) => void;
+  onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>; 
+  onImport?: (state: boolean) => void;
 }
-
 
 export interface LinkItem {
   label: string;
-  format: string;  
+  format: string;
   class?: string;
 }
 
 export interface ActionButtonsProps<T> {
-  config:ActionButtonsConfig<T>,
-  handlers:{
-    handleShowForm: (state: boolean) => void,
-    handleShowImportForm: (state: boolean) => void,
-    onItemDeleted?: (id: string) => void
-  }
+  config: ActionButtonsConfig<T>;  
+  hasPendingChanges: boolean;
+  handlers: {
+    handleShowForm: (state: boolean) => void;
+    handleShowImportForm: (state: boolean) => void;
+    onItemDeleted?: (id: string) => void;
+    onSaveAllChanges?: (event: React.MouseEvent<HTMLButtonElement>, changes: Record<string, Record<string, number>>) => void;
+  };
 }
 
 export interface ActionButtonsConfig<T> {
-  ableForm: boolean;
-  ableImport: boolean;
   seeable: boolean;
   removeable: boolean;
   showForm: boolean;
   showImportForm: boolean;
   selectedItem: T | null;
+  setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>
+  tempChanges: Record<string, Record<string, number>>
   viewLinks?: LinkItem[];
+  ableForm?: boolean;
+  ableImport?: boolean;
+}
+
+export interface SelectInputProps {
+  options: { value: string; label: string }[]; // Opciones para el select
+  onChange: (selectedOption: { value: string; label: string } | null) => void; // Callback para manejar el cambio
+  placeholder?: string; // Placeholder opcional
+  isMulti?: boolean; // Permitir selección múltiple
+  defaultValue?: any; // Valor por defecto
+  label?: string; // Etiqueta opcional
+  value: { value: string; label: string } | null; // Cambiar a un objeto o null
 }
