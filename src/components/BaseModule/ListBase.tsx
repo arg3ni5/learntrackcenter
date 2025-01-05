@@ -38,7 +38,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   const [selectedItem, setSelectedItem] = useState<T | null>(initialSelectedItem); // State to store the currently selected item
   const [sortConfig, setSortConfig] = useState<{ key: keyof T; direction: "ascending" | "descending" } | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, ] = useState<number>(20);
+  const [itemsPerPage] = useState<number>(20);
   const [filterText, setFilterText] = useState<string>("");
 
   /**
@@ -138,12 +138,11 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   return (
     !loading && (
       <>
-      
-        {ableFilter && 
+        {ableFilter && (
           <div className="filter-container">
             <input type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
           </div>
-        }
+        )}
 
         {/* Action buttons */}
         {showActions && (
@@ -167,13 +166,15 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
           <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} handleRowClick={handleRowClick} />
         </div>
         {/* Pagination */}
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button key={page} onClick={() => handlePageChange(page)} className={currentPage === page ? "active" : ""}>
-              {page}
-            </button>
-          ))}
-        </div>
+        {totalPages > 1 && (
+          <div className="pagination">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button key={page} onClick={() => handlePageChange(page)} className={currentPage === page ? "active" : ""}>
+                {page}
+              </button>
+            ))}
+          </div>
+        )}
       </>
     )
   );
