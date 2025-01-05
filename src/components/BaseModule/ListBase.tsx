@@ -26,7 +26,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
     removeable,
     seeable,
     onAdd,
-    viewLinkFormat,
+    viewLinks,
     onSelect,
     selectedItem: initialSelectedItem,
     showForm: isShowForm = false,
@@ -155,7 +155,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
             showForm={showForm}
             showImportForm={showImportForm}
             selectedItem={selectedItem}
-            viewLinkFormat={viewLinkFormat}
+            viewLinks={viewLinks}
             handleShowForm={handleShowForm}
             handleShowImportForm={handleShowImportForm}
             onItemDeleted={onItemDeleted}

@@ -1,18 +1,5 @@
-import { Link } from 'react-router-dom';
-
-interface ActionButtonsProps<T> {
-  ableForm: boolean;
-  ableImport: boolean;
-  seeable: boolean;
-  removeable: boolean;
-  showForm: boolean;
-  showImportForm: boolean;
-  selectedItem: T | null;
-  viewLinkFormat?: string;
-  handleShowForm: (state: boolean) => void;
-  handleShowImportForm: (state: boolean) => void;
-  onItemDeleted?: (id: string) => void;
-}
+import { Link } from "react-router-dom";
+import { ActionButtonsProps } from "./types";
 
 const ActionButtons = <T extends Record<string, any>>({
   ableForm,
@@ -22,10 +9,10 @@ const ActionButtons = <T extends Record<string, any>>({
   showForm,
   showImportForm,
   selectedItem,
-  viewLinkFormat,
+  viewLinks,
   handleShowForm,
   handleShowImportForm,
-  onItemDeleted
+  onItemDeleted,
 }: ActionButtonsProps<T>) => {
   return (
     <div className="actions buttons-container compact">
@@ -39,28 +26,25 @@ const ActionButtons = <T extends Record<string, any>>({
         </button>
       )}
       {ableForm && ableImport && !showImportForm && (
-        <button
-          onClick={() => handleShowImportForm(showImportForm)}
-          aria-expanded={showImportForm}
-          aria-label={showImportForm ? "Add a new item" : "Hide the form"}>
+        <button onClick={() => handleShowImportForm(showImportForm)} aria-expanded={showImportForm} aria-label={showImportForm ? "Add a new item" : "Hide the form"}>
           Import
         </button>
       )}
-      {seeable && viewLinkFormat && (
-        <Link
-          to={selectedItem ? viewLinkFormat.replace(":id", selectedItem.id) : "#"}
-          className={`button view-button ${!selectedItem ? "disabled-link" : ""}`}
-          aria-label="View selected item"
-          onClick={(e) => !selectedItem && e.preventDefault()}>
-          View
-        </Link>
-      )}
+      {seeable &&
+        viewLinks &&
+        viewLinks.map((link, index) => (
+          <Link
+            key={index}
+            to={selectedItem ? link.format.replace(":id", selectedItem.id) : "#"}
+            className={`button view-button ${link.class || ""} ${!selectedItem ? "disabled-link" : ""}`}
+            aria-label={`View ${link.label}`}
+            onClick={(e) => !selectedItem && e.preventDefault()}>
+            {link.label}
+          </Link>
+        ))}
+
       {removeable && onItemDeleted && (
-        <button 
-          disabled={!selectedItem} 
-          className="delete-button" 
-          onClick={() => selectedItem?.id && onItemDeleted(selectedItem.id)} 
-          aria-label="Delete selected item">
+        <button disabled={!selectedItem} className="delete-button" onClick={() => selectedItem?.id && onItemDeleted(selectedItem.id)} aria-label="Delete selected item">
           Delete
         </button>
       )}

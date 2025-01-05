@@ -38,7 +38,7 @@ export interface BaseModuleProps<T> {
   ableForm?: boolean;
   ableImport?: boolean;
   clearFormAfterAdd?: boolean;
-  viewLinkFormat?: string;
+  viewLinks?: LinkItem[];
 }
 
 export interface ListBaseProps<T> {
@@ -56,8 +56,29 @@ export interface ListBaseProps<T> {
   editable: boolean;
   removeable: boolean;
   seeable: boolean;  
-  viewLinkFormat?: string;
+  viewLinks?: LinkItem[];
   onHandleImport?: (state: boolean) => void;
   onAdd?: (state: boolean) => void;
   onSelect?: (item: T | null) => void;
+}
+
+
+export interface LinkItem {
+  label: string;
+  format: string;  
+  class?: string;
+}
+
+export interface ActionButtonsProps<T> {
+  ableForm: boolean;
+  ableImport: boolean;
+  seeable: boolean;
+  removeable: boolean;
+  showForm: boolean;
+  showImportForm: boolean;
+  selectedItem: T | null;
+  viewLinks?: LinkItem[];
+  handleShowForm: (state: boolean) => void;
+  handleShowImportForm: (state: boolean) => void;
+  onItemDeleted?: (id: string) => void;
 }

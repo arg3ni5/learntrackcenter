@@ -23,7 +23,7 @@ const BaseModule = <T extends Record<string, any>>({
   ...rest 
 }: BaseModuleProps<T>) => {
   const { title, fields, items, fetchItems, initialFormData: iniFormData, loading, onView,
-    viewLinkFormat, onSelect, onItemAdded, onItemsAdded, onItemUpdated, onItemDeleted } = rest;
+    viewLinks, onSelect, onItemAdded, onItemsAdded, onItemUpdated, onItemDeleted } = rest;
 
   const { showNotification } = useNotification();
   const isEmpty = items?.length === 0;
@@ -192,7 +192,7 @@ const BaseModule = <T extends Record<string, any>>({
               onHandleImport={setShowImportForm}
               onSelect={handleOnSelect}
               onItemDeleted={handleItemDelete}
-              viewLinkFormat={viewLinkFormat}
+              viewLinks={viewLinks}
               loading={loading || false}
             />
           )}
