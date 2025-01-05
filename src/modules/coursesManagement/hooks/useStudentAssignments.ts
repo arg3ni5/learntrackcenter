@@ -1,10 +1,12 @@
 import { useEffect, useState, useCallback } from "react";
-import { addStudentAssignment, deleteStudentAssignment, fetchStudentAssignment, fetchAvalaibleAssignments, updateStudentAssignment } from "../services/studentAssignmentService";
+import { deleteStudentAssignment, fetchStudentAssignment, fetchAvalaibleAssignments, updateStudentAssignment } from "../services/studentAssignmentService";
 import { StudentAssignment } from "../../../types/types";
 import { StudentAssignmentsManagerProps } from "../types/types";
 
 const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
-  const { courseId, studentId, periodId, periodCourseId } = props;
+  console.log({props});
+  
+  const { studentId, periodId, periodCourseId, courseId } = props;
   const [data, setData] = useState<StudentAssignment[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -12,59 +14,44 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const fetchedData = await fetchStudentAssignment(studentId, periodId, courseId);      
+      const fetchedData = await fetchStudentAssignment(studentId, periodId, periodCourseId);
       setData(fetchedData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al cargar las calificaciones");
     } finally {
       setLoading(false);
     }
-  }, [studentId, periodId, courseId, setLoading]);
+  }, [studentId]);
 
   useEffect(() => {
-    let isMounted = true;
-    const fetchData = async () => {
-      if (isMounted) await loadData();
-    };
-    fetchData();
-    return () => {
-      isMounted = false;
-    };
-  }, [courseId, loadData]);
-
-  const handleAddAssignment = useCallback(
-    async (newAssignment: StudentAssignment) => {
-      setLoading(true);
-      try {
-        await addStudentAssignment(studentId, periodId, courseId, newAssignment);
-        await loadData();
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Error adding assignment");
-      } finally {
-        setLoading(false);
-      }
-    },
-    [studentId, periodId, courseId, loadData, setLoading]
-  );
+      loadData();
+  }, [studentId]);
 
   const handleLoadAvalaibleAssignment = useCallback(async () => {
-      setLoading(true);
-      try {
-        await fetchAvalaibleAssignments(studentId, periodId, periodCourseId);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Error adding assignment");
-      } finally {
-        setLoading(false);
-      }
-    },
-    [studentId, periodId, courseId, loadData, setLoading]
-  );
+    setLoading(true);
+    try {
+      await fetchAvalaibleAssignments(periodId, periodCourseId);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error adding assignment");
+    } finally {
+      setLoading(false);
+    }
+  }, [studentId, periodId, courseId, loadData, setLoading]);
 
   const handleUpdateAssignment = useCallback(
     async (assignmentId: string, updatedAssignment: Partial<StudentAssignment>) => {
       setLoading(true);
       try {
-        await updateStudentAssignment(studentId, periodId, courseId, assignmentId, updatedAssignment);
+        if (periodCourseId) {
+          const processedAssignment = {
+            ...updatedAssignment,
+            grade: updatedAssignment.grade !== undefined ? Number(updatedAssignment.grade) : undefined,
+            percentage: updatedAssignment.percentage !== undefined ? Number(updatedAssignment.percentage) : undefined
+          };
+          await updateStudentAssignment(studentId, periodId, periodCourseId, assignmentId, processedAssignment);
+        } else {
+          setError("Course or course ID is missing");
+        }
         await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error updating assignment");
@@ -72,7 +59,7 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
         setLoading(false);
       }
     },
-    [studentId, periodId, courseId, loadData, setLoading]
+    [studentId, courseId, loadData, setLoading]
   );
 
   const handleDeleteAssignment = useCallback(
@@ -87,7 +74,7 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
         setLoading(false);
       }
     },
-    [studentId, periodId, courseId, loadData, setLoading]
+    [studentId, courseId, loadData, setLoading]
   );
 
   return {
@@ -96,7 +83,6 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
     handleLoadAvalaibleAssignment,
     loading,
     error,
-    handleAddAssignment,
     handleUpdateAssignment,
     handleDeleteAssignment,
   };

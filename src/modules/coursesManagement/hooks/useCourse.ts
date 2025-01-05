@@ -15,7 +15,7 @@ const useCourse = (
     const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga
     const [error, setError] = useState<string | null>(null); // Estado para manejar errores
     const {showNotification} = useNotification();
-    const [ availableTeachers, setAvailableTeachers ] = useLocalStorage<Teacher[]>('availableTeachers', []); 
+    const [ availableTeachers,  ] = useLocalStorage<Teacher[]>('availableTeachers', []); 
 
 
     const load = async () => {
@@ -34,8 +34,7 @@ const useCourse = (
                 const teacher = availableTeachers.find(t => t.id === courseData.teacherId);
                 courseData.teacherName = teacher ? teacher.name : 'Unknown Teacher';
 
-            }
-            console.log("courseData", courseData);            
+            }         
             setCourse(courseData); // Update state with fetched course data
         } catch (err) {
             setError('Error loading course'); // Set error message if fetching fails

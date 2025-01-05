@@ -5,7 +5,7 @@ import BaseModule from "../../../components/BaseModule/BaseModule";
 import useCourses from "../hooks/useCourses"; // Import the custom hook
 import { Course } from "../services/courseService";
 import { useLoading } from "../../../components/loading/LoadingContext";
-import { BaseField } from "../../../components/BaseModule/types";
+import { BaseField } from "../../../components/BaseModule/types/types";
 
 const CourseModule: React.FC = () => {
   const { setIsLoading } = useLoading();

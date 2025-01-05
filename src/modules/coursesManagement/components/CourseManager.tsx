@@ -3,6 +3,7 @@ import Card, { CardField } from "../../../components/card/card";
 import { PeriodCourse } from "../../../types/types";
 import AssignmentsManager from "../../periodsManagement/components/AssignmentsManager";
 import CourseStudentsManager from "./CourseStudentsManager";
+import AvalibleStudents from "./AvalibleStudents";
 
 /**
  * CourseManagerProps Interface
@@ -91,6 +92,12 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
         >
           Students
         </button>
+        <button 
+          onClick={() => toggleSection("avalibleStudents")}
+          className={activeSection === "avalibleStudents" ? "active" : ""}
+        >
+          Avalible Students
+        </button>
       </div>
 
       {/* Course details section */}
@@ -106,6 +113,10 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
       {/* Students section (placeholder) */}
       {activeSection === "students" && (
         <CourseStudentsManager periodCourse={periodCourse!} periodId={periodId!} />
+      )}
+
+      {activeSection === "avalibleStudents" && (
+        <AvalibleStudents periodCourse={periodCourse!} periodId={periodId!} />
       )}
     </>
   );
