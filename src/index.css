@@ -234,9 +234,12 @@ button[disabled], button[disabled]:hover, .disabled-link {
   margin: 0 10px; /* Optional margin between items */
   padding: 20px; /* Padding inside items */
   color: var(--color); /* Text color */
-  background-color: var(--bg);
   text-align: center; /* Center text */
   border-radius: 4px; /* Rounded corners */
+}
+
+.item.item-bg  {
+  background-color: var(--bg);
 }
 
 @media (max-width: 768px) {
