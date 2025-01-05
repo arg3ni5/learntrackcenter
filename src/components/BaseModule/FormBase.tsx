@@ -72,18 +72,18 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
             );
           case "number":
             return (
-              <input key={field.name} type="number" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />
+              <input key={field.name} type="number" min="0" max={formData[`${field.name}Max`]||100} name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required/>
             );
 
           case "date":
             return (
-              <input key={field.name} type="date" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />
+              <input key={field.name} type="date" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required/>
             );
 
             break;
           case "input":
             return (
-              <input key={field.name} type="text" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required />
+              <input key={field.name} type="text" name={field.name} placeholder={field.placeholder} value={formData[field.name] || ""} onChange={handleInputChange} required/>
             );
 
           default:
