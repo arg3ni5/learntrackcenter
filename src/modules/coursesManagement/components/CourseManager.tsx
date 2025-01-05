@@ -4,6 +4,7 @@ import { PeriodCourse } from "../../../types/types";
 import AssignmentsManager from "../../periodsManagement/components/AssignmentsManager";
 import CourseStudentsManager from "./CourseStudentsManager";
 import AvalibleStudents from "./AvalibleStudents";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 
 /**
  * CourseManagerProps Interface
@@ -36,7 +37,7 @@ interface CourseManagerProps {
  */
 const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse }) => {
   // State to keep track of the active section
-  const [activeSection, setActiveSection] = useState<string>("course");
+  const [activeSection, setActiveSection] = useLocalStorage<string>("activeSection","course");
 
   /**
    * fieldsCard Array
