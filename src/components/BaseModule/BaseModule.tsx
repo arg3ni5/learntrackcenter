@@ -19,6 +19,7 @@ const BaseModule = <T extends Record<string, any>>({
   showForm: initialShowForm = false,
   clearFormAfterAdd = false,
   ableImport = false, 
+  ableFilter = false, 
   ableForm = true, 
   ...rest 
 }: BaseModuleProps<T>) => {
@@ -184,6 +185,7 @@ const BaseModule = <T extends Record<string, any>>({
               removeable={!!onItemDeleted}
               editable={!!onItemUpdated}
               seeable={!!onView}
+              ableFilter={ableFilter}
               ableForm={ableForm}
               ableImport={ableImport}
               showForm={showForm}

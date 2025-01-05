@@ -103,7 +103,8 @@ const UploadTable = <T extends Record<string, any>>({
             </div>
             
             <div className="table-container">
-                <table className="upload-table" aria-label="table data to import">
+            
+                <table className="list-base-table header-table" aria-label="table data to import">
                     <thead>
                         <tr>
                             <th>
@@ -119,29 +120,34 @@ const UploadTable = <T extends Record<string, any>>({
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {dataImport.map((row, index) => (
-                            <tr key={`up-row-${index}`} aria-selected={selectedRows.has(index)} onClick={() => toggleRowSelection(index)}>
-                                <td>
-                                    <div onClick={(e) => e.stopPropagation()} aria-hidden="true"> {/* Prevent row click when clicking checkbox */}
-                                        <Checkbox
-                                            checked={selectedRows.has(index)} 
-                                            onChange={() => toggleRowSelection(index)} 
-                                            aria-label={`Select ${row[0]}`} // Use full name for accessibility label
-                                        />
-                                    </div>
-                                </td>
-                                {fields.map(({name}) => (
-                                    <td key={`${name}-${index}`}>{row[name]}</td>  
-                                ))}
-                                <td className="actions" onClick={(e) => e.stopPropagation()} aria-hidden="true">
-                                    <button className='save-button' onClick={() => handleSelection(index)} aria-label={`Select ${row["id"]}`}>Select</button>
-                                    <button className='view-button' onClick={() => handleImport(index)} aria-label={`Import ${row["id"]}`}>Import</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
                 </table>
+
+                <div className="table-body-container">
+                    <table className="upload-table list-base-table body-table" aria-label="List data to import">
+                        <tbody>
+                            {dataImport.map((row, index) => (
+                                <tr key={`up-row-${index}`} aria-selected={selectedRows.has(index)} onClick={() => toggleRowSelection(index)}>
+                                    <td>
+                                        <div onClick={(e) => e.stopPropagation()} aria-hidden="true"> {/* Prevent row click when clicking checkbox */}
+                                            <Checkbox
+                                                checked={selectedRows.has(index)} 
+                                                onChange={() => toggleRowSelection(index)} 
+                                                aria-label={`Select ${row[0]}`} // Use full name for accessibility label
+                                            />
+                                        </div>
+                                    </td>
+                                    {fields.map(({name}) => (
+                                        <td key={`${name}-${index}`}>{row[name]}</td>  
+                                    ))}
+                                    <td className="actions" onClick={(e) => e.stopPropagation()} aria-hidden="true">
+                                        <button className='save-button' onClick={() => handleSelection(index)} aria-label={`Select ${row["id"]}`}>Select</button>
+                                        <button className='view-button' onClick={() => handleImport(index)} aria-label={`Import ${row["id"]}`}>Import</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {isModalOpen && (

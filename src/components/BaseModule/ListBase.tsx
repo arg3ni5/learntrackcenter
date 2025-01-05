@@ -134,11 +134,20 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   const showActions = removeable || seeable; // Determine if action buttons should be shown
   // Calculate total pages
   const totalPages = Math.ceil(sortedAndFilteredItems.length / itemsPerPage);
+  // Calculate item counts
+  const totalItems = items ? items.length : 0;
+  const filteredItemsCount = sortedAndFilteredItems.length;
 
   // Render component
   return (
     !loading && (
       <>
+        {/* Item count display */}
+        <div className="item-count">
+          Total items: {totalItems}
+          {filterText && ` (showing ${filteredItemsCount} filtered)`}
+        </div>
+
         {ableFilter && (
           <div className="filter-container">
             <input type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
@@ -167,11 +176,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
           <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} handleRowClick={handleRowClick} />
         </div>
         {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </>
     )
   );
