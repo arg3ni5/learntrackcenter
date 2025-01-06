@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import Checkbox from '../checkbox/Checkbox';
-import ConfirmationModal from '../confirmationModal/ConfirmationModal';
-import { BaseField } from '../BaseModule/types/types';
+import Checkbox from '../../../../components/checkbox/Checkbox';
+import ConfirmationModal from '../../../../components/confirmationModal/ConfirmationModal';
+import { BaseField } from '../types/types';
 
 interface UploadTableProps<T> {
     data: T[]; // Array of data of type T

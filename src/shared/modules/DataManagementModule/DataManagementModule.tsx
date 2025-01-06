@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import FormBase from "./FormBase";
-import ListBase from "./ListBase";
-import "./BaseModule.css";
-import { useNotification } from "../notification/NotificationContext";
+import FormBase from "./components/FormBase";
+import ListBase from "./components/ListBase";
+import "./DataManagementModule.css";
+import { useNotification } from "../../../components/notification/NotificationContext";
 import { BaseModuleProps } from "./types/types";
-import UploadOptions from "../uploadStudents/UploadOptions";
-import UploadTable from "../uploadStudents/UploadTable";
-import '../../components/uploadStudents/UploadTable.css';
+import UploadOptions from "./components/UploadOptions";
+import UploadTable from "./components/UploadTable";
+import './components/UploadTable.css';
 
 /**
  * BaseModule Component

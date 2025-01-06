@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./FormBase.css";
 import SelectInput from "./SelectInput";
-import { BaseField } from "./types/types";
+import { BaseField } from "../types/types";
 
 interface FormBaseProps<T> {
   fields: BaseField[];
@@ -95,7 +95,7 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
         return <input type="date" {...commonProps} />;
       case "input":
       default:
-        return <input type="text" {...commonProps} />;
+        return <input type="text" {...commonProps} key={commonProps.key} />;
     }
   };
 

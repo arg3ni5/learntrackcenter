@@ -1,16 +1,15 @@
-import "./BaseModule.css";
 import "./ListBase.css";
 
 import { useEffect, useState } from "react";
-import { ActionButtonsConfig, ListBaseProps } from "./types/types";
+import { ActionButtonsConfig, ListBaseProps } from "../types/types";
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import ActionButtons from "./ActionButtons";
 import Pagination from "./Pagination";
-import { useFormVisibility } from "./hooks/useFormVisibility";
-import { useSorting } from "./hooks/useSorting";
-import { useFiltering } from "./hooks/useFiltering";
-import { usePagination } from "./hooks/usePagination";
+import { useFormVisibility } from "../hooks/useFormVisibility";
+import { useSorting } from "../hooks/useSorting";
+import { useFiltering } from "../hooks/useFiltering";
+import { usePagination } from "../hooks/usePagination";
 
 /**
  * ListBase Component

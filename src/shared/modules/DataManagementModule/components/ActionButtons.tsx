@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ActionButtonsProps } from "./types/types";
+import { ActionButtonsProps } from "../types/types";
 
 const ActionButtons = <T extends Record<string, any>>({  
   hasPendingChanges,

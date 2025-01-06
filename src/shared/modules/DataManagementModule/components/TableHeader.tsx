@@ -1,4 +1,4 @@
-import { BaseField } from './types/types';
+import { BaseField } from '../types/types';
 
 interface TableHeaderProps<T> {
   fields: BaseField[];
