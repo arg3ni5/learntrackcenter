@@ -15,7 +15,7 @@ import './components/UploadTable.css';
  * @template T - The type of items managed by the module.
  * @param {BaseModuleProps<T>} props - The props for the BaseModule component.
  */
-const BaseModule = <T extends Record<string, any>>({ 
+const DataManagementModule = <T extends Record<string, any>>({ 
   showForm: initialShowForm = false,
   clearFormAfterAdd = false,
   ableImport = false, 
@@ -230,4 +230,4 @@ const BaseModule = <T extends Record<string, any>>({
   );
 };
 
-export default BaseModule;
+export default DataManagementModule;

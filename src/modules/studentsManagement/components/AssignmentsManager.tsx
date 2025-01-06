@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { StudentAssignmentsManagerProps } from '../types';
-import BaseModule from '../../../components/BaseModule/BaseModule';
+import DataManagementModule from '../../../shared/modules/DataManagementModule/DataManagementModule';
 import useStudentAssignments from '../hooks/useStudentAssignments';
 import { StudentAssignment } from '../../../types/types';
 
@@ -19,14 +19,14 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
 
     return (
         <>
-            {!loading && <BaseModule<StudentAssignment>
+            {!loading && <DataManagementModule<StudentAssignment>
                 fields={fields}
                 items={assignments}
                 onItemAdded={handleAddAssignment}
                 showForm={true}
                 ableForm={true}
                 loading={loading}>
-            </BaseModule>}
+            </DataManagementModule>}
         </>
     );
 };

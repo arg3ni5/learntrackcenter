@@ -5,8 +5,8 @@ import './CoursesManager.css';
 import { Assignment } from '../../../types/types';
 import useAssignments from '../../periodsManagement/hooks/useAssignments';
 import { AssignmentsSelectorProps } from '../types';
-import { BaseField } from '../../../components/BaseModule/types/types';
-import BaseModule from '../../../components/BaseModule/BaseModule';
+import { BaseField } from '../../../shared/modules/DataManagementModule/types/types';
+import DataManagementModule from '../../../shared/modules/DataManagementModule/DataManagementModule';
 
 const AssignmentsSelector: React.FC<AssignmentsSelectorProps> = ({ periodId, courseId }) => {
     const { assignments, loading } = useAssignments({periodId, courseId}); // Use the custom hook
@@ -30,13 +30,13 @@ const AssignmentsSelector: React.FC<AssignmentsSelectorProps> = ({ periodId, cou
     return (
         <div>
             <div className="list-container">
-            {!loading && <BaseModule<Assignment>
+            {!loading && <DataManagementModule<Assignment>
                 fields={fields}
                 items={assignments}
                 showForm={false}
                 ableForm={false}
                 loading={loading}>
-            </BaseModule>}            
+            </DataManagementModule>}            
             </div>
         </div>
     );

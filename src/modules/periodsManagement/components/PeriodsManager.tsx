@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { Course, Period } from "../../../types/types";
 import useCourses from "../hooks/useCourses";
-import SelectInput from "../../../components/BaseModule/SelectInput";
+import SelectInput from "../../../shared/modules/DataManagementModule/components/SelectInput";
 import useTeachers from "../../teachersManagement/hooks/useTeachers";
 import AssignmentsManager from "./AssignmentsManager";
 import CourseCard from "./CourseCard";

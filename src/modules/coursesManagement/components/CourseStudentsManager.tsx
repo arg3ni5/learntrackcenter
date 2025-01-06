@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import BaseModule from "../../../components/BaseModule/BaseModule";
+import React, { useEffect } from "react";
+import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";
 import { useLoading } from "../../../components/loading/LoadingContext";
 import { PeriodCourse, Student } from "../../../types/types";
 import "./CourseStudentsManager.css";
 import useStudentsCourse from "../hooks/useStudentsCourse";
-import StudentCard from "./StudentCard";
 import AssignmentsManager from "./AssignmentsManager";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import Loading from "../../../components/loading/Loading";
@@ -40,7 +39,7 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
       <h2></h2>
       <div className="container">
         <div >
-          <BaseModule<Student>
+          <DataManagementModule<Student>
             alias={"CourseStudentsManager"}
             fields={fields}
             items={students}
@@ -51,7 +50,7 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
             ableImport={false}
             clearFormAfterAdd={true}
             onSelect={setSelectedStudent}
-            loading={loading}></BaseModule>
+            loading={loading}></DataManagementModule>
         </div>
 
         {selectedStudent?.id && periodCourse.id && periodId! && (

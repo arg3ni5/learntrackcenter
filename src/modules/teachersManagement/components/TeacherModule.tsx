@@ -1,4 +1,4 @@
-import BaseModule from "../../../components/BaseModule/BaseModule";
+import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";
 import useTeachers from "../hooks/useTeachers";
 import { Teacher } from "../services/teacherService";
 
@@ -13,7 +13,7 @@ const TeacherModule: React.FC = () => {
 
   return (
     <>
-      <BaseModule<Teacher>
+      <DataManagementModule<Teacher>
         title="Gestión de Profesores" // Title for the module
         fields={fields} // Fields to be displayed in the form
         items={teachers} // Function to fetch items from Firestore

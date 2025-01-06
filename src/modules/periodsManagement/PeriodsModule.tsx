@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import BaseModule from "../../components/BaseModule/BaseModule";
+import DataManagementModule from "../../shared/modules/DataManagementModule/DataManagementModule";
 import './StudentModule.css';
 import { useLoading } from "../../components/loading/LoadingContext";
 import usePeriods from "./hooks/usePeriods";
@@ -23,7 +23,7 @@ const PeriodModule: React.FC = () => {
 
     return (
         <>
-            <BaseModule<Period>
+            <DataManagementModule<Period>
                 title="Period Management"
                 fields={fields}
                 items={periods}
@@ -33,7 +33,7 @@ const PeriodModule: React.FC = () => {
                 loading={loading}
                 showForm={false} // Show the form
             >
-            </BaseModule>
+            </DataManagementModule>
             {error && <div className="error">{error}</div>}
         </>
     );

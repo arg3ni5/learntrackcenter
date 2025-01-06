@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
-import BaseModule from "../../../components/BaseModule/BaseModule";
+import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";
 import { StudentAssignment } from "../../../types/types";
 import { StudentAssignmentsManagerProps } from "../types/types";
 import useStudentAssignments from "../hooks/useStudentAssignments";
-import { BaseField } from "../../../components/BaseModule/types/types";
+import { BaseField } from "../../../shared/modules/DataManagementModule/types/types";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import Loading from "../../../components/loading/Loading";
 
@@ -39,7 +39,7 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
       <div className="item">
         <div>Total Percentage: {totalPercentage}%</div>
         {!loading && (
-          <BaseModule<StudentAssignment>
+          <DataManagementModule<StudentAssignment>
             alias={"AssignmentsManager"}
             fields={fields}
             items={studentAssignment}
@@ -51,7 +51,7 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
             initialFormData={currentAssignment}
             onSelect={handleOnSelect}
             onItemsUpdated={onItemsUpdated}
-            loading={loading}></BaseModule>
+            loading={loading}></DataManagementModule>
         )}
       </div>
     </>

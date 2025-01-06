@@ -1,11 +1,11 @@
 // src/modules/courseManagement/CourseModule.tsx
 
 import React, { useEffect } from "react";
-import BaseModule from "../../../components/BaseModule/BaseModule";
+import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";
 import useCourses from "../hooks/useCourses"; // Import the custom hook
 import { Course } from "../services/courseService";
 import { useLoading } from "../../../components/loading/LoadingContext";
-import { BaseField } from "../../../components/BaseModule/types/types";
+import { BaseField } from "../../../shared/modules/DataManagementModule/types/types";
 
 const CourseModule: React.FC = () => {
   const { setIsLoading } = useLoading();
@@ -26,7 +26,7 @@ const CourseModule: React.FC = () => {
 
   return (
     <>
-      <BaseModule<Course>
+      <DataManagementModule<Course>
         title="Course Management" // Title for the module
         fields={fields} // Fields to be displayed in the form
         items={courses} // Use the courses from the custom hook

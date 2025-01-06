@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import BaseModule from "../../../components/BaseModule/BaseModule";;
+import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";;
 import { useLoading } from "../../../components/loading/LoadingContext";
 import { PeriodCourse, Student, StudentCourse } from "../../../types/types";
 import useStudentsCourse from "../hooks/useStudentsCourse";
@@ -59,7 +59,7 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
             {selectedStudent && <StudentCard student={selectedStudent} />}
             {selectedStudent && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
 
-            <BaseModule<Student>
+            <DataManagementModule<Student>
                 fields={fields}
                 items={availableStudents}
                 showForm={false}
@@ -69,7 +69,7 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
                 clearFormAfterAdd={true}
                 onSelect={setSelectedStudent}
                 loading={loading}>
-            </BaseModule>
+            </DataManagementModule>
             {error && <div className="error">{error}</div>}
         </div>
     );

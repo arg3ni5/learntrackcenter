@@ -2,10 +2,10 @@
 
 import React from 'react';
 import './CoursesManager.css';
-import { BaseField } from '../../../components/BaseModule/types/types';
+import { BaseField } from '../../../shared/modules/DataManagementModule/types/types';
 import { AvailableCourse, Student } from '../../../types/types';
 import useStudentCourses from '../hooks/useStudentCourses';
-import BaseModule from '../../../components/BaseModule/BaseModule';
+import DataManagementModule from '../../../shared/modules/DataManagementModule/DataManagementModule';
 
 const CoursesSelector: React.FC<{ student: Student }> = ({ student }) => {
     const { availableCourses, loading } = useStudentCourses(student.id!); // Use the custom hook
@@ -29,13 +29,13 @@ const CoursesSelector: React.FC<{ student: Student }> = ({ student }) => {
     return (
         <div>
             <div className="list-container">
-              {!loading && <BaseModule<AvailableCourse>
+              {!loading && <DataManagementModule<AvailableCourse>
                   fields={fields}
                   items={availableCourses}
                   showForm={false}
                   ableForm={false}
                   loading={loading}>
-              </BaseModule>} 
+              </DataManagementModule>} 
             </div>
         </div>
     );

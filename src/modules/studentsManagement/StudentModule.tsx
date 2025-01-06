@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import BaseModule from "../../components/BaseModule/BaseModule";
+import DataManagementModule from "../../shared/modules/DataManagementModule/DataManagementModule";
 import useStudents from './hooks/useStudents';
 import { useLoading } from "../../components/loading/LoadingContext";
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -53,7 +53,7 @@ const StudentModule: React.FC = () => {
             {selectedStudent && <StudentCard student={selectedStudent} />}
             {selectedStudent && <>{selectedStudent.id && <PeriodsManager student={selectedStudent} />}</>}
 
-            <BaseModule<Student>
+            <DataManagementModule<Student>
                 fields={fields}
                 items={students}
                 onItemAdded={handleAddStudent}
@@ -69,7 +69,7 @@ const StudentModule: React.FC = () => {
                 ableImport={true}
                 clearFormAfterAdd={true}
                 loading={loading}>
-            </BaseModule>
+            </DataManagementModule>
         </>
     );
 };

@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import BaseModule from '../../../components/BaseModule/BaseModule';
+import DataManagementModule from '../../../shared/modules/DataManagementModule/DataManagementModule';
 import useAssignments, { AssignmentsManagerProps } from '../hooks/useAssignments';
 import { Assignment } from '../../../types/types';
 import Loading from '../../../components/loading/Loading';
-import { BaseField } from '../../../components/BaseModule/types/types';
+import { BaseField } from '../../../shared/modules/DataManagementModule/types/types';
 
 const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, courseId }) => {
     const { assignments, loading, error, handleAddAssignment, handleAddAssignments, handleDeleteAssignment, handleUpdateAssignment, handleSyncAssignments } = useAssignments({ periodId, courseId });
@@ -27,7 +27,7 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
             </div>
             <p><b>Total Percentage: </b>({totalPercentage})%</p>
             {totalPercentage < 100 && <p><b>Pending Percentage: </b>({100-totalPercentage})%</p>}
-            <BaseModule<Assignment>
+            <DataManagementModule<Assignment>
                 alias={courseId}
                 fields={fields}
                 items={assignments}

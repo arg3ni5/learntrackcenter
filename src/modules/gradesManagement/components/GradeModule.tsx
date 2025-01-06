@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { addGrade, deleteGrade, fetchGrades, Grade } from '../services/gradeService'; // Importing grade service functions and types
-import BaseModule from '../../../components/BaseModule/BaseModule'; // Importing the reusable BaseModule component
+import DataManagementModule from '../../../shared/modules/DataManagementModule/DataManagementModule'; // Importing the reusable BaseModule component
 
 // GradeModule component for managing grades
 const GradeModule: React.FC = () => {
@@ -20,7 +20,7 @@ const GradeModule: React.FC = () => {
     };
 
     return (
-        <BaseModule<Grade>
+        <DataManagementModule<Grade>
             title="Grade Management" // Title for the module
             fields={fields} // Pass the fields to be used in the form
             fetchItems={fetchGradesFromFirestore} // Function to fetch items from Firestore
@@ -28,7 +28,7 @@ const GradeModule: React.FC = () => {
                 await addGrade(newItem); // Add a new grade using the service
             }} 
             onItemDeleted={deleteGrade} // Function to delete a grade using the service
-            showForm={false} // Show the form
+            showForm={true} // Show the form
         />
     );
 };

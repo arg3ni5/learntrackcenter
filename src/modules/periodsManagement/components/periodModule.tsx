@@ -1,7 +1,7 @@
 // src/modules/periodsManagement/PeriodsModule.tsx
 
 import React from "react";
-import BaseModule from "../../../components/BaseModule/BaseModule";
+import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";
 import usePeriods from "../hooks/usePeriods";
 import Loading from "../../../components/loading/Loading";
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ const PeriodsModule: React.FC = () => {
 
     return (
         <>
-            <BaseModule<Period>
+            <DataManagementModule<Period>
                 title="Manage Academic Periods" // Title for the module
                 fields={[
                     { name: "code", placeholder: "Code of Period" },
