@@ -86,11 +86,14 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
           //     percentage: assignment.percentage !== undefined ? Number(assignment.percentage) : undefined,
           //   };
           // });
-          await updateStudentAssignments(studentId, periodId, periodCourseId, transformAssignments(changes));
+          const processedChanges = transformAssignments(changes);
+          if (processedChanges.length > 0) {
+            await updateStudentAssignments(studentId, periodId, periodCourseId, processedChanges);
+            await loadData();
+          }
         } else {
           setError("Course or course ID is missing");
         }
-        await loadData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error updating assignment");
       } finally {
@@ -116,33 +119,36 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
   );
 
   const calculatePercentage = (assignment: StudentAssignment): number => {
-    const maxScore = assignment.gradeMax ?? 100; // Use 100 as default if not provided
-    const proportion = assignment.grade / maxScore; // Proportion of the earned score
-    const contribution = proportion * assignment.percentageMax!; // Contribution to the final average
-    console.log(maxScore, proportion, contribution);
+    const { gradeMax, grade, percentageMax } = assignment;
+    if (grade === 100 && percentageMax) return percentageMax;
+    const maxScore = gradeMax ?? 100; // Use 100 as default if not provided
+    const proportion = grade / maxScore; // Proportion of the earned score
+    const contribution = proportion * percentageMax!; // Contribution to the final average
+    console.log({ maxScore, proportion, contribution });
 
     return contribution; // Return the contribution as a decimal value
   };
 
-  const updateAssignments = (changes: Record<string, Record<string, number>>) => {
-    setData((prevAssignments) => {
-      return prevAssignments.map((assignment) => {
-        const updatedFields = changes[assignment.id!];
+  // const updateAssignments = (changes: Record<string, Record<string, number>>) => {
+  //   setData((prevAssignments) => {
+  //     return prevAssignments.map((assignment) => {
+  //       const updatedFields = changes[assignment.id!];
 
-        if (updatedFields) {
-          const { grade } = updatedFields;
-          let percentage = assignment.percentage || 0;
+  //       if (updatedFields) {
+  //         const { grade } = updatedFields;
+  //         let percentage = assignment.percentage || 0;
 
-          if (grade !== undefined && grade !== assignment.grade) {
-            percentage = calculatePercentage({ ...assignment, ...updatedFields });
-          }
-          return { ...assignment, ...updatedFields, percentage };
-        }
+  //         if (grade !== undefined) {
+  //           percentage = calculatePercentage({ ...assignment, ...updatedFields });
+            
+  //         }
+  //         return { ...assignment, ...updatedFields, percentage };
+  //       }
 
-        return assignment; // Retorna la asignación original si no hay cambios
-      });
-    });
-  };
+  //       return assignment; // Retorna la asignación original si no hay cambios
+  //     });
+  //   });
+  // };
 
   const transformAssignments = (assignmentsRecord: Record<string, Record<string, number>>): StudentAssignment[] => {
     const assignmentsArray: StudentAssignment[] = [];
@@ -154,14 +160,18 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
           const { grade } = updatedFields;
           let percentage = assignment.percentage || 0;
 
+          console.log({ "grade !== undefined": grade !== undefined, "grade !== assignment.grade": grade !== assignment.grade });
+
           if (grade !== undefined && grade !== assignment.grade) {
             percentage = calculatePercentage({ ...assignment, ...updatedFields });
+            console.log(percentage);            
           }
-          
+
           assignmentsArray.push({ ...assignment, ...updatedFields, percentage }); // Actualiza los campos según los cambios
         }
         return assignment; // Retorna la asignación original si no hay cambios
       });
+    console.log(assignmentsArray);
 
     return assignmentsArray;
   };
@@ -174,8 +184,7 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
     error,
     handleUpdateAssignment,
     handleUpdateAssignments,
-    handleDeleteAssignment,
-    updateAssignments,
+    handleDeleteAssignment
   };
 };
 

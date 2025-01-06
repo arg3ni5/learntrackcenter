@@ -1,60 +1,64 @@
 import React, { useEffect, useState } from "react";
-import BaseModule from "../../../components/BaseModule/BaseModule";;
+import BaseModule from "../../../components/BaseModule/BaseModule";
 import { useLoading } from "../../../components/loading/LoadingContext";
 import { PeriodCourse, Student } from "../../../types/types";
-import './CourseStudentsManager.css';
+import "./CourseStudentsManager.css";
 import useStudentsCourse from "../hooks/useStudentsCourse";
 import StudentCard from "./StudentCard";
 import AssignmentsManager from "./AssignmentsManager";
+import useLocalStorage from "../../../hooks/useLocalStorage";
+import Loading from "../../../components/loading/Loading";
 
 interface CourseStudentsManagerProps {
-    periodCourse: PeriodCourse;
-    periodId: string;
+  periodCourse: PeriodCourse;
+  periodId: string;
 }
 
 const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCourse, periodId }) => {
-    const { setIsLoading } = useLoading();
-    const { students, loading, error} = useStudentsCourse(periodCourse);
-    const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const { setIsLoading } = useLoading();
+  const { students, loading, error } = useStudentsCourse(periodCourse);
+  const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent", null);
 
-    // Define fields for the student table
-    const fields = [
-        { name: "fullName", placeholder: "Full Name", view: true },
-        { name: "identificationNumber", placeholder: "Identification Number" },
-        { name: "email", placeholder: "Email Address" },
-    ];
+  // Define fields for the student table
+  const fields = [
+    { name: "fullName", placeholder: "Full Name", view: true },
+    { name: "identificationNumber", placeholder: "Identification Number" },
+    { name: "email", placeholder: "Email Address" },
+  ];
 
-    // Effect to manage loading state
-    useEffect(() => {
-        setIsLoading(loading);
-    }, [loading, setIsLoading]);
+  // Effect to manage loading state
+  useEffect(() => {
+    setIsLoading(loading);
+  }, [loading, setIsLoading]);
 
-    return (
-        <div className="">
-            <h2></h2>
-            {selectedStudent && <StudentCard student={selectedStudent} />}
-            
-            {selectedStudent?.id && periodCourse.id && periodId! && 
-            <AssignmentsManager
-                studentId={selectedStudent?.id!}
-                periodId={periodId}
-                courseId={periodCourse.courseId!}
-                periodCourseId={periodCourse.id!}/>}
-
-            <BaseModule<Student>
-                fields={fields}
-                items={students}
-                showForm={false}
-                ableForm={false}
-                ableFilter={true}
-                ableImport={false}
-                clearFormAfterAdd={true}
-                onSelect={setSelectedStudent}
-                loading={loading}>
-            </BaseModule>
-            {error && <div className="error">{error}</div>}
+  return loading ? (
+    <Loading type="spinner" className="item h30vh"></Loading>
+  ) : (
+    <>
+      {/* {selectedStudent && <StudentCard student={selectedStudent} />} */}
+      <h2></h2>
+      <div className="container">
+        <div >
+          <BaseModule<Student>
+            alias={"CourseStudentsManager"}
+            fields={fields}
+            items={students}
+            initialFormData={selectedStudent}
+            showForm={false}
+            ableForm={false}
+            ableFilter={true}
+            ableImport={false}
+            clearFormAfterAdd={true}
+            onSelect={setSelectedStudent}
+            loading={loading}></BaseModule>
         </div>
-    );
+
+        {selectedStudent?.id && periodCourse.id && periodId! && (
+          <AssignmentsManager studentId={selectedStudent?.id!} periodId={periodId} courseId={periodCourse.courseId!} periodCourseId={periodCourse.id!} />
+        )}
+      </div>
+    </>
+  );
 };
 
 export default CourseStudentsManager;

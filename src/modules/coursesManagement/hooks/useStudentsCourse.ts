@@ -11,9 +11,7 @@ const useStudentsCourse = (periodCourse: PeriodCourse) => {
 
   const loadStudents = async () => {
     try {
-      setLoading(true);
-      console.log("loadStudents",periodCourse);
-      
+      setLoading(true);      
       const studentsData = await getStudentsInCourse(periodId, courseId!);
       setStudents(studentsData);
     } catch (err) {
