@@ -40,6 +40,8 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
     const value = item[field.name];
 
     switch (field.type) {
+      case "link":
+        return value && <a href={value} target="_blank">Link</a>;
       case "select":
         const option = field.options?.find((t) => t.value === value);
         return option ? option.label : "Unknown";

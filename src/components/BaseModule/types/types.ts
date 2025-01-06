@@ -2,7 +2,7 @@ export interface Option {
   value: string;
   label: string;
 }
-type FieldType = "input" | "select" | "date" | "number";
+type FieldType = "input" | "select" | "date" | "number" | "number-view" | "link";
 
 interface Field {
   name: string; // Field name
