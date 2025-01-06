@@ -2,6 +2,7 @@ export interface Assignment {
     id?: string; // Optional ID property, used when fetching from Firestore
     title: string; // Title of the assignment
     contributionPercentage: number; // Contribution percentage to final grade
+    link?: string; // Title of the assignment
 }
 
 export type CourseStatus = 
