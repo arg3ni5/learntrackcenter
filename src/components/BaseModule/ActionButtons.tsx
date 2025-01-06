@@ -26,7 +26,6 @@ const ActionButtons = <T extends Record<string, any>>({
   } = handlers;
 
   const handleSaveAllChanges = (event: React.MouseEvent<HTMLButtonElement>, changes: Record<string, Record<string, number>>) => {
-    console.log("ActionButtons", changes);
     onSaveAllChanges && onSaveAllChanges(event, changes);
   };
 

@@ -23,7 +23,7 @@ const BaseModule = <T extends Record<string, any>>({
   ableForm = true, 
   ...rest 
 }: BaseModuleProps<T>) => {
-  const { title, fields, items, fetchItems, initialFormData: iniFormData, loading, onView,
+  const { alias, title, fields, items, fetchItems, initialFormData: iniFormData, loading, onView,
     viewLinks, onSelect, onItemAdded, onItemsAdded, onItemUpdated, onItemsUpdated, onItemDeleted } = rest;
 
   const { showNotification } = useNotification();
@@ -125,7 +125,6 @@ const BaseModule = <T extends Record<string, any>>({
   const handleSaveAllChanges = async () => {
     try {
       if (onItemsUpdated) {
-        console.log("BaseModule",tempChanges);        
         onItemsUpdated && onItemsUpdated(tempChanges); // Llama al callback con los cambios temporales
       }
       setTempChanges({}); // Limpiar los cambios temporales después de guardar
@@ -202,6 +201,7 @@ const BaseModule = <T extends Record<string, any>>({
           )}
           {items?.length! > 0 && (
             <ListBase<T>
+              alias={alias}
               items={items}
               selectedItem={iniFormData || currentItem}
               fields={fields}

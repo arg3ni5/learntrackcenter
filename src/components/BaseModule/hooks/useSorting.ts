@@ -1,14 +1,17 @@
 import { useMemo, useState } from "react";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 
 /**
  * Hook for managing sorting state and logic.
- * 
+ *
  * @template T - The type of items being sorted.
  * @param {T[]} items - The array of items to sort.
  * @returns {Object} An object containing sorting state and functions.
  */
-export const useSorting = <T extends Record<string, any>>(items: T[]) => {
-  const [sortConfig, setSortConfig] = useState<{ key: keyof T; direction: "ascending" | "descending" } | null>(null);
+export const useSorting = <T extends Record<string, any>>(items: T[], alias?: string) => {
+  const [sortConfig, setSortConfig] = alias 
+    ? useLocalStorage<{ key: keyof T; direction: "ascending" | "descending" } | null>(`${alias}-sortConfig`, null)
+    : useState<{ key: keyof T; direction: "ascending" | "descending" } | null>(null);
 
   const handleSort = (key: keyof T) => {
     let direction: "ascending" | "descending" = "ascending";

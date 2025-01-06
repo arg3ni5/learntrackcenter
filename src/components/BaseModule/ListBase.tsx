@@ -21,6 +21,7 @@ import { usePagination } from "./hooks/usePagination";
  */
 const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: ListBaseProps<T>) => {
   const {
+    alias,
     fields,
     items,
     ableFilter = false,
@@ -44,8 +45,8 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   const [showForm, setShowForm] = useFormVisibility(isShowForm);
   const [showImportForm, setShowImportForm] = useFormVisibility(isShowImportForm);
   const [selectedItem, setSelectedItem] = useState<T | null>(initialSelectedItem); // State to store the currently selected item
-  const { sortConfig, handleSort, sortedItems } = useSorting(items!);
-  const { filterText, setFilterText, filteredItems } = useFiltering(sortedItems);
+  const { sortConfig, handleSort, sortedItems } = useSorting(items!, alias);
+  const { filterText, setFilterText, filteredItems } = useFiltering(sortedItems, alias);
   const { currentPage, paginatedItems, totalPages, handlePageChange } = usePagination(filteredItems, 20);
 
   /**
@@ -79,7 +80,6 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
 
   const handleSaveAllChanges = async () => {
     if (onItemsUpdated) {
-      console.log("handleSaveAllChanges", tempChanges);      
       await onItemsUpdated(tempChanges);
     }
   };
@@ -129,17 +129,19 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   return (
     !loading && (
       <>
-        {/* Item count display */}
-        <div className="item-count">
-          Total items: {totalItems}
-          {filterText && ` (showing ${filteredItemsCount} filtered)`}
-        </div>
-
-        {ableFilter && (
-          <div className="filter-container">
-            <input type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
+        <div className="container">
+          {/* Item count display */}
+          <div className="item-count">
+            Total items: {totalItems}
+            {filterText && ` (showing ${filteredItemsCount} filtered)`}
           </div>
-        )}
+
+          {ableFilter && (
+            <div className="filter-container">
+              <input type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
+            </div>
+          )}
+        </div>
 
         {/* Action buttons */}
         {showActions && <ActionButtons config={config} handlers={handlers} 
