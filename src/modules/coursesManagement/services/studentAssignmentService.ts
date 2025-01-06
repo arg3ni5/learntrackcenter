@@ -12,8 +12,6 @@ const getUrl = (studentId: string, periodId: string, courseId: string): string =
   
 export const fetchStudentAssignment = async (studentId: string, periodId: string, courseId: string): Promise<StudentAssignment[]> => {
     const url = `${getUrl(studentId,periodId,courseId)}/assignments`;
-    console.log({url, studentId, periodId, courseId});
-    
     const assignmentsCollection = collection(db, url);
     const assignmentsSnapshot = await getDocs(assignmentsCollection);
 

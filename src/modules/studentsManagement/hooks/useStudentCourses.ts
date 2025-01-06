@@ -98,7 +98,6 @@ const useStudentCourses = (studentId: string) => {
         showNotification("Not period selected", "error");
         return
       }
-      console.log(studentCourses);
       
       if (studentCourses.filter((course) => course.id === newCourse.periodCourseId).length > 0) {
         showNotification("Course already added", "error");

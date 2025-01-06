@@ -87,9 +87,7 @@ export const getStudentsInCourse = async (periodId: string, courseId: string): P
 };
 
 
-export const getStudentsNotInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {
-    console.log("getStudentsNotInCourse", {periodId, courseId});
-    
+export const getStudentsNotInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {    
     // Obtener todos los estudiantes
     const studentsCollection = collection(db, "students");
     const allStudentsSnapshot = await getDocs(studentsCollection);

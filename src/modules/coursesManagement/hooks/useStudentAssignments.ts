@@ -156,6 +156,8 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
     data &&
       data.map((assignment) => {
         const updatedFields = assignmentsRecord[assignment.id!];
+        console.log({assignment, assignmentsRecord});
+        
         if (updatedFields) {
           const { grade } = updatedFields;
           let percentage = assignment.percentage || 0;
@@ -171,7 +173,7 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
         }
         return assignment; // Retorna la asignación original si no hay cambios
       });
-    console.log(assignmentsArray);
+    console.log({assignmentsArray, assignmentsRecord});
 
     return assignmentsArray;
   };

@@ -14,7 +14,8 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
 
     const fields : BaseField[] = [
         { name: "title", placeholder: "Title of the assignment" },
-        { name: "contributionPercentage", placeholder: "Contribution percentage to final grade", type: "number" },
+        { name: "contributionPercentage", placeholder: "percentage", type: "number-view" },
+        { name: "link", placeholder: "URL", type:"link" },
     ];
 
     if (loading) return <Loading text="Loading assignments" className="h30vh"></Loading>;
@@ -27,6 +28,7 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
             <p><b>Total Percentage: </b>({totalPercentage})%</p>
             {totalPercentage < 100 && <p><b>Pending Percentage: </b>({100-totalPercentage})%</p>}
             <BaseModule<Assignment>
+                alias={courseId}
                 fields={fields}
                 items={assignments}
                 onItemAdded={handleAddAssignment}
@@ -35,7 +37,7 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
                 onItemDeleted={handleDeleteAssignment}
                 loading={loading}
                 clearFormAfterAdd={false}
-                showForm={true}
+                showForm={false}
                 ableForm={true}
                 ableImport={true}
             />

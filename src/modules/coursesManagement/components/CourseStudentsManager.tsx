@@ -16,14 +16,15 @@ interface CourseStudentsManagerProps {
 
 const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCourse, periodId }) => {
   const { setIsLoading } = useLoading();
-  const { students, loading, error } = useStudentsCourse(periodCourse);
+  const { students, loading } = useStudentsCourse(periodCourse);
   const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent", null);
 
   // Define fields for the student table
   const fields = [
     { name: "fullName", placeholder: "Full Name", view: true },
     { name: "identificationNumber", placeholder: "Identification Number" },
-    { name: "email", placeholder: "Email Address" },
+    { name: "email", placeholder: "Email Address" },    
+    { name: "grade", placeholder: "grade", view: true },
   ];
 
   // Effect to manage loading state

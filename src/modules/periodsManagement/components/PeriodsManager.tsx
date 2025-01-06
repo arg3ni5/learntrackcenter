@@ -75,26 +75,28 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
           </button>
         )}
       </div>
-      <div className="periods-list">
-        <ul>
+      <div className="">
           {courses.map((course) => (
-            <li key={course.id}>
-              <div className="buttons-container actions">
-                {
-                  <button className="save-button" onClick={() => handleUpdate(course)}>
-                    Save
-                  </button>
-                }
-                {course.assignmentsIds && course.assignmentsIds.length == 0 && (
-                  <button className="delete-button" onClick={() => handleDeleteCourse(course.id!)}>
-                    Delete
-                  </button>
-                )}
-              </div>
+            <div key={course.id} className="container periods-list">
 
-              <CourseCard
-              data={course} 
-              viewLink={`/period/${periodId}/course/${course.id}`}/>
+              <div className="item">
+                <div className="buttons-container actions">
+                  {
+                    <button className="save-button" onClick={() => handleUpdate(course)}>
+                      Save
+                    </button>
+                  }
+                  {course.assignmentsIds && course.assignmentsIds.length == 0 && (
+                    <button className="delete-button" onClick={() => handleDeleteCourse(course.id!)}>
+                      Delete
+                    </button>
+                  )}
+                </div>
+
+                <CourseCard
+                data={course} 
+                viewLink={`/period/${periodId}/course/${course.id}`}/>
+              </div>
 
               {!course.teacherId && (
                 <SelectInput
@@ -107,9 +109,8 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
                 />
               )}
               {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
-            </li>
+            </div>
           ))}
-        </ul>
       </div>
     </div>
   );

@@ -59,7 +59,8 @@ export const addCourse = async (studentId: string, newCourse: StudentCourse): Pr
       periodId: newCourse.periodId,
     });
 
-    await updateDoc(courseDocRef, {
+    const periodCourseDocRef = doc(db, `periods/${newCourse.periodId}/courses`, newCourse.periodCourseId);
+    await updateDoc(periodCourseDocRef, {
       enrolledStudents: arrayUnion(studentId),
     });
 
