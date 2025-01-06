@@ -63,7 +63,7 @@ const ActionButtons = <T extends Record<string, any>>({
         </button>
       )}
       {hasPendingChanges && (
-        <button onClick={(e) => handleSaveAllChanges(e, tempChanges)} className="save-all-button" aria-label="Save all changes">
+        <button onClick={(e) => handleSaveAllChanges(e, tempChanges)} className="add-button" aria-label="Save all changes">
           Save All Changes
         </button>
       )}

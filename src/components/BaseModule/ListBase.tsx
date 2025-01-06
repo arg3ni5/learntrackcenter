@@ -129,7 +129,7 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   return (
     !loading && (
       <>
-        <div className="container">
+        <div className="container list-base">
           {/* Item count display */}
           <div className="item-count">
             Total items: {totalItems}
