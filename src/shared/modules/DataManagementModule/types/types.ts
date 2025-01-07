@@ -27,6 +27,7 @@ export interface CommonProps<T> {
   showForm?: boolean;
   ableFilter?: boolean;
   ableImport?: boolean;
+    useFlexTable?: boolean;
   viewLinks?: LinkItem[];
 }
 
