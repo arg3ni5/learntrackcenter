@@ -31,13 +31,9 @@ export interface CommonProps<T> {
   viewLinks?: LinkItem[];
 }
 
-
 export interface UploadField extends Field {}
 
-export interface BaseModuleProps<T> extends CommonProps<T> {
-  title?: string;
-  uploadFields?: BaseField[];
-  fetchItems?: () => Promise<T[]>; // Function to fetch items
+export interface HandlersBaseModuleProps<T>{
   onView?: (item: T) => void; // Optional callback to handle view
   onSelect?: (item: T | null) => void; // Optional callback to handle select
   onItemAdded?: (newItem: T) => Promise<void>; // Callback to handle adding an item
@@ -45,12 +41,18 @@ export interface BaseModuleProps<T> extends CommonProps<T> {
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
   onItemsUpdated?: (changes: Record<string, Record<string, number>>) => void;
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
+}
+export interface BaseModuleProps<T> extends CommonProps<T>{
+  title?: string;
+  uploadFields?: BaseField[];
   initialFormData?: T | null; // Initial data for the form
-  children?: React.ReactNode;
   clearFormAfterAdd?: boolean;
+  children?: React.ReactNode;
+  fetchItems?: () => Promise<T[]>; // Function to fetch items
+  handlers: HandlersBaseModuleProps<T>;
 }
 
-export interface ListBaseProps<T> extends CommonProps<T> {
+export interface configListBaseProps<T> extends CommonProps<T> {
   selectedItem: T | null;
   showImportForm: boolean;
   editable: boolean;
@@ -58,12 +60,18 @@ export interface ListBaseProps<T> extends CommonProps<T> {
   seeable: boolean;
   tempChanges: Record<string, Record<string, number>>;
   setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
-  onAdd?: (state: boolean) => void;
-  onSelect?: (item: T | null) => void;  
-  onImportItem?: (newItem: any) => void;
-  onItemDeleted?: (id: string) => void;
-  onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>; 
-  onImport?: (state: boolean) => void;
+}
+
+export interface ListBaseProps<T> {
+  config: configListBaseProps<T>;
+  handlers: {
+    onAdd?: (state: boolean) => void;
+    onSelect?: (item: T | null) => void;  
+    onImportItem?: (newItem: any) => void;
+    onItemDeleted?: (id: string) => void;
+    onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>; 
+    onImport?: (state: boolean) => void;
+  }
 }
 
 export interface LinkItem {
