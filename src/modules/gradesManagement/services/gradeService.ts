@@ -1,14 +1,8 @@
 
 import { db } from '../../../services/firebase';
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { Grade } from '../../../types/types';
 
-// Define la interfaz para una calificación
-export interface Grade {
-    id?: string; // ID opcional al obtener desde Firestore
-    studentId: string;
-    subjectId: string;
-    finalGrade: number;
-}
 
 // Función para agregar una nueva calificación
 export const addGrade = async (grade: Grade): Promise<void> => {

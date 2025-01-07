@@ -65,6 +65,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/period/:id/courses" element={<PrivateRoute element={<PeriodCourses />} />} />
       <Route path="/period/:id/students" element={<PrivateRoute element={<PeriodStudents />} />} />
       <Route path="/period/:periodId/course/:courseId" element={<PrivateRoute element={<CourseStudents />} />} />
+      <Route path="grades/period/:periodId/course/:courseId" element={<PrivateRoute element={<Grades />} />} />
       <Route path="/course/:id/students" element={<PrivateRoute element={<CourseStudents />} />} />
       <Route path="*" element={<Navigate to="/" />} /> {/* Redirigir a la página de inicio */}
     </Routes>

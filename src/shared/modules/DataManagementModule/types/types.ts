@@ -1,3 +1,4 @@
+import UploadOptions from '../components/UploadOptions';
 export interface Option {
   value: string;
   label: string;
@@ -34,6 +35,7 @@ export interface UploadField extends Field {}
 
 export interface BaseModuleProps<T> extends CommonProps<T> {
   title?: string;
+  uploadFields?: BaseField[];
   fetchItems?: () => Promise<T[]>; // Function to fetch items
   onView?: (item: T) => void; // Optional callback to handle view
   onSelect?: (item: T | null) => void; // Optional callback to handle select

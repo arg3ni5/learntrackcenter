@@ -1,8 +1,11 @@
 // src/modules/gradesManagement/hooks/useGrades.ts
 import { useEffect, useState } from 'react';
-import { fetchGrades, addGrade, deleteGrade, Grade } from '../services/gradeService';
+import { fetchGrades, addGrade, deleteGrade } from '../services/gradeService';
+import { Grade } from '../../../types/types';
 
 const useGrades = () => {
+    const [courseId, setCourseId] = useState<string | null>(null);
+    const [periodId, setPeriodId] = useState<string | null>(null);
     const [data, setData] = useState<Grade[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -10,6 +13,8 @@ const useGrades = () => {
     // Función para cargar las calificaciones
     const loadGrades = async () => {
         try {
+            console.log({ courseId, periodId });
+            
             setLoading(true);
             const data = await fetchGrades();
             setData(data);
@@ -45,7 +50,7 @@ const useGrades = () => {
         }
     };
 
-    return { grades: data, loading, error, addNewGrade, removeGrade };
+    return { grades: data, loading, error, addNewGrade, removeGrade, setCourseId, setPeriodId };
 };
 
 export default useGrades;
