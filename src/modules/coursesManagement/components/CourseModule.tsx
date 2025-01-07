@@ -30,9 +30,11 @@ const CourseModule: React.FC = () => {
         title="Course Management" // Title for the module
         fields={fields} // Fields to be displayed in the form
         items={courses} // Use the courses from the custom hook
-        onItemAdded={handleAddCourse}
-        onItemDeleted={handleDeleteCourse} // Use the delete course function from the hook
-        onItemUpdated={handleUpdateCourse}
+        handlers={{
+          onItemAdded:handleAddCourse,
+          onItemDeleted:handleDeleteCourse,
+          onItemUpdated:handleUpdateCourse,
+        }}
         loading={loading} // Pass loading state to BaseModule or directly to ListBase if needed
         showForm={false} // Show the form
       />

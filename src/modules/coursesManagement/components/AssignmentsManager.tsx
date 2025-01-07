@@ -43,15 +43,17 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
             alias={"AssignmentsManager"}
             fields={fields}
             items={studentAssignment}
-            onItemUpdated={handleUpdateAssignment}
-            onItemDeleted={handleDelete}
             ableFilter={true}
             showForm={false}
             ableForm={true}
             initialFormData={currentAssignment}
-            onSelect={handleOnSelect}
-            onItemsUpdated={onItemsUpdated}
-            loading={loading}></DataManagementModule>
+            loading={loading}
+            handlers={{
+              onItemUpdated: handleUpdateAssignment,
+              onItemDeleted: handleDelete,
+              onSelect: handleOnSelect,
+              onItemsUpdated: onItemsUpdated,
+            }}></DataManagementModule>
         )}
       </div>
     </>

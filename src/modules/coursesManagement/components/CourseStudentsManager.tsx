@@ -14,6 +14,7 @@ interface CourseStudentsManagerProps {
 }
 
 const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCourse, periodId }) => {
+
   const { setIsLoading } = useLoading();
   const { students, loading } = useStudentsCourse(periodCourse);
   const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent", null);
@@ -22,7 +23,7 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
   const fields = [
     { name: "fullName", placeholder: "Full Name", view: true },
     { name: "identificationNumber", placeholder: "Identification Number" },
-    { name: "email", placeholder: "Email Address" },    
+    { name: "email", placeholder: "Email Address" },
     { name: "grade", placeholder: "grade", view: true },
   ];
 
@@ -49,7 +50,7 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
             ableFilter={true}
             ableImport={false}
             clearFormAfterAdd={true}
-            onSelect={setSelectedStudent}
+            handlers={{onSelect:setSelectedStudent}}
             loading={loading}></DataManagementModule>
         </div>
 

@@ -41,7 +41,7 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
                 finalGrade: 0,
                 assignmentsIds: [],
             };
-            
+
             console.log(newCourse);
             await handleAddCourse(selectedStudent.id!, newCourse); // Call the function to add the new period
             await loadAvailableStudents();
@@ -67,7 +67,7 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
                 ableForm={false}
                 ableImport={false}
                 clearFormAfterAdd={true}
-                onSelect={setSelectedStudent}
+                handlers={{onSelect:setSelectedStudent}}
                 loading={loading}>
             </DataManagementModule>
             {error && <div className="error">{error}</div>}

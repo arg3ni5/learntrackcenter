@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DataManagementModule from "../../shared/modules/DataManagementModule/DataManagementModule";
 import './StudentModule.css';
 import { useLoading } from "../../components/loading/LoadingContext";
 import usePeriods from "./hooks/usePeriods";
-import { Period } from "../../types/types";
+import { Period } from '../../types/types';
 
 
 const PeriodModule: React.FC = () => {
     const { setIsLoading } = useLoading();
     const {periods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod} = usePeriods();
+    const [period, setPeriod] = useState<Period|null>(null)
 
     const fields = [
         { name: "fullName", placeholder: "Full Name" },
@@ -19,7 +20,7 @@ const PeriodModule: React.FC = () => {
     useEffect(() => {
         setIsLoading(loading);
     }, [loading, setIsLoading]);
-    
+
 
     return (
         <>
@@ -27,9 +28,7 @@ const PeriodModule: React.FC = () => {
                 title="Period Management"
                 fields={fields}
                 items={periods}
-                onItemAdded={handleAddPeriod}
-                onItemDeleted={handleDeletePeriod}
-                onItemUpdated={handleUpdatePeriod}
+                handlers={{ onItemAdded: handleAddPeriod, onItemDeleted: handleDeletePeriod, onItemUpdated: handleUpdatePeriod, onSelect:setPeriod}}
                 loading={loading}
                 showForm={false} // Show the form
             >
