@@ -5,11 +5,11 @@ export interface Assignment {
     link?: string; // Title of the assignment
 }
 
-export type CourseStatus = 
-    | 'Passed' 
-    | 'Failed' 
-    | 'In Progress' 
-    | 'Not Started' 
+export type CourseStatus =
+    | 'Passed'
+    | 'Failed'
+    | 'In Progress'
+    | 'Not Started'
     | 'Withdrawn';
 
 export interface AvailableCourse {
@@ -36,10 +36,10 @@ export interface CourseWithDetails extends Course {
 
 }
 
-export type PeriodStatus = 
-    | 'Active' 
-    | 'Finished' 
-    | 'In Progress' 
+export type PeriodStatus =
+    | 'Active'
+    | 'Finished'
+    | 'In Progress'
     | 'Upcoming';
 
 // Define the interface for Period
@@ -99,4 +99,11 @@ export interface AssignmentsManagerProps {
     studentId: string;
     periodId: string;
     courseId: string;
+}
+
+export interface Grade {
+    id?: string;
+    studentId: string;
+    subjectId: string;
+    finalGrade: number;
 }
