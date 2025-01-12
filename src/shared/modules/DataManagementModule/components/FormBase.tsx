@@ -90,9 +90,9 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
         );
       case "number":
       case "number-view":
-        return <input type="number" min="0" max={formData[`${field.name}Max`] || 100} {...commonProps} />;
+        return <input type="number" min="0" max={formData[`${field.name}Max`] || 100} {...commonProps} key={commonProps.key}/>;
       case "date":
-        return <input type="date" {...commonProps} />;
+        return <input type="date" {...commonProps} key={commonProps.key} />;
       case "input":
       default:
         return <input type="text" {...commonProps} key={commonProps.key} />;
