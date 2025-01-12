@@ -1,7 +1,7 @@
 import "./ListBase.css";
 
 import { useEffect, useState } from "react";
-import { ActionButtonsConfig, ListBaseProps } from "../types/types";
+import { ListBaseProps } from "../types/types";
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import ActionButtons from "./ActionButtons";
@@ -18,8 +18,9 @@ import { usePagination } from "../hooks/usePagination";
  * @template T - The type of items in the list.
  * @param {ListBaseProps<T>} props - The props for the ListBase component.
  */
-const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: ListBaseProps<T>) => {
+const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseProps<T>) => {
   const {
+    useFlexTable = false,
     alias,
     fields,
     items,
@@ -29,16 +30,14 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
     removeable,
     seeable,
     viewLinks,
-    onAdd,
-    onImport,
-    onSelect,
-    onItemDeleted,
-    onItemsUpdated,
-    tempChanges, setTempChanges,
+    tempChanges,
+    setTempChanges,
     selectedItem: initialSelectedItem,
     showForm: isShowForm = false,
     showImportForm: isShowImportForm = false,
-  } = rest;
+    loading = false,
+  } = config;
+  const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated } = handlers;
 
   // State management
   const [showForm, setShowForm] = useFormVisibility(isShowForm);
@@ -97,31 +96,9 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
   // Calculate item counts
   const totalItems = items ? items.length : 0;
   const filteredItemsCount = sortedItems.length;
-
-  const config : ActionButtonsConfig<T> = {
-    ableForm,
-    ableImport,
-    seeable,
-    removeable,
-    showForm,
-    showImportForm,
-    selectedItem,
-    viewLinks,
-    tempChanges,
-    setTempChanges
-  };
-
-  const handlers = {
-    handleShowForm,
-    handleShowImportForm,
-    onItemDeleted,
-    setTempChanges,
-    onSaveAllChanges: handleSaveAllChanges, 
-  };
-
   const handlersTbody = {
     setTempChanges,
-    handleRowClick
+    handleRowClick,
   };
 
   // Render component
@@ -143,15 +120,34 @@ const ListBase = <T extends Record<string, any>>({ loading = false, ...rest }: L
         </div>
 
         {/* Action buttons */}
-        {showActions && <ActionButtons config={config} handlers={handlers} 
-        hasPendingChanges={Object.keys(tempChanges).length > 0}
-        />}
+        {showActions && (
+          <ActionButtons
+            config={{
+              ableForm,
+              ableImport,
+              seeable,
+              removeable,
+              showForm,
+              showImportForm,
+              selectedItem,
+              viewLinks,
+              tempChanges,
+              setTempChanges,
+            }}
+            handlers={{
+              handleShowForm,
+              handleShowImportForm,
+              onItemDeleted,
+              onSaveAllChanges: handleSaveAllChanges,
+            }}
+            hasPendingChanges={Object.keys(tempChanges).length > 0}
+          />
+        )}
 
         {/* Table container */}
         <div className={`table-container ${showActions ? "with-actions" : ""}`}>
-          <TableHeader fields={fields} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} />
-          <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} 
-            tempChanges={tempChanges} handlers={handlersTbody}/>
+          <TableHeader fields={fields} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} useFlexTable={useFlexTable} />
+          <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} tempChanges={tempChanges} handlers={handlersTbody} useFlexTable={useFlexTable} />
         </div>
         {/* Pagination */}
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import PeriodsModule from '../modules/periodsManagement/components/periodModule';
+import PeriodsModule from '../modules/periodsManagement/PeriodsModule';
 
 
 const Periods: React.FC = () => {

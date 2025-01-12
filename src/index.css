@@ -29,7 +29,7 @@
   --bg-color: #f2f2f2;
   --bg-color-highlight: #007bff;
   --border-color: #ccc;
-  --border-color-highlight: #363636;  
+  --border-color-highlight: #363636;
   --color: black;
 }
 
@@ -82,11 +82,11 @@ button:focus-visible,
 
 
 @media (prefers-color-scheme: dark) {
-  :root {    
+  :root {
       --color: white;
       --odd-row-bg: #363636;
       --bg: #363636;
-      --bg-color-hover: #757575;      
+      --bg-color-hover: #757575;
       --border-color: black;
       --border-color-highlight: #f2f2f2;
   }
@@ -196,7 +196,7 @@ button[disabled], button[disabled]:hover, .disabled-link {
   border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
 }
 
-.buttons-container .active {
+.buttons-container .active, .section-buttons .active {
   background-color: #45a049 !important;
   border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
   font-weight: bold;
@@ -218,7 +218,7 @@ button[disabled], button[disabled]:hover, .disabled-link {
 .buttons-container button:not([class]) {
   background-color: var(--bg-color-hover) !important;
 }
-.buttons-container .active:hover {
+.buttons-container .active:hover, .section-buttons .active:hover {
   background-color: #4CAF50 !important;
 }
 

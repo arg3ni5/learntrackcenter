@@ -6,7 +6,7 @@ import { useNotification } from "../../../components/notification/NotificationCo
 import { BaseModuleProps } from "./types/types";
 import UploadOptions from "./components/UploadOptions";
 import UploadTable from "./components/UploadTable";
-import './components/UploadTable.css';
+import "./components/UploadTable.css";
 
 /**
  * BaseModule Component
@@ -15,16 +15,22 @@ import './components/UploadTable.css';
  * @template T - The type of items managed by the module.
  * @param {BaseModuleProps<T>} props - The props for the BaseModule component.
  */
-const DataManagementModule = <T extends Record<string, any>>({ 
-  showForm: initialShowForm = false,
-  clearFormAfterAdd = false,
-  ableImport = false, 
-  ableFilter = false, 
-  ableForm = true, 
-  ...rest 
-}: BaseModuleProps<T>) => {
-  const { alias, title, fields, items, fetchItems, initialFormData: iniFormData, loading, onView,
-    viewLinks, onSelect, onItemAdded, onItemsAdded, onItemUpdated, onItemsUpdated, onItemDeleted } = rest;
+const DataManagementModule = <T extends Record<string, any>>({
+  handlers, fetchItems, ...config }: BaseModuleProps<T>) => {
+  const {
+    showForm: initialShowForm = false,
+    clearFormAfterAdd = false,
+    ableImport = false,
+    ableFilter = false,
+    ableForm = true,
+    alias,
+    title,
+    fields,
+    items,
+    initialFormData: iniFormData,
+    loading,
+    viewLinks,
+  } = config;
 
   const { showNotification } = useNotification();
   const isEmpty = items?.length === 0;
@@ -40,7 +46,6 @@ const DataManagementModule = <T extends Record<string, any>>({
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
   const [tempChanges, setTempChanges] = useState<Record<string, Record<string, number>>>({});
 
-
   /**
    * Load items by calling the fetchItems callback.
    */
@@ -55,7 +60,7 @@ const DataManagementModule = <T extends Record<string, any>>({
    * @param {T} newItem - The new item to be added.
    */
   const handleItemAdded = async (newItem: T) => {
-    onItemAdded && await onItemAdded(newItem);
+    await handlers?.onItemAdded?.(newItem);
     loadItems();
     setImportData(null);
     clearFormAfterAdd && resetEditing();
@@ -66,8 +71,8 @@ const DataManagementModule = <T extends Record<string, any>>({
    * @param {T} updatedItem - The updated item data.
    */
   const handleItemUpdated = async (updatedItem: T) => {
-    if (currentItem && onItemUpdated) {      
-      await onItemUpdated(currentItem.id, updatedItem);
+    if (currentItem) {
+      await handlers?.onItemUpdated?.(currentItem.id, updatedItem);
       showNotification("Item updated", "success");
       clearFormAfterAdd && resetEditing();
     } else {
@@ -82,11 +87,11 @@ const DataManagementModule = <T extends Record<string, any>>({
   const handleOnSelect = async (item: T | null) => {
     setIsEditing(!!item);
     setCurrentItem(item);
-    onSelect && onSelect(item);
-    
-    if (!item) {      
+    handlers?.onSelect?.(item);
+
+    if (!item) {
       setCurrentItem(null);
-      setInitialFormData(null);      
+      setInitialFormData(null);
       resetEditing();
     }
   };
@@ -96,8 +101,8 @@ const DataManagementModule = <T extends Record<string, any>>({
    * @param {string} id - The ID of the item to delete.
    */
   const handleItemDelete = async (id: string) => {
-    if (onItemDeleted) {
-      await onItemDeleted(id);
+    if (handlers?.onItemDeleted) {
+      await handlers?.onItemDeleted(id);
       loadItems();
       showNotification("Item deleted", "success");
     }
@@ -124,24 +129,19 @@ const DataManagementModule = <T extends Record<string, any>>({
 
   const handleSaveAllChanges = async () => {
     try {
-      if (onItemsUpdated) {
-        onItemsUpdated && onItemsUpdated(tempChanges); // Llama al callback con los cambios temporales
-      }
+      handlers?.onItemsUpdated?.(tempChanges);
       setTempChanges({}); // Limpiar los cambios temporales después de guardar
     } catch (error) {
       console.error("Error saving changes:", error);
       showNotification("Error saving changes", "error");
     }
   };
-  
 
-  // Effects
   useEffect(() => {
     if (isEmpty && !loading) {
       setShowForm(true);
       setShowImportForm(true);
-    }
-    else {
+    } else {
       setShowForm(initialShowForm);
     }
   }, [items]);
@@ -152,24 +152,24 @@ const DataManagementModule = <T extends Record<string, any>>({
     }
     loadItems();
   }, [importData]);
-  
+
   useEffect(() => {
-    if (!!onItemAdded) {
+    if (!!handlers?.onItemAdded!) {
       setIsEditing(true);
     }
     loadItems();
   }, [isEditing]);
 
   // Ensure at least one field is visible
-  if (fields.filter((f) => f.view === true).length === 0) fields.forEach((f) => f.view = true);
+  if (fields.filter((f) => f.view === true).length === 0) fields.forEach((f) => (f.view = true));
 
   return (
     <>
       {title && <h1 className="title">{title}</h1>}
-      
+
       <div className="module-container">
-        {!loading && ableForm && (          
-          showForm && <>
+        {!loading && ableForm && showForm && (
+          <>
             <div className="form-container">
               <FormBase
                 onItemAdded={handleItemAdded}
@@ -180,9 +180,7 @@ const DataManagementModule = <T extends Record<string, any>>({
                 initialData={initialFormData || currentItem}
                 clearFormAfterAdd={clearFormAfterAdd}
               />
-              {ableImport && <>
-                {showImportForm && <UploadOptions<T> onFileUpload={handleFileUpload} columnNames={fields.map((f) => f.name)} />}
-              </>}              
+              {ableImport && <>{showImportForm && <UploadOptions<T> onFileUpload={handleFileUpload} columnNames={fields.map((f) => f.name)} />}</>}
             </div>
           </>
         )}
@@ -190,38 +188,37 @@ const DataManagementModule = <T extends Record<string, any>>({
         <div className="list-container">
           {ableImport && previewVisible && (
             <div className="upload-container">
-              <UploadTable<T>
-                fields={fields}
-                data={dataImport}
-                onSelect={setCurrentItem}
-                onImport={setImportData}
-                onImportMulti={onItemsAdded}
-              />
+              <UploadTable<T> fields={fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
             </div>
           )}
           {items?.length! > 0 && (
             <ListBase<T>
-              alias={alias}
-              items={items}
-              selectedItem={iniFormData || currentItem}
-              fields={fields}
-              removeable={!!onItemDeleted}
-              editable={!!onItemUpdated}
-              seeable={!!onView}
-              ableFilter={ableFilter}
-              ableForm={ableForm}
-              ableImport={ableImport}
-              showForm={showForm}
-              showImportForm={showImportForm}
-              tempChanges={tempChanges}
-              setTempChanges={setTempChanges}
-              onAdd={setShowForm}
-              onImport={setShowImportForm}
-              onSelect={handleOnSelect}
-              onItemDeleted={handleItemDelete}
-              onItemsUpdated={handleSaveAllChanges}
-              viewLinks={viewLinks}
-              loading={loading || false}
+              config={{
+                viewLinks: viewLinks,
+                loading: loading || false,
+                alias: alias,
+                items: items,
+                selectedItem: iniFormData || currentItem,
+                fields: fields,
+                removeable: !!handlers?.onItemDeleted,
+                editable: !!handlers?.onItemUpdated,
+                seeable: !!handlers?.onView,
+                ableFilter: ableFilter,
+                ableForm: ableForm,
+                ableImport: ableImport,
+                showForm: showForm,
+                showImportForm: showImportForm,
+                useFlexTable: false,
+                tempChanges: tempChanges,
+                setTempChanges: setTempChanges,
+              }}
+              handlers={{
+                onAdd: setShowForm,
+                onImport: setShowImportForm,
+                onSelect: handleOnSelect,
+                onItemDeleted: handleItemDelete,
+                onItemsUpdated: handleSaveAllChanges,
+              }}
             />
           )}
         </div>

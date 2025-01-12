@@ -4,6 +4,7 @@ interface TableBodyProps<T> {
   fields: BaseField[];
   items: T[];
   selectedItem: T | null;
+  useFlexTable: boolean;
   tempChanges: Record<string, Record<string, number>>;
   handlers: {
     handleRowClick: (item: T) => void;

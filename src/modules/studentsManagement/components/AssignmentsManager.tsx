@@ -1,5 +1,3 @@
-// src/modules/studentsManagement/components/AssignmentsManager.tsx
-
 import React from 'react';
 import { StudentAssignmentsManagerProps } from '../types';
 import DataManagementModule from '../../../shared/modules/DataManagementModule/DataManagementModule';
@@ -22,7 +20,7 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
             {!loading && <DataManagementModule<StudentAssignment>
                 fields={fields}
                 items={assignments}
-                onItemAdded={handleAddAssignment}
+                handlers={{onItemAdded:handleAddAssignment}}
                 showForm={true}
                 ableForm={true}
                 loading={loading}>

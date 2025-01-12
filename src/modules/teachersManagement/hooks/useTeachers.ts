@@ -1,7 +1,7 @@
 // src/hooks/useTeachers.ts
 
 import { useState, useEffect } from 'react';
-import { fetchTeachers, addTeacher, deleteTeacher, Teacher } from '../services/teacherService'; // Import functions from the service
+import { fetchTeachers, addTeacher, deleteTeacher, Teacher, updateTeacher } from '../services/teacherService'; // Import functions from the service
 
 const useTeachers = () => {
     const [teachers, setTeachers] = useState<Teacher[]>([]); // State to store the list of teachers
@@ -47,8 +47,16 @@ const useTeachers = () => {
             setError('Error deleting teacher'); // Handle errors
         }
     };
+    const handleUpdateTeacher = async (id: string, newTeacher: Teacher) => {
+        try {
+            await updateTeacher(id, newTeacher); // Add new teacher
+            loadTeachers(); // Reload the list of teachers after adding
+        } catch (err) {
+            setError('Error adding teacher'); // Handle errors
+        }
+    };
 
-    return { teachers, loadTeachers, loading, error, handleAddTeacher, handleDeleteTeacher }; // Return necessary data and functions
+    return { teachers, loadTeachers, loading, error, handleAddTeacher, handleDeleteTeacher, handleUpdateTeacher }; // Return necessary data and functions
 };
 
 export default useTeachers; // Export the custom hook

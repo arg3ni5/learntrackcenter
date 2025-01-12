@@ -31,10 +31,12 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
                 alias={courseId}
                 fields={fields}
                 items={assignments}
-                onItemAdded={handleAddAssignment}
-                onItemsAdded={handleAddAssignments}
-                onItemUpdated={handleUpdateAssignment}
-                onItemDeleted={handleDeleteAssignment}
+                handlers={{
+                    onItemAdded: handleAddAssignment,
+                    onItemUpdated: handleUpdateAssignment,
+                    onItemDeleted: handleDeleteAssignment,
+                    onItemsAdded: handleAddAssignments
+                }}
                 loading={loading}
                 clearFormAfterAdd={false}
                 showForm={false}

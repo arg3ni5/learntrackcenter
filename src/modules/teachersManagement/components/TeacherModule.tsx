@@ -3,7 +3,7 @@ import useTeachers from "../hooks/useTeachers";
 import { Teacher } from "../services/teacherService";
 
 const TeacherModule: React.FC = () => {
-  const {teachers, handleAddTeacher, handleDeleteTeacher} = useTeachers(); // Custom hook to fetch teachers from Firestore
+  const {teachers, handleAddTeacher, handleDeleteTeacher, handleUpdateTeacher} = useTeachers(); // Custom hook to fetch teachers from Firestore
   // Define the fields for the form used to add new teachers
   const fields = [
     { name: "name", placeholder: "Nombre Completo" }, // Field for teacher's full name
@@ -17,8 +17,11 @@ const TeacherModule: React.FC = () => {
         title="Gestión de Profesores" // Title for the module
         fields={fields} // Fields to be displayed in the form
         items={teachers} // Function to fetch items from Firestore
-        onItemAdded={handleAddTeacher}
-        onItemDeleted={handleDeleteTeacher} // Function to delete a teacher using the service
+        handlers={{
+          onItemAdded : handleAddTeacher,
+          onItemDeleted : handleDeleteTeacher,
+          onItemUpdated: handleUpdateTeacher
+        }}
         showForm={false} // Show the form
       />
     </>
