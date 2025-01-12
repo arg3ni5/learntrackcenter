@@ -1,5 +1,5 @@
 import { db } from '../../../services/firebase';
-import { collection, addDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 
 // Define la interfaz Teacher
 export interface Teacher {
@@ -24,6 +24,12 @@ export const fetchTeachers = async (): Promise<Teacher[]> => {
 export const addTeacher = async (teacher: Teacher): Promise<void> => {
     const teachersCollection = collection(db, 'teachers'); // Colección de profesores en Firestore
     await addDoc(teachersCollection, teacher); // Agregar el nuevo documento
+};
+
+export const updateTeacher = async (teacherId: string, updatedTeacher: Partial<Teacher>): Promise<void> => {
+    const assignmentDocRef = doc(db, `teachers/${teacherId}`);
+    const {id,...assignment} = updatedTeacher;
+    await updateDoc(assignmentDocRef, assignment);
 };
 
 // Función para eliminar un profesor por ID en Firestore

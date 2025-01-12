@@ -3,7 +3,7 @@ import useTeachers from "../hooks/useTeachers";
 import { Teacher } from "../services/teacherService";
 
 const TeacherModule: React.FC = () => {
-  const {teachers, handleAddTeacher, handleDeleteTeacher} = useTeachers(); // Custom hook to fetch teachers from Firestore
+  const {teachers, handleAddTeacher, handleDeleteTeacher, handleUpdateTeacher} = useTeachers(); // Custom hook to fetch teachers from Firestore
   // Define the fields for the form used to add new teachers
   const fields = [
     { name: "name", placeholder: "Nombre Completo" }, // Field for teacher's full name
@@ -20,6 +20,7 @@ const TeacherModule: React.FC = () => {
         handlers={{
           onItemAdded : handleAddTeacher,
           onItemDeleted : handleDeleteTeacher,
+          onItemUpdated: handleUpdateTeacher
         }}
         showForm={false} // Show the form
       />
