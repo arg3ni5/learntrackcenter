@@ -17,8 +17,10 @@ const TeacherModule: React.FC = () => {
         title="Gestión de Profesores" // Title for the module
         fields={fields} // Fields to be displayed in the form
         items={teachers} // Function to fetch items from Firestore
-        onItemAdded={handleAddTeacher}
-        onItemDeleted={handleDeleteTeacher} // Function to delete a teacher using the service
+        handlers={{
+          onItemAdded : handleAddTeacher,
+          onItemDeleted : handleDeleteTeacher,
+        }}
         showForm={false} // Show the form
       />
     </>

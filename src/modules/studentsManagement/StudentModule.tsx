@@ -26,11 +26,11 @@ const StudentModule: React.FC = () => {
     useEffect(() => {
         setIsLoading(loading);
     }, [loading, setIsLoading]);
-    
-    
+
+
 
     // Navigate to student courses page
-    const handleOnView = (item: Student) => {        
+    const handleOnView = (item: Student) => {
         navigate(`/students/${item.id}/courses`);
         setSelectedStudent(item);
     };
@@ -41,7 +41,7 @@ const StudentModule: React.FC = () => {
     };
 
     // Handle removal of a student
-    const handleRemove = async (id: string) => {
+    const handleOnRemove = async (id: string) => {
         if (id) {
             await handleRemoveStudent(id);
             setSelectedStudent(null); // Clear selected student after removal
@@ -56,13 +56,15 @@ const StudentModule: React.FC = () => {
             <DataManagementModule<Student>
                 fields={fields}
                 items={students}
-                onItemAdded={handleAddStudent}
-                onItemsAdded={handleAddStudents}
-                onItemDeleted={handleRemove}
-                onItemUpdated={handleUpdateStudent}
+                handlers={{
+                    onItemAdded : handleAddStudent,
+                    onItemsAdded: handleAddStudents,
+                    onItemDeleted: handleOnRemove,
+                    onItemUpdated: handleUpdateStudent,
+                    onView: handleOnView,
+                    onSelect: handleOnSelect
+                }}
                 initialFormData={selectedStudent}
-                onView={handleOnView}
-                onSelect={handleOnSelect}
                 ableFilter={true}
                 showForm={false}
                 ableForm={true}

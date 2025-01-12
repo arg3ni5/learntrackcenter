@@ -1,4 +1,3 @@
-import UploadOptions from '../components/UploadOptions';
 export interface Option {
   value: string;
   label: string;
@@ -49,7 +48,7 @@ export interface BaseModuleProps<T> extends CommonProps<T>{
   clearFormAfterAdd?: boolean;
   children?: React.ReactNode;
   fetchItems?: () => Promise<T[]>; // Function to fetch items
-  handlers: HandlersBaseModuleProps<T>;
+  handlers?: HandlersBaseModuleProps<T>;
 }
 
 export interface configListBaseProps<T> extends CommonProps<T> {
@@ -66,10 +65,10 @@ export interface ListBaseProps<T> {
   config: configListBaseProps<T>;
   handlers: {
     onAdd?: (state: boolean) => void;
-    onSelect?: (item: T | null) => void;  
+    onSelect?: (item: T | null) => void;
     onImportItem?: (newItem: any) => void;
     onItemDeleted?: (id: string) => void;
-    onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>; 
+    onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>;
     onImport?: (state: boolean) => void;
   }
 }
@@ -81,7 +80,7 @@ export interface LinkItem {
 }
 
 export interface ActionButtonsProps<T> {
-  config: ActionButtonsConfig<T>;  
+  config: ActionButtonsConfig<T>;
   hasPendingChanges: boolean;
   handlers: {
     handleShowForm: (state: boolean) => void;

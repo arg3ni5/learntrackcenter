@@ -14,12 +14,12 @@ interface GradeModuleProps {
 const GradeModule: React.FC<GradeModuleProps> = ({ courseId, periodId }) => {
     const {grades,addNewGrade, removeGrade, setCourseId, setPeriodId } = useGrades();
     const { students } = useStudents();
-    
+
     useEffect(()=>{
         setCourseId(courseId!),
         setPeriodId(periodId!)
     },[]);
-    
+
     // Define the fields for the form used to add new grades
     const fields = [
         { name: 'studentId', placeholder: 'ID of the Student' }, // Field for student ID
@@ -32,7 +32,7 @@ const GradeModule: React.FC<GradeModuleProps> = ({ courseId, periodId }) => {
         { name: 'finalGrade', placeholder: 'Final Grade' }, // Field for final grade
     ];
 
-    const handleAddGrades = async (grades: Grade[]) => {        
+    const handleAddGrades = async (grades: Grade[]) => {
         const updatedGrades = grades.map((grade) => {
             const student = students.find((student) => student.email === grade.email || student.email === grade.studentId);
             if (student) {
@@ -41,11 +41,10 @@ const GradeModule: React.FC<GradeModuleProps> = ({ courseId, periodId }) => {
                 studentId: student.id
               };
             }
-            
+
             return grade as Grade;
           });
           console.log(updatedGrades);
-          
     };
 
     return (
@@ -54,12 +53,10 @@ const GradeModule: React.FC<GradeModuleProps> = ({ courseId, periodId }) => {
             fields={fields} // Pass the fields to be used in the form
             uploadFields={upLoadFields} // Pass the fields to be used in the form
             items={grades}
-            onItemAdded={addNewGrade} 
-            onItemsAdded={handleAddGrades} 
-            onItemDeleted={removeGrade}            
             showForm={false}
             ableForm={true}
-            ableImport={true}       
+            ableImport={true}
+            handlers={{onItemAdded:addNewGrade, onItemsAdded:handleAddGrades, onItemDeleted:removeGrade}}
         />
     );
 };

@@ -8,7 +8,7 @@ import Card, { CardField } from "../../../components/card/Card";
 
 /**
  * CourseManagerProps Interface
- * 
+ *
  * Defines the props for the CourseManager component.
  *
  * @interface
@@ -22,7 +22,7 @@ interface CourseManagerProps {
 
 /**
  * CourseManager Component
- * 
+ *
  * This component manages the display and interaction for a specific course within a period.
  * It provides a tabbed interface to switch between different aspects of course management:
  * course details, assignments, and students.
@@ -41,7 +41,7 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
 
   /**
    * fieldsCard Array
-   * 
+   *
    * Defines the fields for the course details card.
    *
    * @type {CardField[]}
@@ -59,7 +59,7 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
 
   /**
    * toggleSection Function
-   * 
+   *
    * Toggles the visibility of different sections within the CourseManager.
    *
    * @function
@@ -72,30 +72,30 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
   return (
     <>
       <h1 className="title">{periodCourse?.name} Course Manage</h1>
-      
+
       {/* Navigation buttons for different sections */}
       <div className="section-buttons">
-        <button 
+        <button
           onClick={() => toggleSection("course")}
-          className={activeSection === "course" ? "active" : ""}
+          className={activeSection === "course" ? "button active" : ""}
         >
           Course Details
         </button>
-        <button 
+        <button
           onClick={() => toggleSection("assignments")}
-          className={activeSection === "assignments" ? "active" : ""}
+          className={activeSection === "assignments" ? "button active" : ""}
         >
           Assignments
         </button>
-        <button 
+        <button
           onClick={() => toggleSection("students")}
-          className={activeSection === "students" ? "active" : ""}
+          className={activeSection === "students" ? "button active" : ""}
         >
           Students
         </button>
-        <button 
+        <button
           onClick={() => toggleSection("avalibleStudents")}
-          className={activeSection === "avalibleStudents" ? "active" : ""}
+          className={activeSection === "avalibleStudents" ? "button active" : ""}
         >
           Avalible Students
         </button>
@@ -105,12 +105,12 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
       {activeSection === "course" && periodCourse && (
         <Card<PeriodCourse> titleName="name" fields={fieldsCard} data={periodCourse}/>
       )}
-      
+
       {/* Assignments section */}
       {activeSection === "assignments" && (
         <AssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />
       )}
-      
+
       {/* Students section (placeholder) */}
       {activeSection === "students" && (
         <CourseStudentsManager periodCourse={periodCourse!} periodId={periodId!} />

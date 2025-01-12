@@ -101,8 +101,8 @@ const DataManagementModule = <T extends Record<string, any>>({
    * @param {string} id - The ID of the item to delete.
    */
   const handleItemDelete = async (id: string) => {
-    if (handlers.onItemDeleted) {
-      await handlers.onItemDeleted(id);
+    if (handlers?.onItemDeleted) {
+      await handlers?.onItemDeleted(id);
       loadItems();
       showNotification("Item deleted", "success");
     }
@@ -154,7 +154,7 @@ const DataManagementModule = <T extends Record<string, any>>({
   }, [importData]);
 
   useEffect(() => {
-    if (!!handlers.onItemAdded) {
+    if (!!handlers?.onItemAdded!) {
       setIsEditing(true);
     }
     loadItems();
@@ -188,7 +188,7 @@ const DataManagementModule = <T extends Record<string, any>>({
         <div className="list-container">
           {ableImport && previewVisible && (
             <div className="upload-container">
-              <UploadTable<T> fields={fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers.onItemsAdded} />
+              <UploadTable<T> fields={fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
             </div>
           )}
           {items?.length! > 0 && (
@@ -200,9 +200,9 @@ const DataManagementModule = <T extends Record<string, any>>({
                 items: items,
                 selectedItem: iniFormData || currentItem,
                 fields: fields,
-                removeable: !!handlers.onItemDeleted,
-                editable: !!handlers.onItemUpdated,
-                seeable: !!handlers.onView,
+                removeable: !!handlers?.onItemDeleted,
+                editable: !!handlers?.onItemUpdated,
+                seeable: !!handlers?.onView,
                 ableFilter: ableFilter,
                 ableForm: ableForm,
                 ableImport: ableImport,
