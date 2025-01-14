@@ -1,0 +1,40 @@
+.table-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Cambia el tamaño mínimo según sea necesario */
+  background-color: #f1f1f1;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table-header-cell {
+  padding: 10px;
+  font-weight: bold;
+}
+
+.table-body {
+  max-height: 400px; /* Ajusta según sea necesario */
+  overflow-y: auto; /* Desplazamiento vertical */
+  overflow-x: auto; /* Desplazamiento horizontal */
+}
+
+.table-body-inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Cambia el tamaño mínimo según sea necesario */
+}
+
+.table-row {
+  display: contents; /* Permite que las celdas se alineen correctamente en la cuadrícula */
+}
+
+.table-cell {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
