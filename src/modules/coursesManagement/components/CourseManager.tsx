@@ -4,7 +4,7 @@ import AssignmentsManager from "../../periodsManagement/components/AssignmentsMa
 import CourseStudentsManager from "./CourseStudentsManager";
 import AvalibleStudents from "./AvalibleStudents";
 import useLocalStorage from "../../../hooks/useLocalStorage";
-import Card, { CardField } from "../../../components/card/Card";
+import Card, { CardField } from "../../../shared/components/Card/Card";
 
 /**
  * CourseManagerProps Interface

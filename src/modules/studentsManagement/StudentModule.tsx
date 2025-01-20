@@ -50,8 +50,12 @@ const StudentModule: React.FC = () => {
     return (
         <>
             <h1 className='title'>Student Management</h1>
-            {selectedStudent && <StudentCard student={selectedStudent} />}
-            {selectedStudent && <>{selectedStudent.id && <PeriodsManager student={selectedStudent} />}</>}
+            {selectedStudent &&
+                <div className="slideInUp">
+                    <StudentCard student={selectedStudent} />
+                    {selectedStudent.id && <PeriodsManager student={selectedStudent} />}
+                </div>
+            }
 
             <DataManagementModule<Student>
                 fields={fields}

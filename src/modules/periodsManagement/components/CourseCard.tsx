@@ -1,6 +1,6 @@
 import React from 'react';
 import { Course } from '../../../types/types';
-import Card, { CardField } from '../../../components/card/Card';
+import Card, { CardField } from '../../../shared/components/Card/Card';
 
 interface StudentCardProps {
     data: Course; //
@@ -20,7 +20,7 @@ const fields: CardField[] = [
     // { name: "courseId", placeholder: "courseId" },
     { name: "assignmentsIds", placeholder: "assignments", type:"array" },
     { name: "teacherName", placeholder: "teacherName" },
-  ];  
+  ];
 
 const CourseCard: React.FC<StudentCardProps> = ({
     data,
@@ -28,10 +28,10 @@ const CourseCard: React.FC<StudentCardProps> = ({
     onDelete }) => {
     return (
         <>
-            <Card<Course> 
+            <Card<Course>
                 titleName="name"
                 fields={fields}
-                data={data} 
+                data={data}
                 viewLink={viewLink}
                 onDelete={onDelete}
             />

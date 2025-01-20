@@ -1,6 +1,6 @@
 import React from 'react';
 import { Student } from '../../../types/types';
-import Card, { CardField } from '../../../components/card/Card';
+import Card, { CardField } from '../../../shared/components/Card/Card';
 
 interface StudentCardProps {
     student: Student;
@@ -8,10 +8,10 @@ interface StudentCardProps {
     onDelete?: (id: string) => void;
 }
 
-const fields: CardField[] = [    
+const fields: CardField[] = [
     { name: "identificationNumber", placeholder: "Identification" },
     { name: "email", placeholder: "Email Address" },
-];    
+];
 
 const StudentCard: React.FC<StudentCardProps> = ({ student, onDelete }) => {
     return (

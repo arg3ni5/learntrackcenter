@@ -5,13 +5,13 @@ import './PeriodsManager.css';
 import useStudentCourses from '../hooks/useStudentCourses';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Student, StudentCourse } from '../../../types/types';
-import Card, { CardField } from '../../../components/card/Card';
+import Card, { CardField } from '../../../shared/components/Card/Card';
 
 const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);
     const [selectedCourseId, setSelectedCourseId] = useLocalStorage<string|null>('selectedCourseId', null);
     const { error, availableCourses, availablePeriods, studentCourses, handleAddCourse, handleDeleteCourse, setPeriodId } = useStudentCourses(student.id!);
-    
+
     const assignPeriodToStudent = async () => {
         if (selectedPeriodId && selectedCourseId) {
             const {id, duration, hours, ...selectedCourse} = availableCourses.filter(course => course.id === selectedCourseId)[0];
@@ -23,7 +23,7 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                 status: 'Not Started',
                 finalGrade: 0,
                 assignmentsIds: [],
-            };            
+            };
             await handleAddCourse(student.id!, newCourse); // Call the function to add the new period
         }
     };
@@ -50,7 +50,7 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
         await handleDeleteCourse(student.id!, id);
     }
 
-    if (error) return <div className="error">{error}</div>; 
+    if (error) return <div className="error">{error}</div>;
 
     return (
         <>
@@ -65,7 +65,7 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                         ))}
                     </div>
                 </div>
-                {selectedPeriodId && 
+                {selectedPeriodId &&
                 (<div className="item">
                     <h3>Available Courses</h3>
                     <div className="buttons-container">
@@ -81,13 +81,13 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
             </div>
 
             {/* {selectedPeriodId && selectedCourseId &&<AssignmentsSelector courseId={selectedCourseId} periodId={selectedPeriodId}/>} */}
-            <div className="container">                
+            <div className="container-grid">
                 {studentCourses.map(student => (
-                    <div key={`div-${student.id}`}>
+                    <div className="grow1" key={`div-${student.id}`}>
                         <Card<StudentCourse> titleName="name" fields={fields} data={student} onDelete={onDelete} ableDelete={student.assignmentsIds.length === 0}/>
-                    </div>                    
+                    </div>
                 ))}
-                
+
             </div>
         </>
     );
