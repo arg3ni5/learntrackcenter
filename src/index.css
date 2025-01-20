@@ -13,24 +13,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  --odd-row-bg: #f2f2f2;
-  --bg-color-delete: #f44336;
-  --bg-color-delete-hover: #d32f2f;
-  --bg-color-edit: #4CAF50;
-  --bg-color-edit-hover: #45a049;
-  --bg-color-save: #007bff;
-  --bg-color-save-hover: #0068d8;
-  --bg-color-add: #FFA500;
-  --bg-color-add-hover: #FF8C00;
-  --bg-color-view: #008080;
-  --bg-color-view-hover: #006666;
-  --bg-color-hover: #dadada;
-  --bg-color: #f2f2f2;
-  --bg-color-highlight: #007bff;
-  --border-color: #ccc;
-  --border-color-highlight: #363636;
-  --color: black;
 }
 
 html,
@@ -82,14 +64,6 @@ button:focus-visible,
 
 
 @media (prefers-color-scheme: dark) {
-  :root {
-      --color: white;
-      --odd-row-bg: #363636;
-      --bg: #363636;
-      --bg-color-hover: #757575;
-      --border-color: black;
-      --border-color-highlight: #f2f2f2;
-  }
   .button, button {
     background-color: var(--bg);
   }
@@ -106,127 +80,28 @@ button:focus-visible,
   }
 }
 
-.button-black {
-  background-color: black !important;
-}
-
-/* Base styles for all buttons */
-.delete-button,
-.edit-button,
-.add-button,
-.view-button,
-.save-button, .button {
-  color: white; /* Set text color to white */
-}
-
-/* Specific styles for delete button */
-.delete-button {
-  background-color: var(--bg-color-delete) !important; /* Background color for delete */
-}
-
-.delete-button:hover {
-  background-color: var(--bg-color-delete-hover) !important; /* Background color on hover for delete */
-}
-
-/* Specific styles for edit button */
-.edit-button {
-  background-color: var(--bg-color-edit); /* Background color for edit */
-}
-
-.edit-button:hover {
-  background-color: var(--bg-color-edit-hover); /* Background color on hover for edit */
-}
-
-/* Specific styles for view button */
-.view-button {
-  background-color: var(--bg-color-view); /* Background color for view */
-}
-
-.view-button:hover {
-  background-color: var(--bg-color-view-hover); /* Background color on hover for view */
-}
-
-/* Specific styles for save button */
-.save-button {
-  background-color: var(--bg-color-save) !important; /* Background color for save */
-}
-
-.save-button:hover {
-  background-color: var(--bg-color-save-hover) !important; /* Background color on hover for save */
-}
-
-/* Specific styles for add button */
-.add-button {
-  background-color: var(--bg-color-add) !important; /* Background color for add */
-}
-
-.add-button:hover {
-  background-color: var(--bg-color-add-hover) !important; /* Background color on hover for add */
-}
-
-button[disabled], button[disabled]:hover, .disabled-link {
-  background-color: var(--odd-row-bg) !important;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-/* Apply transform to all buttons on hover */
-.delete-button:hover,
-.edit-button:hover,
-.add-button:hover,
-.view-button:hover,
-.save-button:hover {
-  transform: translateY(-1px); /* Lift the button slightly on hover */
-}
-
-.buttons-container button:hover,
-.add-button:hover {
-  transform: translateY(-1px);
-}
 
 .title {
   padding-bottom: 15px;
   margin-bottom: 20px;
   width: 100%;
   border-bottom: 3px solid #ccc;
-  /* Borde del formulario */
-}container
-.button- button {
-  margin: 10px 5px;
-  border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
 }
 
-.buttons-container .active, .section-buttons .active {
-  background-color: #45a049 !important;
-  border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
-  font-weight: bold;
-}
-
-.buttons-container.flex {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 2em;
-}
-
-.buttons-container.flex button {
-  flex: 1;
-  border: 1px solid var(--border-color-highlight);
-}
-.buttons-container button:nth-child(n+2) {
-  margin-left: 5px;
-}
-.buttons-container button:not([class]) {
-  background-color: var(--bg-color-hover) !important;
-}
-.buttons-container .active:hover, .section-buttons .active:hover {
-  background-color: #4CAF50 !important;
-}
 
 .container {
   display: flex; /* Enable flexbox */
   justify-content: space-between; /* Space between items */
   align-items: center; /* Center items vertically */
   padding: 10px; /* Optional padding */
+}
+
+.container-grid{
+  width: 100%;
+
+  display: flex;
+  gap: 16px;
+  justify-content: center;
 }
 
 .item {
@@ -237,6 +112,8 @@ button[disabled], button[disabled]:hover, .disabled-link {
   text-align: center; /* Center text */
   border-radius: 4px; /* Rounded corners */
 }
+
+.grow1 { flex-grow: 1; }
 
 .item.item-bg  {
   background-color: var(--bg);
