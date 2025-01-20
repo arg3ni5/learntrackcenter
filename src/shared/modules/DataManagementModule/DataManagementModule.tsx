@@ -30,6 +30,7 @@ const DataManagementModule = <T extends Record<string, any>>({
     initialFormData: iniFormData,
     loading,
     viewLinks,
+    uploadFields,
   } = config;
 
   const { showNotification } = useNotification();
@@ -157,6 +158,9 @@ const DataManagementModule = <T extends Record<string, any>>({
     if (!!handlers?.onItemAdded!) {
       setIsEditing(true);
     }
+    if (items?.length == 0) {
+      setIsEditing(false);
+    }
     loadItems();
   }, [isEditing]);
 
@@ -188,7 +192,7 @@ const DataManagementModule = <T extends Record<string, any>>({
         <div className="list-container">
           {ableImport && previewVisible && (
             <div className="upload-container">
-              <UploadTable<T> fields={fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
+              <UploadTable<T> fields={uploadFields||fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
             </div>
           )}
           {items?.length! > 0 && (
