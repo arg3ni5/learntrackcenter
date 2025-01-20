@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import Checkbox from '../../../../components/checkbox/Checkbox';
+import Checkbox from '../../../components/Checkbox/Checkbox';
 import ConfirmationModal from '../../../../components/confirmationModal/ConfirmationModal';
 import { BaseField } from '../types/types';
 
 interface UploadTableProps<T> {
     data: T[]; // Array of data of type T
     titleModal?: string;
-    messageModal?: string; 
+    messageModal?: string;
     onSelect: (item: T) => void; // Callback for selecting a item
     onImport: (item: T) => void; // Callback for importing a item
     onDelete?: (selectedRows: Set<number>) => void; // Callback for deleting a item
@@ -15,9 +15,9 @@ interface UploadTableProps<T> {
 }
 
 const UploadTable = <T extends Record<string, any>>({
-    fields, 
-    data, 
-    onSelect, 
+    fields,
+    data,
+    onSelect,
     onImport,
     onImportMulti,
     titleModal,
@@ -61,8 +61,8 @@ const UploadTable = <T extends Record<string, any>>({
     };
 
     // Function to handle importing a student
-    const handleImport = (index: number) => {    
-        const selected = dataImport[index];        
+    const handleImport = (index: number) => {
+        const selected = dataImport[index];
         onImport(selected); // Call the onImport callback with the selected student
         // onDelete(index); // Delete the student after importing
     };
@@ -82,7 +82,7 @@ const UploadTable = <T extends Record<string, any>>({
 
         if (dataToImport.length === 0) {
             console.log("No changes to save!"); // Log if no changes to save
-            return;            
+            return;
         }
         onImportMulti && onImportMulti(dataToImport); // Call the confirm and save callback if provided
     };
@@ -101,9 +101,9 @@ const UploadTable = <T extends Record<string, any>>({
                     <button className="edit-button" onClick={() => setIsModalOpen(true)} aria-label="Confirm and save changes">Confirm and Save</button>
                 )}
             </div>
-            
+
             <div className="table-container">
-            
+
                 <table className="list-base-table header-table" aria-label="table data to import">
                     <thead>
                         <tr>
@@ -115,7 +115,7 @@ const UploadTable = <T extends Record<string, any>>({
                                 />
                             </th>
                             {fields.map(({name, placeholder}) => (
-                                <th key={`up-th-${name}`}>{placeholder}</th>  
+                                <th key={`up-th-${name}`}>{placeholder}</th>
                             ))}
                             <th>Action</th>
                         </tr>
@@ -130,14 +130,14 @@ const UploadTable = <T extends Record<string, any>>({
                                     <td>
                                         <div onClick={(e) => e.stopPropagation()} aria-hidden="true"> {/* Prevent row click when clicking checkbox */}
                                             <Checkbox
-                                                checked={selectedRows.has(index)} 
-                                                onChange={() => toggleRowSelection(index)} 
+                                                checked={selectedRows.has(index)}
+                                                onChange={() => toggleRowSelection(index)}
                                                 aria-label={`Select ${row[0]}`} // Use full name for accessibility label
                                             />
                                         </div>
                                     </td>
                                     {fields.map(({name}) => (
-                                        <td key={`${name}-${index}`}>{row[name]}</td>  
+                                        <td key={`${name}-${index}`}>{row[name]}</td>
                                     ))}
                                     <td className="actions" onClick={(e) => e.stopPropagation()} aria-hidden="true">
                                         <button className='save-button' onClick={() => handleSelection(index)} aria-label={`Select ${row["id"]}`}>Select</button>

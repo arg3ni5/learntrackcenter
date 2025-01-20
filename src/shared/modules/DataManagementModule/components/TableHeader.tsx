@@ -8,9 +8,9 @@ interface TableHeaderProps<T> {
   handleSort: (key: keyof T) => void;
 }
 
-const TableHeader = <T extends Record<string, any>>({ fields, sortConfig, handleSort, useFlexTable }: TableHeaderProps<T>) => (
-  !useFlexTable && 
-    <table className={`list-base-table header-table`} aria-label="List header">
+const TableHeader = <T extends Record<string, any>>({ fields, sortConfig, handleSort, useFlexTable, showActions }: TableHeaderProps<T>) => (
+  !useFlexTable &&
+    <table className={`list-base-table header-table ${showActions ? "with-actions" : ""}`} aria-label="List header">
         <thead>
           <tr>
             {fields.map((field) => field.view && (
