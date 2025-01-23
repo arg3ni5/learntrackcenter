@@ -100,10 +100,11 @@ export interface AssignmentsManagerProps {
     periodId: string;
     courseId: string;
 }
+
 export interface Grade {
-    id?: string; // ID opcional al obtener desde Firestore
+    email?: string | undefined;
+    id?: string;
     studentId: string;
     subjectId: string;
     finalGrade: number;
-    email?: string;
 }
