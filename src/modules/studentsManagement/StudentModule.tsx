@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DataManagementModule from "../../shared/modules/DataManagementModule/DataManagementModule";
 import useStudents from './hooks/useStudents';
 import { useLoading } from "../../components/loading/LoadingContext";
@@ -11,8 +11,9 @@ import './StudentModule.css';
 
 const StudentModule: React.FC = () => {
     const { setIsLoading } = useLoading();
-    const { students, loading, handleAddStudent, handleAddStudents, handleRemoveStudent, handleUpdateStudent } = useStudents();
+    const { students, loading, handleAddStudent, handleAddStudents, handleRemoveStudent, handleUpdateStudent } = useStudents("Loading Student");
     const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent", null);
+    const [animation, setAnimation] = useState('');
     const navigate = useNavigate();
 
     // Define fields for the student table
@@ -37,8 +38,18 @@ const StudentModule: React.FC = () => {
 
     // Handle selection of a student
     const handleOnSelect = (item: Student | null) => {
-        setSelectedStudent(item);
+        if (item) {
+            setAnimation('slide-in-elliptic-bottom-fwd');
+            setSelectedStudent(item);
+        } else {
+            setAnimation('slide-out-elliptic-bottom-bck');
+            setTimeout(() => {
+                setSelectedStudent(null);
+                setAnimation('');
+            }, 500); // Ajusta este tiempo según la duración de tu animación
+        }
     };
+
 
     // Handle removal of a student
     const handleOnRemove = async (id: string) => {
@@ -50,18 +61,18 @@ const StudentModule: React.FC = () => {
     return (
         <>
             <h1 className='title'>Student Management</h1>
-            {selectedStudent &&
-                <div className="slideInUp">
-                    <StudentCard student={selectedStudent} />
-                    {selectedStudent.id && <PeriodsManager student={selectedStudent} />}
+            {(selectedStudent || animation === 'slide-out-top') && (
+                <div className={`animated-element ${animation}`}>
+                    <StudentCard student={selectedStudent!} />
+                    {selectedStudent?.id && <PeriodsManager student={selectedStudent} />}
                 </div>
-            }
+            )}
 
             <DataManagementModule<Student>
                 fields={fields}
                 items={students}
                 handlers={{
-                    onItemAdded : handleAddStudent,
+                    onItemAdded: handleAddStudent,
                     onItemsAdded: handleAddStudents,
                     onItemDeleted: handleOnRemove,
                     onItemUpdated: handleUpdateStudent,
