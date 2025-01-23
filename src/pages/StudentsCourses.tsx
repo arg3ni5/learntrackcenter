@@ -4,15 +4,15 @@ import useStudents from '../modules/studentsManagement/hooks/useStudents';
 import StudentManager from '../modules/studentsManagement/components/StudentManager';
 
 const StudentsCourses: React.FC = () => {
-    const { loadStudent, student, loading } = useStudents();
+    const { loadStudent, student, loading } = useStudents("Loading Student");
     const { id } = useParams<{ id: string }>();
-    
+
     useEffect(() => {
         if (id && !student) {
             loadStudent(id);
         }
     }, [id, student]);
-    
+
 
     return (
         <>

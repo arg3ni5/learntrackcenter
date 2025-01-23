@@ -5,7 +5,7 @@ import { useNotification } from '../../../components/notification/NotificationCo
 import { useLoading } from '../../../components/loading/LoadingContext';
 import { Student } from '../../../types/types';
 
-const useStudents = () => {
+const useStudents = (loadingText?: string) => {
     const { setIsLoading, setLoadingText } = useLoading();
     const [students, setStudents] = useState<Student[]>([]); // State to store the list of students
     const [student, setStudent] = useState<Student | null>(); // State to store a single student
@@ -15,10 +15,10 @@ const useStudents = () => {
 
     // Effect to manage loading state and text
     useEffect(() => {
-        setLoadingText("Loading Student"); // Set loading text
+        loadingText && setLoadingText(loadingText); // Set loading text
         setIsLoading(loading); // Update loading state
     }, [loading, setIsLoading]);
-    
+
     // Function to load all students
     const loadStudents = async () => {
         try {
@@ -41,7 +41,7 @@ const useStudents = () => {
             }
             setLoading(true);
             const studentData = await fetchStudentById(id); // Fetch student data by ID
-            console.log("studentData", studentData);            
+            console.log("studentData", studentData);
             setStudent(studentData); // Update state with fetched student data
         } catch (err) {
             setError('Error loading student'); // Set error message if fetching fails
@@ -51,7 +51,7 @@ const useStudents = () => {
             setLoading(false); // Reset loading state
         }
     };
-    
+
     // Load all students on component mount
     useEffect(() => {
         loadStudents();
@@ -61,7 +61,7 @@ const useStudents = () => {
     const handleAddStudent = async (newStudent: Student) => {
         try {
             if (!validateStudent(newStudent)) return; // Validate before proceeding
-            await addStudent(newStudent);            
+            await addStudent(newStudent);
             showNotification("Element added", "success"); // Show notification for successful addition
             loadStudents(); // Reload the list of students
         } catch (err) {
@@ -73,7 +73,7 @@ const useStudents = () => {
     const handleAddStudents = async (studentsToAdd: Student[]) => {
         try {
             // Filter to get unique students that do not already exist
-            const uniqueStudents = studentsToAdd.filter(newStudent => 
+            const uniqueStudents = studentsToAdd.filter(newStudent =>
                 !students.some(existingStudent => existingStudent.fullName === newStudent.fullName)
             );
 
@@ -92,10 +92,10 @@ const useStudents = () => {
 
             // Use batch function to add unique students
             await addStudentsBatch(uniqueStudents);
-            
+
             // Show notification for successful addition
             showNotification(`${uniqueStudents.length} elements added`, "success");
-            
+
             // Reload the list of students
             loadStudents();
         } catch (err) {
@@ -133,7 +133,7 @@ const useStudents = () => {
         // Validate the email format using a regular expression
         return /\S+@\S+\.\S+/.test(email);
     };
-    
+
 
     const validateStudent = (student: Student): boolean => {
         // Check if the student already exists
@@ -142,29 +142,29 @@ const useStudents = () => {
             showNotification('The student already exists', 'error'); // Notify if the student already exists
             return false; // Return false to indicate validation failure
         }
-    
+
         // Validate student data
         if (!student.fullName || !isValidEmail(student.email)) {
             showNotification('Invalid student data', 'error'); // Notify if the student data is invalid
             return false; // Return false to indicate validation failure
         }
-    
+
         return true; // Return true if all validations pass
     };
-    
 
-    return { 
-        students, 
-        student, 
-        loadStudents, 
-        loadStudent, 
-        loading, 
-        error, 
-        handleAddStudent, 
-        handleAddStudents, 
-        handleRemoveStudent, 
-        handleUpdateStudent 
+
+    return {
+        students,
+        student,
+        loadStudents,
+        loadStudent,
+        loading,
+        error,
+        handleAddStudent,
+        handleAddStudents,
+        handleRemoveStudent,
+        handleUpdateStudent
     };
 };
 
-export default useStudents; 
+export default useStudents;

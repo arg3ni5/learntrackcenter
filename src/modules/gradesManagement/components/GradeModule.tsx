@@ -13,7 +13,7 @@ interface GradeModuleProps {
 
 const GradeModule: React.FC<GradeModuleProps> = ({ courseId, periodId }) => {
   const { grades, addNewGrade, removeGrade, setCourseId, setPeriodId } = useGrades();
-  const { students } = useStudents();
+  const { students } = useStudents(undefined);
 
   useEffect(() => {
     setCourseId(courseId!), setPeriodId(periodId!);
