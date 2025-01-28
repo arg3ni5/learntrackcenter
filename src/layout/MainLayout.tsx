@@ -2,7 +2,7 @@
 
 import React from "react";
 import Menu from "../components/menu/Menu";
-import "./MainLayout.css"; // Asegúrate de importar el archivo CSS
+import "./MainLayout.css";
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -10,7 +10,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="header">
         <Menu />
       </div>
-      <div className="main">{children}</div> {/* Renderiza los hijos aquí */}
+      <div className="main">{children}</div>
     </div>
   );
 };
