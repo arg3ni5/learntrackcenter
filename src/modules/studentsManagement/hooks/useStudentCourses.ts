@@ -61,10 +61,10 @@ const useStudentCourses = (studentId: string) => {
   };
 
   const loadStudentCourses = async (studentId: string) => {
-    if(!selectedPeriodId){
-      return;
-    }
     try {
+      if(!selectedPeriodId){
+        return;
+      }
       setLoading(true);
       const studentCourses = await fetchCourses(studentId, selectedPeriodId);
       setStudentCourses(studentCourses);
