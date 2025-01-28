@@ -62,7 +62,6 @@ const useStudentCourses = (studentId: string) => {
 
   const loadStudentCourses = async (studentId: string) => {
     if(!selectedPeriodId){
-      showNotification("Not period selected", "error");
       return;
     }
     try {
@@ -95,10 +94,11 @@ const useStudentCourses = (studentId: string) => {
   const handleAddCourse = async (studentId: string, newCourse: StudentCourse) => {
     try {
       if(!selectedPeriodId){
+        console.log("handleAddCourse","Not period selected");
         showNotification("Not period selected", "error");
         return
       }
-      
+
       if (studentCourses.filter((course) => course.id === newCourse.periodCourseId).length > 0) {
         showNotification("Course already added", "error");
         return;
@@ -115,10 +115,7 @@ const useStudentCourses = (studentId: string) => {
 
   const handleDeleteCourse = async (studentId: string, courseId: string | undefined) => {
     if(!selectedPeriodId){
-      showNotification("Not period selected", "error");
-      return;
-    }
-    if(!selectedPeriodId){
+      console.log("handleDeleteCourse","Not period selected");
       showNotification("Not period selected", "error");
       return;
     }
@@ -128,7 +125,7 @@ const useStudentCourses = (studentId: string) => {
       await deleteCourse(studentId, selectedPeriodId, courseId);
       loadStudentCourses(studentId);
     } catch (err) {
-      console.error(err);      
+      console.error(err);
       setError("Error deleting course");
       showNotification("Error deleting course", "error");
     } finally {
