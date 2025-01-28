@@ -8,8 +8,8 @@ import PeriodCourses from "../pages/PeriodCourses";
 import Loading from "../components/loading/Loading";
 import { useLoading } from "../components/loading/LoadingContext";
 
-const Login = lazy(() => import("../components/Login"));
 const Register = lazy(() => import("../components/Register"));
+const Home = lazy(() => import("../pages/Home"));
 const Courses = lazy(() => import("../pages/Courses"));
 const Grades = lazy(() => import("../pages/Grades"));
 const Periods = lazy(() => import("../pages/Periods"));
@@ -51,7 +51,7 @@ const AppRoutes: React.FC = () => {
 
   const routes = (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
       <Route path="/students" element={<PrivateRoute element={<Students />} />} />
