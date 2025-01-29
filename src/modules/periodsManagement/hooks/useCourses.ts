@@ -6,7 +6,7 @@ import { useLoading } from "../../../components/loading/LoadingContext";
 import { useNotification } from "../../../components/notification/NotificationContext";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 
-const DEFAULT_POLLING_INTERVAL = 10 * 60 * 1000; // 10 minutes
+const DEFAULT_POLLING_INTERVAL = 1 * 60 * 1000; // 10 minutes
 
 const useCourses = (periodId: string) => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -43,20 +43,25 @@ const useCourses = (periodId: string) => {
   };
 
   // Load global data (teachers and available courses)
-  const loadGlobalData = async () => {
+  const loadGlobalData = async (forceUpdate = false) => {
     try {
-      if (availableTeachers.length > 0 && availableCourses.length > 0) {
+      if (!forceUpdate && availableTeachers.length > 0 && availableCourses.length > 0) {
         console.log("Global data already loaded. Skipping fetch.");
-        return; // Skip if data is already loaded
+        return;
       }
 
-      const [teachers, availableCoursesList] = await Promise.all([fetchTeachers(), fetchAvailableCourses()]);
+      const [teachers, availableCoursesList] = await Promise.all([
+        fetchTeachers(),
+        fetchAvailableCourses()
+      ]);
 
       setAvailableTeachers(teachers);
       setAvailableCourses(availableCoursesList);
 
       localStorage.setItem("availableTeachers", JSON.stringify(teachers));
       localStorage.setItem("availableCourses", JSON.stringify(availableCoursesList));
+
+      console.log("Global data updated.");
     } catch (err) {
       console.error("Error loading global data:", err);
       showNotification("Error loading global data", "error");
@@ -70,8 +75,7 @@ const useCourses = (periodId: string) => {
 
   useEffect(() => {
     loadGlobalData(); // Initial load
-    const intervalId = setInterval(() => loadGlobalData(), DEFAULT_POLLING_INTERVAL); // Periodic updates
-
+    const intervalId = setInterval(() => loadGlobalData(true), DEFAULT_POLLING_INTERVAL); // Periodic updates
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
