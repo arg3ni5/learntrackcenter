@@ -22,12 +22,12 @@ const Navbar: React.FC<NavbarProps> = ({ items }) => {
         <header className="navbar">
             <ul>
                 {items.map((item) => (
-                    <li key={item.label} className={location.pathname === item.to ? 'active' : ''}>
+                    <li key={item.label}>
                         {/* Si hay hijos, renderiza un Dropdown */}
                         {item.children ? (
                             <Dropdown id={`${item.label.toLowerCase()}-dropdown-desktop`} title={item.label} items={item.children} />
                         ) : (
-                            <button className={`${isActive ? 'active' : ''}`}>
+                            <button className={`dropdown-button ${isActive===true ? 'active' : ''}`}>
                                 <Link to={item.to}>{item.label}</Link>
                             </button>
                         )}

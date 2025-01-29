@@ -23,16 +23,6 @@
     margin: 0 15px; /* Margen horizontal entre los elementos */
 }
 
-.navbar a {
-    color: white; /* Color del texto */
-    text-decoration: none; /* Sin subrayado en los enlaces */
-    font-weight: bold; /* Texto en negrita */
-}
-
-/* Efecto hover para enlaces en el navbar */
-.navbar a:hover {
-    color: #f1f1f1; /* Color al pasar el mouse sobre el texto */
-}
 
 /* Estilos del sidebar (sin cambios) */
 .sidebar {

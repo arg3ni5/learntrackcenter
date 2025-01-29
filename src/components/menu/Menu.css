@@ -23,18 +23,13 @@
     margin: 0 15px; /* Horizontal margin between items */
 }
 
-.navbar a {
+.dropdown-button a {
     color: white; /* Text color */
-    text-decoration: none; /* No underline on links */
     font-weight: bold; /* Bold text */
-    padding: 10px; /* Padding for clickable area */
-    border-radius: 4px; /* Rounded corners for links */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
-/* Hover effect for links in the navbar */
-.navbar a:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+.dropdown-button.active {
+    border-radius: 4px !important; /* Rounded corners */
 }
 
 /* Sidebar styles (unchanged) */
