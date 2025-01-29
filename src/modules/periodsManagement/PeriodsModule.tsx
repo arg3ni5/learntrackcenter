@@ -38,7 +38,7 @@ const PeriodsModule: React.FC = () => {
 				viewLinks={[
 					{ label: "Courses", format: "/period/:id/courses" },
 					// { label: "Students", format:"/period/:id/students" },
-				]} // Link format for viewing a period
+				]}
 				loading={loading} // Loading state
 				showForm={false} // Show the form
 			/>

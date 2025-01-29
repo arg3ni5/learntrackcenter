@@ -3,10 +3,11 @@ import { Course } from '../../../types/types';
 import Card, { CardField } from '../../../shared/components/Card/Card';
 
 interface StudentCardProps {
-    data: Course; //
-    viewLink: string; //
-    // onEdit?: (student: Student) => void;
-    onDelete?: (id: string) => void;
+    data: Course;
+    viewLink: string;
+    onItemAdded?: (newItem: Course) => Promise<void>;
+    onItemUpdated?: (updatedItem: Course) => Promise<void>;
+    onDelete?: (id: string) => Promise<void>;
 }
 
 
@@ -18,14 +19,17 @@ const fields: CardField[] = [
     { name: "hours", placeholder: "hours" },
     { name: "status", placeholder: "status" },
     // { name: "courseId", placeholder: "courseId" },
-    { name: "assignmentsIds", placeholder: "assignments", type:"array" },
+    { name: "assignmentsIds", placeholder: "assignments", type: "array" },
+    { name: "enrolledStudents", placeholder: "Enrolled Students", type: "array" },
     { name: "teacherName", placeholder: "teacherName" },
-  ];
+];
 
 const CourseCard: React.FC<StudentCardProps> = ({
     data,
     viewLink,
-    onDelete }) => {
+    onDelete, onItemAdded, onItemUpdated }) => {
+        console.log(data);
+
     return (
         <>
             <Card<Course>
@@ -33,7 +37,8 @@ const CourseCard: React.FC<StudentCardProps> = ({
                 fields={fields}
                 data={data}
                 viewLink={viewLink}
-                onDelete={onDelete}
+                handlers={{ onDelete, onItemAdded, onItemUpdated }}
+                ableDelete={data.assignmentsIds.length === 0}
             />
         </>
     );

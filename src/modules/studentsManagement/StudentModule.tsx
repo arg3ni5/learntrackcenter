@@ -16,7 +16,6 @@ const StudentModule: React.FC = () => {
     const [animation, setAnimation] = useState('');
     const navigate = useNavigate();
 
-    // Define fields for the student table
     const fields = [
         { name: "fullName", placeholder: "Full Name", view: true },
         { name: "identificationNumber", placeholder: "Identification Number" },

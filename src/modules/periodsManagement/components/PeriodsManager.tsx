@@ -41,7 +41,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
         courseId: id!,
         status: "Not Started",
         assignmentsIds: [],
-      };      
+      };
       await handleAddCourse(course); // Call the function to add the new period to the student
       setSelectedCourseId(null); // Reset selected period after assignment
     }
@@ -76,41 +76,36 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
         )}
       </div>
       <div className="">
-          {courses.map((course) => (
-            <div key={course.id} className="container periods-list">
+        {courses.map((course) => (
+          <div key={course.id} className="container periods-list">
 
-              <div className="item">
-                <div className="buttons-container actions">
-                  {
+            <div className="item">
+              {!course.teacherId && (
+                <>
+                  <div className="buttons-container actions">
                     <button className="save-button" onClick={() => handleUpdate(course)}>
                       Save
                     </button>
-                  }
-                  {course.assignmentsIds && course.assignmentsIds.length == 0 && (
-                    <button className="delete-button" onClick={() => handleDeleteCourse(course.id!)}>
-                      Delete
-                    </button>
-                  )}
-                </div>
-
-                <CourseCard
-                data={course} 
-                viewLink={`/period/${periodId}/course/${course.id}`}/>
-              </div>
-
-              {!course.teacherId && (
-                <SelectInput
-                  label="Teacher"
-                  key="teacherId"
-                  options={teachers.map((teacher) => ({ value: teacher.id!, label: teacher.name }))}
-                  value={""}
-                  onChange={(selectedOption) => setSelectedTeacher(selectedOption.value)}
-                  placeholder="Select Teacher"
-                />
+                  </div>
+                  <SelectInput
+                    label="Teacher"
+                    key="teacherId"
+                    options={teachers.map((teacher) => ({ value: teacher.id!, label: teacher.name }))}
+                    value={""}
+                    onChange={(selectedOption) => setSelectedTeacher(selectedOption.value)}
+                    placeholder="Select Teacher"
+                  />
+                </>
               )}
-              {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
+
+              <CourseCard
+                data={course}
+                onDelete={handleDeleteCourse}
+                viewLink={`/period/${periodId}/course/${course.id}`} />
             </div>
-          ))}
+            {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
+          </div>
+        ))}
       </div>
     </div>
   );
