@@ -43,7 +43,7 @@ const Card = <T extends Record<string, any>>({ titleName, fields, data, handlers
 				return value;
 		}
 	};
-	const showActions = !!handlers?.onItemUpdated || ableDelete;
+	const showActions = !!handlers?.onItemUpdated || ableDelete || viewLink;
 
 	return (
 		<>
