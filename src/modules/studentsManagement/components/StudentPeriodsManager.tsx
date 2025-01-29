@@ -1,7 +1,7 @@
 // src/modules/studentsManagement/components/PeriodsManager.tsx
 
 import React from 'react';
-import './PeriodsManager.css';
+import './StudentPeriodsManager.css';
 import useStudentCourses from '../hooks/useStudentCourses';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Student, StudentCourse } from '../../../types/types';
