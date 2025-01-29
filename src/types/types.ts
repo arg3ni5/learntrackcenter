@@ -27,7 +27,7 @@ export interface Course extends AvailableCourse{
     teacherId?: string; // Reference to the Teacher document
     teacherName?: string; // To show name of teacher
     assignmentsIds: string[]; // List of assignments for the course
-    enrolledStudents?: string[]; // List of enrolledStudents for the course
+    enrolledStudents: string[]; // List of enrolledStudents for the course
 }
 export interface PeriodCourse extends Course{
     periodCourseId: string; // Reference to the PeriodCourse document

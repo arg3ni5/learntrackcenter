@@ -28,8 +28,6 @@ const CourseCard: React.FC<StudentCardProps> = ({
     data,
     viewLink,
     onDelete, onItemAdded, onItemUpdated }) => {
-        console.log(data);
-
     return (
         <>
             <Card<Course>
@@ -38,7 +36,7 @@ const CourseCard: React.FC<StudentCardProps> = ({
                 data={data}
                 viewLink={viewLink}
                 handlers={{ onDelete, onItemAdded, onItemUpdated }}
-                ableDelete={data.assignmentsIds.length === 0}
+                ableDelete={data.assignmentsIds.length === 0 && (data.enrolledStudents?.length ?? 0) === 0}
             />
         </>
     );
