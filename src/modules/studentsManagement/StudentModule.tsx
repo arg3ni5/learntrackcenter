@@ -6,7 +6,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import { Student } from "../../types/types";
 import StudentCard from "./components/StudentCard";
-import PeriodsManager from "./components/PeriodsManager";
+import PeriodsManager from "./components/StudentPeriodsManager";
 import './StudentModule.css';
 
 const StudentModule: React.FC = () => {
