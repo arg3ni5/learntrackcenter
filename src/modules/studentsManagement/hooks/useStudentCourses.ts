@@ -93,7 +93,7 @@ const useStudentCourses = (studentId: string) => {
 
   const handleAddCourse = async (studentId: string, newCourse: StudentCourse) => {
     try {
-      if(!selectedPeriodId){
+      if(!newCourse.periodCourseId){
         console.log("handleAddCourse","Not period selected");
         showNotification("Not period selected", "error");
         return

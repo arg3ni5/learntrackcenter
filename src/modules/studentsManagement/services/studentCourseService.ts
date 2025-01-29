@@ -33,16 +33,11 @@ export const fetchCourses = async (studentId: string, periodId: string): Promise
 // Function to add a new course for a specific student
 export const addCourse = async (studentId: string, newCourse: StudentCourse): Promise<void> => {
   try {
-    const { periodId, id: courseId } = newCourse;
-    console.log({
-      studentId,
-      periodId: newCourse.periodId,
-      courseId: newCourse.periodCourseId,
-    });
+    const { periodId, courseId } = newCourse;
 
     if (!studentId) throw new Error(`Student ID is null or undefined`);
     if (!periodId) throw new Error(`Period ID is null or undefined`);
-    if (!courseId) throw new Error(`Period ID is null or undefined`);
+    if (!courseId) throw new Error(`Course ID is null or undefined`);
 
     const urlCourses = `students/${studentId}/periods/${newCourse.periodId}/courses`;
     const courseDocRef = doc(db, urlCourses, newCourse.periodCourseId);

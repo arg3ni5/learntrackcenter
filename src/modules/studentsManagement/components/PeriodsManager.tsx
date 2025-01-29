@@ -84,7 +84,7 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
             <div className="container-grid">
                 {studentCourses.map(student => (
                     <div className="grow1" key={`div-${student.id}`}>
-                        <Card<StudentCourse> titleName="name" fields={fields} data={student} onDelete={onDelete} ableDelete={student.assignmentsIds.length === 0}/>
+                        <Card<StudentCourse> titleName="name" fields={fields} data={student} handlers={{onDelete}} ableDelete={student.assignmentsIds.length === 0}/>
                     </div>
                 ))}
 
