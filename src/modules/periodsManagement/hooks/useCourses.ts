@@ -6,7 +6,7 @@ import { useLoading } from "../../../components/loading/LoadingContext";
 import { useNotification } from "../../../components/notification/NotificationContext";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 
-const DEFAULT_POLLING_INTERVAL = 1 * 60 * 1000; // 10 minutes
+const DEFAULT_POLLING_INTERVAL = 10 * 60 * 1000; // 10 minutes
 
 const useCourses = (periodId: string) => {
   const [courses, setCourses] = useState<Course[]>([]);
