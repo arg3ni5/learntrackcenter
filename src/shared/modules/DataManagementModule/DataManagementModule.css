@@ -160,16 +160,27 @@ table tr.selected-row {
     transform: none !important;
 }
 
-.actions.buttons-container.compact button, 
+.actions.buttons-container.compact button,
 .actions.buttons-container.compact .button{
     margin: 0;
     border-radius: 0;
 }
-.actions.buttons-container.compact button:nth-child(1){
-    border-radius: 8px 0 0 !important;
+.actions.buttons-container.compact a:first-child,
+.actions.buttons-container.compact button:first-child,
+.actions.buttons-container.compact .button:first-child {
+  border-top-left-radius: 8px !important;
 }
-.actions.buttons-container.compact button:nth-last-child(1){
-    border-radius: 0 8px 0  0!important;
+
+.actions.buttons-container.compact a:last-child,
+.actions.buttons-container.compact button:last-child,
+.actions.buttons-container.compact .button:last-child {
+  border-top-right-radius: 8px !important;
+}
+
+.actions.buttons-container.compact a:only-child,
+.actions.buttons-container.compact button:only-child,
+.actions.buttons-container.compact .button:only-child {
+  border-radius: 8px 8px 0 0 !important;
 }
 
 .table-container {
@@ -183,11 +194,11 @@ table tr.selected-row {
     position: sticky;
     top: 0;
     z-index: 1;
-    background-color: #fff;    
+    background-color: #fff;
     border-radius: 8px 8px 0 0;
 }
 
-.with-actions{ 
+.with-actions{
     margin-top: 0;
     top: -1px !important;
     border-radius: 8px 0 0 !important;
