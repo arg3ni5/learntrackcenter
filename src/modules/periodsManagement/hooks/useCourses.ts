@@ -1,126 +1,130 @@
 // src/modules/studentsManagement/hooks/useCourses.ts
 
-import { useState, useEffect } from 'react';
-import { useNotification } from '../../../components/notification/NotificationContext';
-import useLocalStorage from '../../../hooks/useLocalStorage'; // Import the local storage hook
-import { addCourse, deleteCourse, updateCourse, fetchAvailableCourses, fetchCourses } from '../services/periodCourseService';
-import { AvailableCourse, Course } from '../../../types/types'; // Import the Course interface
-import { useLoading } from '../../../components/loading/LoadingContext';
-import { fetchTeachers, Teacher } from '../../teachersManagement/services/teacherService';
+import { useState, useEffect } from "react";
+import { AvailableCourse, Course } from "../../../types/types";
+import { fetchTeachers, Teacher } from "../../teachersManagement/services/teacherService";
+import { addCourse, deleteCourse, updateCourse, fetchAvailableCourses, fetchCourses } from "../services/periodCourseService";
+import { useLoading } from "../../../components/loading/LoadingContext";
+import { useNotification } from "../../../components/notification/NotificationContext";
+import useLocalStorage from "../../../hooks/useLocalStorage";
+
+const DEFAULT_POLLING_INTERVAL = 10 * 60 * 1000;
 
 const useCourses = (periodId: string) => {
-    const [data, setData] = useState<Course[]>([]); // State for storing student's courses
-    const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
-    const [error, setError] = useState<string | null>(null); // State to manage errors
-    const [ availableTeachers, setAvailableTeachers ] = useLocalStorage<Teacher[]>('availableTeachers', []); 
-    const [ availableCourses, setAvailableCourses ] = useLocalStorage<AvailableCourse[]>('availableCourses', []);
-    const { showNotification } = useNotification();
-    const { setIsLoading } = useLoading();
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [availableTeachers, setAvailableTeachers] = useLocalStorage<Teacher[]>("availableTeachers", []);
+  const [availableCourses, setAvailableCourses] = useLocalStorage<AvailableCourse[]>("availableCourses", []);
+  const { showNotification } = useNotification();
+  const { setIsLoading } = useLoading();
 
-    useEffect(() => {
-        setIsLoading(loading);
-    }, [loading, setIsLoading]);
+  useEffect(() => {
+    setIsLoading(loading);
+  }, [loading, setIsLoading]);
 
-    const loadData = async () => {
-        try {
-            setLoading(true);
-            const data = await fetchCourses(periodId);
-            const detailedData = data.map(course => {
-                const teacher = availableTeachers.find(t => t.id === course.teacherId);                
-                return {
-                    ...course,
-                    teacherName: teacher ? teacher.name : 'Unknown Teacher',
-                };
-            });            
-            setData(detailedData); 
-        } catch (err) {
-            showNotification('Error fetching courses', 'error'); 
-        } finally {
-            setLoading(false); 
-        }
-    };
+  const loadPeriodCourses = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchCourses(periodId);
+      const detailedData = data.map((course) => {
+        const teacher = availableTeachers.find((t) => t.id === course.teacherId);
+        return {
+          ...course,
+          teacherName: teacher ? teacher.name : "Unknown Teacher",
+        };
+      });
+      setCourses(detailedData);
+    } catch (err) {
+      console.error("Error loading period courses:", err);
+      showNotification("Error loading period courses", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const loadAvailableCourses = async () => {
-        try {
-            setLoading(true);
-            const data = await fetchAvailableCourses();         
-            setAvailableCourses(data); 
-        } catch (err) {
-            showNotification('Error fetching courses', 'error'); 
-        } finally {
-            setLoading(false); 
-        }
-    };
+  const loadGlobalData = async () => {
+    try {
+      if (availableTeachers.length > 0 && availableCourses.length > 0) {
+        console.log("Global data already loaded. Skipping fetch.");
+        return;
+      }
 
-    const loadAvailableTeachers = async () => {
-        try {
-            setLoading(true);
-            const data = await fetchTeachers();
-            setAvailableTeachers(data); 
-        } catch (err) {
-            showNotification('Error fetching courses', 'error'); 
-        } finally {
-            setLoading(false); 
-        }
-    };
+      const [teachers, availableCoursesList] = await Promise.all([fetchTeachers(), fetchAvailableCourses()]);
 
-    useEffect(() => {
-        loadData(); // Load student's courses if needed
-        loadAvailableCourses()
-        loadAvailableTeachers()
-    }, []);
+      setAvailableTeachers(teachers);
+      setAvailableCourses(availableCoursesList);
 
-    const handleAddCourse = async (newCourse: Course) => {
-        try {
-            if(data.filter(course => course.courseId === newCourse.courseId).length > 0 )            {
-                showNotification('Course already added', 'error');
-                return;
-            }
-            setLoading(true);            
-            await addCourse(periodId, newCourse);
-            loadData();
-        } catch (err) {
-            showNotification('Error adding course', 'error');
-        } finally {
-            setLoading(false);
-        }
-    };
+      localStorage.setItem("availableTeachers", JSON.stringify(teachers));
+      localStorage.setItem("availableCourses", JSON.stringify(availableCoursesList));
+    } catch (err) {
+      console.error("Error loading global data:", err);
+      showNotification("Error loading global data", "error");
+    }
+  };
 
-    const handleDeleteCourse = async (courseId: string | undefined) => {
-        try {        
-            if (!courseId) return;
-            setLoading(true);
-            await deleteCourse(periodId, courseId);
-            loadData();
-        } catch (err) {
-            setError('Error deleting course');
-            showNotification('Error deleting course', 'error');
-        } finally {
-            setLoading(false);
-        }
-    };
+  useEffect(() => {
+    loadPeriodCourses();
+  }, [periodId]);
 
-    const handleUpdateCourse = async (courseId: string, course: Course) => {
-        try {        
-            if (!periodId) return;
-            setLoading(true);            
-            await updateCourse(periodId, courseId, course);
-            loadData();
-        } catch (err) {
-            setError('Error update course');
-            showNotification('Error update course', 'error');
-        } finally {
-            setLoading(false);
-        }
-    };
+  useEffect(() => {
+    loadGlobalData();
+    const intervalId = setInterval(() => loadGlobalData(), DEFAULT_POLLING_INTERVAL);
+    return () => clearInterval(intervalId);
+  }, []);
 
+  const handleAddCourse = async (newCourse: Course) => {
+    try {
+      if (courses.filter((course) => course.courseId === newCourse.courseId).length > 0) {
+        showNotification("Course already added", "error");
+        return;
+      }
+      setLoading(true);
+      await addCourse(periodId, newCourse);
+      loadGlobalData();
+    } catch (err) {
+      showNotification("Error adding course", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleDeleteCourse = async (courseId: string | undefined) => {
+    try {
+      if (!courseId) return;
+      setLoading(true);
+      await deleteCourse(periodId, courseId);
+      loadGlobalData();
+    } catch (err) {
+      showNotification("Error deleting course", "error");
+      console.error("Error deleting course:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return { courses: data, availableCourses, availableTeachers,
-        loading, error, 
-        handleAddCourse, 
-        handleDeleteCourse,
-        handleUpdateCourse }; // Return necessary data and functions
+  const handleUpdateCourse = async (courseId: string, course: Course) => {
+    try {
+      if (!periodId) return;
+      setLoading(true);
+      await updateCourse(periodId, courseId, course);
+      loadGlobalData();
+    } catch (err) {
+      showNotification("Error update course", "error");
+      console.error("Error updating course:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    courses,
+    availableCourses,
+    availableTeachers,
+    loading,
+    handleAddCourse,
+    handleDeleteCourse,
+    handleUpdateCourse,
+  };
 };
 
 export default useCourses;
