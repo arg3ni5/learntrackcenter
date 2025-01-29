@@ -62,13 +62,20 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
           (<div className="item">
             <h3>Available Courses</h3>
             <div className="buttons-container">
-              {availableCourses.map(course => (
-                <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
-                  {course.name}
-                </button>
-              ))}
+              {availableCourses
+                .filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id))
+                .map(course => (
+                  <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
+                    {course.name}
+                  </button>
+                ))}
             </div>
             {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
+            {availableCourses
+              .filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id)).length === 0 &&
+              <div className="empty">All available courses have already been assigned to this period.</div>
+            }
+
           </div>)}
 
         {periodId && selectedCourseId && (
