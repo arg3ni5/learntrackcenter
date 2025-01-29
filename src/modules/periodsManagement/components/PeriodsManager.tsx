@@ -50,26 +50,27 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const isEqual = (id1: any, id2: any) => id1 && id2 && String(id1) === String(id2);
 
   return (
-    <div className="periods-manager card">
+    <div className="periods-manager">
       <div className="container">
-        <h3>{period?.name}</h3>
+        <h2>{period?.name}</h2>
         <button onClick={handleGoBack}>Volver</button>
       </div>
 
       <div className="container">
-        {periodId && (
-          <div className="item">
+
+        {periodId &&
+          (<div className="item">
             <h3>Available Courses</h3>
-            <div className="buttons-container flex">
-              {availableCourses.map((course, idx) => (
-                <button key={`ac-${idx}`} className={`button ${isEqual(selectedCourseId, course.id) ? "active" : ""}`} onClick={() => setSelectedCourseId(course.id!)}>
+            <div className="buttons-container">
+              {availableCourses.map(course => (
+                <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
                   {course.name}
                 </button>
               ))}
             </div>
             {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
-          </div>
-        )}
+          </div>)}
+
         {periodId && selectedCourseId && (
           <button className="edit-button" onClick={assignCourseToPeriod}>
             Assign course
@@ -104,7 +105,9 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
                 onDelete={handleDeleteCourse}
                 viewLink={`/period/${periodId}/course/${course.id}`} />
             </div>
-            {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
+            <div className="item">
+              {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
+            </div>
           </div>
         ))}
       </div>
