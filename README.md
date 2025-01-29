@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# Sistema de Gestión de Estudiantes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es un sistema de gestión de estudiantes que permite a los usuarios cargar, visualizar, actualizar y eliminar información sobre estudiantes, períodos y cursos. El sistema está construido con React y utiliza Firebase Firestore como base de datos.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Gestión de Estudiantes**: Agregar, eliminar y actualizar información sobre estudiantes.
+- **Gestión de Períodos**: Asignar períodos a los estudiantes y gestionar su información.
+- **Gestión de Cursos**: Asignar cursos a los períodos y gestionar las asignaciones.
+- **Carga de Datos**: Cargar datos desde archivos Excel para agregar múltiples estudiantes a la vez.
 
-## Expanding the ESLint configuration
+## Tecnologías Utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React**: Biblioteca para construir interfaces de usuario.
+- **Firebase**: Plataforma para el backend, incluyendo Firestore para la base de datos.
+- **XLSX**: Biblioteca para manejar archivos Excel.
 
-- Configure the top-level `parserOptions` property like this:
+## Instalación
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. Clona el repositorio:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+2. Navega al directorio del proyecto:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+
+3. Instala las dependencias:
+
+
+4. Configura Firebase:
+- Crea un proyecto en [Firebase](https://firebase.google.com/).
+- Agrega la configuración de Firebase en tu proyecto.
+
+5. Inicia la aplicación:
+```npm run dev```
+
+
+## Uso
+
+### Gestión de Estudiantes
+
+Para gestionar estudiantes, utiliza el componente `StudentModule`. Aquí puedes agregar nuevos estudiantes, eliminar estudiantes existentes o actualizar su información.
+
+### Gestión de Períodos
+
+El componente `PeriodsManager` permite asignar períodos a los estudiantes y gestionar los cursos asociados.
+
+### Gestión de Cursos
+
+El componente `CoursesManager` se utiliza para asignar cursos a los períodos específicos y gestionar las asignaciones.
+
+### Carga de Estudiantes
+
+Utiliza el componente `UploadStudents` para cargar múltiples estudiantes desde un archivo Excel. Asegúrate de que el archivo tenga las columnas adecuadas (Nombre completo, Número de identificación, Correo electrónico).
+
+## Contribuciones
+
+Las contribuciones son bienvenidas. Si deseas contribuir a este proyecto, por favor sigue estos pasos:
+
+1. Haz un fork del repositorio.
+2. Crea una nueva rama (`git checkout -b feature/nueva-caracteristica`).
+3. Realiza tus cambios y haz commit (`git commit -m 'Añadir nueva característica'`).
+4. Envía tus cambios (`git push origin feature/nueva-caracteristica`).
+5. Abre un Pull Request.
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
