@@ -11,7 +11,7 @@ export interface CardField {
 export interface HandlersCard<T> {
 	onItemUpdated?: (updatedItem: T) => Promise<void>; // Optional callback to handle updating
 	onItemAdded?: (newItem: T) => Promise<void>; // Callback to handle adding an item
-	onDelete?: (id: string) => void; // Callback for canceling edit
+	onDelete?: (id: string) => Promise<void>; // Callback for canceling edit
 	onCancelEdit?: () => void; // Callback for canceling edit
 }
 
@@ -43,7 +43,7 @@ const Card = <T extends Record<string, any>>({ titleName, fields, data, handlers
 				return value;
 		}
 	};
-	const showActions = !!handlers?.onItemUpdated || !!handlers?.onDelete;
+	const showActions = !!handlers?.onItemUpdated || ableDelete;
 
 	return (
 		<>
@@ -59,15 +59,7 @@ const Card = <T extends Record<string, any>>({ titleName, fields, data, handlers
 						Delete
 					</button>
 				)}
-			</div>
-			<div className={`module-card ${showActions ? "with-actions" : ""}`}>
-				<h3>{data ? data[titleName] : ''}</h3>
-				{fields.map(({ name, placeholder, type }: CardField) => (
-					data && data[name] ? <p key={name}><strong className='capitalize'>{placeholder}:</strong> {renderFieldValue(type, data[name])}</p> : null
-				))}
-
-				<div className="module-card-actions">
-					{viewLink && (
+				{viewLink && (
 						<Link
 							to={viewLink}
 							className="button view-button"
@@ -75,7 +67,12 @@ const Card = <T extends Record<string, any>>({ titleName, fields, data, handlers
 							View
 						</Link>
 					)}
-				</div>
+			</div>
+			<div className={`module-card ${showActions ? "with-actions" : ""}`}>
+				<h3>{data ? data[titleName] : ''}</h3>
+				{fields.map(({ name, placeholder, type }: CardField) => (
+					data && data[name] ? <p key={name}><strong className='capitalize'>{placeholder}:</strong> {renderFieldValue(type, data[name])}</p> : null
+				))}
 			</div>
 		</>
 	);
