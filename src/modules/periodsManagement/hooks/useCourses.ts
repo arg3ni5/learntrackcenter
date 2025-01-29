@@ -1,5 +1,3 @@
-// src/modules/studentsManagement/hooks/useCourses.ts
-
 import { useState, useEffect } from "react";
 import { AvailableCourse, Course } from "../../../types/types";
 import { fetchTeachers, Teacher } from "../../teachersManagement/services/teacherService";
@@ -8,7 +6,7 @@ import { useLoading } from "../../../components/loading/LoadingContext";
 import { useNotification } from "../../../components/notification/NotificationContext";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 
-const DEFAULT_POLLING_INTERVAL = 10 * 60 * 1000;
+const DEFAULT_POLLING_INTERVAL = 10 * 60 * 1000; // 10 minutes
 
 const useCourses = (periodId: string) => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -18,10 +16,12 @@ const useCourses = (periodId: string) => {
   const { showNotification } = useNotification();
   const { setIsLoading } = useLoading();
 
+  // Update loading state for the loading context
   useEffect(() => {
     setIsLoading(loading);
   }, [loading, setIsLoading]);
 
+  // Load courses for the specific period
   const loadPeriodCourses = async () => {
     try {
       setLoading(true);
@@ -42,11 +42,12 @@ const useCourses = (periodId: string) => {
     }
   };
 
+  // Load global data (teachers and available courses)
   const loadGlobalData = async () => {
     try {
       if (availableTeachers.length > 0 && availableCourses.length > 0) {
         console.log("Global data already loaded. Skipping fetch.");
-        return;
+        return; // Skip if data is already loaded
       }
 
       const [teachers, availableCoursesList] = await Promise.all([fetchTeachers(), fetchAvailableCourses()]);
@@ -62,25 +63,28 @@ const useCourses = (periodId: string) => {
     }
   };
 
+  // Load period courses when the period ID changes
   useEffect(() => {
     loadPeriodCourses();
   }, [periodId]);
 
   useEffect(() => {
-    loadGlobalData();
-    const intervalId = setInterval(() => loadGlobalData(), DEFAULT_POLLING_INTERVAL);
-    return () => clearInterval(intervalId);
+    loadGlobalData(); // Initial load
+    const intervalId = setInterval(() => loadGlobalData(), DEFAULT_POLLING_INTERVAL); // Periodic updates
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
+  // Handle adding a course
   const handleAddCourse = async (newCourse: Course) => {
     try {
-      if (courses.filter((course) => course.courseId === newCourse.courseId).length > 0) {
+      if (courses.some((course) => course.courseId === newCourse.courseId)) {
         showNotification("Course already added", "error");
         return;
       }
       setLoading(true);
       await addCourse(periodId, newCourse);
-      loadGlobalData();
+      loadPeriodCourses(); // Reload period courses after adding
     } catch (err) {
       showNotification("Error adding course", "error");
     } finally {
@@ -88,12 +92,13 @@ const useCourses = (periodId: string) => {
     }
   };
 
+  // Handle deleting a course
   const handleDeleteCourse = async (courseId: string | undefined) => {
     try {
       if (!courseId) return;
       setLoading(true);
       await deleteCourse(periodId, courseId);
-      loadGlobalData();
+      loadPeriodCourses(); // Reload period courses after deleting
     } catch (err) {
       showNotification("Error deleting course", "error");
       console.error("Error deleting course:", err);
@@ -102,14 +107,15 @@ const useCourses = (periodId: string) => {
     }
   };
 
-  const handleUpdateCourse = async (courseId: string, course: Course) => {
+  // Handle updating a course
+  const handleUpdateCourse = async (courseId: string, updatedCourse: Course) => {
     try {
       if (!periodId) return;
       setLoading(true);
-      await updateCourse(periodId, courseId, course);
-      loadGlobalData();
+      await updateCourse(periodId, courseId, updatedCourse);
+      loadPeriodCourses(); // Reload period courses after updating
     } catch (err) {
-      showNotification("Error update course", "error");
+      showNotification("Error updating course", "error");
       console.error("Error updating course:", err);
     } finally {
       setLoading(false);
