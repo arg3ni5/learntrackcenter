@@ -1,8 +1,112 @@
+/* App.css */
+
+/* Estilos generales */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 3.5vw;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  html {
+    font-size: 2.5vw;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos para el contenedor principal */
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
+
+/* Estilos para el .header */
+.header {
+  background-color: #007bff; /* Color de fondo */
+  color: white; /* Color del texto */
+  padding: 20px; /* Espaciado interno */
+  text-align: center; /* Centrar texto */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.main {
+  flex: 1;
+}
+
+/* Estilos para el .footer */
+.footer {
+  background-color: #f8f9fa; /* Color de fondo */
+  color: #333; /* Color del texto */
+  text-align: center; /* Centrar texto */
+  padding: 10px; /* Espaciado interno */
+}
+
+/* Media Queries para Responsividad */
+
+/* Pantallas pequeñas (móviles) */
+@media (max-width: 600px) {
+  .header {
+      font-size: 1.5rem; /* Tamaño de fuente más grande en móviles */
+      padding: 15px; /* Menos espaciado en móviles */
+  }
+
+  .main {
+      padding: 10px; /* Menos espaciado en móviles */
+      font-size: 0.9rem; /* Tamaño de fuente más pequeño en móviles */
+  }
+
+  .footer {
+      font-size: 0.8rem; /* Tamaño de fuente más pequeño en móviles */
+      padding: 5px; /* Menos espaciado en móviles */
+  }
+}
+
+/* Pantallas medianas (tabletas) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .header {
+      font-size: 1.75rem; /* Tamaño de fuente moderado en tabletas */
+      padding: 18px; /* Espaciado moderado en tabletas */
+  }
+
+  .main {
+      padding: 15px; /* Espaciado moderado en tabletas */
+      font-size: 1rem; /* Tamaño de fuente normal en tabletas */
+  }
+
+  .footer {
+      font-size: 0.9rem; /* Tamaño de fuente moderado en tabletas */
+      padding: 8px; /* Espaciado moderado en tabletas */
+  }
 }
 
 .logo {
@@ -32,7 +136,6 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-
 .card {
   padding: 2em;
 }

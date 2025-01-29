@@ -1,0 +1,62 @@
+/* Dropdown.css */
+
+.dropdown {
+    position: relative; /* Necesario para posicionar el menú */
+}
+
+.dropdown-button {
+    background-color: #007bff; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    padding: 10px 15px; /* Espaciado interno */
+    cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+    border-radius: 4px; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Transición suave para el hover */
+    display: flex; /* Usar flexbox para alinear el texto y el ícono */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.dropdown-button:hover {
+    background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+}
+
+.dropdown-icon {
+    margin-left: 5px; /* Espacio entre el título y el ícono */
+}
+
+.dropdown-menu {
+    position: absolute; /* Posiciona el menú debajo del botón */
+    background-color: #202020; /* Color de fondo del menú */
+    border: 1px solid #ccc; /* Borde del menú */
+    border-radius: 4px; /* Bordes redondeados */
+    margin-top: 5px; /* Espacio entre el botón y el menú */
+    list-style-type: none; /* Eliminar viñetas */
+    padding: 0; /* Sin padding */
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+}
+
+.dropdown-menu li {
+    display: flex; /* Usar flexbox para alinear ícono y texto */
+    align-items: center; /* Centrar verticalmente */
+    padding: 10px 15px; /* Espaciado interno */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el elemento */
+    transition: background-color 0.3s; /* Transición suave para el hover */
+}
+
+.dropdown-menu li:hover {
+    background-color: #575757; /* Cambiar color al pasar el mouse sobre los elementos del menú */
+}
+
+.dropdown-menu li a {
+    color: white; /* Color del texto en los enlaces del menú */
+    text-decoration: none; /* Sin subrayado en los enlaces */
+}
+
+.dropdown-menu li.active a {
+    background-color: #f1f1f1; /* Color para el elemento activo en el menú */
+    color: black; /* Color del texto en activo */
+}
+
+.item-icon {
+    margin-right: 8px; /* Espacio entre el ícono y el texto */
+}

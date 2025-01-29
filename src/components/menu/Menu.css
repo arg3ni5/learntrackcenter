@@ -1,0 +1,105 @@
+/* Menu.css */
+
+/* General styles for the navbar */
+.navbar {
+    display: flex; /* Use flexbox to align items horizontally */
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Center items vertically */
+    height: 60px; /* Fixed height for the navbar */
+    background-color: #007bff; /* Background color of the navbar */
+    padding: 0 20px; /* Horizontal padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow */
+}
+
+/* Styles for the navbar items */
+.navbar ul {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    display: flex; /* Use flexbox to align items */
+}
+
+.navbar li {
+    margin: 0 15px; /* Horizontal margin between items */
+}
+
+.dropdown-button a {
+    color: white; /* Text color */
+    font-weight: bold; /* Bold text */
+}
+
+.dropdown-button.active {
+    border-radius: 4px !important; /* Rounded corners */
+}
+
+/* Sidebar styles (unchanged) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #007bff;
+    color: white;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 15px;
+}
+
+.sidebar a {
+    color: white;
+}
+
+/* Button to open/close the sidebar */
+.toggle-button {
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Adjust position as needed */
+}
+
+/* Close button in the sidebar */
+.close-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Media query for small screens */
+@media (max-width: 768px) {
+   .navbar {
+      display: none; /* Hide the navbar on small screens */
+   }
+
+   .toggle-button {
+      display: block; /* Show button on small screens */
+      background-color: #007bff;
+      border-radius: 4px;
+      color:white;
+      border:none;
+      padding :10px;
+   }
+}
+
+@media (min-width: 769px) {
+   .sidebar {
+      display:none; /* Hide the sidebar on large screens */
+   }
+
+   .toggle-button {
+      display:none; /* Hide button on large screens */
+   }
+}

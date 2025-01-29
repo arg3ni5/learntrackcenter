@@ -1,28 +1,25 @@
 // src/App.tsx
+
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useAuth } from './hooks/useAuth';
-import Register from './components/Register';
-import Login from './components/Login';
-import PrivateRoute from './components/PrivateRoute';
-import Dashboard from './components/Dashboard';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
+import MainLayout from './layout/MainLayout';
+import { NotificationProvider } from './components/notification/NotificationContext';
+import { LoadingProvider } from './components/loading/LoadingContext';
+import { DropdownProvider } from './components/dropdown/DropdownContext';
 
 const App: React.FC = () => {
-    const { loading } = useAuth();
-
-    if (loading) {
-        return <div>Cargando...</div>;
-    }
-
     return (
-        <Router>
-            <Routes>
-                <Route path="/learntrackcenter" element={<Login />} />
-                <Route path="/learntrackcenter/register" element={<Register />} />
-                <Route path="/learntrackcenter/login" element={<Login />} />
-                <Route path="/learntrackcenter/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
-                {/* Otras rutas públicas o privadas pueden ser agregadas aquí */}
-            </Routes>
+        <Router basename="/learntrackcenter">
+            <NotificationProvider>
+                <LoadingProvider>
+                    <DropdownProvider>
+                        <MainLayout >
+                            <AppRoutes />
+                        </MainLayout>
+                    </DropdownProvider>
+                </LoadingProvider>
+            </NotificationProvider>
         </Router>
     );
 };

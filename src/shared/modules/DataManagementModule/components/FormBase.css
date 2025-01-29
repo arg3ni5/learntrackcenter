@@ -1,0 +1,52 @@
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background-color: var(--bg);
+}
+
+input, select {
+    margin-bottom: 15px;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.select-input { 
+    margin-bottom: 15px;
+}
+
+.form-container .save-button {
+    width: 100%;
+}
+
+form.editing .buttons-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+form.editing .edit-button,
+form.editing .save-button,
+form.editing .cancel-button {
+    width: calc(50% - 5px);
+}
+
+form.editing .save-button {
+    margin-right: 5px;
+}
+
+form.editing .cancel-button {
+    margin-left: 5px;
+}

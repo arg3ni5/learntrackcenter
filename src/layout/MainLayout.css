@@ -1,0 +1,58 @@
+.grid {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "main";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr; /* Cambiado de 60px a auto */
+    max-height: 100vh; /* Cambiado de height a min-height */
+    min-height: 100vh; /* Cambiado de height a min-height */
+}
+
+.header {
+    height: 60px;
+    grid-area: header;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #007bff; /* Asegúrate de que tenga un color de fondo */
+    color: white;
+}
+
+.main {
+    margin-top: 5px;
+    grid-area: main;
+    padding: 20px 250px;
+    overflow-y: auto; /* Permite scroll dentro del contenido principal si es necesario */
+    min-height: calc(100vh - 60px);
+}
+
+@media (max-width: 768px) {
+    .main {
+        padding: 10px; /* Menos padding en pantallas pequeñas */
+    }
+}
+
+/* Customization for WebKit browsers (Chrome, Safari) */
+.main::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+.main::-webkit-scrollbar-track {
+    background: var(--bg-color); /* Background color of the track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+.main::-webkit-scrollbar-thumb {
+    background: #007bff; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.main::-webkit-scrollbar-thumb:hover {
+    background: #0056b3; /* Color when hovering over the thumb */
+}
+
+/* Customization for Firefox */
+.main {
+    scrollbar-color: #007bff var(--bg); /* Thumb color and track color */
+}

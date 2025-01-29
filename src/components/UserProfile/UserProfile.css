@@ -1,0 +1,40 @@
+.user-profile {
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno */
+    max-width: 400px; /* Ancho máximo */
+    margin: 20px auto; /* Centrar horizontalmente */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+    text-align: center; /* Centrar texto */
+}
+
+.user-email {
+    color: #555; /* Color gris para el texto del email */
+    font-size: 14px; /* Tamaño de fuente más pequeño */
+}
+
+.user-photo {
+    border-radius: 50%; /* Hacer la imagen circular */
+    width: 100px; /* Ancho fijo */
+    height: 100px; /* Alto fijo */
+    object-fit: cover; /* Asegurarse de que la imagen cubra el área sin distorsionarse */
+    margin-top: 10px; /* Espacio encima de la imagen */
+}
+
+.logout-button {
+    background-color: #007bff; /* Color azul para el botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados en el botón */
+    padding: 10px 15px; /* Espaciado interno en el botón */
+    font-size: 16px; /* Tamaño de fuente en el botón */
+    transition: background-color 0.3s ease; /* Transición suave para el efecto hover */
+}
+
+.logout-button:hover {
+    background-color: #0056b3; /* Color más oscuro al pasar el mouse sobre el botón */
+}
+
+
+.logout-container {
+    margin-top: 20px; /* Espacio superior para separar del contenido anterior */
+}

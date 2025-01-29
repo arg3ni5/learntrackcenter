@@ -1,0 +1,39 @@
+.notification-container {
+    position: fixed; /* Fijar la posición en la pantalla */
+    top: 75px; /* Espacio desde la parte superior */
+    right: 20px; /* Espacio desde la derecha */
+    max-width: 300px; /* Ancho máximo del contenedor de notificaciones */
+    display: flex;
+    flex-direction: column; /* Apilar verticalmente las notificaciones */
+    gap: 10px; /* Espacio entre las notificaciones */
+}
+
+.notification {
+    padding: 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    color: white; /* Color del texto */
+    display: flex; /* Usar flexbox para alinear el contenido */
+    justify-content: space-between; /* Espacio entre el mensaje y el botón de cerrar */
+    align-items: center; /* Centrar verticalmente */
+    z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+}
+
+.notification.success {
+    background-color: #4caf50; /* Verde para éxito */
+}
+
+.notification.error {
+    background-color: #f44336; /* Rojo para error */
+}
+
+.notification.info {
+    background-color: #2196F3; /* Azul para información */
+}
+
+.close-button {
+    background: none; /* Sin fondo en el botón */
+    border: none; /* Sin borde */
+    color: white; /* Color del texto del botón */
+    font-size: 16px; /* Tamaño del texto del botón */
+    cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+}

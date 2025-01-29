@@ -4,27 +4,32 @@
   "version": "0.0.0",
   "type": "module",
   "homepage": "https://arg3ni5.github.io/learntrackcenter",
-
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && copy dist\\index.html dist\\404.html",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "node deploy.js"
   },
   "dependencies": {
     "firebase": "^11.1.0",
+    "i18next": "^24.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-i18next": "^15.2.0",
+    "react-icons": "^5.4.0",
     "react-router-dom": "^7.1.1",
-    "reactfire": "^4.2.3"
+    "react-select": "^5.9.0",
+    "reactfire": "^4.2.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@types/react": "^18.3.17",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "copyfiles": "^2.4.1",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",

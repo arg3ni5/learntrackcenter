@@ -1,0 +1,105 @@
+
+.buttons-container .active, .section-buttons .active {
+  background-color: var(--active) !important;
+  border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
+  font-weight: bold;
+}
+
+.buttons-container.flex {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.buttons-container.flex button {
+  flex: 1;
+  border: 1px solid var(--border-color-highlight);
+}
+.buttons-container button:nth-child(n+2) {
+  margin-left: 5px;
+}
+.buttons-container button:not([class]) {
+  background-color: var(--bg-color-hover) !important;
+}
+.buttons-container .active:hover, .section-buttons .active:hover {
+  background-color: var(--active-hover) !important;
+}
+
+
+.button-black {
+  background-color: black !important;
+}
+
+/* Base styles for all buttons */
+.delete-button,
+.edit-button,
+.add-button,
+.view-button,
+.save-button, .button {
+  color: white; /* Set text color to white */
+}
+
+/* Specific styles for delete button */
+.delete-button {
+  background-color: var(--bg-color-delete) !important; /* Background color for delete */
+}
+
+.delete-button:hover {
+  background-color: var(--bg-color-delete-hover) !important; /* Background color on hover for delete */
+}
+
+/* Specific styles for edit button */
+.edit-button {
+  background-color: var(--bg-color-edit); /* Background color for edit */
+}
+
+.edit-button:hover {
+  background-color: var(--bg-color-edit-hover); /* Background color on hover for edit */
+}
+
+/* Specific styles for view button */
+.view-button {
+  background-color: var(--bg-color-view); /* Background color for view */
+}
+
+.view-button:hover {
+  background-color: var(--bg-color-view-hover); /* Background color on hover for view */
+}
+
+/* Specific styles for save button */
+.save-button {
+  background-color: var(--bg-color-save) !important; /* Background color for save */
+}
+
+.save-button:hover {
+  background-color: var(--bg-color-save-hover) !important; /* Background color on hover for save */
+}
+
+/* Specific styles for add button */
+.add-button {
+  background-color: var(--bg-color-add) !important; /* Background color for add */
+}
+
+.add-button:hover {
+  background-color: var(--bg-color-add-hover) !important; /* Background color on hover for add */
+}
+
+button[disabled], button[disabled]:hover, .disabled-link {
+  background-color: var(--odd-row-bg) !important;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Apply transform to all buttons on hover */
+.delete-button:hover,
+.edit-button:hover,
+.add-button:hover,
+.view-button:hover,
+.save-button:hover {
+  transform: translateY(-1px); /* Lift the button slightly on hover */
+}
+
+.buttons-container button:hover,
+.add-button:hover {
+  transform: translateY(-1px);
+}

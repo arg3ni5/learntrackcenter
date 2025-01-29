@@ -1,3 +1,5 @@
+@import "https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap";
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -13,21 +15,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -35,23 +40,33 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
+button, .button {
+  border-radius: 4px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  font-size: 16px;
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s ease, transform 0.1s ease;
 }
-button:hover {
-  border-color: #646cff;
-}
+
 button:focus,
-button:focus-visible {
+button:focus-visible,
+.button:focus,
+.button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .button, button {
+    background-color: var(--bg);
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -59,10 +74,71 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
+
+  .button, button {
     background-color: #f9f9f9;
   }
+}
+
+
+.title {
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  width: 100%;
+  border-bottom: 3px solid #ccc;
+}
+
+
+.container {
+  display: flex; /* Enable flexbox */
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+  padding: 10px; /* Optional padding */
+}
+
+.container-grid{
+  width: 100%;
+
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.item {
+  flex: 1; /* Make items grow equally */
+  margin: 0 10px; /* Optional margin between items */
+  padding: 20px; /* Padding inside items */
+  color: var(--color); /* Text color */
+  text-align: center; /* Center text */
+  border-radius: 4px; /* Rounded corners */
+}
+
+.grow1 { flex-grow: 1; }
+
+.item.item-bg  {
+  background-color: var(--bg);
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .item {
+    margin: 10px 0;
+    width: 100%;
+  }
+}
+
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.disabled-link {
+  pointer-events: none;
 }

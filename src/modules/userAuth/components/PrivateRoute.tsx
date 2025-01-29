@@ -1,18 +1,21 @@
 // src/components/PrivateRoute.tsx
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
+import Loading from '../../../components/loading/Loading';
 
 interface PrivateRouteProps {
     element: React.ReactNode;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
 
-    console.log("Usuario:", user);
+    if (loading) {
+        return <Loading />;
+    }
 
-    return user ? element : <Navigate to="/" replace />;
+    return user ? <>{element}</> : <Navigate to="/" replace />;
 };
 
 export default PrivateRoute;

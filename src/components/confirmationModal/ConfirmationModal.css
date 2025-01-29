@@ -1,0 +1,124 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo oscuro para el overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-overlay .card {
+    overflow: hidden;
+    position: relative;
+    text-align: left;
+    border-radius: 0.5rem;
+    max-width: 590px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    background-color: #fff;
+    /* Color de fondo del modal */
+}
+
+.modal-overlay .image_v {
+    background: #47c9a2;
+    border-bottom: none;
+    position: relative;
+    text-align: center;
+    margin: -20px -20px 0;
+    border-radius: 5px 5px 0 0;
+    padding: 35px;
+}
+
+.modal-overlay .image_v .image {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #e2feee;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    animation: animate .6s linear alternate-reverse infinite;
+    transition: .6s ease;
+    font-size: 2em;
+    color: black;
+}
+
+.modal-overlay .dismiss {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1001;
+    background-color: transparent;
+    
+    font-size: 1em;
+}
+
+.modal-overlay .header {
+    height: auto;
+}
+
+.modal-overlay .content {
+    padding: 1rem;
+    /* Espaciado en el contenido */
+}
+
+.modal-overlay .message {
+    color: #595b5f;
+    /* Color del mensaje */
+}
+
+.modal-overlay .actions {
+    display: flex;
+    /* Flexbox para alinear botones */
+    justify-content: space-between;
+    /* Espaciado entre botones */
+    padding: 1rem;
+    /* Espaciado en la sección de acciones */
+}
+
+.modal-overlay .confirm-button,
+.cancel-button {
+    padding: .5rem .75rem;
+    /* Espaciado interno en botones */
+}
+
+.modal-overlay .confirm-button {
+    background-color: #47c9a2;
+    /* Color para el botón "Sí" */
+    color: white;
+    border-radius: .25rem;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-overlay .cancel-button {
+    background-color: #ee0d0d;
+    /* Color para el botón "No" */
+    color: white;
+    border-radius: .25rem;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-overlay .title {
+    text-align: center;
+    padding-top: 1em;
+    color: #066e29;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    border: none;
+}
+
+.modal-overlay .buttons-container {
+    padding: 0 2em;
+}
+
