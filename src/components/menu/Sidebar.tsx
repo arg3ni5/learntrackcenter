@@ -25,11 +25,12 @@ const Sidebar: React.FC<SidebarProps> = ({ items, isOpen, onClose }) => {
             <ul>
                 {items.map((item) => (
                     <li key={item.label}>
-                        {/* Si hay hijos, renderiza un Dropdown */}
                         {item.children ? (
                             <Dropdown id={`${item.label.toLowerCase()}-dropdown`} title={item.label} items={item.children} />
                         ) : (
-                            <Link to={item.to} onClick={onClose}>{item.label}</Link> // Cierra al hacer clic
+                            <button className={`dropdown-button ${location.pathname === item.to ? 'active' : ''}`}>
+                                <Link to={item.to} onClick={onClose}>{item.label}</Link>
+                            </button>
                         )}
                     </li>
                 ))}

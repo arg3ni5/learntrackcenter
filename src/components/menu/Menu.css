@@ -20,19 +20,9 @@
 }
 
 .navbar li {
-    margin: 0 15px; /* Horizontal margin between items */
+    margin: 0 5px; /* Horizontal margin between items */
 }
 
-.dropdown-button a {
-    color: white; /* Text color */
-    font-weight: bold; /* Bold text */
-}
-
-.dropdown-button.active {
-    border-radius: 4px !important; /* Rounded corners */
-}
-
-/* Sidebar styles (unchanged) */
 .sidebar {
     position: fixed;
     top: 0;
@@ -54,8 +44,13 @@
     padding: 0;
 }
 
-.sidebar li {
+.sidebar .dropdown-menu li {
     padding: 15px;
+}
+
+.sidebar li button {
+    width: 100%;
+    border-radius: 0;
 }
 
 .sidebar a {
@@ -71,8 +66,10 @@
 
 /* Close button in the sidebar */
 .close-button {
+    height: 60px;
+    width: 100%;
+    border-radius: 0;
     background-color: transparent;
-    border: none;
     color: white;
     font-size: 24px;
     cursor: pointer;
