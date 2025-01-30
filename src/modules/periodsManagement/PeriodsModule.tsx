@@ -21,10 +21,10 @@ const PeriodsModule: React.FC = () => {
 			<DataManagementModule<Period>
 				title="Manage Academic Periods" // Title for the module
 				fields={[
-					{ name: "code", placeholder: "Code of Period" },
-					{ name: "name", placeholder: "Name of Period" },
-					{ name: "startDate", placeholder: "Fecha de Inicio" },
-					{ name: "endDate", placeholder: "Fecha de Fin" },
+					{ name: "code", placeholder: "Code of Period", label: "Code" },
+					{ name: "name", placeholder: "Name of Period", label: "Name", size: 20 },
+					{ name: "startDate", placeholder: "Start Date"},
+					{ name: "endDate", placeholder: "End Date"},
 					{ name: "status", placeholder: "Status" },
 				]}
 				items={periods} // Fetch current periods
