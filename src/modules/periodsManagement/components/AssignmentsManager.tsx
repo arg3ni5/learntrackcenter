@@ -15,7 +15,7 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
     const fields : BaseField[] = [
         { name: "title", placeholder: "Title of the assignment" },
         { name: "contributionPercentage", placeholder: "percentage", type: "number-view" },
-        { name: "link", placeholder: "URL", type:"link" },
+        { name: "link", placeholder: "URL", type:"link", required: false},
     ];
 
     if (loading) return <Loading text="Loading assignments" className="h30vh"></Loading>;
