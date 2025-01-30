@@ -14,6 +14,7 @@ export interface BaseField extends Field {
   type?: FieldType; // Field type (input or select)
   options?: Option[]; // Options for the select
   view?: boolean;
+  required?: boolean;
   onChange?: (value: any) => void;
 }
 
