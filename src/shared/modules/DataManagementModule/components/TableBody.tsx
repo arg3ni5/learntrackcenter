@@ -3,6 +3,7 @@ import { BaseField } from "../types/types";
 interface TableBodyProps<T> {
   fields: BaseField[];
   items: T[];
+  columnWidths: number[];
   selectedItem: T | null;
   useFlexTable: boolean;
   tempChanges: Record<string, Record<string, number>>;
@@ -12,7 +13,7 @@ interface TableBodyProps<T> {
   }
 }
 
-const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem, tempChanges, handlers }: TableBodyProps<T>) => {
+const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem, tempChanges, columnWidths, handlers }: TableBodyProps<T>) => {
   const { handleRowClick, setTempChanges } = handlers || {};
 
   const handleNumberChange = (itemId: string, fieldName: string, value: string) => {
@@ -71,8 +72,9 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
         <tbody>
           {items.map((item) => (
             <tr key={item.id} onClick={() => handleRowClick?.(item)} className={selectedItem?.id === item.id ? "selected-row" : ""} aria-selected={selectedItem?.id === item.id}>
-              {fields.map((field) => (
-                <td key={field.name}>{renderCell(item, field)}</td>
+              {fields.map((field,index) => (
+                <td key={field.name} style={{ width: columnWidths[index] || "auto" }}>
+                  {renderCell(item, field)}</td>
               ))}
             </tr>
           ))}

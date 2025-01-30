@@ -46,6 +46,8 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
   const { sortConfig, handleSort, sortedItems } = useSorting(items!, alias);
   const { filterText, setFilterText, filteredItems } = useFiltering(sortedItems, alias);
   const { currentPage, paginatedItems, totalPages, handlePageChange } = usePagination(filteredItems, 20);
+  const [columnWidths, setColumnWidths] = useState<number[]>([]);
+
 
   /**
    * Handles the click event on a row, selecting or deselecting the item.
@@ -146,8 +148,8 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
 
         {/* Table container */}
         <div className={`table-container ${showActions ? "with-actions" : ""}`}>
-          <TableHeader fields={fields} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} useFlexTable={useFlexTable} />
-          <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} tempChanges={tempChanges} handlers={handlersTbody} useFlexTable={useFlexTable} />
+          <TableHeader fields={fields} setColumnWidths={setColumnWidths} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} useFlexTable={useFlexTable} />
+          <TableBody fields={fields} items={paginatedItems} columnWidths={columnWidths} selectedItem={selectedItem} tempChanges={tempChanges} handlers={handlersTbody} useFlexTable={useFlexTable} />
         </div>
         {/* Pagination */}
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />

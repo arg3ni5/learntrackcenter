@@ -16,6 +16,8 @@ export interface BaseField extends Field {
   view?: boolean;
   required?: boolean;
   onChange?: (value: any) => void;
+  size?: number;
+  unit?: "em" | "px" | "%" | "rem" | "vw" | "vh";
 }
 
 export interface CommonProps<T> {
