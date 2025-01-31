@@ -18,10 +18,10 @@ const CourseModule: React.FC = () => {
 
   // Define the fields for the form used to add new courses
   const fields: BaseField[] = [
-    { name: "name", placeholder: "Course name" },
-    { name: "description", placeholder: "Course description" },
-    { name: "duration", placeholder: "Duration (weeks)" },
-    { name: "hours", placeholder: "Hours per week" }
+    { name: "name", placeholder: "name" },
+    { name: "description", placeholder: "description" },
+    { name: "duration", placeholder: "Duration (weeks)", size: 15 },
+    { name: "hours", placeholder: "Hours per week", size: 15 },
   ];
 
   return (
@@ -35,6 +35,7 @@ const CourseModule: React.FC = () => {
           onItemDeleted:handleDeleteCourse,
           onItemUpdated:handleUpdateCourse,
         }}
+        ableImport={true}
         loading={loading} // Pass loading state to BaseModule or directly to ListBase if needed
         showForm={false} // Show the form
       />
