@@ -42,29 +42,72 @@ const useCourses = (periodId: string) => {
     }
   };
 
-  // Load global data (teachers and available courses)
-  const loadGlobalData = async (forceUpdate = false) => {
+  // Load available teachers
+  const loadAvailableTeachers = async (forceUpdate = false) => {
     try {
-      if (!forceUpdate && availableTeachers.length > 0 && availableCourses.length > 0) {
-        console.log("Global data already loaded. Skipping fetch.");
+      if (!forceUpdate && availableTeachers.length > 0) {
+        console.log("Teachers data already loaded. Skipping fetch.");
         return;
       }
 
-      const [teachers, availableCoursesList] = await Promise.all([
-        fetchTeachers(),
-        fetchAvailableCourses()
-      ]);
-
+      const teachers = await fetchTeachers();
       setAvailableTeachers(teachers);
-      setAvailableCourses(availableCoursesList);
-
       localStorage.setItem("availableTeachers", JSON.stringify(teachers));
-      localStorage.setItem("availableCourses", JSON.stringify(availableCoursesList));
 
-      console.log("Global data updated.");
+      console.log("Teachers data updated.");
     } catch (err) {
-      console.error("Error loading global data:", err);
-      showNotification("Error loading global data", "error");
+      console.error("Error loading teachers:", err);
+      showNotification("Error loading teachers", "error");
+    }
+  };
+
+  // Load available courses
+  const loadAvailableCourses = async (forceUpdate = false) => {
+    try {
+      if (!forceUpdate && availableCourses.length > 0) {
+        console.log("Courses data already loaded. Skipping fetch.");
+        return;
+      }
+
+      const courses = await fetchAvailableCourses();
+      setAvailableCourses(courses);
+      localStorage.setItem("availableCourses", JSON.stringify(courses));
+
+      console.log("Courses data updated.");
+    } catch (err) {
+      console.error("Error loading courses:", err);
+      showNotification("Error loading courses", "error");
+    }
+  };
+
+  type LoadableData = keyof typeof loaders;
+
+  const loaders = {
+    teachers: loadAvailableTeachers,
+    courses: loadAvailableCourses,
+  } as const;
+
+  /**
+   * Load selected global data.
+   * @param {LoadableData[] | boolean} [loadListOrForce] - List of data to load or a boolean to force update everything.
+   * @param {boolean} [forceUpdate] - Whether to force update (only used if first param is an array).
+   */
+  const loadGlobalData = async (loadListOrForce?: LoadableData[] | boolean, forceUpdate = false) => {
+    let loadList: LoadableData[] = ["teachers", "courses"];
+
+    if (typeof loadListOrForce === "boolean") {
+      forceUpdate = loadListOrForce; // Si se pasa un booleano, se usa como forceUpdate
+    } else if (Array.isArray(loadListOrForce)) {
+      loadList = loadListOrForce; // Si se pasa un array, se usa como lista de cargas
+    }
+
+    const tasks = loadList.map((key) => loaders[key](forceUpdate));
+
+    if (tasks.length > 0) {
+      await Promise.all(tasks);
+      console.log("Selected global data loaded.");
+    } else {
+      console.log("No valid data type selected for loading.");
     }
   };
 
@@ -134,6 +177,9 @@ const useCourses = (periodId: string) => {
     handleAddCourse,
     handleDeleteCourse,
     handleUpdateCourse,
+    loadGlobalData: () => loadGlobalData(true),
+    loadAvailableCourses: () => loadGlobalData(['courses'], true),
+    loadAvailableTeachers: () => loadGlobalData(['teachers'], true),
   };
 };
 
