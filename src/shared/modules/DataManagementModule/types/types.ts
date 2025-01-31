@@ -29,7 +29,7 @@ export interface CommonProps<T> {
   showForm?: boolean;
   ableFilter?: boolean;
   ableImport?: boolean;
-    useFlexTable?: boolean;
+  useFlexTable?: boolean;
   viewLinks?: LinkItem[];
 }
 
@@ -43,6 +43,7 @@ export interface HandlersBaseModuleProps<T>{
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
   onItemsUpdated?: (changes: Record<string, Record<string, number>>) => void;
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
+  onReload?: () => void;
 }
 export interface BaseModuleProps<T> extends CommonProps<T>{
   title?: string;
@@ -73,6 +74,7 @@ export interface ListBaseProps<T> {
     onItemDeleted?: (id: string) => void;
     onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>;
     onImport?: (state: boolean) => void;
+    onReload?: () => void;
   }
 }
 
@@ -90,6 +92,7 @@ export interface ActionButtonsProps<T> {
     handleShowImportForm: (state: boolean) => void;
     onItemDeleted?: (id: string) => void;
     onSaveAllChanges?: (event: React.MouseEvent<HTMLButtonElement>, changes: Record<string, Record<string, number>>) => void;
+    onReload?: () => void;
   };
 }
 

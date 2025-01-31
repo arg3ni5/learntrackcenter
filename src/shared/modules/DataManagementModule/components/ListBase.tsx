@@ -37,16 +37,16 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     showImportForm: isShowImportForm = false,
     loading = false,
   } = config;
-  const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated } = handlers;
+  const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated, onReload } = handlers;
 
   // State management
   const [showForm, setShowForm] = useFormVisibility(isShowForm);
   const [showImportForm, setShowImportForm] = useFormVisibility(isShowImportForm);
   const [selectedItem, setSelectedItem] = useState<T | null>(initialSelectedItem); // State to store the currently selected item
+  const [columnWidths, setColumnWidths] = useState<number[]>([]);
   const { sortConfig, handleSort, sortedItems } = useSorting(items!, alias);
   const { filterText, setFilterText, filteredItems } = useFiltering(sortedItems, alias);
   const { currentPage, paginatedItems, totalPages, handlePageChange } = usePagination(filteredItems, 20);
-  const [columnWidths, setColumnWidths] = useState<number[]>([]);
 
 
   /**
@@ -94,7 +94,7 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     setShowImportForm(isShowImportForm);
   }, [isShowImportForm]);
 
-  const showActions = removeable || seeable; // Determine if action buttons should be shown
+  const showActions = removeable || seeable || !!onReload; // Determine if action buttons should be shown
   // Calculate item counts
   const totalItems = items ? items.length : 0;
   const filteredItemsCount = sortedItems.length;
@@ -141,6 +141,7 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
               handleShowImportForm,
               onItemDeleted,
               onSaveAllChanges: handleSaveAllChanges,
+              onReload
             }}
             hasPendingChanges={Object.keys(tempChanges).length > 0}
           />

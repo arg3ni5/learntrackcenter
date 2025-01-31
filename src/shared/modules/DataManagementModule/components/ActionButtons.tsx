@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ActionButtonsProps } from "../types/types";
 
-const ActionButtons = <T extends Record<string, any>>({  
+const ActionButtons = <T extends Record<string, any>>({
   hasPendingChanges,
   config,
   handlers
@@ -22,7 +22,8 @@ const ActionButtons = <T extends Record<string, any>>({
     handleShowForm,
     handleShowImportForm,
     onItemDeleted,
-    onSaveAllChanges
+    onSaveAllChanges,
+    onReload
   } = handlers;
 
   const handleSaveAllChanges = (event: React.MouseEvent<HTMLButtonElement>, changes: Record<string, Record<string, number>>) => {
@@ -65,6 +66,11 @@ const ActionButtons = <T extends Record<string, any>>({
       {hasPendingChanges && (
         <button onClick={(e) => handleSaveAllChanges(e, tempChanges)} className="add-button" aria-label="Save all changes">
           Save All Changes
+        </button>
+      )}
+      {onReload && (
+        <button onClick={() => onReload()} className="add-button" aria-label="Save all changes">
+          Reload
         </button>
       )}
     </div>
