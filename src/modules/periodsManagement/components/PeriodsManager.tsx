@@ -10,10 +10,11 @@ import SelectInput from "../../../shared/modules/DataManagementModule/components
 import useTeachers from "../../teachersManagement/hooks/useTeachers";
 import AssignmentsManager from "./AssignmentsManager";
 import CourseCard from "./CourseCard";
+import CourseSelector from "./CourseSelector";
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const navigate = useNavigate();
-  const { courses, availableCourses, handleAddCourse, handleDeleteCourse, handleUpdateCourse } = useCourses(periodId);
+  const { loading, courses, availableCourses, handleAddCourse, handleDeleteCourse, handleUpdateCourse, loadAvailableCourses } = useCourses(periodId);
   const { teachers } = useTeachers();
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null); // State to hold selected period ID
   const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
@@ -60,15 +61,9 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
 
         {periodId &&
           (<div className="item">
-            <h3>Available Courses</h3>
             <div className="buttons-container">
-              {availableCourses
-                .filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id))
-                .map(course => (
-                  <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
-                    {course.name}
-                  </button>
-                ))}
+              <CourseSelector courses={availableCourses.filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id))}
+              setSelectedCourseId={setSelectedCourseId} loading={loading} load={loadAvailableCourses}></CourseSelector>
             </div>
             {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
             {availableCourses
