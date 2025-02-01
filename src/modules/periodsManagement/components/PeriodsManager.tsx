@@ -109,6 +109,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
               teachers={availableTeachers}
               handlers={courseHandlers}
               setSelectedTeacher={setSelectedTeacher}
+              childrenVisible={false}
               viewLink={`/period/${periodId}/course/${course.id}`}>
               {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
             </CourseCard>

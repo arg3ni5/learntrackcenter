@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Course, Teacher } from '../../../types/types';
 import Card, { CardField } from '../../../shared/components/Card/Card';
 import SelectInput from '../../../shared/modules/DataManagementModule/components/SelectInput';
@@ -7,6 +7,7 @@ import './CourseCard.css';
 
 interface StudentCardProps {
     children?: React.ReactNode;
+    childrenVisible?: boolean;
     course: Course;
     teachers: Teacher[];
     viewLink: string;
@@ -33,19 +34,24 @@ const fields: CardField[] = [
 
 const CourseCard: React.FC<StudentCardProps> = ({
     children,
+    childrenVisible,
     course,
     teachers,
     setSelectedTeacher,
     viewLink,
     handlers }) => {
-    const [isChildrenVisible, setIsChildrenVisible] = useState(true);
+    const [isChildrenVisible, setIsChildrenVisible] = useState(childrenVisible);
+    const nodeRef = useRef<HTMLDivElement | null>(null);
+
+
     const { onDelete, onItemAdded, onItemUpdated } = handlers;
     const toggleChildrenVisibility = () => {
         setIsChildrenVisible(!isChildrenVisible);
     };
+
     return (
         <>
-            <div className="item m-0 p-0">
+            <div className="item m-0 px-0">
                 {!course.teacherId && (
                     <>
                         <SelectInput
@@ -60,6 +66,20 @@ const CourseCard: React.FC<StudentCardProps> = ({
                 )}
 
 
+
+                <CSSTransition
+                    in={isChildrenVisible}
+                    timeout={500}
+                    classNames="fade"
+                    unmountOnExit
+                    nodeRef={nodeRef}>
+                    <div ref={(el) => (nodeRef.current = el)} className="fade-container">
+                        {children}
+                    </div>
+                </CSSTransition>
+
+
+
                 <Card<Course>
                     titleName="name"
                     fields={fields}
@@ -71,13 +91,10 @@ const CourseCard: React.FC<StudentCardProps> = ({
                         {
                             label: isChildrenVisible ? 'Hide Assignments' : 'Assignments',
                             onClick: toggleChildrenVisibility,
-                            className: 'add-button',
+                            className: 'save-button',
                             ariaLabel: 'Toggle Details Button',
                         },
                     ]}>
-                    <CSSTransition in={isChildrenVisible} timeout={300} classNames="fade" unmountOnExit>
-                        <div>{children}</div>
-                    </CSSTransition>
                 </Card>
             </div>
         </>

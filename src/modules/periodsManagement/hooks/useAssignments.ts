@@ -14,7 +14,7 @@ const useAssignments = (props: AssignmentsManagerProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { showNotification } = useNotification();
-  
+
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -145,9 +145,7 @@ const useAssignments = (props: AssignmentsManagerProps) => {
         return;
       }
       setLoading(true);
-      
       await syncAssignments(periodId, courseId);
-      // Optionally, you can reload students or perform any other necessary actions after syncing
       await loadData();
     } catch (err) {
       setError('Error syncing assignments');
