@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Course, Teacher } from '../../../types/types';
 import Card, { CardField } from '../../../shared/components/Card/Card';
 import SelectInput from '../../../shared/modules/DataManagementModule/components/SelectInput';
+import { CSSTransition } from 'react-transition-group';
+import './CourseCard.css';
 
 interface StudentCardProps {
     children?: React.ReactNode;
@@ -36,52 +38,47 @@ const CourseCard: React.FC<StudentCardProps> = ({
     setSelectedTeacher,
     viewLink,
     handlers }) => {
-    const [isChildrenVisible, setIsChildrenVisible] = useState(false);
+    const [isChildrenVisible, setIsChildrenVisible] = useState(true);
     const { onDelete, onItemAdded, onItemUpdated } = handlers;
     const toggleChildrenVisibility = () => {
         setIsChildrenVisible(!isChildrenVisible);
     };
     return (
         <>
-            <div key={course.id} className="container periods-list">
-                <div className="item">
-                    {!course.teacherId && (
-                        <>
-                            {/* <div className="buttons-container actions">
-                                <button className="save-button" onClick={() => handleUpdate(course)}>
-                                    Save
-                                </button>
-                            </div> */}
-                            <SelectInput
-                                label="Teacher"
-                                key="teacherId"
-                                options={teachers.map((teacher) => ({ value: teacher.id!, label: teacher.name }))}
-                                value={""}
-                                onChange={(selectedOption) => setSelectedTeacher(selectedOption.value)}
-                                placeholder="Select Teacher"
-                            />
-                        </>
-                    )}
+            <div className="item m-0 p-0">
+                {!course.teacherId && (
+                    <>
+                        <SelectInput
+                            label="Teacher"
+                            key="teacherId"
+                            options={teachers.map((teacher) => ({ value: teacher.id!, label: teacher.name }))}
+                            value={""}
+                            onChange={(selectedOption) => setSelectedTeacher(selectedOption.value)}
+                            placeholder="Select Teacher"
+                        />
+                    </>
+                )}
 
 
-                    <Card<Course>
-                        titleName="name"
-                        fields={fields}
-                        data={course}
-                        viewLink={viewLink}
-                        handlers={{ onDelete, onItemAdded, onItemUpdated }}
-                        ableDelete={course.assignmentsIds.length === 0 && (course.enrolledStudents?.length ?? 0) === 0}
-                        customButtons={[
-                            {
-                                label: isChildrenVisible ? 'Hide Details' : 'Show Details',
-                                onClick: toggleChildrenVisibility,
-                                className: 'add-button',
-                                ariaLabel: 'Toggle Details Button',
-                            },
-                        ]}>
-                        {isChildrenVisible && children}
-                    </Card>
-                </div>
+                <Card<Course>
+                    titleName="name"
+                    fields={fields}
+                    data={course}
+                    viewLink={viewLink}
+                    handlers={{ onDelete, onItemAdded, onItemUpdated }}
+                    ableDelete={course.assignmentsIds.length === 0 && (course.enrolledStudents?.length ?? 0) === 0}
+                    customButtons={[
+                        {
+                            label: isChildrenVisible ? 'Hide Assignments' : 'Assignments',
+                            onClick: toggleChildrenVisibility,
+                            className: 'add-button',
+                            ariaLabel: 'Toggle Details Button',
+                        },
+                    ]}>
+                    <CSSTransition in={isChildrenVisible} timeout={300} classNames="fade" unmountOnExit>
+                        <div>{children}</div>
+                    </CSSTransition>
+                </Card>
             </div>
         </>
     );
