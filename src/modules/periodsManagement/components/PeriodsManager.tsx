@@ -48,7 +48,6 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
       setSelectedCourseId(null); // Reset selected period after assignment
     }
   };
-  const isEqual = (id1: any, id2: any) => id1 && id2 && String(id1) === String(id2);
 
   return (
     <div className="periods-manager">
@@ -63,7 +62,9 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
           (<div className="item">
             <div className="buttons-container">
               <CourseSelector courses={availableCourses.filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id))}
-              setSelectedCourseId={setSelectedCourseId} loading={loading} load={loadAvailableCourses}></CourseSelector>
+              setSelectedCourseId={setSelectedCourseId}
+              assign={assignCourseToPeriod}
+              loading={loading} load={loadAvailableCourses}></CourseSelector>
             </div>
             {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
             {availableCourses
@@ -72,12 +73,6 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
             }
 
           </div>)}
-
-        {periodId && selectedCourseId && (
-          <button className="edit-button" onClick={assignCourseToPeriod}>
-            Assign course
-          </button>
-        )}
       </div>
       <div className="">
         {courses.map((course) => (

@@ -16,7 +16,7 @@ interface Props {
 }
 
 const CourseSelector: React.FC<Props> = (
-  { courses, setSelectedCourseId, loading, load }) => {
+  { courses, setSelectedCourseId, loading, load, assign }) => {
 
   const handleOnSelect = (item: AvailableCourse | null) => {
     if (item) {
@@ -27,6 +27,7 @@ const CourseSelector: React.FC<Props> = (
   return (
     <>
       <DataManagementModule<AvailableCourse>
+        alias="availableCourses"
         title="Available Courses" // Title for the module
         fields={fields} // Fields to be displayed in the form
         items={courses} // Use the courses from the custom hook
@@ -34,6 +35,7 @@ const CourseSelector: React.FC<Props> = (
           {
             onSelect: handleOnSelect,
             onReload: load,
+            onAssign: assign,
           }
         }
         ableForm={false} // Show the form
