@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
 import './Card.css';
 
+export interface CustomButton {
+	label: string; // Texto del botón
+	onClick: () => void; // Función a ejecutar al hacer clic
+	className?: string; // Clase CSS opcional
+	ariaLabel?: string; // Etiqueta accesible opcional
+}
 
 export interface CardField {
 	name: string; // Field name
@@ -25,9 +31,10 @@ export interface CardProps<T> {
 	clearFormAfterAdd?: boolean;
 	viewLink?: string;
 	handlers?: HandlersCard<T>;
+	customButtons?: CustomButton[];
 }
 
-const Card = <T extends Record<string, any>>({ children, titleName, fields, data, handlers, ableDelete, viewLink }: CardProps<T>) => {
+const Card = <T extends Record<string, any>>({ children, titleName, fields, data, handlers, ableDelete, viewLink, customButtons}: CardProps<T>) => {
 
 	const renderFieldValue = (type: string | undefined, value: any) => {
 		switch (type) {
@@ -52,7 +59,7 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 
 				{handlers?.onItemUpdated && (
 					<button onClick={() => handlers.onItemUpdated && data && handlers.onItemUpdated(data)} className="edit-button">
-						Edit
+						Save
 					</button>
 				)}
 				{ableDelete && data && data["id"] && (
@@ -61,13 +68,23 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 					</button>
 				)}
 				{viewLink && (
-						<Link
-							to={viewLink}
-							className="button view-button"
-							aria-label="View selected item">
-							View
-						</Link>
-					)}
+					<Link
+						to={viewLink}
+						className="button view-button"
+						aria-label="View selected item">
+						View
+					</Link>
+				)}
+				{customButtons && customButtons.map((button, index) => (
+					<button
+						key={index}
+						onClick={button.onClick}
+						className={`button ${button.className || ''}`}
+						aria-label={button.ariaLabel || button.label}
+					>
+						{button.label}
+					</button>
+				))}
 			</div>
 			<div className={`module-card ${showActions ? "with-actions" : ""}`}>
 				<h3>{data ? data[titleName] : ''}</h3>
@@ -75,7 +92,7 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 					data && data[name] ? <p key={name}><strong className='capitalize'>{placeholder}:</strong> {renderFieldValue(type, data[name])}</p> : null
 				))}
 			</div>
-				{children}
+			{children}
 		</>
 	);
 };
