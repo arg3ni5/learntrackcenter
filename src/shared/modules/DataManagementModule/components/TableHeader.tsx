@@ -15,17 +15,14 @@ const TableHeader = <T extends Record<string, any>>({ fields, sortConfig, handle
 
   useEffect(() => {
     if (headerRef.current) {
-      const widths = Array.from(headerRef.current.children).map((th) => (th as HTMLTableCellElement).offsetWidth);
-      console.log({ widths });
-
-      setColumnWidths(widths);
+      setColumnWidths(Array.from(headerRef.current.children).map((th) => (th as HTMLTableCellElement).offsetWidth));
     }
   }, []);
 
   return (<table className={`list-base-table header-table ${showActions ? "with-actions" : ""}`} aria-label="List header">
     <thead>
       <tr ref={headerRef}>
-        {fields.map((field) => field.view && (
+        {fields.map((field) => field.visible && (
           <th key={field.name} onClick={() => handleSort(field.name as keyof T)}
           style={{ width: field.size ? `${field.size}${field.unit || "em"}` : "auto" }}>
             {field.label || field.placeholder || field.name}

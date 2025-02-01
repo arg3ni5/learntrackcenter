@@ -37,7 +37,7 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
   };
 
   const renderCell = (item: T, field: BaseField) => {
-    if (!field.view) return null;
+    if (!field.visible) return null;
 
     const value = item[field.name];
 

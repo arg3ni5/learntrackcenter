@@ -3,7 +3,7 @@ import FormBase from "./components/FormBase";
 import ListBase from "./components/ListBase";
 import "./DataManagementModule.css";
 import { useNotification } from "../../../components/notification/NotificationContext";
-import { BaseModuleProps } from "./types/types";
+import { BaseField, BaseModuleProps } from "./types/types";
 import UploadOptions from "./components/UploadOptions";
 import UploadTable from "./components/UploadTable";
 import "./components/UploadTable.css";
@@ -37,6 +37,7 @@ const DataManagementModule = <T extends Record<string, any>>({
   const { showNotification } = useNotification();
   const isEmpty = items?.length === 0;
   const [initialFormData, setInitialFormData] = useState<T | null>(iniFormData || null);
+  const [dynamicFields, setDynamicFields] = useState<BaseField[]>(fields);
 
   // State management
   const [importData, setImportData] = useState<T | null>(null);
@@ -165,8 +166,20 @@ const DataManagementModule = <T extends Record<string, any>>({
     loadItems();
   }, [isEditing]);
 
-  // Ensure at least one field is visible
-  if (fields.filter((f) => f.view === true).length === 0) fields.forEach((f) => (f.view = true));
+
+
+  useEffect(() => {
+    setDynamicFields((prevFields) => {
+      const hasVisibleField = prevFields.some((f) => f.visible);
+
+      if (!hasVisibleField) {
+          return prevFields.map((f) => ({ ...f, visible: true }));
+      }
+
+      return prevFields;
+  });
+  }, [fields]);
+
 
   return (
     <>
@@ -179,7 +192,7 @@ const DataManagementModule = <T extends Record<string, any>>({
               <FormBase
                 onItemAdded={handleItemAdded}
                 onItemUpdated={handleItemUpdated}
-                fields={fields}
+                fields={dynamicFields}
                 isEditing={isEditing}
                 onCancelEdit={resetEditing}
                 initialData={initialFormData || currentItem}
@@ -204,7 +217,7 @@ const DataManagementModule = <T extends Record<string, any>>({
                 alias: alias,
                 items: items,
                 selectedItem: iniFormData || currentItem,
-                fields: fields,
+                fields: dynamicFields,
                 removeable: !!handlers?.onItemDeleted,
                 editable: !!handlers?.onItemUpdated,
                 seeable: !!handlers?.onView,
