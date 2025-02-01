@@ -107,18 +107,17 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
   return (
     !loading && (
       <>
-        <div className="container list-base">
+        <div className="item container p-0 list-base">
+          {ableFilter && (
+            <div className="filter-container  m-0">
+              <input className="m-0" type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
+            </div>
+          )}
           {/* Item count display */}
           <div className="item-count">
             Total items: {totalItems}
             {filterText && ` (showing ${filteredItemsCount} filtered)`}
           </div>
-
-          {ableFilter && (
-            <div className="filter-container">
-              <input type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
-            </div>
-          )}
         </div>
 
         {/* Action buttons */}
