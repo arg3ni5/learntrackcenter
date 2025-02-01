@@ -34,7 +34,7 @@ export interface CardProps<T> {
 	customButtons?: CustomButton[];
 }
 
-const Card = <T extends Record<string, any>>({ children, titleName, fields, data, handlers, ableDelete, viewLink, customButtons}: CardProps<T>) => {
+const Card = <T extends Record<string, any>>({ children, titleName, fields, data, handlers, ableDelete, viewLink, customButtons }: CardProps<T>) => {
 
 	const renderFieldValue = (type: string | undefined, value: any) => {
 		switch (type) {
@@ -86,13 +86,14 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 					</button>
 				))}
 			</div>
+
 			<div className={`module-card ${showActions ? "with-actions" : ""}`}>
+				{children}
 				<h3>{data ? data[titleName] : ''}</h3>
 				{fields.map(({ name, placeholder, type }: CardField) => (
 					data && data[name] ? <p key={name}><strong className='capitalize'>{placeholder}:</strong> {renderFieldValue(type, data[name])}</p> : null
 				))}
 			</div>
-			{children}
 		</>
 	);
 };
