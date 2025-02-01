@@ -42,6 +42,7 @@ const CourseCard: React.FC<StudentCardProps> = ({
     handlers }) => {
     const [isChildrenVisible, setIsChildrenVisible] = useState(childrenVisible);
     const nodeRef = useRef<HTMLDivElement | null>(null);
+    const cardRef = useRef<HTMLDivElement | null>(null);
 
 
     const { onDelete, onItemAdded, onItemUpdated } = handlers;
@@ -79,23 +80,32 @@ const CourseCard: React.FC<StudentCardProps> = ({
                 </CSSTransition>
 
 
-
-                <Card<Course>
-                    titleName="name"
-                    fields={fields}
-                    data={course}
-                    viewLink={viewLink}
-                    handlers={{ onDelete, onItemAdded, onItemUpdated }}
-                    ableDelete={course.assignmentsIds.length === 0 && (course.enrolledStudents?.length ?? 0) === 0}
-                    customButtons={[
-                        {
-                            label: isChildrenVisible ? 'Hide Assignments' : 'Assignments',
-                            onClick: toggleChildrenVisibility,
-                            className: 'save-button',
-                            ariaLabel: 'Toggle Details Button',
-                        },
-                    ]}>
-                </Card>
+                <CSSTransition
+                    in={!isChildrenVisible}
+                    timeout={500}
+                    classNames={{
+                        enter: "animate__animated animate__bounceInUp",
+                    }}
+                    nodeRef={cardRef}>
+                    <div ref={cardRef}>
+                        <Card<Course>
+                            titleName="name"
+                            fields={fields}
+                            data={course}
+                            viewLink={viewLink}
+                            handlers={{ onDelete, onItemAdded, onItemUpdated }}
+                            ableDelete={course.assignmentsIds.length === 0 && (course.enrolledStudents?.length ?? 0) === 0}
+                            customButtons={[
+                                {
+                                    label: isChildrenVisible ? 'Hide Assignments' : 'Assignments',
+                                    onClick: toggleChildrenVisibility,
+                                    className: 'save-button',
+                                    ariaLabel: 'Toggle Details Button',
+                                },
+                            ]}>
+                        </Card>
+                    </div>
+                </CSSTransition>
             </div>
         </>
     );
