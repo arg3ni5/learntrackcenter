@@ -19,10 +19,6 @@
     margin-bottom: 10px;
 }
 
-.buttons-container button:hover {
-    background-color: var(--bg-color-highlight);
-}
-
 .periods-manager ul {
     list-style-type: none;
     padding: 0;
