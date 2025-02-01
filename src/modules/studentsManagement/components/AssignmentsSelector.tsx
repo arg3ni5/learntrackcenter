@@ -11,7 +11,7 @@ import DataManagementModule from '../../../shared/modules/DataManagementModule/D
 const AssignmentsSelector: React.FC<AssignmentsSelectorProps> = ({ periodId, courseId }) => {
     const { assignments, loading } = useAssignments({periodId, courseId}); // Use the custom hook
     // const [selectedCourseId, setSelectedCourseId] = React.useState<string | null>(null); // State to hold selected course ID
-    // const [courseId, setCourseId] = React.useState<string | null>(null); 
+    // const [courseId, setCourseId] = React.useState<string | null>(null);
 
       // Define the fields for the form used to add new courses
       const fields : BaseField[] = [
@@ -22,22 +22,20 @@ const AssignmentsSelector: React.FC<AssignmentsSelectorProps> = ({ periodId, cou
     //   const handleOnEdit = (item: Assignment) => {
     //       console.log(item);
     //   }
-    
+
     //   const handleOnView = (item: Assignment) => {
-    //     console.log(item);        
+    //     console.log(item);
     //   }
 
     return (
         <div>
-            <div className="list-container">
             {!loading && <DataManagementModule<Assignment>
                 fields={fields}
                 items={assignments}
                 showForm={false}
                 ableForm={false}
                 loading={loading}>
-            </DataManagementModule>}            
-            </div>
+            </DataManagementModule>}
         </div>
     );
 };
