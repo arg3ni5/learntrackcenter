@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { Course, Period } from "../../../types/types";
 import useCourses from "../hooks/useCourses";
-import useTeachers from "../../teachersManagement/hooks/useTeachers";
 import AssignmentsManager from "./AssignmentsManager";
 import CourseCard from "./CourseCard";
 import CourseSelector from "./CourseSelector";
@@ -15,8 +14,7 @@ import CourseTable from "./CourseTable";
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const navigate = useNavigate();
-  const { loading, courses, availableCourses, handleAddCourse, handleDeleteCourse, handleUpdateCourse, loadAvailableCourses } = useCourses(periodId);
-  const { teachers } = useTeachers();
+  const { loading, courses, availableCourses, availableTeachers, handleAddCourse, handleDeleteCourse, handleUpdateCourse, loadAvailableCourses } = useCourses(periodId);
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null); // State to hold selected period ID
   const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
   const [period] = useLocalStorage<Period | null>("selectPeriod", null);
@@ -57,24 +55,15 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
     <div className="periods-manager">
       <div className="container">
         <h2>{period?.name}</h2>
-        <button onClick={handleGoBack}>Volver</button>
+        <button onClick={handleGoBack}>Go Back</button>
       </div>
 
-      <div className="view-toggle">
-        <button onClick={() => setViewMode('cards')} className={viewMode === 'cards' ? 'active' : ''}>
-          <FaTh /> Cards
-        </button>
-        <button onClick={() => setViewMode('table')} className={viewMode === 'table' ? 'active' : ''}>
-          <FaTable /> Table
-        </button>
-      </div>
 
-      <h1 className="title bt">ASSIGN COURSES</h1>
 
-      <div className="container">
+      <div className="">
 
         {!periodId &&
-          (<div className="item m-0">
+          (<div className="item m-0 p-0">
             <CourseSelector type="available" courses={availableCourses.filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id))}
               setSelectedCourseId={setSelectedCourseId}
               assign={assignCourseToPeriod}
@@ -88,12 +77,23 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
           </div>)}
       </div>
 
+      <div className="view-toggle">
+        <button onClick={() => setViewMode('cards')} className={viewMode === 'cards' ? 'active' : ''}>
+          <FaTh /> Cards
+        </button>
+        <button onClick={() => setViewMode('table')} className={viewMode === 'table' ? 'active' : ''}>
+          <FaTable /> Table
+        </button>
+      </div>
+
+      <h1 className="title bt">ASSIGNED COURSES</h1>
+
       {viewMode === 'table' &&
-        (<div className="item m-0">
+        (<div className="item m-0 p-0">
           <CourseTable type="assign"
             courses={courses}
             loading={loading}
-            teachers={teachers}
+            teachers={availableTeachers}
             periodId={periodId}
             handlers={courseHandlers}>
           </CourseTable>
@@ -106,7 +106,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
             <CourseCard
               key={index}
               course={course}
-              teachers={teachers}
+              teachers={availableTeachers}
               handlers={courseHandlers}
               setSelectedTeacher={setSelectedTeacher}
               viewLink={`/period/${periodId}/course/${course.id}`}>

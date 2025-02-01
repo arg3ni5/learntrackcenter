@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";
 import { BaseField } from "../../../shared/modules/DataManagementModule/types/types";
 import { AvailableCourse } from "../../../types/types";
