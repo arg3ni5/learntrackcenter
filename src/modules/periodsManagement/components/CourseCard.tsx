@@ -3,6 +3,7 @@ import { Course } from '../../../types/types';
 import Card, { CardField } from '../../../shared/components/Card/Card';
 
 interface StudentCardProps {
+    children?: React.ReactNode;
     data: Course;
     viewLink: string;
     onItemAdded?: (newItem: Course) => Promise<void>;
@@ -25,6 +26,7 @@ const fields: CardField[] = [
 ];
 
 const CourseCard: React.FC<StudentCardProps> = ({
+    children,
     data,
     viewLink,
     onDelete, onItemAdded, onItemUpdated }) => {
@@ -37,7 +39,9 @@ const CourseCard: React.FC<StudentCardProps> = ({
                 viewLink={viewLink}
                 handlers={{ onDelete, onItemAdded, onItemUpdated }}
                 ableDelete={data.assignmentsIds.length === 0 && (data.enrolledStudents?.length ?? 0) === 0}
-            />
+            >
+                {children}
+            </Card>
         </>
     );
 };

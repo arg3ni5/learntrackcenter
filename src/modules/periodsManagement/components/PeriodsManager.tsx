@@ -4,13 +4,15 @@ import React, { useState } from "react";
 import "./PeriodsManager.css";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../../../hooks/useLocalStorage";
-import { Course, Period } from "../../../types/types";
+import { AvailableCourse, Course, Period } from "../../../types/types";
 import useCourses from "../hooks/useCourses";
 import SelectInput from "../../../shared/modules/DataManagementModule/components/SelectInput";
 import useTeachers from "../../teachersManagement/hooks/useTeachers";
 import AssignmentsManager from "./AssignmentsManager";
 import CourseCard from "./CourseCard";
 import CourseSelector from "./CourseSelector";
+import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";
+import { BaseField } from "../../../shared/modules/DataManagementModule/types/types";
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const navigate = useNavigate();
@@ -19,6 +21,12 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null); // State to hold selected period ID
   const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
   const [period] = useLocalStorage<Period | null>("selectPeriod", null);
+
+  const fieldsTable: BaseField[] = [
+    { name: "name", placeholder: "name", size: 10 },
+    { name: "description", placeholder: "description" },
+    { name: "teacherName", placeholder: "teacherName" }
+  ];
 
   const handleGoBack = () => {
     navigate(-1);
@@ -59,13 +67,11 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
       <div className="container">
 
         {periodId &&
-          (<div className="item">
-            <div className="buttons-container">
-              <CourseSelector courses={availableCourses.filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id))}
+          (<div className="item m-0">
+            <CourseSelector type="available" courses={availableCourses.filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id))}
               setSelectedCourseId={setSelectedCourseId}
               assign={assignCourseToPeriod}
               loading={loading} load={loadAvailableCourses}></CourseSelector>
-            </div>
             {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
             {availableCourses
               .filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id)).length === 0 &&
@@ -74,7 +80,8 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
 
           </div>)}
       </div>
-      <div className="">
+      <div className="item m-0">
+        <CourseSelector type="assign" courses={courses} loading={loading}></CourseSelector>
         {courses.map((course) => (
           <div key={course.id} className="container periods-list">
 
@@ -100,10 +107,10 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
               <CourseCard
                 data={course}
                 onDelete={handleDeleteCourse}
-                viewLink={`/period/${periodId}/course/${course.id}`} />
-            </div>
-            <div className="item">
-              {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
+                viewLink={`/period/${periodId}/course/${course.id}`}>
+
+                {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
+              </CourseCard>
             </div>
           </div>
         ))}
