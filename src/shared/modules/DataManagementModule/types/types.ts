@@ -47,6 +47,7 @@ export interface HandlersBaseModuleProps<T>{
   onAssign?: () => void;
 }
 export interface BaseModuleProps<T> extends CommonProps<T>{
+  className?: string;
   title?: string;
   uploadFields?: BaseField[];
   initialFormData?: T | null; // Initial data for the form

@@ -16,6 +16,7 @@ export interface HandlersCard<T> {
 }
 
 export interface CardProps<T> {
+	children?: React.ReactNode;
 	titleName: string; // Card title
 	fields: CardField[];
 	data?: T | null;
@@ -26,7 +27,7 @@ export interface CardProps<T> {
 	handlers?: HandlersCard<T>;
 }
 
-const Card = <T extends Record<string, any>>({ titleName, fields, data, handlers, ableDelete, viewLink }: CardProps<T>) => {
+const Card = <T extends Record<string, any>>({ children, titleName, fields, data, handlers, ableDelete, viewLink }: CardProps<T>) => {
 
 	const renderFieldValue = (type: string | undefined, value: any) => {
 		switch (type) {
@@ -74,6 +75,7 @@ const Card = <T extends Record<string, any>>({ titleName, fields, data, handlers
 					data && data[name] ? <p key={name}><strong className='capitalize'>{placeholder}:</strong> {renderFieldValue(type, data[name])}</p> : null
 				))}
 			</div>
+				{children}
 		</>
 	);
 };

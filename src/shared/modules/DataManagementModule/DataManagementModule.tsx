@@ -18,6 +18,7 @@ import "./components/UploadTable.css";
 const DataManagementModule = <T extends Record<string, any>>({
   handlers, fetchItems, ...config }: BaseModuleProps<T>) => {
   const {
+    className,
     showForm: initialShowForm = false,
     clearFormAfterAdd = false,
     ableImport = false,
@@ -171,7 +172,7 @@ const DataManagementModule = <T extends Record<string, any>>({
     <>
       {title && <h1 className="title">{title}</h1>}
 
-      <div className="module-container">
+      <div className={`module-container ${className || ""}`}>
         {!loading && ableForm && showForm && (
           <>
             <div className="form-container">
@@ -192,7 +193,7 @@ const DataManagementModule = <T extends Record<string, any>>({
         <div className="list-container">
           {ableImport && previewVisible && (
             <div className="upload-container">
-              <UploadTable<T> fields={uploadFields||fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
+              <UploadTable<T> fields={uploadFields || fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
             </div>
           )}
           {items?.length! > 0 && (
