@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FormBase from "./components/FormBase";
 import ListBase from "./components/ListBase";
 import "./DataManagementModule.css";
@@ -7,6 +7,9 @@ import { BaseField, BaseModuleProps } from "./types/types";
 import UploadOptions from "./components/UploadOptions";
 import UploadTable from "./components/UploadTable";
 import "./components/UploadTable.css";
+import { CSSTransition } from "react-transition-group";
+import "animate.css";
+
 
 /**
  * BaseModule Component
@@ -18,6 +21,7 @@ import "./components/UploadTable.css";
 const DataManagementModule = <T extends Record<string, any>>({
   handlers, fetchItems, ...config }: BaseModuleProps<T>) => {
   const {
+    children,
     className,
     showForm: initialShowForm = false,
     clearFormAfterAdd = false,
@@ -38,6 +42,9 @@ const DataManagementModule = <T extends Record<string, any>>({
   const isEmpty = items?.length === 0;
   const [initialFormData, setInitialFormData] = useState<T | null>(iniFormData || null);
   const [dynamicFields, setDynamicFields] = useState<BaseField[]>(fields);
+  const formRef = useRef<HTMLDivElement | null>(null);
+  const listContainerRef = useRef<HTMLDivElement | null>(null);
+
 
   // State management
   const [importData, setImportData] = useState<T | null>(null);
@@ -173,11 +180,11 @@ const DataManagementModule = <T extends Record<string, any>>({
       const hasVisibleField = prevFields.some((f) => f.visible);
 
       if (!hasVisibleField) {
-          return prevFields.map((f) => ({ ...f, visible: true }));
+        return prevFields.map((f) => ({ ...f, visible: true }));
       }
 
       return prevFields;
-  });
+    });
   }, [fields]);
 
 
@@ -185,10 +192,18 @@ const DataManagementModule = <T extends Record<string, any>>({
     <>
       {title && <h1 className="title">{title}</h1>}
 
+      {children}
+
       <div className={`module-container ${className || ""}`}>
-        {!loading && ableForm && showForm && (
-          <>
-            <div className="form-container">
+        {
+          <CSSTransition in={!loading && ableForm && showForm} timeout={500}
+            classNames={{
+              enter: "animate__animated animate__slideInLeft",
+              exit: "animate__animated animate__slideOutLeft",
+            }}
+
+            unmountOnExit nodeRef={formRef}>
+            <div className="form-container" ref={formRef}>
               <FormBase
                 onItemAdded={handleItemAdded}
                 onItemUpdated={handleItemUpdated}
@@ -200,48 +215,57 @@ const DataManagementModule = <T extends Record<string, any>>({
               />
               {ableImport && <>{showImportForm && <UploadOptions<T> onFileUpload={handleFileUpload} columnNames={fields.map((f) => f.name)} />}</>}
             </div>
-          </>
-        )}
+          </CSSTransition>
+        }
 
-        <div className="list-container">
-          {ableImport && previewVisible && (
-            <div className="upload-container">
-              <UploadTable<T> fields={uploadFields || fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
-            </div>
-          )}
-          {items?.length! > 0 && (
-            <ListBase<T>
-              config={{
-                viewLinks: viewLinks,
-                loading: loading || false,
-                alias: alias,
-                items: items,
-                selectedItem: iniFormData || currentItem,
-                fields: dynamicFields,
-                removeable: !!handlers?.onItemDeleted,
-                editable: !!handlers?.onItemUpdated,
-                seeable: !!handlers?.onView,
-                ableFilter: ableFilter,
-                ableForm: ableForm,
-                ableImport: ableImport,
-                showForm: showForm,
-                showImportForm: showImportForm,
-                useFlexTable: false,
-                tempChanges: tempChanges,
-                setTempChanges: setTempChanges,
-              }}
-              handlers={{
-                onAdd: setShowForm,
-                onImport: setShowImportForm,
-                onSelect: handleOnSelect,
-                onItemDeleted: handleItemDelete,
-                onItemsUpdated: handleSaveAllChanges,
-                onReload: handlers?.onReload,
-                onAssign: handlers?.onAssign,
-              }}
-            />
-          )}
-        </div>
+        <CSSTransition
+          in={!showForm}
+          timeout={500}
+          classNames={{
+            enter: "animate__animated animate__heartBeat",
+            exit: "animate__animated stretch-shrink",
+          }}
+          nodeRef={listContainerRef}>
+          <div className="list-container" ref={listContainerRef}>
+            {ableImport && previewVisible && (
+              <div className="upload-container">
+                <UploadTable<T> fields={uploadFields || fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
+              </div>
+            )}
+            {items && (
+              <ListBase<T>
+                config={{
+                  viewLinks: viewLinks,
+                  loading: loading || false,
+                  alias: alias,
+                  items: items,
+                  selectedItem: iniFormData || currentItem,
+                  fields: dynamicFields,
+                  removeable: !!handlers?.onItemDeleted,
+                  editable: !!handlers?.onItemUpdated,
+                  seeable: !!handlers?.onView,
+                  ableFilter: ableFilter,
+                  ableForm: ableForm,
+                  ableImport: ableImport,
+                  showForm: showForm,
+                  showImportForm: showImportForm,
+                  useFlexTable: false,
+                  tempChanges: tempChanges,
+                  setTempChanges: setTempChanges,
+                }}
+                handlers={{
+                  onAdd: setShowForm,
+                  onImport: setShowImportForm,
+                  onSelect: handleOnSelect,
+                  onItemDeleted: handleItemDelete,
+                  onItemsUpdated: handleSaveAllChanges,
+                  onReload: handlers?.onReload,
+                  onAssign: handlers?.onAssign,
+                }}
+              />
+            )}
+          </div>
+        </CSSTransition>
       </div>
     </>
   );
