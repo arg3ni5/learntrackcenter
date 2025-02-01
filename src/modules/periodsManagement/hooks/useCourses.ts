@@ -183,8 +183,8 @@ const useCourses = (periodId: string) => {
     handleDeleteCourse,
     handleUpdateCourse,
     loadGlobalData: () => loadGlobalData(true),
-    loadAvailableCourses: () => loadGlobalData(['courses'], true),
-    loadAvailableTeachers: () => loadGlobalData(['teachers'], true),
+    loadAvailableCourses: () => loadGlobalData(["courses"], true),
+    loadAvailableTeachers: () => loadGlobalData(["teachers"], true),
   };
 };
 
