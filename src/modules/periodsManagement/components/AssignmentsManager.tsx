@@ -12,22 +12,21 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
         return assignments.reduce((sum, assignment) => sum + (Number(assignment.contributionPercentage) || 0), 0);
     }, [assignments]);
 
-    const fields : BaseField[] = [
+    const fields: BaseField[] = [
         { name: "title", placeholder: "Title of the assignment" },
         { name: "contributionPercentage", placeholder: "percentage", type: "number-view" },
-        { name: "link", placeholder: "URL", type:"link", required: false},
+        { name: "link", placeholder: "URL", type: "link", required: false },
     ];
 
     if (loading) return <Loading text="Loading assignments" className="h30vh"></Loading>;
     if (error) return <div>Error: {error}</div>;
     return (
         <div className="assignments-manager">
-            <div className="button-container">
+            {/* <div className="item button-container">
                 <button className='save-button' onClick={handleSyncAssignments}>Sync</button>
-            </div>
-            <p><b>Total Percentage: </b>({totalPercentage})%</p>
-            {totalPercentage < 100 && <p><b>Pending Percentage: </b>({100-totalPercentage})%</p>}
+            </div> */}
             <DataManagementModule<Assignment>
+                title="Assignments"
                 alias={courseId}
                 fields={fields}
                 items={assignments}
@@ -42,7 +41,13 @@ const AssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, cours
                 showForm={false}
                 ableForm={true}
                 ableImport={true}
-            />
+            >
+
+                <div className="container">
+                    <p><b>Total Percentage: </b>({totalPercentage})%</p>
+                    {totalPercentage < 100 && <p><b>Pending Percentage: </b>({100 - totalPercentage})%</p>}
+                </div>
+            </DataManagementModule>
         </div>
     );
 };
