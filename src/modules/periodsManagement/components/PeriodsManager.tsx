@@ -9,7 +9,7 @@ import useCourses from "../hooks/useCourses";
 import AssignmentsManager from "./AssignmentsManager";
 import CourseCard from "./CourseCard";
 import CourseSelector from "./CourseSelector";
-import { FaTable, FaTh } from "react-icons/fa";
+import { FaTable, FaTasks, FaTh } from "react-icons/fa";
 import CourseTable from "./CourseTable";
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
@@ -18,7 +18,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null); // State to hold selected period ID
   const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
   const [period] = useLocalStorage<Period | null>("selectPeriod", null);
-  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+  const [viewMode, setViewMode] = useState<'table' | 'cards' | 'assign'>('table');
 
   const handleGoBack = () => {
     navigate(-1);
@@ -53,16 +53,40 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
 
   return (
     <div className="periods-manager">
-      <div className="container">
+      <div className="container px-0">
         <h2>{period?.name}</h2>
         <button onClick={handleGoBack}>Go Back</button>
       </div>
 
 
 
-      <div className="">
 
-        {!periodId &&
+
+
+      <div className="container p-0">
+
+        <div className="view-toggle">
+          <button onClick={() => setViewMode('cards')} className={viewMode === 'cards' ? 'active' : ''}>
+            <FaTh /> Cards
+          </button>
+          <button onClick={() => setViewMode('table')} className={viewMode === 'table' ? 'active' : ''}>
+            <FaTable /> Table
+          </button>
+        </div>
+
+
+        <div className="view-toggle">
+
+          <button onClick={() => setViewMode('assign')} className={viewMode === 'assign' ? 'active' : ''}>
+            <FaTasks /> assign
+          </button>
+        </div>
+      </div>
+
+      <h1 className="title bt">{viewMode === 'assign' ? 'COURSES TO ASSIGN' : 'ASSIGNED COURSES'}</h1>
+
+      <>
+        {viewMode === 'assign' && periodId &&
           (<div className="item m-0 p-0">
             <CourseSelector type="available" courses={availableCourses.filter(availableCourse => !courses.some(course => course.courseId === availableCourse.id))}
               setSelectedCourseId={setSelectedCourseId}
@@ -75,18 +99,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
             }
 
           </div>)}
-      </div>
-
-      <div className="view-toggle">
-        <button onClick={() => setViewMode('cards')} className={viewMode === 'cards' ? 'active' : ''}>
-          <FaTh /> Cards
-        </button>
-        <button onClick={() => setViewMode('table')} className={viewMode === 'table' ? 'active' : ''}>
-          <FaTable /> Table
-        </button>
-      </div>
-
-      <h1 className="title bt">ASSIGNED COURSES</h1>
+      </>
 
       {viewMode === 'table' &&
         (<div className="item m-0 p-0">
