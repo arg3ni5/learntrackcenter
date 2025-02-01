@@ -6,7 +6,7 @@ import { useLoading } from "../../../components/loading/LoadingContext";
 import { useNotification } from "../../../components/notification/NotificationContext";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 
-const DEFAULT_POLLING_INTERVAL = 10 * 60 * 1000; // 10 minutes
+const DEFAULT_POLLING_INTERVAL = 10 * 60 * 1000;
 
 const useCourses = (periodId: string) => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -49,7 +49,7 @@ const useCourses = (periodId: string) => {
         console.log("Teachers data already loaded. Skipping fetch.");
         return;
       }
-
+      forceUpdate && setLoading(true);
       const teachers = await fetchTeachers();
       setAvailableTeachers(teachers);
       localStorage.setItem("availableTeachers", JSON.stringify(teachers));
@@ -58,6 +58,8 @@ const useCourses = (periodId: string) => {
     } catch (err) {
       console.error("Error loading teachers:", err);
       showNotification("Error loading teachers", "error");
+    } finally {
+      forceUpdate && setLoading(false);
     }
   };
 
@@ -69,6 +71,7 @@ const useCourses = (periodId: string) => {
         return;
       }
 
+      forceUpdate && setLoading(true);
       const courses = await fetchAvailableCourses();
       setAvailableCourses(courses);
       localStorage.setItem("availableCourses", JSON.stringify(courses));
@@ -77,6 +80,8 @@ const useCourses = (periodId: string) => {
     } catch (err) {
       console.error("Error loading courses:", err);
       showNotification("Error loading courses", "error");
+    } finally {
+      forceUpdate && setLoading(false);
     }
   };
 
