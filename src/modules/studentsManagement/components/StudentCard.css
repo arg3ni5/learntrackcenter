@@ -32,16 +32,6 @@
     font-weight: bold;
 }
 
-.edit-button {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.delete-button {
-    background-color: #f44336;
-    color: white;
-}
-
 .edit-button:hover, .delete-button:hover {
     opacity: 0.8;
 }

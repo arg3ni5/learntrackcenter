@@ -15,10 +15,6 @@
     margin-bottom: 10px;
 }
 
-.buttons-container button:hover {
-    background-color: var(--bg-color-highlight); /* Darker green */
-}
-
 .periods-manager ul {
     list-style-type: none;
     padding: 0;
