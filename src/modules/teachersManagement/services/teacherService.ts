@@ -1,13 +1,6 @@
 import { db } from '../../../services/firebase';
 import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
-
-// Define la interfaz Teacher
-export interface Teacher {
-    id?: string; // ID opcional para Firestore
-    name: string; // Nombre completo del profesor
-    idNumber?: string; // Número de identificación del profesor
-    specialty?: string; // Especialidad del profesor
-}
+import { Teacher } from '../../../types/types';
 
 // Función para obtener la lista de profesores desde Firestore
 export const fetchTeachers = async (): Promise<Teacher[]> => {

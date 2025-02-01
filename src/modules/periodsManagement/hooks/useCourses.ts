@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { AvailableCourse, Course } from "../../../types/types";
-import { fetchTeachers, Teacher } from "../../teachersManagement/services/teacherService";
+import { AvailableCourse, Course, Teacher } from "../../../types/types";
+import { fetchTeachers } from "../../teachersManagement/services/teacherService";
 import { addCourse, deleteCourse, updateCourse, fetchAvailableCourses, fetchCourses } from "../services/periodCourseService";
 import { useLoading } from "../../../components/loading/LoadingContext";
 import { useNotification } from "../../../components/notification/NotificationContext";
@@ -30,7 +30,7 @@ const useCourses = (periodId: string) => {
         const teacher = availableTeachers.find((t) => t.id === course.teacherId);
         return {
           ...course,
-          teacherName: teacher ? teacher.name : "Unknown Teacher",
+          teacherName: teacher ? teacher.name : "Unassigned Teacher",
         };
       });
       setCourses(detailedData);

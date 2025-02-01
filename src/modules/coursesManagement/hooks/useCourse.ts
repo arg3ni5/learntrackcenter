@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fetchPeriodCourseById } from '../services/courseService'; // Importar funciones del servicio
 import { useNotification } from '../../../components/notification/NotificationContext';
-import { PeriodCourse } from '../../../types/types';
+import { PeriodCourse, Teacher } from '../../../types/types';
 import useLocalStorage from '../../../hooks/useLocalStorage';
-import { Teacher } from '../../teachersManagement/services/teacherService';
 
 
 

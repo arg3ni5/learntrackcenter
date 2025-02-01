@@ -1,5 +1,5 @@
 import React from 'react';
-import { Course } from '../../../types/types';
+import { Course, Teacher } from '../../../types/types';
 import Card, { CardField } from '../../../shared/components/Card/Card';
 
 interface StudentCardProps {

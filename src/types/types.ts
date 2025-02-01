@@ -109,3 +109,9 @@ export interface Grade {
     subjectId: string;
     finalGrade: number;
 }
+export interface Teacher {
+    id?: string;
+    name: string;
+    idNumber?: string;
+    specialty?: string;
+}
