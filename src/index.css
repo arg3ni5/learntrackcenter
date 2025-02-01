@@ -60,21 +60,10 @@ button, .button {
   transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-
-@media (prefers-color-scheme: dark) {
-  .button, button {
-    background-color: var(--bg);
-  }
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
-  }
-
-  .button, button {
-    background-color: #f9f9f9;
   }
 }
 
@@ -84,6 +73,10 @@ button, .button {
   margin-bottom: 20px;
   width: 100%;
   border-bottom: 3px solid #ccc;
+}
+.title.bt {
+  padding-top: 15px;
+  border-top: 3px solid #ccc !important;
 }
 
 

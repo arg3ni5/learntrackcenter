@@ -1,8 +1,25 @@
 
-.buttons-container .active, .section-buttons .active {
+@media (prefers-color-scheme: dark) {
+  .button, button {
+    background-color: var(--bg);
+  }
+}
+@media (prefers-color-scheme: light) {
+  .button, button {
+    background-color: #f9f9f9;
+  }
+}
+
+.view-toggle .active,
+.buttons-container .active,
+.section-buttons .active {
   background-color: var(--active) !important;
-  border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
   font-weight: bold;
+}
+
+.buttons-container .active,
+.section-buttons .active {
+  border: 2px solid var(--border-color-highlight) !important; /* Borde más oscuro */
 }
 
 .buttons-container.flex {
@@ -18,14 +35,13 @@
 .buttons-container button:nth-child(n+2) {
   margin-left: 5px;
 }
-.buttons-container button:not([class]) {
+.view-toggle button[class=""]:hover,
+.buttons-container button[class=""]:hover {
   background-color: var(--bg-color-hover) !important;
 }
 .buttons-container .active:hover, .section-buttons .active:hover {
   background-color: var(--active-hover) !important;
 }
-
-
 .button-black {
   background-color: black !important;
 }
@@ -102,4 +118,39 @@ button[disabled], button[disabled]:hover, .disabled-link {
 .buttons-container button:hover,
 .add-button:hover {
   transform: translateY(-1px);
+}
+
+.actions.buttons-container.compact{
+  width: auto !important;
+  justify-content: right;
+}
+.compact button:hover, .compact .button:hover{
+  transform: none !important;
+}
+
+.view-toggle button,
+.actions.buttons-container.compact button,
+.actions.buttons-container.compact .button{
+  margin: 0;
+  border-radius: 0;
+}
+
+.view-toggle button:first-child,
+.actions.buttons-container.compact a:first-child,
+.actions.buttons-container.compact button:first-child,
+.actions.buttons-container.compact .button:first-child {
+border-top-left-radius: 8px !important;
+}
+
+.view-toggle button:last-child,
+.actions.buttons-container.compact a:last-child,
+.actions.buttons-container.compact button:last-child,
+.actions.buttons-container.compact .button:last-child {
+border-top-right-radius: 8px !important;
+}
+
+.actions.buttons-container.compact a:only-child,
+.actions.buttons-container.compact button:only-child,
+.actions.buttons-container.compact .button:only-child {
+border-radius: 8px 8px 0 0 !important;
 }
