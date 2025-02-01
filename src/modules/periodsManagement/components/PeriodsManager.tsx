@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { Course, Period } from "../../../types/types";
 import useCourses from "../hooks/useCourses";
-import SelectInput from "../../../shared/modules/DataManagementModule/components/SelectInput";
 import useTeachers from "../../teachersManagement/hooks/useTeachers";
 import AssignmentsManager from "./AssignmentsManager";
 import CourseCard from "./CourseCard";
 import CourseSelector from "./CourseSelector";
 import { FaTable, FaTh } from "react-icons/fa";
+import CourseTable from "./CourseTable";
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null); // State to hold selected period ID
   const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
   const [period] = useLocalStorage<Period | null>("selectPeriod", null);
-  const [viewMode, setViewMode] = useState<'table' | 'cards'>('cards');
+  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
 
   const handleGoBack = () => {
     navigate(-1);
@@ -50,6 +50,8 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
       setSelectedCourseId(null); // Reset selected period after assignment
     }
   };
+
+  const courseHandlers = { onDelete: handleDeleteCourse, onItemUpdated: handleUpdate };
 
   return (
     <div className="periods-manager">
@@ -88,23 +90,31 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
 
       {viewMode === 'table' &&
         (<div className="item m-0">
-          <CourseSelector type="assign" courses={courses} loading={loading}></CourseSelector>
+          <CourseTable type="assign"
+            courses={courses}
+            loading={loading}
+            teachers={teachers}
+            periodId={periodId}
+            handlers={courseHandlers}>
+          </CourseTable>
         </div>)
       }
 
       {viewMode === 'cards' && (
         <>
-          {courses.map((course) => (
-              <CourseCard
-                course={course}
-                teachers={teachers}
-                handlers={{ onDelete: handleDeleteCourse, onItemUpdated: handleUpdate }}
-                setSelectedTeacher={setSelectedTeacher}
-                viewLink={`/period/${periodId}/course/${course.id}`}>
-                {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
-              </CourseCard>
+          {courses.map((course, index) => (
+            <CourseCard
+              key={index}
+              course={course}
+              teachers={teachers}
+              handlers={courseHandlers}
+              setSelectedTeacher={setSelectedTeacher}
+              viewLink={`/period/${periodId}/course/${course.id}`}>
+              {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
+            </CourseCard>
           ))}
-        </>)}
+        </>
+      )}
 
     </div>
   );
