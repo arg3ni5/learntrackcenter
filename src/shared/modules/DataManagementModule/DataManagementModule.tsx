@@ -198,8 +198,8 @@ const DataManagementModule = <T extends Record<string, any>>({
         {
           <CSSTransition in={!loading && ableForm && showForm} timeout={500}
             classNames={{
-              enter: "animate__animated animate__slideInLeft",
-              exit: "animate__animated animate__slideOutLeft",
+              enter: "animate__animated animate__fast animate__slideInLeft",
+              exit: "animate__animated animate__fast animate__slideOutLeft",
             }}
 
             unmountOnExit nodeRef={formRef}>
@@ -222,8 +222,8 @@ const DataManagementModule = <T extends Record<string, any>>({
           in={!showForm}
           timeout={500}
           classNames={{
-            enter: "animate__animated animate__heartBeat",
-            exit: "animate__animated stretch-shrink",
+            enter: "animate__animated animate__slow animate__heartBeat",
+            exit: "animate__animated animate__slow stretch-shrink",
           }}
           nodeRef={listContainerRef}>
           <div className="list-container" ref={listContainerRef}>
