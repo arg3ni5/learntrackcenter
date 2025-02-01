@@ -23,7 +23,8 @@ const ActionButtons = <T extends Record<string, any>>({
     handleShowImportForm,
     onItemDeleted,
     onSaveAllChanges,
-    onReload
+    onReload,
+    onAssign
   } = handlers;
 
   const handleSaveAllChanges = (event: React.MouseEvent<HTMLButtonElement>, changes: Record<string, Record<string, number>>) => {
@@ -71,6 +72,11 @@ const ActionButtons = <T extends Record<string, any>>({
       {onReload && (
         <button onClick={() => onReload()} className="add-button" aria-label="Save all changes">
           Reload
+        </button>
+      )}
+      {onAssign && (
+        <button disabled={!selectedItem} onClick={() => onAssign()} className="edit-button" aria-label="Save all changes">
+          Assign
         </button>
       )}
     </div>

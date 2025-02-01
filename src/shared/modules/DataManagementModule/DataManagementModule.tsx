@@ -223,6 +223,7 @@ const DataManagementModule = <T extends Record<string, any>>({
                 onItemDeleted: handleItemDelete,
                 onItemsUpdated: handleSaveAllChanges,
                 onReload: handlers?.onReload,
+                onAssign: handlers?.onAssign,
               }}
             />
           )}

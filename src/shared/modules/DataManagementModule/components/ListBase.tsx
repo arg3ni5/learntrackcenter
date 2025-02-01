@@ -37,7 +37,7 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     showImportForm: isShowImportForm = false,
     loading = false,
   } = config;
-  const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated, onReload } = handlers;
+  const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated, onReload, onAssign } = handlers;
 
   // State management
   const [showForm, setShowForm] = useFormVisibility(isShowForm);
@@ -94,7 +94,7 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     setShowImportForm(isShowImportForm);
   }, [isShowImportForm]);
 
-  const showActions = removeable || seeable || !!onReload; // Determine if action buttons should be shown
+  const showActions = removeable || seeable || !!onReload || !!onAssign; // Determine if action buttons should be shown
   // Calculate item counts
   const totalItems = items ? items.length : 0;
   const filteredItemsCount = sortedItems.length;
@@ -141,7 +141,8 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
               handleShowImportForm,
               onItemDeleted,
               onSaveAllChanges: handleSaveAllChanges,
-              onReload
+              onReload,
+              onAssign
             }}
             hasPendingChanges={Object.keys(tempChanges).length > 0}
           />

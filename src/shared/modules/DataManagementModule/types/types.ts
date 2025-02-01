@@ -44,6 +44,7 @@ export interface HandlersBaseModuleProps<T>{
   onItemsUpdated?: (changes: Record<string, Record<string, number>>) => void;
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
   onReload?: () => void;
+  onAssign?: () => void;
 }
 export interface BaseModuleProps<T> extends CommonProps<T>{
   title?: string;
@@ -75,6 +76,7 @@ export interface ListBaseProps<T> {
     onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>;
     onImport?: (state: boolean) => void;
     onReload?: () => void;
+    onAssign?: () => void;
   }
 }
 
@@ -93,6 +95,7 @@ export interface ActionButtonsProps<T> {
     onItemDeleted?: (id: string) => void;
     onSaveAllChanges?: (event: React.MouseEvent<HTMLButtonElement>, changes: Record<string, Record<string, number>>) => void;
     onReload?: () => void;
+    onAssign?: () => void;
   };
 }
 
