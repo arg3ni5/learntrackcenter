@@ -44,7 +44,6 @@ useEffect(() => {
     <DataManagementModule<AvailableCourse>
       className="p-0"
       alias={`${type}Courses`.toUpperCase()}
-      title={`${type} Courses`.toUpperCase()}
       fields={dynamicFields}
       items={courses}
       handlers={{
