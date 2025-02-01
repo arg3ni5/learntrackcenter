@@ -118,7 +118,7 @@ const useCourses = (periodId: string) => {
 
   useEffect(() => {
     loadGlobalData(); // Initial load
-    const intervalId = setInterval(() => loadGlobalData(true), DEFAULT_POLLING_INTERVAL); // Periodic updates
+    const intervalId = setInterval(() => loadGlobalData(["courses"], true), DEFAULT_POLLING_INTERVAL); // Periodic updates
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
