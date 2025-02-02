@@ -43,10 +43,11 @@ const useAssignments = (props: AssignmentsManagerProps) => {
     async (newAssignment: Assignment) => {
       setLoading(true);
       try {
-        const { id, ...assignment } = newAssignment;
-        await addAssignment(periodId, courseId, assignment);
+        const { id, link,...assignment } = newAssignment;
+        await addAssignment(periodId, courseId, {...assignment, link: link || ''});
         await loadData();
       } catch (err) {
+        console.error("Error adding assignments:", err);
         setError(err instanceof Error ? err.message : "Error adding assignment");
       } finally {
         setLoading(false);
