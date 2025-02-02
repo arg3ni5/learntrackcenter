@@ -9,7 +9,7 @@ import { Assignment, StudentAssignment } from '../../../types/types';
 const getUrl = (studentId: string, periodId: string, courseId: string): string => {
     return `students/${studentId}/periods/${periodId}/courses/${courseId}`;
 };
-  
+
 export const fetchStudentAssignment = async (studentId: string, periodId: string, courseId: string): Promise<StudentAssignment[]> => {
     const url = `${getUrl(studentId,periodId,courseId)}/assignments`;
     const assignmentsCollection = collection(db, url);
@@ -26,11 +26,11 @@ export const fetchStudentAssignment = async (studentId: string, periodId: string
             gradeMax: 100,
             percentage: percentage || 0,
             percentageMax
-        } as StudentAssignment;        
+        } as StudentAssignment;
     });
 };
 
-export const fetchAvalaibleAssignments = async (periodId: string, courseId: string): Promise<void> => {   
+export const fetchAvalaibleAssignments = async (periodId: string, courseId: string): Promise<void> => {
     await fetchAssignments(periodId, courseId);
 };
 
@@ -42,7 +42,6 @@ export const updateStudentAssignment = async (
     updatedAssignment: Partial<Assignment>
 ): Promise<void> => {
     const url = `${getUrl(studentId,periodId,courseId)}/assignments/${assignmentId}`;
-    console.log({url, studentId, courseId, assignmentId, updatedAssignment});    
     const assignmentDocRef = doc(db, url);
     await updateDoc(assignmentDocRef, updatedAssignment);
 };

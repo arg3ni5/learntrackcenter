@@ -100,22 +100,15 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
           Avalible Students
         </button>
       </div>
-
-      {/* Course details section */}
       {activeSection === "course" && periodCourse && (
         <Card<PeriodCourse> titleName="name" fields={fieldsCard} data={periodCourse}/>
       )}
-
-      {/* Assignments section */}
       {activeSection === "assignments" && (
         <CourseAssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />
       )}
-
-      {/* Students section (placeholder) */}
       {activeSection === "students" && (
         <CourseStudentsManager periodCourse={periodCourse!} periodId={periodId!} />
       )}
-
       {activeSection === "avalibleStudents" && (
         <AvalibleStudents periodCourse={periodCourse!} periodId={periodId!} />
       )}
