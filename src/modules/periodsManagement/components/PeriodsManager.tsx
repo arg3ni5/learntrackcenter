@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { Course, Period } from "../../../types/types";
 import useCourses from "../hooks/useCourses";
-import AssignmentsManager from "./AssignmentsManager";
+import CourseAssignmentsManager from "./CourseAssignmentsManager";
 import CourseCard from "./CourseCard";
 import CourseSelector from "./CourseSelector";
 import { FaTable, FaTasks, FaTh } from "react-icons/fa";
@@ -124,7 +124,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
               setSelectedTeacher={setSelectedTeacher}
               childrenVisible={false}
               viewLink={`/period/${periodId}/course/${course.id}`}>
-              {course.id && periodId! && <AssignmentsManager courseId={course.id!} periodId={periodId}></AssignmentsManager>}
+              {course.id && periodId! && <CourseAssignmentsManager courseId={course.id!} periodId={periodId}></CourseAssignmentsManager>}
             </CourseCard>
           ))}
         </>

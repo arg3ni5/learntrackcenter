@@ -3,7 +3,7 @@ import DataManagementModule from "../../../shared/modules/DataManagementModule/D
 import { BaseField } from "../../../shared/modules/DataManagementModule/types/types";
 import { Course, Teacher } from "../../../types/types";
 import CourseCard from "./CourseCard";
-import AssignmentsManager from "./AssignmentsManager";
+import CourseAssignmentsManager from "./CourseAssignmentsManager";
 
 const fields: BaseField[] = [
   { name: "name", placeholder: "name", size: 10 },
@@ -63,7 +63,7 @@ const CourseTable: React.FC<Props> = (
         handlers={handlers}
         setSelectedTeacher={setSelectedTeacher}
         viewLink={`/period/${periodId}/course/${selectedCourse.id}`}>
-        {selectedCourse.id && periodId! && <AssignmentsManager courseId={selectedCourse.id!} periodId={periodId}></AssignmentsManager>}
+        {selectedCourse.id && periodId! && <CourseAssignmentsManager courseId={selectedCourse.id!} periodId={periodId}></CourseAssignmentsManager>}
       </CourseCard>)}
     </>
   );

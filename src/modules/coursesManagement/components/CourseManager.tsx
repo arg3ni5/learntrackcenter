@@ -1,6 +1,6 @@
 import React from "react";
 import { PeriodCourse } from "../../../types/types";
-import AssignmentsManager from "../../periodsManagement/components/AssignmentsManager";
+import CourseAssignmentsManager from "../../periodsManagement/components/CourseAssignmentsManager";
 import CourseStudentsManager from "./CourseStudentsManager";
 import AvalibleStudents from "./AvalibleStudents";
 import useLocalStorage from "../../../hooks/useLocalStorage";
@@ -108,7 +108,7 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
 
       {/* Assignments section */}
       {activeSection === "assignments" && (
-        <AssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />
+        <CourseAssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />
       )}
 
       {/* Students section (placeholder) */}
