@@ -30,11 +30,12 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
 
     const assignPeriodToStudent = async () => {
         if (selectedStudent && periodCourse) {
-            const {id, name, description} = periodCourse;
+            const {id, courseId, name, description} = periodCourse;
+
             const newCourse : StudentCourse = {
-                courseId: id!,
-                periodId: periodId,
                 periodCourseId: id!,
+                courseId,
+                periodId: periodId,
                 name, description,
                 status: 'Not Started',
                 finalGrade: 0,

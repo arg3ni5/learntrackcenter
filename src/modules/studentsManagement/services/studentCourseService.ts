@@ -33,34 +33,34 @@ export const fetchCourses = async (studentId: string, periodId: string): Promise
 // Function to add a new course for a specific student
 export const addCourse = async (studentId: string, newCourse: StudentCourse): Promise<void> => {
   try {
-    const { periodId, courseId } = newCourse;
+    const { periodId, periodCourseId } = newCourse;
 
     if (!studentId) throw new Error(`Student ID is null or undefined`);
     if (!periodId) throw new Error(`Period ID is null or undefined`);
-    if (!courseId) throw new Error(`Course ID is null or undefined`);
+    if (!periodCourseId) throw new Error(`Course ID is null or undefined`);
 
-    const urlCourses = `students/${studentId}/periods/${newCourse.periodId}/courses`;
-    const courseDocRef = doc(db, urlCourses, newCourse.periodCourseId);
+    const urlCourses = `students/${studentId}/periods/${periodId}/courses`;
+    const courseDocRef = doc(db, urlCourses, periodCourseId);
 
     // Add the new course document
     await setDoc(courseDocRef, newCourse);
-    console.log("Course added with ID: ", newCourse.periodCourseId);
+    console.log("Course added with ID: ", periodCourseId);
 
     const enrollmentsCollection = collection(db, "enrollments");
     const enrollmentDocRef = doc(enrollmentsCollection);
     await setDoc(enrollmentDocRef, {
       studentId,
-      courseId: newCourse.periodCourseId,
-      periodId: newCourse.periodId,
+      periodId,
+      courseId: periodCourseId,
     });
 
-    const periodCourseDocRef = doc(db, `periods/${newCourse.periodId}/courses`, newCourse.periodCourseId);
+    const periodCourseDocRef = doc(db, `periods/${periodId}/courses`, periodCourseId);
     await updateDoc(periodCourseDocRef, {
       enrolledStudents: arrayUnion(studentId),
     });
 
     // Fetch and add assignments
-    const originalAssignmentsCollection = collection(db, `periods/${newCourse.periodId}/courses/${newCourse.courseId}/assignments`);
+    const originalAssignmentsCollection = collection(db, `periods/${periodId}/courses/${periodCourseId}/assignments`);
     const assignmentsSnapshot = await getDocs(originalAssignmentsCollection);
 
     const assignmentsCollection = collection(courseDocRef, "assignments");
