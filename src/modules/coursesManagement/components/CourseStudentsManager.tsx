@@ -7,6 +7,8 @@ import useStudentsCourse from "../hooks/useStudentsCourse";
 import AssignmentsManager from "./AssignmentsManager";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import Loading from "../../../components/loading/Loading";
+import useStudentCourses from "../../studentsManagement/hooks/useStudentCourses";
+import StudentCard from "./StudentCard";
 
 interface CourseStudentsManagerProps {
   periodCourse: PeriodCourse;
@@ -17,6 +19,7 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
 
   const { setIsLoading } = useLoading();
   const { students, loading } = useStudentsCourse(periodCourse);
+  const { handleDeleteCourse } = useStudentCourses(periodId);
   const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent", null);
 
   // Define fields for the student table
@@ -27,6 +30,10 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
     { name: "grade", placeholder: "grade", view: true },
   ];
 
+  const onItemDeleted = async (id: string) => {
+    await handleDeleteCourse(id!, periodCourse.id, periodId);
+  }
+
   // Effect to manage loading state
   useEffect(() => {
     setIsLoading(loading);
@@ -36,11 +43,12 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
     <Loading type="spinner" className="item h30vh"></Loading>
   ) : (
     <>
-      {/* {selectedStudent && <StudentCard student={selectedStudent} />} */}
+      {selectedStudent && <StudentCard student={selectedStudent} />}
       <h2></h2>
-      <div className="container">
-        <div >
+      <div className="container px-0">
+        <div className="item">
           <DataManagementModule<Student>
+            title="STUDENTS"
             alias={"CourseStudentsManager"}
             fields={fields}
             items={students}
@@ -50,13 +58,16 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
             ableFilter={true}
             ableImport={false}
             clearFormAfterAdd={true}
-            handlers={{onSelect:setSelectedStudent}}
-            loading={loading}></DataManagementModule>
+            handlers={{ onSelect: setSelectedStudent, onItemDeleted }}
+            loading={loading}>
+          </DataManagementModule>
+          {selectedStudent?.id && periodCourse.id && periodId! && (
+            <AssignmentsManager studentId={selectedStudent?.id!} periodId={periodId} courseId={periodCourse.courseId!} periodCourseId={periodCourse.id!} />
+          )}
         </div>
 
-        {selectedStudent?.id && periodCourse.id && periodId! && (
-          <AssignmentsManager studentId={selectedStudent?.id!} periodId={periodId} courseId={periodCourse.courseId!} periodCourseId={periodCourse.id!} />
-        )}
+
+
       </div>
     </>
   );

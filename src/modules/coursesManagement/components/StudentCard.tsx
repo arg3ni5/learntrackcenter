@@ -15,7 +15,7 @@ const fields: CardField[] = [
 const StudentCard: React.FC<StudentCardProps> = ({ student, onDelete }) => {
     return (
         <>
-        <Card<Student> titleName="fullName" fields={fields} data={student} handlers={{onDelete}} />
+            <Card<Student> titleName="fullName" fields={fields} data={student} handlers={{ onDelete }} />
         </>
     );
 };
