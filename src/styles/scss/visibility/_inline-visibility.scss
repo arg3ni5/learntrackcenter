@@ -1,0 +1,14 @@
+@import '../mixins';
+
+// .d-md-inline, .d-lg-inline, etc.
+.d-md-inline {
+  @include inline-visibility($breakpoint-md);
+}
+
+.d-lg-inline {
+  @include inline-visibility($breakpoint-lg);
+}
+
+.d-xl-inline {
+  @include inline-visibility($breakpoint-xl);
+}

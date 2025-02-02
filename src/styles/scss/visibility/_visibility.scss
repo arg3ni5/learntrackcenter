@@ -1,0 +1,38 @@
+@import '../mixins';
+
+// .d-md-block-over, .d-lg-block-over, etc.
+.d-md-block-over {
+  @include block-visibility($breakpoint-md);
+}
+
+.d-lg-block-over {
+  @include block-visibility($breakpoint-lg);
+}
+
+.d-xl-block-over {
+  @include block-visibility($breakpoint-xl);
+}
+
+.d-md-block-under {
+  @include under-visibility($breakpoint-md);
+}
+
+.d-lg-block-under {
+  @include under-visibility($breakpoint-lg);
+}
+
+.d-xl-block-under {
+  @include under-visibility($breakpoint-xl);
+}
+
+.d-md-inline-over {
+  @include inline-visibility($breakpoint-md);
+}
+
+.d-lg-inline-over {
+  @include inline-visibility($breakpoint-lg);
+}
+
+.d-xl-inline-over {
+  @include inline-visibility($breakpoint-xl);
+}
