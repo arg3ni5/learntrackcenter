@@ -1,6 +1,6 @@
 import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";
+import { Teacher } from "../../../types/types";
 import useTeachers from "../hooks/useTeachers";
-import { Teacher } from "../services/teacherService";
 
 const TeacherModule: React.FC = () => {
   const {teachers, handleAddTeacher, handleDeleteTeacher, handleUpdateTeacher} = useTeachers(); // Custom hook to fetch teachers from Firestore
