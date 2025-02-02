@@ -9,7 +9,7 @@ import useCourses from "../hooks/useCourses";
 import CourseAssignmentsManager from "./CourseAssignmentsManager";
 import CourseCard from "./CourseCard";
 import CourseSelector from "./CourseSelector";
-import { FaTable, FaTasks, FaTh } from "react-icons/fa";
+import { FaClipboardList, FaTable, FaTh } from "react-icons/fa";
 import CourseTable from "./CourseTable";
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
@@ -58,27 +58,19 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
         <button onClick={handleGoBack}>Go Back</button>
       </div>
 
-
-
-
-
-
       <div className="container p-0">
-
         <div className="view-toggle">
           <button onClick={() => setViewMode('cards')} className={viewMode === 'cards' ? 'active' : ''}>
-            <FaTh /> Cards
+            <FaTh /> <span className="d-none d-md-block-over">Cards View</span>
           </button>
           <button onClick={() => setViewMode('table')} className={viewMode === 'table' ? 'active' : ''}>
-            <FaTable /> Table
+            <FaTable /> <span className="d-none d-md-block-over">Table View</span>
           </button>
         </div>
 
-
         <div className="view-toggle">
-
           <button onClick={() => setViewMode('assign')} className={viewMode === 'assign' ? 'active' : ''}>
-            <FaTasks /> assign
+            <FaClipboardList  />  <span className="d-none d-md-block-over">Assign Courses</span>
           </button>
         </div>
       </div>
