@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AvailableCourse, Course, Teacher } from "../../../types/types";
 import { fetchTeachers } from "../../teachersManagement/services/teacherService";
 import { addCourse, deleteCourse, updateCourse, fetchAvailableCourses, fetchCourses } from "../services/periodCourseService";
@@ -9,6 +9,7 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 const DEFAULT_POLLING_INTERVAL = 10 * 60 * 1000;
 
 const useCourses = (periodId: string) => {
+  const isFirstRun = useRef(true);
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [availableTeachers, setAvailableTeachers] = useLocalStorage<Teacher[]>("availableTeachers", []);
@@ -23,24 +24,28 @@ const useCourses = (periodId: string) => {
 
   // Load courses for the specific period
   const loadPeriodCourses = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchCourses(periodId);
-      const detailedData = data.map((course) => {
-        const teacher = availableTeachers.find((t) => t.id === course.teacherId);
-        return {
-          ...course,
-          teacherName: teacher ? teacher.name : "Unassigned Teacher",
-        };
-      });
-      setCourses(detailedData);
-    } catch (err) {
-      console.error("Error loading period courses:", err);
-      showNotification("Error loading period courses", "error");
-    } finally {
-      setLoading(false);
+    if (courses.length === 0) {  // Solo cargar si no hay cursos
+      console.log("loadPeriodCourses");
+      try {
+        setLoading(true);
+        const data = await fetchCourses(periodId);
+        const detailedData = data.map((course) => {
+          const teacher = availableTeachers.find((t) => t.id === course.teacherId);
+          return {
+            ...course,
+            teacherName: teacher ? teacher.name : "Unassigned Teacher",
+          };
+        });
+        setCourses(detailedData);
+      } catch (err) {
+        console.error("Error loading period courses:", err);
+        showNotification("Error loading period courses", "error");
+      } finally {
+        setLoading(false);
+      }
     }
   };
+
 
   // Load available teachers
   const loadAvailableTeachers = async (forceUpdate = false) => {
@@ -116,10 +121,16 @@ const useCourses = (periodId: string) => {
     }
   };
 
-  // Load period courses when the period ID changes
   useEffect(() => {
-    loadPeriodCourses();
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    if (periodId) {
+      loadPeriodCourses();
+    }
   }, [periodId]);
+
 
   useEffect(() => {
     loadGlobalData(); // Initial load

@@ -28,15 +28,9 @@ interface Props {
 }
 
 const CourseTable: React.FC<Props> = (
-  { periodId, courses, teachers, setSelectedCourseId, loading, load, assign, handlers }) => {
-
-  const handleOnSelect = (item: Course | null) => {
-    if (item && !!setSelectedCourseId) {
-      setSelectedCourseId(item.id ?? null);
-    }
-  };
+  { periodId, courses, teachers, loading, load, assign, handlers }) => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
+  const [, setSelectedTeacher] = useState<string | null>(null);
 
   return (
 
