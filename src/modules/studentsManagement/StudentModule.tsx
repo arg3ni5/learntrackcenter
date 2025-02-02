@@ -59,10 +59,10 @@ const StudentModule: React.FC = () => {
     };
     return (
         <>
-            <h1 className='title'>Student Management</h1>
+            <h1 className='title'>Manage Student</h1>
             {(selectedStudent || animation === 'slide-out-top') && (
                 <div className={`animated-element ${animation}`}>
-                    <StudentCard student={selectedStudent!} />
+                    <StudentCard student={selectedStudent!}/>
                     {selectedStudent?.id && <PeriodsManager student={selectedStudent} />}
                 </div>
             )}
