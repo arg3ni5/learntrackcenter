@@ -30,19 +30,16 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
 
     const assignPeriodToStudent = async () => {
         if (selectedStudent && periodCourse) {
-            const {id, duration, hours, ...selectedCourse} = periodCourse;
+            const {id, name, description} = periodCourse;
             const newCourse : StudentCourse = {
-                ...selectedCourse,
-                id,
                 courseId: id!,
                 periodId: periodId,
                 periodCourseId: id!,
+                name, description,
                 status: 'Not Started',
                 finalGrade: 0,
                 assignmentsIds: [],
             };
-
-            console.log(newCourse);
             await handleAddCourse(selectedStudent.id!, newCourse); // Call the function to add the new period
             await loadAvailableStudents();
         }
