@@ -26,7 +26,6 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
   };
 
   const handleOnSelect = (item: StudentAssignment | null) => {
-    // console.log(item);
     setCurrentAssignment(item);
   };
 

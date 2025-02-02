@@ -6,7 +6,7 @@ interface UploadOptionsProps<T> {
     columnNames: string[]; // Array of expected column names
 }
 
-const UploadOptions = <T extends Record<string, any>>({ onFileUpload, columnNames }: UploadOptionsProps<T>) => {    
+const UploadOptions = <T extends Record<string, any>>({ onFileUpload, columnNames }: UploadOptionsProps<T>) => {
     const [file, setFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null); // State to manage error messages
 
@@ -36,11 +36,7 @@ const UploadOptions = <T extends Record<string, any>>({ onFileUpload, columnName
                     const sheet = workbook.Sheets[sheetName]; // Get the first sheet
                     let jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 }); // Convert sheet to JSON
 
-                    
                         const headers = jsonData.shift() as string[]; // Get and remove the header row
-
-                        console.log('Headers:', headers);
-                        
 
                         // Validate that the headers match the expected column names
                         const missingHeaders = columnNames.filter(header => !headers.includes(header));
@@ -69,11 +65,11 @@ const UploadOptions = <T extends Record<string, any>>({ onFileUpload, columnName
 
     return (
         <form onSubmit={handleSubmit}>
-            <input 
-                type="file" 
-                accept=".xlsx" 
-                onChange={handleFileChange} 
-                required 
+            <input
+                type="file"
+                accept=".xlsx"
+                onChange={handleFileChange}
+                required
                 aria-label="Upload Excel file"
             />
             {error && <div className="error">{error}</div>} {/* Display error message if exists */}

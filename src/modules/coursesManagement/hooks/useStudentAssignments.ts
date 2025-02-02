@@ -50,9 +50,6 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
           const { percentage, grade } = updatedAssignment;
           const newPercentage = (!percentage || percentage === 0) && grade ? calculatePercentage(updatedAssignment as StudentAssignment) : Number(percentage);
 
-          console.log(newPercentage);
-
-          // return;
           const processedAssignment = {
             ...updatedAssignment,
             grade: grade !== undefined ? Number(grade) : undefined,
@@ -124,7 +121,6 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
     const maxScore = gradeMax ?? 100; // Use 100 as default if not provided
     const proportion = grade / maxScore; // Proportion of the earned score
     const contribution = proportion * percentageMax!; // Contribution to the final average
-    console.log({ maxScore, proportion, contribution });
 
     return contribution; // Return the contribution as a decimal value
   };
@@ -140,7 +136,7 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
 
   //         if (grade !== undefined) {
   //           percentage = calculatePercentage({ ...assignment, ...updatedFields });
-            
+
   //         }
   //         return { ...assignment, ...updatedFields, percentage };
   //       }
@@ -156,8 +152,7 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
     data &&
       data.map((assignment) => {
         const updatedFields = assignmentsRecord[assignment.id!];
-        console.log({assignment, assignmentsRecord});
-        
+
         if (updatedFields) {
           const { grade } = updatedFields;
           let percentage = assignment.percentage || 0;
@@ -166,15 +161,12 @@ const useStudentAssignments = (props: StudentAssignmentsManagerProps) => {
 
           if (grade !== undefined && grade !== assignment.grade) {
             percentage = calculatePercentage({ ...assignment, ...updatedFields });
-            console.log(percentage);            
           }
 
           assignmentsArray.push({ ...assignment, ...updatedFields, percentage }); // Actualiza los campos según los cambios
         }
         return assignment; // Retorna la asignación original si no hay cambios
       });
-    console.log({assignmentsArray, assignmentsRecord});
-
     return assignmentsArray;
   };
 
