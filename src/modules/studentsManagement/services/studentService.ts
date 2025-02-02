@@ -29,8 +29,8 @@ export const addStudentsBatch = async (students: Student[]): Promise<void> => {
 
 // Function to fetch all students
 export const fetchStudents = async (): Promise<Student[]> => {
-  const studentsCollection = collection(db, "students"); // Reference to the students collection
-  const studentsSnapshot = await getDocs(studentsCollection); // Get all documents in the collection
+  const studentsCollection = collection(db, "students");
+  const studentsSnapshot = await getDocs(studentsCollection);
 
   // Map documents to Student interface
   return studentsSnapshot.docs.map((doc) => ({
@@ -44,6 +44,7 @@ export const fetchStudents = async (): Promise<Student[]> => {
 // Function to fetch a student by ID
 export const fetchStudentById = async (studentId: string): Promise<Student | null> => {
   try {
+
     const docRef = doc(db, "students", studentId); // Reference to the specific student document
     const docSnap = await getDoc(docRef); // Get the document snapshot
 
@@ -72,7 +73,7 @@ export const updateStudent = async (id: string, updatedStudent: Partial<Student>
   await updateDoc(studentDoc, student); // Update the document with new data
 };
 
-export const getStudentsInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {    
+export const getStudentsInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {
   const enrollmentsCollection = collection(db, "enrollments");
   const q = query(enrollmentsCollection, where("periodId", "==", periodId), where("courseId", "==", courseId));
   const enrollmentsSnapshot = await getDocs(q);
@@ -87,28 +88,29 @@ export const getStudentsInCourse = async (periodId: string, courseId: string): P
 };
 
 
-export const getStudentsNotInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {    
-    // Obtener todos los estudiantes
-    const studentsCollection = collection(db, "students");
-    const allStudentsSnapshot = await getDocs(studentsCollection);
-    const allStudentIds = allStudentsSnapshot.docs.map(doc => doc.id);
-  
+export const getStudentsNotInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {
     // Obtener los estudiantes en el curso
     const enrollmentsCollection = collection(db, "enrollments");
-    const q = query(enrollmentsCollection, 
-      where("periodId", "==", periodId), 
+    const q = query(enrollmentsCollection,
+      where("periodId", "==", periodId),
       where("courseId", "==", courseId)
     );
     const enrollmentsSnapshot = await getDocs(q);
     const enrolledStudentIds = enrollmentsSnapshot.docs.map(doc => doc.data().studentId);
-  
-    // Filtrar los estudiantes que no están en el curso
-    const notEnrolledStudentIds = allStudentIds.filter(id => !enrolledStudentIds.includes(id));
-  
-    // Obtener los detalles de los estudiantes no inscritos
-    const studentsPromises = notEnrolledStudentIds.map(id => fetchStudentById(id));
-    const students = await Promise.all(studentsPromises);
-  
-    return students.filter(student => student !== null) as Student[];
+
+    // // Filtrar los estudiantes que no están en el curso
+    // const notEnrolledStudentIds = allStudentIds.filter(id => !enrolledStudentIds.includes(id));
+
+    // // Obtener los detalles de los estudiantes no inscritos
+    // const studentsPromises = notEnrolledStudentIds.map(id => fetchStudentById(id));
+    // const students = await Promise.all(studentsPromises);
+
+    console.log("enrolledStudentIds", enrolledStudentIds);
+
+    if (enrolledStudentIds.length === 0) {
+      const studentsData = await fetchStudents();
+      return studentsData
+    }
+
+    return [];
   };
-  

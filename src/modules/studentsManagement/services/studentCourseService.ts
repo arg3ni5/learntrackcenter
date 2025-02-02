@@ -1,7 +1,7 @@
 // src/modules/studentsManagement/services/courseService.ts
 
 import { db } from "../../../services/firebase";
-import { collection, deleteDoc, doc, getDocs, updateDoc, getDoc, setDoc, writeBatch } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, updateDoc, getDoc, setDoc, writeBatch, query, where } from "firebase/firestore";
 import { Course as AvailableCourses } from "../../coursesManagement/services/courseService";
 import { arrayUnion, arrayRemove } from "firebase/firestore";
 import { Assignment, StudentAssignment, StudentCourse } from "../../../types/types";
@@ -94,18 +94,36 @@ export const addCourse = async (studentId: string, newCourse: StudentCourse): Pr
 
 // Function to delete a course by ID for a specific student
 export const deleteCourse = async (studentId: string, periodId: string, courseId: string): Promise<void> => {
+  const enrollmentsCollection = collection(db, "enrollments");
+  const q = query(
+    enrollmentsCollection,
+    where("periodId", "==", periodId),
+    where("courseId", "==", courseId),
+    where("studentId", "==", studentId)
+  );
+  const enrollmentsSnapshot = await getDocs(q);
+
+  if (enrollmentsSnapshot.empty) {
+    throw new Error("Enrollment not found");
+  }
+  else {
+    const firstDoc = enrollmentsSnapshot.docs[0]
+    await deleteDoc(firstDoc.ref);
+    console.log("Enrollment deleted successfully");
+  }
+
+
   const courseDocRef = doc(db, getUrl(studentId, periodId), courseId);
-  console.log({ studentId, periodId, courseId });
+  console.log("deleteCourse", { studentId, periodId, courseId });
 
   // Get the course document data
   const courseDocSnapshot = await getDoc(courseDocRef);
   if (!courseDocSnapshot.exists()) {
     throw new Error("Course not found");
   }
-
   const courseData = courseDocSnapshot.data() as StudentCourse;
-
   await deleteDoc(courseDocRef);
+
   // Update the coursesIds in the period document
   const periodDocRef = doc(db, `students/${studentId}`);
   await updateDoc(periodDocRef, {

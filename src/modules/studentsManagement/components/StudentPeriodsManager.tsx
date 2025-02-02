@@ -47,7 +47,7 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
       ];
 
     const onDelete = async (id: string) => {
-        await handleDeleteCourse(student.id!, id);
+        await handleDeleteCourse(id!, selectedCourseId!, selectedPeriodId!);
     }
 
     if (error) return <div className="error">{error}</div>;
