@@ -20,13 +20,13 @@ const Sidebar: React.FC<SidebarProps> = ({ items, isOpen, onClose }) => {
     return (
         <div className={`sidebar ${isOpen ? 'open' : ''}`}>
             <button className="close-button" onClick={onClose}>
-                &times; {/* Icono para cerrar */}
+                CLOSE MENU &times;
             </button>
             <ul>
                 {items.map((item) => (
                     <li key={item.label}>
                         {item.children ? (
-                            <Dropdown id={`${item.label.toLowerCase()}-dropdown`} title={item.label} items={item.children} />
+                            <Dropdown id={`${item.label.toLowerCase()}-dropdown`} title={item.label} items={item.children} callback={onClose}/>
                         ) : (
                             <button className={`dropdown-button ${location.pathname === item.to ? 'active' : ''}`}>
                                 <Link to={item.to} onClick={onClose}>{item.label}</Link>
