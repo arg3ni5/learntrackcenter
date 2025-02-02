@@ -1,5 +1,5 @@
 import { db } from "../../../services/firebase";
-import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, writeBatch, query, where } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, writeBatch, query, where, documentId } from "firebase/firestore";
 import { Student } from "../../../types/types";
 
 // Function to add a new student
@@ -35,16 +35,13 @@ export const fetchStudents = async (): Promise<Student[]> => {
   // Map documents to Student interface
   return studentsSnapshot.docs.map((doc) => ({
     id: doc.id,
-    fullName: doc.data().fullName,
-    identificationNumber: doc.data().identificationNumber,
-    email: doc.data().email,
+    ...(doc.data() as Omit<Student, "id">),
   })) as Student[];
 };
 
 // Function to fetch a student by ID
 export const fetchStudentById = async (studentId: string): Promise<Student | null> => {
   try {
-
     const docRef = doc(db, "students", studentId); // Reference to the specific student document
     const docSnap = await getDoc(docRef); // Get the document snapshot
 
@@ -87,30 +84,32 @@ export const getStudentsInCourse = async (periodId: string, courseId: string): P
   return students.filter((student) => student !== null) as Student[];
 };
 
-
 export const getStudentsNotInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {
-    // Obtener los estudiantes en el curso
-    const enrollmentsCollection = collection(db, "enrollments");
-    const q = query(enrollmentsCollection,
-      where("periodId", "==", periodId),
-      where("courseId", "==", courseId)
-    );
-    const enrollmentsSnapshot = await getDocs(q);
-    const enrolledStudentIds = enrollmentsSnapshot.docs.map(doc => doc.data().studentId);
+  // Obtener los estudiantes en el curso
+  const enrollmentsCollection = collection(db, "enrollments");
+  const q = query(enrollmentsCollection, where("periodId", "==", periodId), where("courseId", "==", courseId));
+  const enrollmentsSnapshot = await getDocs(q);
+  const enrolledStudentIds = enrollmentsSnapshot.docs.map((doc) => doc.data().studentId);
 
-    // // Filtrar los estudiantes que no están en el curso
-    // const notEnrolledStudentIds = allStudentIds.filter(id => !enrolledStudentIds.includes(id));
+  if (enrolledStudentIds.length === 0) {
+    return await fetchStudents();
+  }
 
-    // // Obtener los detalles de los estudiantes no inscritos
-    // const studentsPromises = notEnrolledStudentIds.map(id => fetchStudentById(id));
-    // const students = await Promise.all(studentsPromises);
+  const studentsCollection = collection(db, "students");
+  const studentChunks = [];
+  for (let i = 0; i < enrolledStudentIds.length; i += 10) {
+    studentChunks.push(enrolledStudentIds.slice(i, i + 10));
+  }
 
-    console.log("enrolledStudentIds", enrolledStudentIds);
+  const promises = studentChunks.map(async (chunk) => {
+    const q = query(studentsCollection, where(documentId(), "not-in", chunk));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<Student, "id">),
+    }));
+  });
 
-    if (enrolledStudentIds.length === 0) {
-      const studentsData = await fetchStudents();
-      return studentsData
-    }
-
-    return [];
-  };
+  const studentsArrays = await Promise.all(promises);
+  return studentsArrays.flat();
+};
