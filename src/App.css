@@ -47,10 +47,10 @@ body {
 
 /* Estilos para el .header */
 .header {
-  background-color: #007bff; /* Color de fondo */
-  color: white; /* Color del texto */
-  padding: 20px; /* Espaciado interno */
-  text-align: center; /* Centrar texto */
+  background-color: var(--bg-color-header);
+  color: white;
+  padding: 20px;
+  text-align: center;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -65,10 +65,14 @@ body {
 
 /* Estilos para el .footer */
 .footer {
-  background-color: #f8f9fa; /* Color de fondo */
-  color: #333; /* Color del texto */
-  text-align: center; /* Centrar texto */
-  padding: 10px; /* Espaciado interno */
+  background-color: #f8f9fa;
+  /* Color de fondo */
+  color: #333;
+  /* Color del texto */
+  text-align: center;
+  /* Centrar texto */
+  padding: 10px;
+  /* Espaciado interno */
 }
 
 /* Media Queries para Responsividad */
@@ -76,36 +80,48 @@ body {
 /* Pantallas pequeñas (móviles) */
 @media (max-width: 600px) {
   .header {
-      font-size: 1.5rem; /* Tamaño de fuente más grande en móviles */
-      padding: 15px; /* Menos espaciado en móviles */
+    font-size: 1.5rem;
+    /* Tamaño de fuente más grande en móviles */
+    padding: 15px;
+    /* Menos espaciado en móviles */
   }
 
   .main {
-      padding: 10px; /* Menos espaciado en móviles */
-      font-size: 0.9rem; /* Tamaño de fuente más pequeño en móviles */
+    padding: 10px;
+    /* Menos espaciado en móviles */
+    font-size: 0.9rem;
+    /* Tamaño de fuente más pequeño en móviles */
   }
 
   .footer {
-      font-size: 0.8rem; /* Tamaño de fuente más pequeño en móviles */
-      padding: 5px; /* Menos espaciado en móviles */
+    font-size: 0.8rem;
+    /* Tamaño de fuente más pequeño en móviles */
+    padding: 5px;
+    /* Menos espaciado en móviles */
   }
 }
 
 /* Pantallas medianas (tabletas) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .header {
-      font-size: 1.75rem; /* Tamaño de fuente moderado en tabletas */
-      padding: 18px; /* Espaciado moderado en tabletas */
+    font-size: 1.75rem;
+    /* Tamaño de fuente moderado en tabletas */
+    padding: 18px;
+    /* Espaciado moderado en tabletas */
   }
 
   .main {
-      padding: 15px; /* Espaciado moderado en tabletas */
-      font-size: 1rem; /* Tamaño de fuente normal en tabletas */
+    padding: 15px;
+    /* Espaciado moderado en tabletas */
+    font-size: 1rem;
+    /* Tamaño de fuente normal en tabletas */
   }
 
   .footer {
-      font-size: 0.9rem; /* Tamaño de fuente moderado en tabletas */
-      padding: 8px; /* Espaciado moderado en tabletas */
+    font-size: 0.9rem;
+    /* Tamaño de fuente moderado en tabletas */
+    padding: 8px;
+    /* Espaciado moderado en tabletas */
   }
 }
 
@@ -115,9 +131,11 @@ body {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -126,6 +144,7 @@ body {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -136,6 +155,7 @@ body {
     animation: logo-spin infinite 20s linear;
   }
 }
+
 .card {
   padding: 2em;
 }

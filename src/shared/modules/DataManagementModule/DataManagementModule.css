@@ -116,7 +116,7 @@
     position: sticky;
     top: 0;
     z-index: 1;
-    background-color: #007bff;
+    background-color: var(--bg-color-highlight);
     color: white;
     font-weight: bold;
     text-transform: uppercase;

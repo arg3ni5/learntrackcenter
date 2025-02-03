@@ -22,7 +22,7 @@
 }
 
 .pagination .active a {
-  background-color: #007bff;
+  background-color: var(--bg-color-highlight);
   color: white;
   border-color: #007bff;
 }

@@ -21,7 +21,7 @@
 }
 
 .logout-button {
-    background-color: #007bff; /* Color azul para el botón */
+    background-color: var(--bg-color-save); /* Color azul para el botón */
     color: white; /* Color del texto del botón */
     border: none; /* Sin borde */
     border-radius: 5px; /* Bordes redondeados en el botón */

@@ -6,7 +6,7 @@
     justify-content: space-between; /* Space between items */
     align-items: center; /* Center items vertically */
     height: 60px; /* Fixed height for the navbar */
-    background-color: #007bff; /* Background color of the navbar */
+    background-color: var(--bg-color-highlight); /* Background color of the navbar */
     padding: 0 20px; /* Horizontal padding */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow */
 }
@@ -29,7 +29,7 @@
     left: 0;
     width: 250px;
     height: 100%;
-    background-color: #007bff;
+    background-color: var(--bg-color-header);
     color: white;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
@@ -83,7 +83,7 @@
 
    .toggle-button {
       display: block; /* Show button on small screens */
-      background-color: #007bff;
+      background-color: var(--bg-color-highlight);
       border-radius: 4px;
       color:white;
       border:none;

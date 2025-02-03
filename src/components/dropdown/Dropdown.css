@@ -6,7 +6,7 @@
 }
 
 .dropdown-button {
-    background-color: #007bff;
+    background-color: var(--bg-color-highlight);
     color: white;
     border: none;
     padding: 10px 15px;
@@ -74,11 +74,7 @@
 }
 
 .dropdown-menu li:hover {
-    background-color: #007bff;
-}
-
-.dropdown-menu li:hover {
-    background-color: #007bff;
+    background-color: var(--bg-color-highlight);
 }
 
 .navbar .dropdown-menu li:last-child.active,

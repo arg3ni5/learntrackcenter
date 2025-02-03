@@ -26,7 +26,7 @@ input:focus {
 
 button {
     padding: 10px; /* Espaciado interno en el botón */
-    background-color: #007bff; /* Color de fondo azul */
+    background-color: var(--bg-color-highlight); /* Color de fondo azul */
     color: white; /* Color del texto en el botón */
     border: none; /* Sin borde en el botón */
     border-radius: 4px; /* Bordes redondeados en el botón */

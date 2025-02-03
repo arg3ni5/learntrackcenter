@@ -6,7 +6,7 @@
     justify-content: space-around; /* Espaciado equitativo entre los elementos */
     align-items: center; /* Centrar verticalmente los elementos */
     height: 60px; /* Altura fija del navbar */
-    background-color: #007bff; /* Color de fondo del navbar */
+    background-color: var(--bg-color-highlight);
     padding: 0 20px; /* Espaciado interno horizontal */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
 }
@@ -26,7 +26,7 @@
 
    .toggle-button {
       display: block; /* Muestra el botón en pantallas pequeñas */
-      background-color: #007bff;
+      background-color: var(--bg-color-highlight);
       border-radius: 4px;
       color:white;
       border:none;
