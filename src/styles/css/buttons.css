@@ -1,9 +1,7 @@
-@media (prefers-color-scheme: dark) {
-
-  .button,
-  button {
-    background-color: var(--bg);
-  }
+.button,
+button {
+  background-color: var(--bg);
+  color: var(--color);
 }
 
 @media (prefers-color-scheme: light) {
@@ -15,9 +13,9 @@
 }
 
 .view-toggle .active,
-.buttons-container .active,
 .section-buttons .active {
   background-color: var(--active) !important;
+  color: white;
   font-weight: bold;
 }
 
@@ -61,13 +59,16 @@
 .edit-button,
 .add-button,
 .view-button,
-.save-button,
-.button {
+.save-button{
   color: white;
-  /* Set text color to white */
 }
 
-button svg, .button svg {
+.button {
+  background-color: var(--bg);
+}
+
+button svg,
+.button svg {
   top: 2px;
   position: relative;
 }

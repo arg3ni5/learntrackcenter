@@ -1,9 +1,6 @@
 :root {
-  --odd-row-bg: #f2f2f2;
   --bg-color-delete: #f44336;
   --bg-color-delete-hover: #d32f2f;
-  --active: #45a049;
-  --active-hover: #4CAF50;
   --bg-color-edit: #4CAF50;
   --bg-color-edit-hover: #45a049;
   --bg-color-save: #007bff;
@@ -12,23 +9,27 @@
   --bg-color-add-hover: #FF8C00;
   --bg-color-view: #008080;
   --bg-color-view-hover: #006666;
-  --bg-color-hover: #dadada;
   --bg-color: #f2f2f2;
   --bg-color-highlight: #007bff;
   --bg-color-highlight-hover: #0056b3;
   --bg-color-header: #007bff;
   --border-color: #ccc;
   --border-color-highlight: #363636;
+  --active: #45a049;
+  --active-hover: #4CAF50;
+  --bg: #f2f2f2;
   --color: black;
+  --odd-row-bg: #f2f2f2;
+  --bg-color-hover: #dadada;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-      --color: white;
-      --odd-row-bg: #363636;
-      --bg: #363636;
-      --bg-color-hover: #757575;
-      --border-color: black;
-      --border-color-highlight: #f2f2f2;
+    --bg: #363636;
+    --color: white;
+    --odd-row-bg: #363636;
+    --bg-color-hover: #757575;
+    --border-color: black;
+    --border-color-highlight: #f2f2f2;
   }
 }
