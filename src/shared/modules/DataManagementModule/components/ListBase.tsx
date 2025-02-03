@@ -10,7 +10,7 @@ import { useFormVisibility } from "../hooks/useFormVisibility";
 import { useSorting } from "../hooks/useSorting";
 import { useFiltering } from "../hooks/useFiltering";
 import { usePagination } from "../hooks/usePagination";
-import Table from "./Table";
+// import Table from "./Table";
 
 /**
  * ListBase Component
@@ -104,11 +104,11 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     handleRowClick,
   };
 
-  const handlersTable = {
-    setTempChanges,
-    handleRowClick,
-    handleSort
-  };
+  // const handlersTable = {
+  //   setTempChanges,
+  //   handleRowClick,
+  //   handleSort
+  // };
 
   // Render component
   return (

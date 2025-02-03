@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ActionButtonsProps } from "../types/types";
+import { FaPlus, FaTrash } from 'react-icons/fa';
 
 const ActionButtons = <T extends Record<string, any>>({
   hasPendingChanges,
@@ -39,7 +40,7 @@ const ActionButtons = <T extends Record<string, any>>({
           onClick={() => handleShowForm(showForm)}
           aria-expanded={showForm}
           aria-label={!showForm ? "Show the form" : "Hide the form"}>
-          {!showForm ? "Add" : "Hide Form"}
+          <FaPlus /> <span className="d-none d-md-inline-over">{!showForm ? "Add" : "Hide Form"}</span>
         </button>
       )}
       {ableForm && ableImport && !showImportForm && (
@@ -47,21 +48,9 @@ const ActionButtons = <T extends Record<string, any>>({
           Import
         </button>
       )}
-      {seeable &&
-        viewLinks &&
-        viewLinks.map((link, index) => (
-          <Link
-            key={index}
-            to={selectedItem ? link.format.replace(":id", selectedItem.id) : "#"}
-            className={`button view-button ${link.class || ""} ${!selectedItem ? "disabled-link" : ""}`}
-            aria-label={`View ${link.label}`}
-            onClick={(e) => !selectedItem && e.preventDefault()}>
-            {link.label}
-          </Link>
-        ))}
       {removeable && onItemDeleted && (
         <button disabled={!selectedItem} className="delete-button" onClick={() => selectedItem?.id && onItemDeleted(selectedItem.id)} aria-label="Delete selected item">
-          Delete
+          <FaTrash /> <span className="d-none d-md-inline-over">Delete</span>
         </button>
       )}
       {hasPendingChanges && (
@@ -79,6 +68,19 @@ const ActionButtons = <T extends Record<string, any>>({
           Assign
         </button>
       )}
+
+      {seeable &&
+        viewLinks &&
+        viewLinks.map((link, index) => (
+          <Link
+            key={index}
+            to={selectedItem ? link.format.replace(":id", selectedItem.id) : "#"}
+            className={`button view-button ${link.class || ""} ${!selectedItem ? "disabled-link" : ""}`}
+            aria-label={`View ${link.label}`}
+            onClick={(e) => !selectedItem && e.preventDefault()}>
+            {link.label}
+          </Link>
+        ))}
     </div>
   );
 };
