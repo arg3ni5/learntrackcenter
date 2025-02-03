@@ -41,6 +41,10 @@
     color: #333;
 }
 
+.actions-card .module-card {
+    border-top-left-radius: 0 !important;
+}
+
 .module-card.with-actions {
     margin-top: 0;
     top: -1px !important;

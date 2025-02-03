@@ -93,7 +93,7 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 
 			<div className={`module-card ${showActions ? "with-actions" : ""}`}>
 				{children}
-				{titleName && (<h3>{data ? data[titleName] : ''}</h3>)}
+				{titleName && (<h2>{data ? data[titleName] : ''}</h2>)}
 				{fields.map(({ name, placeholder, type }: CardField) => (
 					data && data[name] ? <p key={name}><strong className='capitalize'>{placeholder}:</strong> {renderFieldValue(type, data[name])}</p> : null
 				))}
