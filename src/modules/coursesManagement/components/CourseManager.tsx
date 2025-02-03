@@ -48,7 +48,6 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
    * @type {CardField[]}
    */
   const fieldsCard: CardField[] = [
-    { name: "name", placeholder: "name" },
     { name: "description", placeholder: "description" },
     { name: "duration", placeholder: "duration" },
     { name: "hours", placeholder: "hours" },
@@ -59,7 +58,6 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
   ];
 
   const tabs = [
-    { id: "course", label: "Course Details", icon: <FaBook /> },
     { id: "assignments", label: "Course Assignments", icon: <FaClipboardList /> },
     { id: "students", label: "Enrolled Students", icon: <FaUsers /> },
     { id: "availableStudents", label: "Available Students", icon: <FaUserPlus /> },
@@ -86,18 +84,17 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
         {tabs.map(({ id, label, icon }) => (
           <button
             key={id}
-            onClick={() => setActiveSection(id)}
+            onClick={() => toggleSection(id)}
             className={`tab ${activeSection === id ? "active" : ""}`}
           >
-            {icon} <span>{label}</span>
+            {icon} <span className="d-none ">{label}</span>
           </button>
         ))}
       </div>
 
-      <div className="tab-content">
-        {activeSection === "course" && periodCourse && (
-          <Card<PeriodCourse> titleName="name" fields={fieldsCard} data={periodCourse} />
-        )}
+
+      <Card<PeriodCourse> fields={fieldsCard} data={periodCourse} />
+      <div className="container px-0">
         {activeSection === "assignments" && (
           <CourseAssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />
         )}
