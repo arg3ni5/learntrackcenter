@@ -36,7 +36,9 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
   return (
     loading ? <Loading type='spinner' className="item h30vh"></Loading> : <>
       <div className="item">
-        <div>Total Percentage: {totalPercentage}%</div>
+        <div className="container">
+          <p><b>Total Percentage: </b>({totalPercentage})%</p>
+        </div>
         {!loading && (
           <DataManagementModule<StudentAssignment>
             title="Student Assignments"

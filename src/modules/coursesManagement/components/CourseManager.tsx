@@ -85,20 +85,23 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
       </div>
 
 
-      {/* Tabs Navigation */}
-      <div className="view-toggle tabs">
-        {tabs.map(({ id, label, icon }) => (
-          <button
-            key={id}
-            onClick={() => toggleSection(id)}
-            className={`tab ${activeSection === id ? "active" : ""}`}
-          >
-            {icon} <span className="d-none ">{label}</span>
-          </button>
-        ))}
-      </div>
 
-      <Card<PeriodCourse> fields={fieldsCard} data={periodCourse} />
+
+      <div className="actions-card">
+        {/* Tabs Navigation */}
+        <div className="view-toggle tabs">
+          {tabs.map(({ id, label, icon }) => (
+            <button
+              key={id}
+              onClick={() => toggleSection(id)}
+              className={`tab ${activeSection === id ? "active" : ""}`}
+            >
+              {icon} <span className="d-none ">{label}</span>
+            </button>
+          ))}
+        </div>
+        <Card<PeriodCourse> fields={fieldsCard} data={periodCourse} />
+      </div>
 
       <div className="container px-0">
         {activeSection === "assignments" && (
