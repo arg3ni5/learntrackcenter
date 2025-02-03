@@ -40,10 +40,14 @@
    table-layout: fixed;
  }
 
- tr:not(.selected-row) td {
+ tr:not(.selected-row) td{
    white-space: nowrap;
    text-overflow: ellipsis;
  }
+
+ .body-table tr td:hover {
+  white-space: wrap;
+}
 
  th,
  td {
