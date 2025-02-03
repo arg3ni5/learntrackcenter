@@ -94,7 +94,7 @@ const useStudentCourses = (studentId: string) => {
   const handleAddCourse = async (studentId: string, newCourse: StudentCourse) => {
     try {
       if (!newCourse.periodCourseId) {
-        console.log("handleAddCourse", "Not period selected");
+        console.error("handleAddCourse", "Not period selected");
         showNotification("Not period selected", "error");
         return;
       }
@@ -114,10 +114,8 @@ const useStudentCourses = (studentId: string) => {
   };
 
   const handleDeleteCourse = async (studentId: string, courseId: string | undefined, periodId: string) => {
-    console.log("handleDeleteCourse", { studentId, courseId, selectedPeriodId });
-
     if (!periodId) {
-      console.log("handleDeleteCourse", "Not period selected");
+      console.error("handleDeleteCourse", "Not period selected");
       showNotification("Not period selected", "error");
       return;
     }

@@ -109,12 +109,9 @@ export const deleteCourse = async (studentId: string, periodId: string, courseId
   else {
     const firstDoc = enrollmentsSnapshot.docs[0]
     await deleteDoc(firstDoc.ref);
-    console.log("Enrollment deleted successfully");
   }
 
-
   const courseDocRef = doc(db, getUrl(studentId, periodId), courseId);
-  console.log("deleteCourse", { studentId, periodId, courseId });
 
   // Get the course document data
   const courseDocSnapshot = await getDoc(courseDocRef);

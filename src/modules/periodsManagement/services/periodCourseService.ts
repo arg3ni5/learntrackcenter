@@ -32,7 +32,6 @@ export const addCourse = async (periodId: string, newCourse: Course): Promise<vo
 
   // Add the new course document
   const courseDoc = await addDoc(coursesCollection, { ...(newCourse as Omit<Course, "id">) });
-  console.log("Course added with ID: ", courseDoc.id);
 
   // Update the coursesIds in the period document
   const periodDocRef = doc(db, `periods/${periodId}`);

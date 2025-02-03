@@ -25,7 +25,6 @@ const useCourses = (periodId: string) => {
   // Load courses for the specific period
   const loadPeriodCourses = async () => {
     if (courses.length === 0) {  // Solo cargar si no hay cursos
-      console.log("loadPeriodCourses");
       try {
         setLoading(true);
         const data = await fetchCourses(periodId);

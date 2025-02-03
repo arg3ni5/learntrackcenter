@@ -140,7 +140,6 @@ const useAssignments = (props: AssignmentsManagerProps) => {
 
   const handleSyncAssignments = async () => {
     try {
-      console.log('Syncing assignments for period:', periodId, 'course:', courseId);
       if (!periodId || !courseId) {
         setError('Invalid period or course ID');
         return;
