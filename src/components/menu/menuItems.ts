@@ -16,7 +16,7 @@ export const menuItems = [
         children: [
             { label: "Periods", to: "/periods" },
             { label: "Courses", to: "/courses" },
-            { label: "Profesores", to: "/teachers" },
+            { label: "Teachers", to: "/teachers" },
         ]
     },
     {
