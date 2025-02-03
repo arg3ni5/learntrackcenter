@@ -23,8 +23,7 @@ const Table = <T extends Record<string, any>>({
   items,
   selectedItem,
   tempChanges,
-  handlers,
-  maxHeight = 400,
+  handlers
 }: TableBodyProps<T>) => {
   const { handleRowClick, handleSort, setTempChanges } = handlers || {};
   const [isDataLoaded, setIsDataLoaded] = useState(false);
