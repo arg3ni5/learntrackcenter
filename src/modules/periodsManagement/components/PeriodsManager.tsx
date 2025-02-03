@@ -49,12 +49,12 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
 
   return (
     <div className="periods-manager">
-      <div className="container px-0">
-        <h2>{period?.name}</h2>
+      <div className="container px-0" style={{paddingBottom: 30}}>
+        <h1>{period?.name}</h1>
         <button onClick={() => { navigate(-1) }}> <FaArrowLeft /> Go Back</button>
       </div>
 
-      <div className="container p-0">
+      <div className="container row p-0">
         <div className="view-toggle">
           <button onClick={() => setViewMode('cards')} className={viewMode === 'cards' ? 'active' : ''}>
             <FaTh /> <span className="d-none d-md-block-over">Cards View</span>

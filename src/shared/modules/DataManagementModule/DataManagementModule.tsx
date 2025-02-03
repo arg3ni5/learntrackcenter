@@ -193,11 +193,14 @@ const DataManagementModule = <T extends Record<string, any>>({
 
   return (
     <>
-      {title && <h1 className="title">{title}</h1>}
-
-      {children}
 
       <div className={`module-container p-0 ${className || ""}`}>
+
+        <div className="container-grid">
+          {title && <h1 className="title">{title}</h1>}
+        </div>
+
+        {children}
         {showForm && (
           <motion.div
             initial={{ opacity: 0 }} // Estado inicial
