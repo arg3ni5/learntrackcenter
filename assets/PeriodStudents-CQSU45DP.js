@@ -1,1 +1,0 @@
-import{j as o,P as s}from"./index-Cui4C6id.js";import{f as t}from"./vendor-react-BWjxQFbR.js";import"./vendor-firebase-CpkMzyVB.js";import"./vendor-ui-CZ9GI7ht.js";import"./vendor-utils-BDfVuDdi.js";const p=()=>{const{id:r}=t();return o.jsx("div",{children:r&&o.jsx(s,{periodId:r})})};export{p as default};
