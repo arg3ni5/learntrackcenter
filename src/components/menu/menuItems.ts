@@ -6,8 +6,8 @@ export const menuItems = [
         label: "Students",
         to: "", // Un enlace vacío si se usa como encabezado de dropdown
         children: [
-            { label: "Estudiantes", to: "/students" },
-            { label: "Calificaciones", to: "/grades" },
+            { label: "Students", to: "/students" },
+            { label: "Grades", to: "/grades" },
         ]
     },
     {
