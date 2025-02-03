@@ -69,12 +69,10 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
 
   const smoothKeyframes = {
     type: "keyframes",
-    values: [0, 100, 0], // Valores de la propiedad que deseas animar
-    duration: 1, // Duración de la animación
-    ease: "easeInOut", // Suaviza la aceleración y desaceleración
-  }
-
-
+    values: [0, 100, 0],
+    duration: 1,
+    ease: "easeInOut",
+  };
 
   return (
     <div className="table-body-wrapper">
