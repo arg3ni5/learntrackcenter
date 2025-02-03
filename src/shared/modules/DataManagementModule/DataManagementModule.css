@@ -84,19 +84,6 @@
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-.main::-webkit-scrollbar {
-    width: 12px;
-    right: 5px;
-    /* Mueve el scrollbar 5px hacia la izquierda */
-}
-
-.main::-webkit-scrollbar-thumb {
-    background: #007bff;
-    /* Color of the scrollbar thumb */
-    border-radius: 10px;
-    /* Rounded corners for the thumb */
-}
-
 .list-base-table {
     width: 100%;
     border-collapse: separate;
