@@ -8,8 +8,8 @@ import { useLoading } from "../../../components/loading/LoadingContext";
 import { BaseField } from "../../../shared/modules/DataManagementModule/types/types";
 
 const CourseModule: React.FC = () => {
-  const { setIsLoading } = useLoading();
   const { courses, loading, error, handleAddCourse, handleDeleteCourse, handleUpdateCourse } = useCourses(); // Use the custom hook
+  const { setIsLoading } = useLoading();
 
     useEffect(() => {
         setIsLoading(loading);
