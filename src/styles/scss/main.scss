@@ -1,6 +1,6 @@
-@import 'variables';
-@import 'mixins';
-@import './visibility/visibility';
-@import './visibility/inline-visibility';
-@import './visibility/block-visibility';
-@import './visibility/default-visibility';
+@use 'variables';
+@use 'mixins';
+@use 'visibility/visibility';
+@use 'visibility/inline-visibility';
+@use 'visibility/block-visibility';
+@use 'visibility/default-visibility';

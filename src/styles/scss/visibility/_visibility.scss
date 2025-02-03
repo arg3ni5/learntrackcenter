@@ -1,38 +1,40 @@
-@import '../mixins';
+@use '../mixins';
+@use "../variables";
+
 
 // .d-md-block-over, .d-lg-block-over, etc.
 .d-md-block-over {
-  @include block-visibility($breakpoint-md);
+  @include mixins.block-visibility(variables.$breakpoint-md);
 }
 
 .d-lg-block-over {
-  @include block-visibility($breakpoint-lg);
+  @include mixins.block-visibility(variables.$breakpoint-lg);
 }
 
 .d-xl-block-over {
-  @include block-visibility($breakpoint-xl);
+  @include mixins.block-visibility(variables.$breakpoint-xl);
 }
 
 .d-md-block-under {
-  @include under-visibility($breakpoint-md);
+  @include mixins.under-visibility(variables.$breakpoint-md);
 }
 
 .d-lg-block-under {
-  @include under-visibility($breakpoint-lg);
+  @include mixins.under-visibility(variables.$breakpoint-lg);
 }
 
 .d-xl-block-under {
-  @include under-visibility($breakpoint-xl);
+  @include mixins.under-visibility(variables.$breakpoint-xl);
 }
 
 .d-md-inline-over {
-  @include inline-visibility($breakpoint-md);
+  @include mixins.inline-visibility(variables.$breakpoint-md);
 }
 
 .d-lg-inline-over {
-  @include inline-visibility($breakpoint-lg);
+  @include mixins.inline-visibility(variables.$breakpoint-lg);
 }
 
 .d-xl-inline-over {
-  @include inline-visibility($breakpoint-xl);
+  @include mixins.inline-visibility(variables.$breakpoint-xl);
 }
