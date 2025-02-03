@@ -11,7 +11,7 @@ interface CourseStudentsManagerProps {
     periodId: string;
 }
 
-const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, periodId }) => {
+const AvailableStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, periodId }) => {
     const { setIsLoading } = useLoading();
     const { availableStudents, loadAvailableStudents, loading, error} = useStudentsCourse(periodCourse);
     const { handleAddCourse } = useStudentCourses(periodId);
@@ -58,6 +58,7 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
             {selectedStudent && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
 
             <DataManagementModule<Student>
+                title="AVAILABLE STUDENTS"
                 fields={fields}
                 items={availableStudents}
                 showForm={false}
@@ -73,4 +74,4 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
     );
 };
 
-export default AvalibleStudents;
+export default AvailableStudents;

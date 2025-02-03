@@ -2,9 +2,10 @@ import React from "react";
 import { PeriodCourse } from "../../../types/types";
 import CourseAssignmentsManager from "../../periodsManagement/components/CourseAssignmentsManager";
 import CourseStudentsManager from "./CourseStudentsManager";
-import AvalibleStudents from "./AvalibleStudents";
+import AvailableStudents from "./AvailableStudents";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import Card, { CardField } from "../../../shared/components/Card/Card";
+import { FaBook, FaClipboardList, FaUserPlus, FaUsers } from "react-icons/fa";
 
 /**
  * CourseManagerProps Interface
@@ -16,8 +17,8 @@ import Card, { CardField } from "../../../shared/components/Card/Card";
  * @property {PeriodCourse | undefined} course - The course object containing course details
  */
 interface CourseManagerProps {
-    periodId: string | undefined;
-    periodCourse: PeriodCourse | undefined;
+  periodId: string | undefined;
+  periodCourse: PeriodCourse | undefined;
 }
 
 /**
@@ -37,7 +38,7 @@ interface CourseManagerProps {
  */
 const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse }) => {
   // State to keep track of the active section
-  const [activeSection, setActiveSection] = useLocalStorage<string>("activeSection","course");
+  const [activeSection, setActiveSection] = useLocalStorage<string>("activeSection", "course");
 
   /**
    * fieldsCard Array
@@ -53,8 +54,15 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
     { name: "hours", placeholder: "hours" },
     { name: "status", placeholder: "status" },
     // { name: "courseId", placeholder: "courseId" },
-    { name: "assignmentsIds", placeholder: "assignments", type:"array" },
+    { name: "assignmentsIds", placeholder: "assignments", type: "array" },
     { name: "teacherName", placeholder: "teacherName" },
+  ];
+
+  const tabs = [
+    { id: "course", label: "Course Details", icon: <FaBook /> },
+    { id: "assignments", label: "Course Assignments", icon: <FaClipboardList /> },
+    { id: "students", label: "Enrolled Students", icon: <FaUsers /> },
+    { id: "availableStudents", label: "Available Students", icon: <FaUserPlus /> },
   ];
 
   /**
@@ -73,45 +81,33 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
     <>
       <h1 className="title">{periodCourse?.name} Course Manage</h1>
 
-      {/* Navigation buttons for different sections */}
-      <div className="section-buttons">
-        <button
-          onClick={() => toggleSection("course")}
-          className={activeSection === "course" ? "button active" : ""}
-        >
-          Course Details
-        </button>
-        <button
-          onClick={() => toggleSection("assignments")}
-          className={activeSection === "assignments" ? "button active" : ""}
-        >
-          Assignments
-        </button>
-        <button
-          onClick={() => toggleSection("students")}
-          className={activeSection === "students" ? "button active" : ""}
-        >
-          Students
-        </button>
-        <button
-          onClick={() => toggleSection("avalibleStudents")}
-          className={activeSection === "avalibleStudents" ? "button active" : ""}
-        >
-          Avalible Students
-        </button>
+      {/* Tabs Navigation */}
+      <div className="view-toggle tabs">
+        {tabs.map(({ id, label, icon }) => (
+          <button
+            key={id}
+            onClick={() => setActiveSection(id)}
+            className={`tab ${activeSection === id ? "active" : ""}`}
+          >
+            {icon} <span>{label}</span>
+          </button>
+        ))}
       </div>
-      {activeSection === "course" && periodCourse && (
-        <Card<PeriodCourse> titleName="name" fields={fieldsCard} data={periodCourse}/>
-      )}
-      {activeSection === "assignments" && (
-        <CourseAssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />
-      )}
-      {activeSection === "students" && (
-        <CourseStudentsManager periodCourse={periodCourse!} periodId={periodId!} />
-      )}
-      {activeSection === "avalibleStudents" && (
-        <AvalibleStudents periodCourse={periodCourse!} periodId={periodId!} />
-      )}
+
+      <div className="tab-content">
+        {activeSection === "course" && periodCourse && (
+          <Card<PeriodCourse> titleName="name" fields={fieldsCard} data={periodCourse} />
+        )}
+        {activeSection === "assignments" && (
+          <CourseAssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />
+        )}
+        {activeSection === "students" && (
+          <CourseStudentsManager periodCourse={periodCourse!} periodId={periodId!} />
+        )}
+        {activeSection === "availableStudents" && (
+          <AvailableStudents periodCourse={periodCourse!} periodId={periodId!} />
+        )}
+      </div>
     </>
   );
 };
