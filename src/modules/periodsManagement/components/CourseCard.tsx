@@ -4,6 +4,7 @@ import Card, { CardField } from '../../../shared/components/Card/Card';
 import SelectInput from '../../../shared/modules/DataManagementModule/components/SelectInput';
 import { CSSTransition } from 'react-transition-group';
 import './CourseCard.css';
+import { FaClipboardCheck } from 'react-icons/fa';
 
 interface StudentCardProps {
     children?: React.ReactNode;
@@ -98,6 +99,7 @@ const CourseCard: React.FC<StudentCardProps> = ({
                             customButtons={[
                                 {
                                     label: isChildrenVisible ? 'Hide Assignments' : 'Assignments',
+                                    icon: <FaClipboardCheck/>,
                                     onClick: toggleChildrenVisibility,
                                     className: 'save-button',
                                     ariaLabel: 'Toggle Details Button',
