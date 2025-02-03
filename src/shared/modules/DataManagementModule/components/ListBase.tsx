@@ -10,6 +10,7 @@ import { useFormVisibility } from "../hooks/useFormVisibility";
 import { useSorting } from "../hooks/useSorting";
 import { useFiltering } from "../hooks/useFiltering";
 import { usePagination } from "../hooks/usePagination";
+import Table from "./Table";
 
 /**
  * ListBase Component
@@ -103,6 +104,12 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     handleRowClick,
   };
 
+  const handlersTable = {
+    setTempChanges,
+    handleRowClick,
+    handleSort
+  };
+
   // Render component
   return (
     !loading && (
@@ -149,10 +156,11 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
 
         {/* Table container */}
         <div className={`table-container ${showActions ? "with-actions" : ""}`}>
-          <TableHeader fields={fields} setColumnWidths={setColumnWidths} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} useFlexTable={useFlexTable} />
-          <TableBody fields={fields} items={paginatedItems} columnWidths={columnWidths} selectedItem={selectedItem} tempChanges={tempChanges} handlers={handlersTbody} useFlexTable={useFlexTable} />
+          <div className="table-body-container">
+            <TableHeader fields={fields} setColumnWidths={setColumnWidths} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} useFlexTable={useFlexTable} />
+            <TableBody fields={fields} items={paginatedItems} columnWidths={columnWidths} selectedItem={selectedItem} tempChanges={tempChanges} handlers={handlersTbody} useFlexTable={useFlexTable} />
+          </div>
         </div>
-        {/* Pagination */}
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </>
     )

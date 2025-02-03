@@ -67,13 +67,13 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
   };
 
   return (
-    <div className="table-body-container">
+    <div className="table-body-wrapper">
       <table className="list-base-table body-table" aria-label="List of items">
         <tbody>
           {items.length > 0 ? items.map((item) => (
             <tr key={item.id} onClick={() => handleRowClick?.(item)} className={selectedItem?.id === item.id ? "selected-row" : ""} aria-selected={selectedItem?.id === item.id}>
               {fields.map((field, index) => (
-                <td key={field.name} style={{ width: columnWidths[index] || "auto" }}>
+                <td key={field.name} style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
                   {renderCell(item, field)}</td>
               ))}
             </tr>
