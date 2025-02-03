@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom';
 import './Card.css';
+import { FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 
 export interface CustomButton {
-	label: string; // Texto del botón
-	onClick: () => void; // Función a ejecutar al hacer clic
-	className?: string; // Clase CSS opcional
-	ariaLabel?: string; // Etiqueta accesible opcional
+	label: string;
+	icon?: JSX.Element;
+	onClick: () => void;
+	className?: string;
+	ariaLabel?: string;
 }
 
 export interface CardField {
-	name: string; // Field name
-	placeholder: string; // Field placeholder
-	type?: string; // Field type (input or select)
+	name: string;
+	placeholder: string;
+	type?: string;
 }
 
 export interface HandlersCard<T> {
@@ -23,7 +25,7 @@ export interface HandlersCard<T> {
 
 export interface CardProps<T> {
 	children?: React.ReactNode;
-	titleName: string; // Card title
+	titleName?: string; // Card title
 	fields: CardField[];
 	data?: T | null;
 	isEditing?: boolean;
@@ -59,12 +61,12 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 
 				{handlers?.onItemUpdated && (
 					<button onClick={() => handlers.onItemUpdated && data && handlers.onItemUpdated(data)} className="edit-button">
-						Save
+						<FaPlus /> <span className="d-none d-md-inline-over">Save</span>
 					</button>
 				)}
 				{ableDelete && data && data["id"] && (
 					<button onClick={() => handlers?.onDelete && data && handlers.onDelete(data["id"])} className="delete-button">
-						Delete
+						<FaTrash /> <span className="d-none d-md-inline-over">Delete</span>
 					</button>
 				)}
 				{viewLink && (
@@ -72,7 +74,8 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 						to={viewLink}
 						className="button view-button"
 						aria-label="View selected item">
-						View
+						<FaEye /> <span className="d-none d-md-inline-over">View</span>
+
 					</Link>
 				)}
 				{customButtons && customButtons.map((button, index) => (
@@ -82,14 +85,15 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 						className={`button ${button.className || ''}`}
 						aria-label={button.ariaLabel || button.label}
 					>
-						{button.label}
+						{button.icon ? (<>{button.icon} <span className="d-none d-md-inline-over">{button.label}</span></>) : button.label}
+
 					</button>
 				))}
 			</div>
 
 			<div className={`module-card ${showActions ? "with-actions" : ""}`}>
 				{children}
-				<h3>{data ? data[titleName] : ''}</h3>
+				{titleName && (<h3>{data ? data[titleName] : ''}</h3>)}
 				{fields.map(({ name, placeholder, type }: CardField) => (
 					data && data[name] ? <p key={name}><strong className='capitalize'>{placeholder}:</strong> {renderFieldValue(type, data[name])}</p> : null
 				))}
