@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ActionButtonsProps } from "../types/types";
-import { FaEyeSlash, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaEyeSlash, FaFileImport, FaPlus, FaTrash } from 'react-icons/fa';
 
 const ActionButtons = <T extends Record<string, any>>({
   hasPendingChanges,
@@ -44,8 +44,8 @@ const ActionButtons = <T extends Record<string, any>>({
         </button>
       )}
       {ableForm && ableImport && !showImportForm && (
-        <button onClick={() => handleShowImportForm(showImportForm)} aria-expanded={showImportForm} aria-label={showImportForm ? "Add a new item" : "Hide the form"}>
-          Import
+        <button className="button" onClick={() => handleShowImportForm(showImportForm)} aria-expanded={showImportForm} aria-label={showImportForm ? "Add a new item" : "Hide the form"}>
+          <FaFileImport /> <span className="d-none d-md-inline-over">Import</span>
         </button>
       )}
       {removeable && onItemDeleted && (
