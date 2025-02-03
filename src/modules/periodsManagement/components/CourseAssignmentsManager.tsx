@@ -42,7 +42,7 @@ const CourseAssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId,
                 ableForm={true}
                 ableImport={true}>
 
-                <div className="container">
+                <div className="container-grid">
                     <p><b>Total Percentage: </b>({totalPercentage})%</p>
                     {totalPercentage < 100 && <p><b>Pending Percentage: </b>({100 - totalPercentage})%</p>}
                 </div>

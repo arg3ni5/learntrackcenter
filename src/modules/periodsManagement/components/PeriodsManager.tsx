@@ -102,7 +102,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
       }
 
       {viewMode === 'cards' && (
-        <>
+        <div className="container-grid">
           {courses.map((course, index) => (
             <CourseCard
               key={index}
@@ -115,7 +115,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
               {course.id && periodId! && <CourseAssignmentsManager courseId={course.id!} periodId={periodId}></CourseAssignmentsManager>}
             </CourseCard>
           ))}
-        </>
+        </div>
       )}
 
     </div>
