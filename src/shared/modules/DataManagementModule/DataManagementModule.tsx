@@ -182,8 +182,11 @@ const DataManagementModule = <T extends Record<string, any>>({
       if (!hasVisibleField) {
         return prevFields.map((f) => ({ ...f, visible: true }));
       }
-
-      return prevFields;
+      return prevFields.map((f) => ({
+        ...f,
+        size: f.size ?? 10,
+        unit: f.unit ?? "em",
+      }));
     });
   }, [fields]);
 
