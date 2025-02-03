@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import DataManagementModule from '../../../shared/modules/DataManagementModule/DataManagementModule';
-import useAssignments, { AssignmentsManagerProps } from '../hooks/useAssignments';
-import { Assignment } from '../../../types/types';
+import useAssignments from '../hooks/useAssignments';
+import { Assignment, Course } from '../../../types/types';
 import Loading from '../../../components/loading/Loading';
 import { BaseField } from '../../../shared/modules/DataManagementModule/types/types';
 
-const CourseAssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId, courseId }) => {
-    const { assignments, loading, error, handleAddAssignment, handleAddAssignments, handleDeleteAssignment, handleUpdateAssignment } = useAssignments({ periodId, courseId });
+const CourseAssignmentsManager: React.FC<{ course: Course }> = ({ course }) => {
+    const { assignments, loading, error, handleAddAssignment, handleAddAssignments, handleDeleteAssignment, handleUpdateAssignment } = useAssignments({ periodId: course.periodId, courseId: course.courseId });
 
     const totalPercentage = useMemo(() => {
         return assignments.reduce((sum, assignment) => sum + (Number(assignment.contributionPercentage) || 0), 0);
@@ -26,8 +26,8 @@ const CourseAssignmentsManager: React.FC<AssignmentsManagerProps> = ({ periodId,
                 <button className='save-button' onClick={handleSyncAssignments}>Sync</button>
             </div> */}
             <DataManagementModule<Assignment>
-                title="Assignments"
-                alias={courseId}
+                title={`${course.name} Assignments`}
+                alias={course.courseId}
                 fields={fields}
                 items={assignments}
                 handlers={{
