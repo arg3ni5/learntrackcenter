@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import FormBase from "./components/FormBase";
 import ListBase from "./components/ListBase";
-import "./DataManagementModule.css";
-import { useNotification } from "../../../components/notification/NotificationContext";
-import { BaseField, BaseModuleProps } from "./types/types";
 import UploadOptions from "./components/UploadOptions";
 import UploadTable from "./components/UploadTable";
+import { useNotification } from "../../../components/notification/NotificationContext";
+import { BaseField, BaseModuleProps } from "./types/types";
 import "./components/UploadTable.css";
-import { CSSTransition } from "react-transition-group";
+import "./DataManagementModule.css";
 import "animate.css";
 
 
@@ -197,15 +197,15 @@ const DataManagementModule = <T extends Record<string, any>>({
 
       {children}
 
-      <div className={`module-container ${className || ""}`}>
-        {
-          <CSSTransition in={!loading && ableForm && showForm} timeout={500}
-            classNames={{
-              enter: "animate__animated animate__fast animate__slideInLeft",
-              exit: "animate__animated animate__fast animate__slideOutLeft",
-            }}
-
-            unmountOnExit nodeRef={formRef}>
+      <div className={`module-container p-0 ${className || ""}`}>
+        {showForm && (
+          <motion.div
+            initial={{ opacity: 0 }} // Estado inicial
+            animate={{ opacity: 1 }} // Animación cuando entra
+            exit={{ opacity: 0 }} // Animación cuando sale
+            transition={{ duration: 0.5 }} // Duración de la animación
+            ref={formRef}
+            className="form-container">
             <div className="form-container" ref={formRef}>
               <FormBase
                 onItemAdded={handleItemAdded}
@@ -218,17 +218,21 @@ const DataManagementModule = <T extends Record<string, any>>({
               />
               {ableImport && <>{showImportForm && <UploadOptions<T> onFileUpload={handleFileUpload} columnNames={fields.map((f) => f.name)} />}</>}
             </div>
-          </CSSTransition>
-        }
+          </motion.div>
+        )}
 
-        <CSSTransition
-          in={!showForm}
-          timeout={500}
-          classNames={{
-            enter: "animate__animated animate__slow animate__heartBeat",
-            exit: "animate__animated animate__slow stretch-shrink",
-          }}
-          nodeRef={listContainerRef}>
+        <motion.div
+          layout // Animación cuando el tamaño cambie
+          initial={{ opacity: 0, height: 0 }} // Estado inicial
+          animate={{ opacity: 1, height: "auto" }} // Animación cuando entra
+          exit={{ opacity: 0, height: 0 }} // Animación cuando sale
+          transition={{
+            opacity: { duration: 0.5 },
+            height: { duration: 0.5, ease: "easeOut" },
+          }} // Duración y tipo de transición
+          ref={listContainerRef}
+          className="list-container"
+        >
           <div className="list-container" ref={listContainerRef}>
             {ableImport && previewVisible && (
               <div className="upload-container">
@@ -268,7 +272,9 @@ const DataManagementModule = <T extends Record<string, any>>({
               />
             )}
           </div>
-        </CSSTransition>
+
+
+        </motion.div>
       </div>
     </>
   );
