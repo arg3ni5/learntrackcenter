@@ -68,7 +68,7 @@ export interface Student {
 
 
 
-export interface StudentCourse extends Omit<AvailableCourse, 'duration' | 'hours'>{
+export interface StudentCourse extends Omit<AvailableCourse, 'duration' | 'hours' | 'enrolledStudents'>{
     courseId: string; // Reference to the Course document
     periodId: string; // Reference to the Period document
     periodCourseId: string; // Reference to the Period/Course document

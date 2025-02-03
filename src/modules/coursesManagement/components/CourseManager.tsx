@@ -5,7 +5,7 @@ import CourseStudentsManager from "./CourseStudentsManager";
 import AvailableStudents from "./AvailableStudents";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import Card, { CardField } from "../../../shared/components/Card/Card";
-import { FaBook, FaClipboardList, FaUserPlus, FaUsers } from "react-icons/fa";
+import { FaClipboardList, FaUserPlus, FaUsers } from "react-icons/fa";
 
 /**
  * CourseManagerProps Interface
