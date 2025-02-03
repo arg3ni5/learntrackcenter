@@ -9,7 +9,7 @@ import useCourses from "../hooks/useCourses";
 import CourseAssignmentsManager from "./CourseAssignmentsManager";
 import CourseCard from "./CourseCard";
 import CourseSelector from "./CourseSelector";
-import { FaClipboardList, FaTable, FaTh } from "react-icons/fa";
+import { FaArrowLeft, FaClipboardList, FaTable, FaTh } from "react-icons/fa";
 import CourseTable from "./CourseTable";
 
 const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
@@ -19,10 +19,6 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
   const [period] = useLocalStorage<Period | null>("selectPeriod", null);
   const [viewMode, setViewMode] = useState<'table' | 'cards' | 'assign'>('table');
-
-  const handleGoBack = () => {
-    navigate(-1);
-  };
 
   const handleUpdate = async (course: Course) => {
     if (selectedTeacher) {
@@ -55,7 +51,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
     <div className="periods-manager">
       <div className="container px-0">
         <h2>{period?.name}</h2>
-        <button onClick={handleGoBack}>Go Back</button>
+        <button onClick={() => { navigate(-1) }}> <FaArrowLeft /> Go Back</button>
       </div>
 
       <div className="container p-0">
@@ -70,7 +66,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
 
         <div className="view-toggle">
           <button onClick={() => setViewMode('assign')} className={viewMode === 'assign' ? 'active' : ''}>
-            <FaClipboardList  />  <span className="d-none d-md-block-over">Assign Courses</span>
+            <FaClipboardList />  <span className="d-none d-md-block-over">Assign Courses</span>
           </button>
         </div>
       </div>
