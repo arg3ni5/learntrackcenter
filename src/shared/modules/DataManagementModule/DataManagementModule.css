@@ -116,12 +116,18 @@
     position: sticky;
     top: 0;
     z-index: 1;
-    background-color: var(--bg-color-highlight);
     color: white;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+.list-base-table thead,
+.list-base-table thead tr,
+.list-base-table th {
+    background-color: var(--bg-color-highlight) !important;
+}
+
+
 
 .list-base-table th[scope=row] {
     position: -webkit-sticky;
