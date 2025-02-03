@@ -1,4 +1,5 @@
 import { BaseField } from "../types/types";
+import { motion } from 'framer-motion';
 
 interface TableBodyProps<T> {
   fields: BaseField[];
@@ -66,17 +67,33 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
     }
   };
 
+  const smoothKeyframes = {
+    type: "keyframes",
+    values: [0, 100, 0], // Valores de la propiedad que deseas animar
+    duration: 1, // Duración de la animación
+    ease: "easeInOut", // Suaviza la aceleración y desaceleración
+  }
+
+
+
   return (
     <div className="table-body-wrapper">
       <table className="list-base-table body-table" aria-label="List of items">
         <tbody>
           {items.length > 0 ? items.map((item) => (
-            <tr key={item.id} onClick={() => handleRowClick?.(item)} className={selectedItem?.id === item.id ? "selected-row" : ""} aria-selected={selectedItem?.id === item.id}>
+            <motion.tr
+              key={item.id}
+              layout
+              transition={smoothKeyframes}
+              onClick={() => handleRowClick?.(item)}
+              className={selectedItem?.id === item.id ? "selected-row" : ""}
+              aria-selected={selectedItem?.id === item.id}>
               {fields.map((field, index) => (
                 <td key={field.name} style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
-                  {renderCell(item, field)}</td>
+                  {renderCell(item, field)}
+                </td>
               ))}
-            </tr>
+            </motion.tr>
           )) :
             (
               <tr>
