@@ -5,7 +5,8 @@ import CourseStudentsManager from "./CourseStudentsManager";
 import AvailableStudents from "./AvailableStudents";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import Card, { CardField } from "../../../shared/components/Card/Card";
-import { FaClipboardList, FaUserPlus, FaUsers } from "react-icons/fa";
+import { FaArrowLeft, FaClipboardList, FaUserPlus, FaUsers } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 /**
  * CourseManagerProps Interface
@@ -37,7 +38,7 @@ interface CourseManagerProps {
  * <CourseManager periodId="period123" course={courseObject} />
  */
 const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse }) => {
-  // State to keep track of the active section
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useLocalStorage<string>("activeSection", "course");
 
   /**
@@ -77,7 +78,12 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
 
   return (
     <>
-      <h1 className="title">{periodCourse?.name} Course Manage</h1>
+
+      <div className="container px-0">
+        <h1 className="title">{periodCourse?.name} Course Manage</h1>
+        <button onClick={() => { navigate(-1) }}> <FaArrowLeft /> Go Back</button>
+      </div>
+
 
       {/* Tabs Navigation */}
       <div className="view-toggle tabs">
@@ -92,8 +98,8 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
         ))}
       </div>
 
-
       <Card<PeriodCourse> fields={fieldsCard} data={periodCourse} />
+
       <div className="container px-0">
         {activeSection === "assignments" && (
           <CourseAssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />

@@ -9,6 +9,7 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 import Loading from "../../../components/loading/Loading";
 import useStudentCourses from "../../studentsManagement/hooks/useStudentCourses";
 import StudentCard from "./StudentCard";
+import { motion } from 'framer-motion';
 
 interface CourseStudentsManagerProps {
   periodCourse: PeriodCourse;
@@ -42,34 +43,41 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
   return loading ? (
     <Loading type="spinner" className="item h30vh"></Loading>
   ) : (
-    <>
-      {selectedStudent && <StudentCard student={selectedStudent} />}
-      <h2></h2>
+    <div>
+
+
       <div className="container px-0">
-        <div className="item">
-          <DataManagementModule<Student>
-            title="STUDENTS"
-            alias={"CourseStudentsManager"}
-            fields={fields}
-            items={students}
-            initialFormData={selectedStudent}
-            showForm={false}
-            ableForm={false}
-            ableFilter={true}
-            ableImport={false}
-            clearFormAfterAdd={true}
-            handlers={{ onSelect: setSelectedStudent, onItemDeleted }}
-            loading={loading}>
-          </DataManagementModule>
+        <motion.div className="item"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.4,
+            scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+          }}
+        >
+          {selectedStudent && <StudentCard student={selectedStudent} />}
+
           {selectedStudent?.id && periodCourse.id && periodId! && (
             <AssignmentsManager studentId={selectedStudent?.id!} periodId={periodId} courseId={periodCourse.courseId!} periodCourseId={periodCourse.id!} />
           )}
-        </div>
-
-
-
+        </motion.div>
       </div>
-    </>
+
+      <DataManagementModule<Student>
+        title="Students"
+        alias={"CourseStudentsManager"}
+        fields={fields}
+        items={students}
+        initialFormData={selectedStudent}
+        showForm={false}
+        ableForm={false}
+        ableFilter={true}
+        ableImport={false}
+        clearFormAfterAdd={true}
+        handlers={{ onSelect: setSelectedStudent, onItemDeleted }}
+        loading={loading}>
+      </DataManagementModule>
+    </div>
   );
 };
 

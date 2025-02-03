@@ -52,13 +52,12 @@ const AvailableStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse,
     }, [loading, setIsLoading]);
 
     return (
-        <div className="">
-            <h2></h2>
+        <div className="bt">
             {selectedStudent && <StudentCard student={selectedStudent} />}
             {selectedStudent && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
 
             <DataManagementModule<Student>
-                title="AVAILABLE STUDENTS"
+                title="Available Students"
                 fields={fields}
                 items={availableStudents}
                 showForm={false}

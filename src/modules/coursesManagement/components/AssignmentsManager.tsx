@@ -39,6 +39,7 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
         <div>Total Percentage: {totalPercentage}%</div>
         {!loading && (
           <DataManagementModule<StudentAssignment>
+            title="Student Assignments"
             alias={"AssignmentsManager"}
             fields={fields}
             items={studentAssignment}
