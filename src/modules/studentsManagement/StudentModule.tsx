@@ -17,9 +17,9 @@ const StudentModule: React.FC = () => {
     const navigate = useNavigate();
 
     const fields = [
-        { name: "fullName", placeholder: "Full Name", view: true },
-        { name: "identificationNumber", placeholder: "Identification Number" },
-        { name: "email", placeholder: "Email Address" },
+        { name: "fullName", placeholder: "Full Name", view: true, size: 20 },
+        { name: "identificationNumber", placeholder: "Identification Number", size: 15 },
+        { name: "email", placeholder: "Email Address", size: 20 },
     ];
 
     // Effect to manage loading state
@@ -62,7 +62,7 @@ const StudentModule: React.FC = () => {
             <h1 className='title'>Manage Student</h1>
             {(selectedStudent || animation === 'slide-out-top') && (
                 <div className={`animated-element ${animation}`}>
-                    <StudentCard student={selectedStudent!}/>
+                    <StudentCard student={selectedStudent!} />
                     {selectedStudent?.id && <PeriodsManager student={selectedStudent} />}
                 </div>
             )}
