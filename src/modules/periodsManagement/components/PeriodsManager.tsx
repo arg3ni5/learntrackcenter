@@ -102,9 +102,10 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
       }
 
       {viewMode === 'cards' && (
-        <div className="container-grid">
+        <div className="container-flex">
           {courses.map((course, index) => (
             <CourseCard
+              className="item"
               key={index}
               course={course}
               teachers={availableTeachers}

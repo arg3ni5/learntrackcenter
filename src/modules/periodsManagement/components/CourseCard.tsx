@@ -12,6 +12,7 @@ interface StudentCardProps {
     course: Course;
     teachers: Teacher[];
     viewLink: string;
+    className?: string;
     setSelectedTeacher: (id: string) => void;
     handlers: {
         onItemAdded?: (newItem: Course) => Promise<void>;
@@ -23,7 +24,6 @@ interface StudentCardProps {
 
 
 const fields: CardField[] = [
-    { name: "name", placeholder: "name" },
     { name: "description", placeholder: "description" },
     { name: "duration", placeholder: "duration" },
     { name: "hours", placeholder: "hours" },
@@ -35,6 +35,7 @@ const fields: CardField[] = [
 
 const CourseCard: React.FC<StudentCardProps> = ({
     children,
+    className,
     childrenVisible,
     course,
     teachers,
@@ -53,7 +54,7 @@ const CourseCard: React.FC<StudentCardProps> = ({
 
     return (
         <>
-            <div className="item m-0 px-0">
+            <div className={className}>
                 {!course.teacherId && (
                     <>
                         <SelectInput

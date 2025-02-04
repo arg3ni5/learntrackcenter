@@ -92,6 +92,14 @@
         padding: 5px;
         /* Menos espaciado en móviles */
     }
+    .container-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 2px;
+    }
+    .container-flex .item{
+        flex: auto;
+    }
 }
 
 /* Pantallas medianas (tabletas) */
@@ -110,6 +118,13 @@
         /* Tamaño de fuente moderado en tabletas */
         padding: 8px;
         /* Espaciado moderado en tabletas */
+    }
+
+    .container-grid {
+        display: grid;
+        padding-top: 30px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 }
 

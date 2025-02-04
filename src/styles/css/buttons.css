@@ -152,8 +152,13 @@ button[disabled]:hover,
 }
 
 .actions.buttons-container.compact {
+  padding-top: 20px;
   width: auto !important;
   justify-content: right;
+}
+
+.actions button:only-child span{
+  display: inline !important;
 }
 
 .compact button:hover,

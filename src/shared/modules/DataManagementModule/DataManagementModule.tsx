@@ -196,7 +196,7 @@ const DataManagementModule = <T extends Record<string, any>>({
 
       <div className={`module-container p-0 ${className || ""}`}>
 
-        <div className="container-grid">
+        <div className="container">
           {title && <h1 className="title">{title}</h1>}
         </div>
 
