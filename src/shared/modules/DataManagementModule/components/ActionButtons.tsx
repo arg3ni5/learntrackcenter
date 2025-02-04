@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ActionButtonsProps } from "../types/types";
 import { FaEyeSlash, FaFileImport, FaPlus, FaTrash } from 'react-icons/fa';
+import { LuSaveAll } from "react-icons/lu";
 
 const ActionButtons = <T extends Record<string, any>>({
   hasPendingChanges,
@@ -55,7 +56,7 @@ const ActionButtons = <T extends Record<string, any>>({
       )}
       {hasPendingChanges && (
         <button onClick={(e) => handleSaveAllChanges(e, tempChanges)} className="add-button" aria-label="Save all changes">
-          Save All Changes
+          <LuSaveAll /> Save All Changes
         </button>
       )}
       {onReload && (

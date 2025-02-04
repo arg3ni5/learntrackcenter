@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import './Card.css';
-import { FaEye, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaEye, FaTrash } from 'react-icons/fa';
+import { LuSave } from 'react-icons/lu';
 
 export interface CustomButton {
 	label: string;
@@ -61,7 +62,7 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 
 				{handlers?.onItemUpdated && (
 					<button onClick={() => handlers.onItemUpdated && data && handlers.onItemUpdated(data)} className="edit-button">
-						<FaPlus /> <span className="d-none d-md-inline-over">Save</span>
+						<LuSave /> <span className="d-none d-md-inline-over">Save</span>
 					</button>
 				)}
 				{ableDelete && data && data["id"] && (
