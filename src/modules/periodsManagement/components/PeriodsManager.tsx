@@ -26,7 +26,7 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
   const [period] = useLocalStorage<Period | null>("selectPeriod", null);
-  const [viewMode, setViewMode] = useState<'table' | 'cards' | 'assign'>('table');
+  const [viewMode, setViewMode] = useLocalStorage<'table' | 'cards' | 'assign'>('PeriodsManager.viewMode', 'table');
 
   const handleUpdate = async (course: Course) => {
     if (selectedTeacher) {
