@@ -11,35 +11,39 @@ const StudentPeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     const { availableCourses, availablePeriods, studentCourses, handleAddCourse, handleDeleteCourse, setPeriodId } = useStudentCourses(student.id!);
 
     const assignPeriodToStudent = async () => {
-        if (selectedPeriodId && selectedCourseId) {
-            const { id, duration, hours, ...selectedCourse } = availableCourses.filter(course => course.id === selectedCourseId)[0];
-            const newCourse: StudentCourse = {
-                ...selectedCourse,
-                periodId: selectedPeriodId,
-                periodCourseId: selectedCourseId,
-                courseId: selectedCourseId,
-                status: 'Not Started',
-                finalGrade: 0,
-                assignmentsIds: [],
-            };
-            await handleAddCourse(student.id!, newCourse); // Call the function to add the new period
-        }
+        if (!selectedPeriodId || !selectedCourseId) return;
+
+        const selectedCourse = availableCourses.find(course => course.id === selectedCourseId);
+        if (!selectedCourse) return;
+
+        const { id, duration, hours, ...courseData } = selectedCourse;
+        const newCourse: StudentCourse = {
+            ...courseData,
+            periodId: selectedPeriodId,
+            periodCourseId: selectedCourseId,
+            courseId: selectedCourseId,
+            status: 'Not Started',
+            finalGrade: 0,
+            assignmentsIds: [],
+        };
+
+        await handleAddCourse(student.id!, newCourse);
     };
 
-    const handleOnChangePeriod = (periodId: any) => {
+    const handleOnChangePeriod = (periodId: string) => {
         setSelectedPeriodId(periodId);
         setPeriodId(periodId);
         setSelectedCourseId(null);
     };
 
-    const isEqual = (id1: any, id2: any) => id1 && id2 && String(id1) === String(id2);
+    const isEqual = (id1: any, id2: any) => String(id1) === String(id2);
 
     const fields: CardField[] = [
-        { name: "description", placeholder: "description" },
-        { name: "duration", placeholder: "duration" },
-        { name: "hours", placeholder: "hours" },
-        { name: "status", placeholder: "status" },
-        { name: "teacherName", placeholder: "teacherName" },
+        { name: "description", placeholder: "Description" },
+        { name: "duration", placeholder: "Duration" },
+        { name: "hours", placeholder: "Hours" },
+        { name: "status", placeholder: "Status" },
+        { name: "teacherName", placeholder: "Teacher" },
         { name: "assignmentsIds", placeholder: "Assignments", type: "array" },
     ];
 
@@ -56,8 +60,9 @@ const StudentPeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                         ))}
                     </div>
                 </div>
-                {selectedPeriodId &&
-                    (<div className="item">
+
+                {selectedPeriodId && (
+                    <div className="item">
                         <h3>Available Courses</h3>
                         <div className="buttons-container">
                             {availableCourses.filter(ac => !studentCourses.some(course => course.id === ac.id))
@@ -67,26 +72,31 @@ const StudentPeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                                     </button>
                                 ))}
                         </div>
-                        {availableCourses.filter(ac => !studentCourses.some(course => course.id === ac.id)).length === 0 &&
-                            <div className="empty">No courses available for this period</div>}
-                    </div>)}
-                {selectedPeriodId && selectedCourseId && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
+                        {availableCourses.filter(ac => !studentCourses.some(course => course.id === ac.id)).length === 0 && (
+                            <div className="empty">No courses available for this period</div>
+                        )}
+                    </div>
+                )}
+
+                {selectedPeriodId && selectedCourseId && (
+                    <button className="edit-button" onClick={assignPeriodToStudent}>Assign Course</button>
+                )}
             </div>
 
-            <h2 className='title'>
-                Assigned Courses
-            </h2>
+            <h2 className='title'>Assigned Courses</h2>
             <div className="container">
                 {studentCourses.map(course => (
-                    <div className="item" key={`div-${course.id}`}>
-                        <Card<StudentCourse> titleName="name"
+                    <div className="item" key={course.id}>
+                        <Card<StudentCourse>
+                            titleName="name"
                             fields={fields}
                             data={course}
-                            handlers={{ onDelete: () => { return handleDeleteCourse(student.id!, course.courseId!, course.periodId!) } }}
-                            ableDelete={course.assignmentsIds.length === 0} />
+                            handlers={{ onDelete: () => handleDeleteCourse(student.id!, course.courseId!, course.periodId!) }}
+                            ableDelete={course.assignmentsIds.length === 0}
+                        />
                     </div>
                 ))}
-            </div >
+            </div>
         </>
     );
 };
