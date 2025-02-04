@@ -95,37 +95,24 @@ export const addCourse = async (studentId: string, newCourse: StudentCourse): Pr
 // Function to delete a course by ID for a specific student
 export const deleteCourse = async (studentId: string, periodId: string, courseId: string): Promise<void> => {
   const enrollmentsCollection = collection(db, "enrollments");
-  const q = query(
-    enrollmentsCollection,
-    where("periodId", "==", periodId),
-    where("courseId", "==", courseId),
-    where("studentId", "==", studentId)
-  );
+  const q = query(enrollmentsCollection, where("periodId", "==", periodId), where("courseId", "==", courseId), where("studentId", "==", studentId));
   const enrollmentsSnapshot = await getDocs(q);
 
   if (enrollmentsSnapshot.empty) {
-    throw new Error("Enrollment not found");
-  }
-  else {
-    const firstDoc = enrollmentsSnapshot.docs[0]
+    console.error("Enrollment not found");
+  } else {
+    const firstDoc = enrollmentsSnapshot.docs[0];
     await deleteDoc(firstDoc.ref);
   }
-
   const courseDocRef = doc(db, getUrl(studentId, periodId), courseId);
 
   // Get the course document data
   const courseDocSnapshot = await getDoc(courseDocRef);
   if (!courseDocSnapshot.exists()) {
     throw new Error("Course not found");
+  } else {
+    await deleteDoc(courseDocRef);
   }
-  const courseData = courseDocSnapshot.data() as StudentCourse;
-  await deleteDoc(courseDocRef);
-
-  // Update the coursesIds in the period document
-  const periodDocRef = doc(db, `students/${studentId}`);
-  await updateDoc(periodDocRef, {
-    coursesIds: arrayRemove(courseData.courseId), // Remove the course ID from the array
-  });
 };
 
 export type { AvailableCourses };

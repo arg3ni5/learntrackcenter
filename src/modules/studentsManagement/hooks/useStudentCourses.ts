@@ -83,7 +83,7 @@ const useStudentCourses = (studentId: string) => {
     if (studentId) {
       loadStudentCourses(studentId);
     }
-  }, [studentId]);
+  }, [studentId, selectedPeriodId]);
 
   useEffect(() => {
     if (selectedPeriodId) {

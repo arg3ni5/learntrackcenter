@@ -45,10 +45,6 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
         { name: "assignmentsIds", placeholder: "Assignments", type: "array" },
     ];
 
-    const onDelete = async (id: string) => {
-        await handleDeleteCourse(id!, selectedCourseId!, selectedPeriodId!);
-    }
-
     return (
         <>
             <div className="container">
@@ -66,22 +62,29 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                     (<div className="item">
                         <h3>Available Courses</h3>
                         <div className="buttons-container">
-                            {availableCourses.map(course => (
-                                <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
-                                    {course.name}
-                                </button>
-                            ))}
+                            {availableCourses.filter(ac => !studentCourses.some(course => course.id === ac.id))
+                                .map(course => (
+                                    <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
+                                        {course.name}
+                                    </button>
+                                ))}
                         </div>
                         {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
                     </div>)}
                 {selectedPeriodId && selectedCourseId && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
             </div>
 
-            {/* {selectedPeriodId && selectedCourseId &&<AssignmentsSelector courseId={selectedCourseId} periodId={selectedPeriodId}/>} */}
+            <h2 className='title'>
+                Assigned Courses
+            </h2>
             <div className="container">
-                {studentCourses.map(student => (
-                    <div className="grow1" key={`div-${student.id}`}>
-                        <Card<StudentCourse> titleName="name" fields={fields} data={student} handlers={{ onDelete }} ableDelete={student.assignmentsIds.length === 0} />
+                {studentCourses.map(course => (
+                    <div className="item" key={`div-${course.id}`}>
+                        <Card<StudentCourse> titleName="name"
+                            fields={fields}
+                            data={course}
+                            handlers={{ onDelete: () => { return handleDeleteCourse(student.id!, course.courseId!, course.periodId!)} }}
+                            ableDelete={course.assignmentsIds.length === 0} />
                     </div>
                 ))}
             </div >
