@@ -6,8 +6,7 @@
   "homepage": "https://arg3ni5.github.io/learntrackcenter",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && copy dist\\index.html dist\\404.html",
-    "lint": "eslint .",
+    "build": "tsc -b && vite build && (if [ $(uname) = 'Darwin' ] || [ $(uname) = 'Linux' ]; then cp dist/index.html dist/404.html; else copy dist\\index.html dist\\404.html; fi)",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "node deploy.js"
