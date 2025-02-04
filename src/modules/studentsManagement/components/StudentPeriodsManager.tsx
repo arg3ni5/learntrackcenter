@@ -8,14 +8,14 @@ import { Student, StudentCourse } from '../../../types/types';
 import Card, { CardField } from '../../../shared/components/Card/Card';
 
 const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
-    const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string|null>('selectedPeriodId', null);
-    const [selectedCourseId, setSelectedCourseId] = useLocalStorage<string|null>('selectedCourseId', null);
-    const { error, availableCourses, availablePeriods, studentCourses, handleAddCourse, handleDeleteCourse, setPeriodId } = useStudentCourses(student.id!);
+    const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string | null>('selectedPeriodId', null);
+    const [selectedCourseId, setSelectedCourseId] = useLocalStorage<string | null>('selectedCourseId', null);
+    const { availableCourses, availablePeriods, studentCourses, handleAddCourse, handleDeleteCourse, setPeriodId } = useStudentCourses(student.id!);
 
     const assignPeriodToStudent = async () => {
         if (selectedPeriodId && selectedCourseId) {
-            const {id, duration, hours, ...selectedCourse} = availableCourses.filter(course => course.id === selectedCourseId)[0];
-            const newCourse : StudentCourse = {
+            const { id, duration, hours, ...selectedCourse } = availableCourses.filter(course => course.id === selectedCourseId)[0];
+            const newCourse: StudentCourse = {
                 ...selectedCourse,
                 periodId: selectedPeriodId,
                 periodCourseId: selectedCourseId,
@@ -34,23 +34,20 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
         setSelectedCourseId(null);
     };
 
-    const isEqual = (id1:any, id2: any) => id1 && id2 && String(id1) === String(id2);
+    const isEqual = (id1: any, id2: any) => id1 && id2 && String(id1) === String(id2);
 
     const fields: CardField[] = [
-        { name: "name", placeholder: "name" },
         { name: "description", placeholder: "description" },
         { name: "duration", placeholder: "duration" },
         { name: "hours", placeholder: "hours" },
         { name: "status", placeholder: "status" },
         { name: "teacherName", placeholder: "teacherName" },
         { name: "assignmentsIds", placeholder: "Assignments", type: "array" },
-      ];
+    ];
 
     const onDelete = async (id: string) => {
         await handleDeleteCourse(id!, selectedCourseId!, selectedPeriodId!);
     }
-
-    if (error) return <div className="error">{error}</div>;
 
     return (
         <>
@@ -66,29 +63,28 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                     </div>
                 </div>
                 {selectedPeriodId &&
-                (<div className="item">
-                    <h3>Available Courses</h3>
-                    <div className="buttons-container">
-                        {availableCourses.map(course => (
-                            <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
-                                {course.name}
-                            </button>
-                        ))}
-                    </div>
-                    {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
-                </div>)}
+                    (<div className="item">
+                        <h3>Available Courses</h3>
+                        <div className="buttons-container">
+                            {availableCourses.map(course => (
+                                <button key={course.id} className={`button ${isEqual(selectedCourseId, course.id) ? 'active' : ''}`} onClick={() => setSelectedCourseId(course.id!)}>
+                                    {course.name}
+                                </button>
+                            ))}
+                        </div>
+                        {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
+                    </div>)}
                 {selectedPeriodId && selectedCourseId && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
             </div>
 
             {/* {selectedPeriodId && selectedCourseId &&<AssignmentsSelector courseId={selectedCourseId} periodId={selectedPeriodId}/>} */}
-            <div className="container-grid">
+            <div className="container">
                 {studentCourses.map(student => (
                     <div className="grow1" key={`div-${student.id}`}>
-                        <Card<StudentCourse> titleName="name" fields={fields} data={student} handlers={{onDelete}} ableDelete={student.assignmentsIds.length === 0}/>
+                        <Card<StudentCourse> titleName="name" fields={fields} data={student} handlers={{ onDelete }} ableDelete={student.assignmentsIds.length === 0} />
                     </div>
                 ))}
-
-            </div>
+            </div >
         </>
     );
 };
