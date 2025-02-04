@@ -3,7 +3,7 @@
 import { db } from "../../../services/firebase";
 import { collection, deleteDoc, doc, getDocs, updateDoc, getDoc, setDoc, writeBatch, query, where } from "firebase/firestore";
 import { Course as AvailableCourses } from "../../coursesManagement/services/courseService";
-import { arrayUnion, arrayRemove } from "firebase/firestore";
+import { arrayUnion } from "firebase/firestore";
 import { Assignment, StudentAssignment, StudentCourse } from "../../../types/types";
 
 const getUrl = (studentId: string, periodId: string): string => {
