@@ -1,5 +1,5 @@
 import React from "react";
-import { PeriodCourse } from "../../../types/types";
+import { Course, PeriodCourse } from "../../../types/types";
 import CourseAssignmentsManager from "../../periodsManagement/components/CourseAssignmentsManager";
 import CourseStudentsManager from "./CourseStudentsManager";
 import AvailableStudents from "./AvailableStudents";
@@ -105,7 +105,7 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
 
       <div className="container px-0">
         {activeSection === "assignments" && (
-          <CourseAssignmentsManager courseId={periodCourse?.id!} periodId={periodId!} />
+          <CourseAssignmentsManager course={periodCourse as Course} />
         )}
         {activeSection === "students" && (
           <CourseStudentsManager periodCourse={periodCourse!} periodId={periodId!} />

@@ -57,7 +57,7 @@ const CourseTable: React.FC<Props> = (
         handlers={handlers}
         setSelectedTeacher={setSelectedTeacher}
         viewLink={`/period/${periodId}/course/${selectedCourse.id}`}>
-        {selectedCourse.id && periodId! && <CourseAssignmentsManager courseId={selectedCourse.id!} periodId={periodId}></CourseAssignmentsManager>}
+        {selectedCourse.id && periodId! && <CourseAssignmentsManager course={selectedCourse}></CourseAssignmentsManager>}
       </CourseCard>)}
     </>
   );
