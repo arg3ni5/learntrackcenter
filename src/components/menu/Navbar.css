@@ -6,52 +6,9 @@
     justify-content: space-around; /* Espaciado equitativo entre los elementos */
     align-items: center; /* Centrar verticalmente los elementos */
     height: 60px; /* Altura fija del navbar */
-    background-color: #007bff; /* Color de fondo del navbar */
+    background-color: var(--bg-color-highlight);
     padding: 0 20px; /* Espaciado interno horizontal */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
-}
-
-/* Estilos para los elementos del navbar */
-.navbar ul {
-    list-style-type: none; /* Eliminar viñetas */
-    padding: 0; /* Eliminar padding por defecto */
-    margin: 0; /* Eliminar margen por defecto */
-    display: flex; /* Usar flexbox para alinear los elementos */
-}
-
-.navbar li {
-    margin: 0 15px; /* Margen horizontal entre los elementos */
-}
-
-
-/* Estilos del sidebar (sin cambios) */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #007bff;
-    color: white;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-
-.sidebar.open {
-    transform: translateX(0);
-}
-
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar li {
-    padding: 15px;
-}
-
-.sidebar a {
-    color: white;
 }
 
 /* Botón para abrir/cerrar el sidebar */
@@ -69,7 +26,7 @@
 
    .toggle-button {
       display: block; /* Muestra el botón en pantallas pequeñas */
-      background-color: #007bff;
+      background-color: var(--bg-color-highlight);
       border-radius: 4px;
       color:white;
       border:none;

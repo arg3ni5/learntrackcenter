@@ -22,7 +22,7 @@
 }
 
 .pagination .active a {
-  background-color: #007bff;
+  background-color: var(--bg-color-highlight);
   color: white;
   border-color: #007bff;
 }
@@ -38,6 +38,11 @@
 }
 .filter-container{
   margin: 0;
+}
+
+.filter-container input{
+  height: 2.5em;
+  /* border-radius: 8px 8px 0 0; */
 }
 
 .container.list-base{

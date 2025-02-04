@@ -8,8 +8,8 @@ import { useLoading } from "../../../components/loading/LoadingContext";
 import { BaseField } from "../../../shared/modules/DataManagementModule/types/types";
 
 const CourseModule: React.FC = () => {
-  const { setIsLoading } = useLoading();
   const { courses, loading, error, handleAddCourse, handleDeleteCourse, handleUpdateCourse } = useCourses(); // Use the custom hook
+  const { setIsLoading } = useLoading();
 
     useEffect(() => {
         setIsLoading(loading);
@@ -18,16 +18,16 @@ const CourseModule: React.FC = () => {
 
   // Define the fields for the form used to add new courses
   const fields: BaseField[] = [
-    { name: "name", placeholder: "Course name" },
-    { name: "description", placeholder: "Course description" },
-    { name: "duration", placeholder: "Duration (weeks)" },
-    { name: "hours", placeholder: "Hours per week" }
+    { name: "name", placeholder: "name" },
+    { name: "description", placeholder: "description" },
+    { name: "duration", placeholder: "Duration (weeks)", size: 15 },
+    { name: "hours", placeholder: "Hours per week", size: 15 },
   ];
 
   return (
     <>
       <DataManagementModule<Course>
-        title="Course Management" // Title for the module
+        title="Manage Courses" // Title for the module
         fields={fields} // Fields to be displayed in the form
         items={courses} // Use the courses from the custom hook
         handlers={{
@@ -35,6 +35,7 @@ const CourseModule: React.FC = () => {
           onItemDeleted:handleDeleteCourse,
           onItemUpdated:handleUpdateCourse,
         }}
+        ableImport={true}
         loading={loading} // Pass loading state to BaseModule or directly to ListBase if needed
         showForm={false} // Show the form
       />

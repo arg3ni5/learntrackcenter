@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { ActionButtonsProps } from "../types/types";
+import { FaEyeSlash, FaFileImport, FaPlus, FaTrash } from 'react-icons/fa';
+import { LuSaveAll } from "react-icons/lu";
 
-const ActionButtons = <T extends Record<string, any>>({  
+const ActionButtons = <T extends Record<string, any>>({
   hasPendingChanges,
   config,
   handlers
@@ -22,7 +24,9 @@ const ActionButtons = <T extends Record<string, any>>({
     handleShowForm,
     handleShowImportForm,
     onItemDeleted,
-    onSaveAllChanges
+    onSaveAllChanges,
+    onReload,
+    onAssign
   } = handlers;
 
   const handleSaveAllChanges = (event: React.MouseEvent<HTMLButtonElement>, changes: Record<string, Record<string, number>>) => {
@@ -37,14 +41,35 @@ const ActionButtons = <T extends Record<string, any>>({
           onClick={() => handleShowForm(showForm)}
           aria-expanded={showForm}
           aria-label={!showForm ? "Show the form" : "Hide the form"}>
-          {!showForm ? "Add" : "Hide Form"}
+          {!showForm ? <FaPlus /> :  <FaEyeSlash />} <span className="d-none d-md-inline-over">{!showForm ? "Add" : "Hide Form"}</span>
         </button>
       )}
       {ableForm && ableImport && !showImportForm && (
-        <button onClick={() => handleShowImportForm(showImportForm)} aria-expanded={showImportForm} aria-label={showImportForm ? "Add a new item" : "Hide the form"}>
-          Import
+        <button className="button" onClick={() => handleShowImportForm(showImportForm)} aria-expanded={showImportForm} aria-label={showImportForm ? "Add a new item" : "Hide the form"}>
+          <FaFileImport /> <span className="d-none d-md-inline-over">Import</span>
         </button>
       )}
+      {removeable && onItemDeleted && (
+        <button disabled={!selectedItem} className="delete-button" onClick={() => selectedItem?.id && onItemDeleted(selectedItem.id)} aria-label="Delete selected item">
+          <FaTrash /> <span className="d-none d-md-inline-over">Delete</span>
+        </button>
+      )}
+      {hasPendingChanges && (
+        <button onClick={(e) => handleSaveAllChanges(e, tempChanges)} className="add-button" aria-label="Save all changes">
+          <LuSaveAll /> Save All Changes
+        </button>
+      )}
+      {onReload && (
+        <button onClick={() => onReload()} className="add-button" aria-label="Save all changes">
+          Reload
+        </button>
+      )}
+      {onAssign && (
+        <button disabled={!selectedItem} onClick={() => onAssign()} className="edit-button" aria-label="Save all changes">
+          Assign
+        </button>
+      )}
+
       {seeable &&
         viewLinks &&
         viewLinks.map((link, index) => (
@@ -57,16 +82,6 @@ const ActionButtons = <T extends Record<string, any>>({
             {link.label}
           </Link>
         ))}
-      {removeable && onItemDeleted && (
-        <button disabled={!selectedItem} className="delete-button" onClick={() => selectedItem?.id && onItemDeleted(selectedItem.id)} aria-label="Delete selected item">
-          Delete
-        </button>
-      )}
-      {hasPendingChanges && (
-        <button onClick={(e) => handleSaveAllChanges(e, tempChanges)} className="add-button" aria-label="Save all changes">
-          Save All Changes
-        </button>
-      )}
     </div>
   );
 };

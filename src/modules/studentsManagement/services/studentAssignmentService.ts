@@ -7,7 +7,7 @@ import { Assignment, StudentAssignment } from '../../../types/types';
 
 export const fetchStudentAssignment = async (studentId: string, periodId: string, courseId: string): Promise<StudentAssignment[]> => {
     const assignmentsCollection = collection(db, `students/${studentId}/periods/${periodId}/courses/${courseId}/assignments`);
-    const coursesSnapshot = await getDocs(assignmentsCollection);    
+    const coursesSnapshot = await getDocs(assignmentsCollection);
     return coursesSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data() as Omit<StudentAssignment, 'id'>
@@ -20,7 +20,7 @@ export const addStudentAssignment = async (studentId: string, periodId: string, 
 };
 
 export const fetchAvalaibleAssignments = async (studentId: string, periodId: string, courseId: string): Promise<void> => {
-    console.log({periodId, studentId, courseId});    
+    console.log({periodId, studentId, courseId});
     const avalaibleAssignments = await fetchAssignments(periodId, courseId);
     console.log("avalaibleAssignments", avalaibleAssignments);
     return;

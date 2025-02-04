@@ -1,62 +1,121 @@
 /* Dropdown.css */
 
 .dropdown {
-    position: relative; /* Necesario para posicionar el menú */
+    position: relative;
+    /* Necesario para posicionar el menú */
 }
 
 .dropdown-button {
-    background-color: #007bff; /* Color de fondo */
-    color: white; /* Color del texto */
-    border: none; /* Sin borde */
-    padding: 10px 15px; /* Espaciado interno */
-    cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
-    border-radius: 4px; /* Bordes redondeados */
-    transition: background-color 0.3s; /* Transición suave para el hover */
-    display: flex; /* Usar flexbox para alinear el texto y el ícono */
-    align-items: center; /* Centrar verticalmente */
+    background-color: var(--bg-color-highlight);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
 }
 
 .dropdown-button:hover {
-    background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+    background-color: #0056b3;
+    /* Color más oscuro al pasar el mouse */
+}
+
+.sidebar .dropdown-icon {
+    position: absolute;
+    right: 15px;
 }
 
 .dropdown-icon {
-    margin-left: 5px; /* Espacio entre el título y el ícono */
+    margin-left: 5px;
+}
+
+.dropdown-button a {
+    color: white;
+    /* Text color */
+    font-weight: bold;
+    /* Bold text */
+}
+
+.dropdown-button.active {
+    background-color: #003b7a !important;
 }
 
 .dropdown-menu {
-    position: absolute; /* Posiciona el menú debajo del botón */
-    background-color: #202020; /* Color de fondo del menú */
-    border: 1px solid #ccc; /* Borde del menú */
-    border-radius: 4px; /* Bordes redondeados */
-    margin-top: 5px; /* Espacio entre el botón y el menú */
-    list-style-type: none; /* Eliminar viñetas */
-    padding: 0; /* Sin padding */
-    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+    text-transform: uppercase;
+    position: absolute;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    background-color: #0056b3;
+    border-radius: 0 4px 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    min-width: 180px;
+    z-index: 1000;
 }
 
+.sidebar .dropdown-menu {
+    width: 100%;
+    border-radius: 0;
+}
+
+
 .dropdown-menu li {
-    display: flex; /* Usar flexbox para alinear ícono y texto */
-    align-items: center; /* Centrar verticalmente */
-    padding: 10px 15px; /* Espaciado interno */
-    cursor: pointer; /* Cambiar el cursor al pasar sobre el elemento */
-    transition: background-color 0.3s; /* Transición suave para el hover */
+    padding: 8px 24px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin: 0 !important;
+    display: block;
+}
+
+.dropdown-menu ul {
+    position: relative;
 }
 
 .dropdown-menu li:hover {
-    background-color: #575757; /* Cambiar color al pasar el mouse sobre los elementos del menú */
+    background-color: var(--bg-color-highlight);
+}
+
+.navbar .dropdown-menu li:last-child.active,
+.navbar .dropdown-menu li:last-child:hover {
+    border-radius: 0 4px 4px 0;
+}
+
+.navbar .dropdown-menu li:first-child.active,
+.navbar .dropdown-menu li:first-child:hover {
+    border-bottom-left-radius: 4px;
 }
 
 .dropdown-menu li a {
-    color: white; /* Color del texto en los enlaces del menú */
-    text-decoration: none; /* Sin subrayado en los enlaces */
+    color: #fff;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-menu li.active,
+.dropdown-menu.active {
+    background-color: #003b7a !important;
 }
 
 .dropdown-menu li.active a {
-    background-color: #f1f1f1; /* Color para el elemento activo en el menú */
-    color: black; /* Color del texto en activo */
+    border-bottom: 2px solid #fff;
 }
 
 .item-icon {
-    margin-right: 8px; /* Espacio entre el ícono y el texto */
+    margin-right: 8px;
+    /* Espacio entre el ícono y el texto */
+}
+
+.dropdown-button:focus,
+.dropdown-button:focus-visible {
+    outline: none;
+    /* Mantiene la accesibilidad sin el borde por defecto */
+}
+
+.dropdown-button.active.open,
+.dropdown-button.open {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #0056b3;
 }

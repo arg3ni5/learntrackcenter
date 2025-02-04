@@ -1,0 +1,16 @@
+@use '../mixins';
+@use "../variables";
+
+
+// .d-md-inline, .d-lg-inline, etc.
+.d-md-inline {
+  @include mixins.inline-visibility(variables.$breakpoint-md);
+}
+
+.d-lg-inline {
+  @include mixins.inline-visibility(variables.$breakpoint-lg);
+}
+
+.d-xl-inline {
+  @include mixins.inline-visibility(variables.$breakpoint-xl);
+}

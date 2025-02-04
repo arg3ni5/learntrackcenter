@@ -1,0 +1,76 @@
+ /* Table Container */
+ /* .table-container {
+  position: relative;
+  width: 100%;
+  max-height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  overflow-y: hidden;
+} */
+
+ /* Header Table */
+ .header-table {
+   width: 100%;
+   border-collapse: collapse;
+   table-layout: fixed;
+   position: sticky;
+   top: 0;
+   z-index: 2;
+   border-radius: 8px 8px 0 0;
+ }
+
+ /* Body Table */
+ .table-body-wrapper {
+   display: block;
+   width: 100%;
+   max-width: 100%;
+   box-sizing: border-box;
+ }
+
+ .table-body-container {
+   position: relative;
+   overflow-y: auto;
+   max-height: calc(400px - 48px);
+   border-radius: 0 0 8px 8px;
+ }
+
+ .body-table {
+   width: 100%;
+   border-collapse: collapse;
+   table-layout: fixed;
+ }
+
+ tr:not(.selected-row) td{
+   white-space: nowrap;
+   text-overflow: ellipsis;
+ }
+
+ .body-table tr td:hover {
+  white-space: wrap;
+}
+
+ th,
+ td {
+   overflow: hidden;
+   text-align: left;
+   box-sizing: border-box;
+ }
+
+ /* Actions */
+ .with-actions,
+ .with-actions table,
+ .with-actions .table-body-container {
+   margin-top: 0;
+   top: 0px !important;
+   border-top-right-radius: 0 !important;
+ }
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  color: #777;
+}
+
+.table-body-container:has(::-webkit-scrollbar) .header-table{
+  border-top-right-radius: 0 !important;
+}

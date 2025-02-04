@@ -13,9 +13,10 @@ interface DropdownProps {
   id: string; // Añadimos un id único para cada dropdown
   title: string;
   items: DropdownItem[];
+  callback?: () => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ id, title, items }) => {
+const Dropdown: React.FC<DropdownProps> = ({ id, title, items, callback }) => {
   const { openDropdown, setOpenDropdown } = useDropdown();
   const location = useLocation();
 
@@ -32,17 +33,17 @@ const Dropdown: React.FC<DropdownProps> = ({ id, title, items }) => {
 
   return (
     <div className="dropdown">
-      <button 
-        onClick={toggleDropdown} 
-        className={`dropdown-button ${isActive ? 'active' : ''}`}
+      <button
+        onClick={toggleDropdown}
+        className={`dropdown-button${isActive ? ' active' : ''} ${isOpen ? ' open' : ''}`}
       >
         {title} <span className="dropdown-icon">▼</span>
       </button>
       {isOpen && (
-        <ul className="dropdown-menu">
+        <ul className={`dropdown-menu`}>
           {items.map((item, index) => (
             <li key={index} className={location.pathname === item.to ? 'active' : ''} onClick={() => setOpenDropdown(null)}>
-              <Link to={item.to} style={{ display: 'flex', alignItems: 'center' }}>
+              <Link to={item.to} style={{ display: 'flex', alignItems: 'center' }} onClick={callback}>
                 {item.icon && <span className="item-icon">{item.icon}</span>}
                 {item.label}
               </Link>

@@ -7,7 +7,7 @@ import { Assignment } from '../../../types/types';
 export const fetchAssignments = async (periodId: string, courseId: string): Promise<Assignment[]> => {
     const assignmentsCollection = collection(db, `periods/${periodId}/courses/${courseId}/assignments`);
     const assignmentsSnapshot = await getDocs(assignmentsCollection);
-    
+
     const docs = assignmentsSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data() as Omit<Assignment, 'id'>
@@ -20,15 +20,13 @@ export const addAssignment = async (periodId: string, courseId: string, newAssig
 
     // Add the new course document
     const assignmentDoc = await addDoc(assignmentsCollection, {...newAssignment as Omit<Assignment, 'id'>});
-    console.log('Assignment added with ID: ', assignmentDoc.id);    
-       
-        
+
     // Update the assignmentsIds in the period document
     const courseDocRef = doc(db, `periods/${periodId}/courses/${courseId}`);
     await updateDoc(courseDocRef, {
         assignmentsIds: arrayUnion(assignmentDoc.id) // Add the new course ID to the array
     });
-    
+
 };
 
 export const addAssignmentsBatch = async (assignments: Assignment[], periodId: string, courseId: string): Promise<void> => {
@@ -76,11 +74,8 @@ export const syncAssignments = async (periodId: string, courseId: string,): Prom
     const assignmentsSnapshot = await getDocs(assignmentsCollection);
     const ids = assignmentsSnapshot.docs.map(doc => doc.id);
 
-    console.log({ids, periodId, courseId});
-    
-
     const periodDocRef = doc(db, `periods/${periodId}/courses/${courseId}`);
     await updateDoc(periodDocRef, {
-        assignmentsIds: ids 
+        assignmentsIds: ids
     });
 };

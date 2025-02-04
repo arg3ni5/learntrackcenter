@@ -21,11 +21,11 @@ const PeriodsModule: React.FC = () => {
 			<DataManagementModule<Period>
 				title="Manage Academic Periods" // Title for the module
 				fields={[
-					{ name: "code", placeholder: "Code of Period" },
-					{ name: "name", placeholder: "Name of Period" },
-					{ name: "startDate", placeholder: "Fecha de Inicio" },
-					{ name: "endDate", placeholder: "Fecha de Fin" },
-					{ name: "status", placeholder: "Status" },
+					{ name: "code", placeholder: "Code of Period", label: "Code", size: 10 },
+					{ name: "name", placeholder: "Name of Period", label: "Name", size: 20 },
+					{ name: "startDate", placeholder: "Start Date", size: 10 },
+					{ name: "endDate", placeholder: "End Date", size: 10 },
+					{ name: "status", placeholder: "Status", size: 8 },
 				]}
 				items={periods} // Fetch current periods
 				handlers={{
@@ -33,12 +33,13 @@ const PeriodsModule: React.FC = () => {
 					onItemDeleted: handleDeletePeriod,
 					onItemUpdated: handleUpdatePeriod,
 					onSelect: setSelectPeriod,
-					onView: handleOnEdit }}
+					onView: handleOnEdit
+				}}
 				initialFormData={null} // No initial data for the form
 				viewLinks={[
 					{ label: "Courses", format: "/period/:id/courses" },
 					// { label: "Students", format:"/period/:id/students" },
-				]} // Link format for viewing a period
+				]}
 				loading={loading} // Loading state
 				showForm={false} // Show the form
 			/>

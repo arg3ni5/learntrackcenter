@@ -41,7 +41,6 @@ const useStudents = (loadingText?: string) => {
             }
             setLoading(true);
             const studentData = await fetchStudentById(id); // Fetch student data by ID
-            console.log("studentData", studentData);
             setStudent(studentData); // Update state with fetched student data
         } catch (err) {
             setError('Error loading student'); // Set error message if fetching fails

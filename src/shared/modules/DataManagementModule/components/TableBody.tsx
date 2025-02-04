@@ -1,8 +1,10 @@
 import { BaseField } from "../types/types";
+import { motion } from 'framer-motion';
 
 interface TableBodyProps<T> {
   fields: BaseField[];
   items: T[];
+  columnWidths: number[];
   selectedItem: T | null;
   useFlexTable: boolean;
   tempChanges: Record<string, Record<string, number>>;
@@ -12,7 +14,7 @@ interface TableBodyProps<T> {
   }
 }
 
-const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem, tempChanges, handlers }: TableBodyProps<T>) => {
+const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem, tempChanges, columnWidths, handlers }: TableBodyProps<T>) => {
   const { handleRowClick, setTempChanges } = handlers || {};
 
   const handleNumberChange = (itemId: string, fieldName: string, value: string) => {
@@ -36,7 +38,7 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
   };
 
   const renderCell = (item: T, field: BaseField) => {
-    if (!field.view) return null;
+    if (!field.visible) return null;
 
     const value = item[field.name];
 
@@ -65,17 +67,38 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
     }
   };
 
+  const smoothKeyframes = {
+    type: "keyframes",
+    values: [0, 100, 0],
+    duration: 1,
+    ease: "easeInOut",
+  };
+
   return (
-    <div className="table-body-container">
+    <div className="table-body-wrapper">
       <table className="list-base-table body-table" aria-label="List of items">
         <tbody>
-          {items.map((item) => (
-            <tr key={item.id} onClick={() => handleRowClick?.(item)} className={selectedItem?.id === item.id ? "selected-row" : ""} aria-selected={selectedItem?.id === item.id}>
-              {fields.map((field) => (
-                <td key={field.name}>{renderCell(item, field)}</td>
+          {items.length > 0 ? items.map((item) => (
+            <motion.tr
+              key={item.id}
+              layout
+              transition={smoothKeyframes}
+              onClick={() => handleRowClick?.(item)}
+              className={selectedItem?.id === item.id ? "selected-row" : ""}
+              aria-selected={selectedItem?.id === item.id}>
+              {fields.map((field, index) => (
+                <td key={field.name} style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
+                  {renderCell(item, field)}
+                </td>
               ))}
-            </tr>
-          ))}
+            </motion.tr>
+          )) :
+            (
+              <tr>
+                <td colSpan={fields.length} className="empty-state">No data available</td>
+              </tr>
+            )
+          }
         </tbody>
       </table>
     </div>

@@ -10,6 +10,7 @@ import { useFormVisibility } from "../hooks/useFormVisibility";
 import { useSorting } from "../hooks/useSorting";
 import { useFiltering } from "../hooks/useFiltering";
 import { usePagination } from "../hooks/usePagination";
+// import Table from "./Table";
 
 /**
  * ListBase Component
@@ -37,15 +38,17 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     showImportForm: isShowImportForm = false,
     loading = false,
   } = config;
-  const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated } = handlers;
+  const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated, onReload, onAssign } = handlers;
 
   // State management
   const [showForm, setShowForm] = useFormVisibility(isShowForm);
   const [showImportForm, setShowImportForm] = useFormVisibility(isShowImportForm);
   const [selectedItem, setSelectedItem] = useState<T | null>(initialSelectedItem); // State to store the currently selected item
+  const [columnWidths, setColumnWidths] = useState<number[]>([]);
   const { sortConfig, handleSort, sortedItems } = useSorting(items!, alias);
   const { filterText, setFilterText, filteredItems } = useFiltering(sortedItems, alias);
   const { currentPage, paginatedItems, totalPages, handlePageChange } = usePagination(filteredItems, 20);
+
 
   /**
    * Handles the click event on a row, selecting or deselecting the item.
@@ -92,7 +95,7 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     setShowImportForm(isShowImportForm);
   }, [isShowImportForm]);
 
-  const showActions = removeable || seeable; // Determine if action buttons should be shown
+  const showActions = removeable || seeable || !!onReload || !!onAssign; // Determine if action buttons should be shown
   // Calculate item counts
   const totalItems = items ? items.length : 0;
   const filteredItemsCount = sortedItems.length;
@@ -101,22 +104,27 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     handleRowClick,
   };
 
+  // const handlersTable = {
+  //   setTempChanges,
+  //   handleRowClick,
+  //   handleSort
+  // };
+
   // Render component
   return (
     !loading && (
       <>
-        <div className="container list-base">
+        <div className="item container p-0 list-base">
+          {ableFilter && (
+            <div className="filter-container  m-0">
+              <input className="m-0" type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
+            </div>
+          )}
           {/* Item count display */}
           <div className="item-count">
             Total items: {totalItems}
             {filterText && ` (showing ${filteredItemsCount} filtered)`}
           </div>
-
-          {ableFilter && (
-            <div className="filter-container">
-              <input type="text" placeholder="Filter items..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
-            </div>
-          )}
         </div>
 
         {/* Action buttons */}
@@ -139,6 +147,8 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
               handleShowImportForm,
               onItemDeleted,
               onSaveAllChanges: handleSaveAllChanges,
+              onReload,
+              onAssign
             }}
             hasPendingChanges={Object.keys(tempChanges).length > 0}
           />
@@ -146,10 +156,11 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
 
         {/* Table container */}
         <div className={`table-container ${showActions ? "with-actions" : ""}`}>
-          <TableHeader fields={fields} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} useFlexTable={useFlexTable} />
-          <TableBody fields={fields} items={paginatedItems} selectedItem={selectedItem} tempChanges={tempChanges} handlers={handlersTbody} useFlexTable={useFlexTable} />
+          <div className="table-body-container">
+            <TableHeader fields={fields} setColumnWidths={setColumnWidths} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} useFlexTable={useFlexTable} />
+            <TableBody fields={fields} items={paginatedItems} columnWidths={columnWidths} selectedItem={selectedItem} tempChanges={tempChanges} handlers={handlersTbody} useFlexTable={useFlexTable} />
+          </div>
         </div>
-        {/* Pagination */}
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </>
     )

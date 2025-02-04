@@ -1,9 +1,9 @@
 // src/modules/studentsManagement/services/courseService.ts
 
 import { db } from "../../../services/firebase";
-import { collection, deleteDoc, doc, getDocs, updateDoc, getDoc, setDoc, writeBatch } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, updateDoc, getDoc, setDoc, writeBatch, query, where } from "firebase/firestore";
 import { Course as AvailableCourses } from "../../coursesManagement/services/courseService";
-import { arrayUnion, arrayRemove } from "firebase/firestore";
+import { arrayUnion } from "firebase/firestore";
 import { Assignment, StudentAssignment, StudentCourse } from "../../../types/types";
 
 const getUrl = (studentId: string, periodId: string): string => {
@@ -33,39 +33,34 @@ export const fetchCourses = async (studentId: string, periodId: string): Promise
 // Function to add a new course for a specific student
 export const addCourse = async (studentId: string, newCourse: StudentCourse): Promise<void> => {
   try {
-    const { periodId, id: courseId } = newCourse;
-    console.log({
-      studentId,
-      periodId: newCourse.periodId,
-      courseId: newCourse.periodCourseId,
-    });
+    const { periodId, periodCourseId } = newCourse;
 
     if (!studentId) throw new Error(`Student ID is null or undefined`);
     if (!periodId) throw new Error(`Period ID is null or undefined`);
-    if (!courseId) throw new Error(`Period ID is null or undefined`);
+    if (!periodCourseId) throw new Error(`Course ID is null or undefined`);
 
-    const urlCourses = `students/${studentId}/periods/${newCourse.periodId}/courses`;
-    const courseDocRef = doc(db, urlCourses, newCourse.periodCourseId);
+    const urlCourses = `students/${studentId}/periods/${periodId}/courses`;
+    const courseDocRef = doc(db, urlCourses, periodCourseId);
 
     // Add the new course document
     await setDoc(courseDocRef, newCourse);
-    console.log("Course added with ID: ", newCourse.periodCourseId);
+    console.log("Course added with ID: ", periodCourseId);
 
     const enrollmentsCollection = collection(db, "enrollments");
     const enrollmentDocRef = doc(enrollmentsCollection);
     await setDoc(enrollmentDocRef, {
       studentId,
-      courseId: newCourse.periodCourseId,
-      periodId: newCourse.periodId,
+      periodId,
+      courseId: periodCourseId,
     });
 
-    const periodCourseDocRef = doc(db, `periods/${newCourse.periodId}/courses`, newCourse.periodCourseId);
+    const periodCourseDocRef = doc(db, `periods/${periodId}/courses`, periodCourseId);
     await updateDoc(periodCourseDocRef, {
       enrolledStudents: arrayUnion(studentId),
     });
 
     // Fetch and add assignments
-    const originalAssignmentsCollection = collection(db, `periods/${newCourse.periodId}/courses/${newCourse.courseId}/assignments`);
+    const originalAssignmentsCollection = collection(db, `periods/${periodId}/courses/${periodCourseId}/assignments`);
     const assignmentsSnapshot = await getDocs(originalAssignmentsCollection);
 
     const assignmentsCollection = collection(courseDocRef, "assignments");
@@ -99,23 +94,25 @@ export const addCourse = async (studentId: string, newCourse: StudentCourse): Pr
 
 // Function to delete a course by ID for a specific student
 export const deleteCourse = async (studentId: string, periodId: string, courseId: string): Promise<void> => {
+  const enrollmentsCollection = collection(db, "enrollments");
+  const q = query(enrollmentsCollection, where("periodId", "==", periodId), where("courseId", "==", courseId), where("studentId", "==", studentId));
+  const enrollmentsSnapshot = await getDocs(q);
+
+  if (enrollmentsSnapshot.empty) {
+    console.error("Enrollment not found");
+  } else {
+    const firstDoc = enrollmentsSnapshot.docs[0];
+    await deleteDoc(firstDoc.ref);
+  }
   const courseDocRef = doc(db, getUrl(studentId, periodId), courseId);
-  console.log({ studentId, periodId, courseId });
 
   // Get the course document data
   const courseDocSnapshot = await getDoc(courseDocRef);
   if (!courseDocSnapshot.exists()) {
     throw new Error("Course not found");
+  } else {
+    await deleteDoc(courseDocRef);
   }
-
-  const courseData = courseDocSnapshot.data() as StudentCourse;
-
-  await deleteDoc(courseDocRef);
-  // Update the coursesIds in the period document
-  const periodDocRef = doc(db, `students/${studentId}`);
-  await updateDoc(periodDocRef, {
-    coursesIds: arrayRemove(courseData.courseId), // Remove the course ID from the array
-  });
 };
 
 export type { AvailableCourses };

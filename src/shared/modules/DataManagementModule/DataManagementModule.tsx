@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import FormBase from "./components/FormBase";
 import ListBase from "./components/ListBase";
-import "./DataManagementModule.css";
-import { useNotification } from "../../../components/notification/NotificationContext";
-import { BaseModuleProps } from "./types/types";
 import UploadOptions from "./components/UploadOptions";
 import UploadTable from "./components/UploadTable";
+import { useNotification } from "../../../components/notification/NotificationContext";
+import { BaseField, BaseModuleProps } from "./types/types";
 import "./components/UploadTable.css";
+import "./DataManagementModule.css";
+import "animate.css";
+
 
 /**
  * BaseModule Component
@@ -18,6 +21,8 @@ import "./components/UploadTable.css";
 const DataManagementModule = <T extends Record<string, any>>({
   handlers, fetchItems, ...config }: BaseModuleProps<T>) => {
   const {
+    children,
+    className,
     showForm: initialShowForm = false,
     clearFormAfterAdd = false,
     ableImport = false,
@@ -36,6 +41,10 @@ const DataManagementModule = <T extends Record<string, any>>({
   const { showNotification } = useNotification();
   const isEmpty = items?.length === 0;
   const [initialFormData, setInitialFormData] = useState<T | null>(iniFormData || null);
+  const [dynamicFields, setDynamicFields] = useState<BaseField[]>(fields);
+  const formRef = useRef<HTMLDivElement | null>(null);
+  const listContainerRef = useRef<HTMLDivElement | null>(null);
+
 
   // State management
   const [importData, setImportData] = useState<T | null>(null);
@@ -164,21 +173,47 @@ const DataManagementModule = <T extends Record<string, any>>({
     loadItems();
   }, [isEditing]);
 
-  // Ensure at least one field is visible
-  if (fields.filter((f) => f.view === true).length === 0) fields.forEach((f) => (f.view = true));
+
+
+  useEffect(() => {
+    setDynamicFields((prevFields) => {
+      const hasVisibleField = prevFields.some((f) => f.visible);
+
+      if (!hasVisibleField) {
+        return prevFields.map((f) => ({ ...f, visible: true }));
+      }
+      return prevFields.map((f) => ({
+        ...f,
+        size: f.size ?? 10,
+        unit: f.unit ?? "em",
+      }));
+    });
+  }, [fields]);
+
 
   return (
     <>
-      {title && <h1 className="title">{title}</h1>}
 
-      <div className="module-container">
-        {!loading && ableForm && showForm && (
-          <>
-            <div className="form-container">
+      <div className={`module-container p-0 ${className || ""}`}>
+
+        <div className="container-flex">
+          {title && <h1 className="title">{title}</h1>}
+        </div>
+
+        {children}
+        {showForm && (
+          <motion.div
+            initial={{ opacity: 0 }} // Estado inicial
+            animate={{ opacity: 1 }} // Animación cuando entra
+            exit={{ opacity: 0 }} // Animación cuando sale
+            transition={{ duration: 0.5 }} // Duración de la animación
+            ref={formRef}
+            className="form-container">
+            <div className="form-container" ref={formRef}>
               <FormBase
                 onItemAdded={handleItemAdded}
                 onItemUpdated={handleItemUpdated}
-                fields={fields}
+                fields={dynamicFields}
                 isEditing={isEditing}
                 onCancelEdit={resetEditing}
                 initialData={initialFormData || currentItem}
@@ -186,46 +221,63 @@ const DataManagementModule = <T extends Record<string, any>>({
               />
               {ableImport && <>{showImportForm && <UploadOptions<T> onFileUpload={handleFileUpload} columnNames={fields.map((f) => f.name)} />}</>}
             </div>
-          </>
+          </motion.div>
         )}
 
-        <div className="list-container">
-          {ableImport && previewVisible && (
-            <div className="upload-container">
-              <UploadTable<T> fields={uploadFields||fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
-            </div>
-          )}
-          {items?.length! > 0 && (
-            <ListBase<T>
-              config={{
-                viewLinks: viewLinks,
-                loading: loading || false,
-                alias: alias,
-                items: items,
-                selectedItem: iniFormData || currentItem,
-                fields: fields,
-                removeable: !!handlers?.onItemDeleted,
-                editable: !!handlers?.onItemUpdated,
-                seeable: !!handlers?.onView,
-                ableFilter: ableFilter,
-                ableForm: ableForm,
-                ableImport: ableImport,
-                showForm: showForm,
-                showImportForm: showImportForm,
-                useFlexTable: false,
-                tempChanges: tempChanges,
-                setTempChanges: setTempChanges,
-              }}
-              handlers={{
-                onAdd: setShowForm,
-                onImport: setShowImportForm,
-                onSelect: handleOnSelect,
-                onItemDeleted: handleItemDelete,
-                onItemsUpdated: handleSaveAllChanges,
-              }}
-            />
-          )}
-        </div>
+        <motion.div
+          layout // Animación cuando el tamaño cambie
+          initial={{ opacity: 0, height: 0 }} // Estado inicial
+          animate={{ opacity: 1, height: "auto" }} // Animación cuando entra
+          exit={{ opacity: 0, height: 0 }} // Animación cuando sale
+          transition={{
+            opacity: { duration: 0.5 },
+            height: { duration: 0.5, ease: "easeOut" },
+          }} // Duración y tipo de transición
+          ref={listContainerRef}
+          className="list-container"
+        >
+          <div className="list-container" ref={listContainerRef}>
+            {ableImport && previewVisible && (
+              <div className="upload-container">
+                <UploadTable<T> fields={uploadFields || fields} data={dataImport} onSelect={setCurrentItem} onImport={setImportData} onImportMulti={handlers?.onItemsAdded} />
+              </div>
+            )}
+            {items && (
+              <ListBase<T>
+                config={{
+                  viewLinks: viewLinks,
+                  loading: loading || false,
+                  alias: alias,
+                  items: items,
+                  selectedItem: iniFormData || currentItem,
+                  fields: dynamicFields,
+                  removeable: !!handlers?.onItemDeleted,
+                  editable: !!handlers?.onItemUpdated,
+                  seeable: !!handlers?.onView,
+                  ableFilter: ableFilter,
+                  ableForm: ableForm,
+                  ableImport: ableImport,
+                  showForm: showForm,
+                  showImportForm: showImportForm,
+                  useFlexTable: false,
+                  tempChanges: tempChanges,
+                  setTempChanges: setTempChanges,
+                }}
+                handlers={{
+                  onAdd: setShowForm,
+                  onImport: setShowImportForm,
+                  onSelect: handleOnSelect,
+                  onItemDeleted: handleItemDelete,
+                  onItemsUpdated: handleSaveAllChanges,
+                  onReload: handlers?.onReload,
+                  onAssign: handlers?.onAssign,
+                }}
+              />
+            )}
+          </div>
+
+
+        </motion.div>
       </div>
     </>
   );

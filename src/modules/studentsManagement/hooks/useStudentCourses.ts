@@ -62,7 +62,7 @@ const useStudentCourses = (studentId: string) => {
 
   const loadStudentCourses = async (studentId: string) => {
     try {
-      if(!selectedPeriodId){
+      if (!selectedPeriodId) {
         return;
       }
       setLoading(true);
@@ -83,7 +83,7 @@ const useStudentCourses = (studentId: string) => {
     if (studentId) {
       loadStudentCourses(studentId);
     }
-  }, [studentId]);
+  }, [studentId, selectedPeriodId]);
 
   useEffect(() => {
     if (selectedPeriodId) {
@@ -93,10 +93,10 @@ const useStudentCourses = (studentId: string) => {
 
   const handleAddCourse = async (studentId: string, newCourse: StudentCourse) => {
     try {
-      if(!selectedPeriodId){
-        console.log("handleAddCourse","Not period selected");
+      if (!newCourse.periodCourseId) {
+        console.error("handleAddCourse", "Not period selected");
         showNotification("Not period selected", "error");
-        return
+        return;
       }
 
       if (studentCourses.filter((course) => course.id === newCourse.periodCourseId).length > 0) {
@@ -113,16 +113,16 @@ const useStudentCourses = (studentId: string) => {
     }
   };
 
-  const handleDeleteCourse = async (studentId: string, courseId: string | undefined) => {
-    if(!selectedPeriodId){
-      console.log("handleDeleteCourse","Not period selected");
+  const handleDeleteCourse = async (studentId: string, courseId: string | undefined, periodId: string) => {
+    if (!periodId) {
+      console.error("handleDeleteCourse", "Not period selected");
       showNotification("Not period selected", "error");
       return;
     }
     try {
       if (!courseId) return;
       setLoading(true);
-      await deleteCourse(studentId, selectedPeriodId, courseId);
+      await deleteCourse(studentId, periodId, courseId);
       loadStudentCourses(studentId);
     } catch (err) {
       console.error(err);
@@ -145,7 +145,7 @@ const useStudentCourses = (studentId: string) => {
     loadAvailableCourses,
     loadAvailablePeriods,
     setPeriodId: setSelectedPeriodId,
-  }; // Return necessary data and functions
+  };
 };
 
 export default useStudentCourses;

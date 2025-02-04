@@ -6,7 +6,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import { Student } from "../../types/types";
 import StudentCard from "./components/StudentCard";
-import PeriodsManager from "./components/PeriodsManager";
+import StudentPeriodsManager from "./components/StudentPeriodsManager";
 import './StudentModule.css';
 
 const StudentModule: React.FC = () => {
@@ -16,11 +16,10 @@ const StudentModule: React.FC = () => {
     const [animation, setAnimation] = useState('');
     const navigate = useNavigate();
 
-    // Define fields for the student table
     const fields = [
-        { name: "fullName", placeholder: "Full Name", view: true },
-        { name: "identificationNumber", placeholder: "Identification Number" },
-        { name: "email", placeholder: "Email Address" },
+        { name: "fullName", placeholder: "Full Name", view: true, size: 20 },
+        { name: "identificationNumber", placeholder: "Identification Number", size: 15 },
+        { name: "email", placeholder: "Email Address", size: 20 },
     ];
 
     // Effect to manage loading state
@@ -60,11 +59,11 @@ const StudentModule: React.FC = () => {
     };
     return (
         <>
-            <h1 className='title'>Student Management</h1>
+            <h1 className='title'>Manage Student</h1>
             {(selectedStudent || animation === 'slide-out-top') && (
                 <div className={`animated-element ${animation}`}>
                     <StudentCard student={selectedStudent!} />
-                    {selectedStudent?.id && <PeriodsManager student={selectedStudent} />}
+                    {selectedStudent?.id && <StudentPeriodsManager student={selectedStudent} />}
                 </div>
             )}
 

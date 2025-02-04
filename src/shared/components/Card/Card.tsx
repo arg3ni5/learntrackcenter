@@ -1,22 +1,32 @@
 import { Link } from 'react-router-dom';
 import './Card.css';
+import { FaEye, FaTrash } from 'react-icons/fa';
+import { LuSave } from 'react-icons/lu';
 
+export interface CustomButton {
+	label: string;
+	icon?: JSX.Element;
+	onClick: () => void;
+	className?: string;
+	ariaLabel?: string;
+}
 
 export interface CardField {
-	name: string; // Field name
-	placeholder: string; // Field placeholder
-	type?: string; // Field type (input or select)
+	name: string;
+	placeholder: string;
+	type?: string;
 }
 
 export interface HandlersCard<T> {
 	onItemUpdated?: (updatedItem: T) => Promise<void>; // Optional callback to handle updating
 	onItemAdded?: (newItem: T) => Promise<void>; // Callback to handle adding an item
-	onDelete?: (id: string) => void; // Callback for canceling edit
+	onDelete?: (id: string) => Promise<void>; // Callback for canceling edit
 	onCancelEdit?: () => void; // Callback for canceling edit
 }
 
 export interface CardProps<T> {
-	titleName: string; // Card title
+	children?: React.ReactNode;
+	titleName?: string; // Card title
 	fields: CardField[];
 	data?: T | null;
 	isEditing?: boolean;
@@ -24,9 +34,10 @@ export interface CardProps<T> {
 	clearFormAfterAdd?: boolean;
 	viewLink?: string;
 	handlers?: HandlersCard<T>;
+	customButtons?: CustomButton[];
 }
 
-const Card = <T extends Record<string, any>>({ titleName, fields, data, handlers, ableDelete, viewLink }: CardProps<T>) => {
+const Card = <T extends Record<string, any>>({ children, titleName, fields, data, handlers, ableDelete, viewLink, customButtons }: CardProps<T>) => {
 
 	const renderFieldValue = (type: string | undefined, value: any) => {
 		switch (type) {
@@ -43,7 +54,7 @@ const Card = <T extends Record<string, any>>({ titleName, fields, data, handlers
 				return value;
 		}
 	};
-	const showActions = !!handlers?.onItemUpdated || !!handlers?.onDelete;
+	const showActions = !!handlers?.onItemUpdated || ableDelete || viewLink;
 
 	return (
 		<>
@@ -51,31 +62,42 @@ const Card = <T extends Record<string, any>>({ titleName, fields, data, handlers
 
 				{handlers?.onItemUpdated && (
 					<button onClick={() => handlers.onItemUpdated && data && handlers.onItemUpdated(data)} className="edit-button">
-						Edit
+						<LuSave /> <span className="d-none d-md-inline-over">Save</span>
 					</button>
 				)}
 				{ableDelete && data && data["id"] && (
 					<button onClick={() => handlers?.onDelete && data && handlers.onDelete(data["id"])} className="delete-button">
-						Delete
+						<FaTrash /> <span className="d-none d-md-inline-over">Delete</span>
 					</button>
 				)}
+				{viewLink && (
+					<Link
+						to={viewLink}
+						className="button view-button"
+						aria-label="View selected item">
+						<FaEye /> <span className="d-none d-md-inline-over">View</span>
+
+					</Link>
+				)}
+				{customButtons && customButtons.map((button, index) => (
+					<button
+						key={index}
+						onClick={button.onClick}
+						className={`button ${button.className || ''}`}
+						aria-label={button.ariaLabel || button.label}
+					>
+						{button.icon ? (<>{button.icon} <span className="d-none d-md-inline-over">{button.label}</span></>) : button.label}
+
+					</button>
+				))}
 			</div>
+
 			<div className={`module-card ${showActions ? "with-actions" : ""}`}>
-				<h3>{data ? data[titleName] : ''}</h3>
+				{children}
+				{titleName && (<h2>{data ? data[titleName] : ''}</h2>)}
 				{fields.map(({ name, placeholder, type }: CardField) => (
 					data && data[name] ? <p key={name}><strong className='capitalize'>{placeholder}:</strong> {renderFieldValue(type, data[name])}</p> : null
 				))}
-
-				<div className="module-card-actions">
-					{viewLink && (
-						<Link
-							to={viewLink}
-							className="button view-button"
-							aria-label="View selected item">
-							View
-						</Link>
-					)}
-				</div>
 			</div>
 		</>
 	);

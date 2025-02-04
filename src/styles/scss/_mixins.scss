@@ -1,0 +1,40 @@
+// Mixin for block visibility
+@mixin block-visibility($breakpoint) {
+  @media (min-width: $breakpoint) {
+    display: block;
+  }
+}
+
+// Mixin for inline visibility
+@mixin inline-visibility($breakpoint) {
+  @media (min-width: $breakpoint) {
+    display: inline;
+  }
+}
+
+// Mixin for none visibility
+@mixin none-visibility($breakpoint) {
+  @media (min-width: $breakpoint) {
+    display: none;
+  }
+}
+
+// Mixin for under visibility (show only under a certain breakpoint)
+@mixin under-visibility($breakpoint) {
+  $max-width: calc(#{$breakpoint} - 1px); // Asegura que se reste correctamente
+
+  @media (max-width: $max-width) {
+    display: block;
+  }
+  @media (min-width: $breakpoint) {
+    display: none;
+  }
+}
+
+.d-none {
+  display: none;
+}
+
+.d-block {
+  display: block;
+}

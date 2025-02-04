@@ -1,37 +1,23 @@
 import React from 'react';
 import { Student } from '../../../types/types';
-import './StudentCard.css';
+import Card, { CardField } from '../../../shared/components/Card/Card';
 
 interface StudentCardProps {
     student: Student;
-    onEdit?: (student: Student) => void;
-    onDelete?: (id: string) => void;
+    onEdit?: (student: Student) => Promise<void>;
+    onDelete?: (id: string) => Promise<void>;
 }
 
-const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) => {
+const fields: CardField[] = [
+    { name: "identificationNumber", placeholder: "Identification" },
+    { name: "email", placeholder: "Email Address" },
+];
+
+const StudentCard: React.FC<StudentCardProps> = ({ student, onDelete, onEdit }) => {
     return (
-        <div className="student-card">
-            <h3>{student.fullName}</h3>
-            {student.identificationNumber && (
-                <p><strong>ID:</strong> {student.identificationNumber}</p>
-            )}
-            {student.email && (
-                <p><strong>Email:</strong> {student.email}</p>
-            )}
-            
-            <div className="student-card-actions">
-                {onEdit && (
-                    <button onClick={() => onEdit(student)} className="edit-button">
-                        Edit
-                    </button>
-                )}
-                {onDelete && student.id && (
-                    <button onClick={() => onDelete(student.id!)} className="delete-button">
-                        Delete
-                    </button>
-                )}
-            </div>
-        </div>
+        <>
+            <Card<Student> titleName="fullName" fields={fields} data={student} handlers={{ onDelete, onItemUpdated: onEdit }} />
+        </>
     );
 };
 

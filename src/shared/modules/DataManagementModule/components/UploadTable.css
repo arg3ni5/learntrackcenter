@@ -45,7 +45,7 @@
 }
 
 .upload-table th {
-    background-color: #007bff;
+    background-color: var(--bg-color-highlight);
     color: white;
     font-weight: bold;
     text-transform: uppercase;
@@ -76,7 +76,7 @@
 }
 
 .upload-table th {
-    background-color: #007bff;
+    background-color: var(--bg-color-highlight);
     color: white;
     font-weight: bold;
     text-transform: uppercase;

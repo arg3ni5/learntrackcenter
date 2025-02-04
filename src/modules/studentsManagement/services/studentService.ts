@@ -1,5 +1,5 @@
 import { db } from "../../../services/firebase";
-import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, writeBatch, query, where } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, writeBatch, query, where, documentId } from "firebase/firestore";
 import { Student } from "../../../types/types";
 
 // Function to add a new student
@@ -29,15 +29,13 @@ export const addStudentsBatch = async (students: Student[]): Promise<void> => {
 
 // Function to fetch all students
 export const fetchStudents = async (): Promise<Student[]> => {
-  const studentsCollection = collection(db, "students"); // Reference to the students collection
-  const studentsSnapshot = await getDocs(studentsCollection); // Get all documents in the collection
+  const studentsCollection = collection(db, "students");
+  const studentsSnapshot = await getDocs(studentsCollection);
 
   // Map documents to Student interface
   return studentsSnapshot.docs.map((doc) => ({
     id: doc.id,
-    fullName: doc.data().fullName,
-    identificationNumber: doc.data().identificationNumber,
-    email: doc.data().email,
+    ...(doc.data() as Omit<Student, "id">),
   })) as Student[];
 };
 
@@ -72,7 +70,7 @@ export const updateStudent = async (id: string, updatedStudent: Partial<Student>
   await updateDoc(studentDoc, student); // Update the document with new data
 };
 
-export const getStudentsInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {    
+export const getStudentsInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {
   const enrollmentsCollection = collection(db, "enrollments");
   const q = query(enrollmentsCollection, where("periodId", "==", periodId), where("courseId", "==", courseId));
   const enrollmentsSnapshot = await getDocs(q);
@@ -86,29 +84,32 @@ export const getStudentsInCourse = async (periodId: string, courseId: string): P
   return students.filter((student) => student !== null) as Student[];
 };
 
+export const getStudentsNotInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {
+  // Obtener los estudiantes en el curso
+  const enrollmentsCollection = collection(db, "enrollments");
+  const q = query(enrollmentsCollection, where("periodId", "==", periodId), where("courseId", "==", courseId));
+  const enrollmentsSnapshot = await getDocs(q);
+  const enrolledStudentIds = enrollmentsSnapshot.docs.map((doc) => doc.data().studentId);
 
-export const getStudentsNotInCourse = async (periodId: string, courseId: string): Promise<Student[]> => {    
-    // Obtener todos los estudiantes
-    const studentsCollection = collection(db, "students");
-    const allStudentsSnapshot = await getDocs(studentsCollection);
-    const allStudentIds = allStudentsSnapshot.docs.map(doc => doc.id);
-  
-    // Obtener los estudiantes en el curso
-    const enrollmentsCollection = collection(db, "enrollments");
-    const q = query(enrollmentsCollection, 
-      where("periodId", "==", periodId), 
-      where("courseId", "==", courseId)
-    );
-    const enrollmentsSnapshot = await getDocs(q);
-    const enrolledStudentIds = enrollmentsSnapshot.docs.map(doc => doc.data().studentId);
-  
-    // Filtrar los estudiantes que no están en el curso
-    const notEnrolledStudentIds = allStudentIds.filter(id => !enrolledStudentIds.includes(id));
-  
-    // Obtener los detalles de los estudiantes no inscritos
-    const studentsPromises = notEnrolledStudentIds.map(id => fetchStudentById(id));
-    const students = await Promise.all(studentsPromises);
-  
-    return students.filter(student => student !== null) as Student[];
-  };
-  
+  if (enrolledStudentIds.length === 0) {
+    return await fetchStudents();
+  }
+
+  const studentsCollection = collection(db, "students");
+  const studentChunks = [];
+  for (let i = 0; i < enrolledStudentIds.length; i += 10) {
+    studentChunks.push(enrolledStudentIds.slice(i, i + 10));
+  }
+
+  const promises = studentChunks.map(async (chunk) => {
+    const q = query(studentsCollection, where(documentId(), "not-in", chunk));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<Student, "id">),
+    }));
+  });
+
+  const studentsArrays = await Promise.all(promises);
+  return studentsArrays.flat();
+};

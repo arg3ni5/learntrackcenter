@@ -6,7 +6,7 @@
     justify-content: space-between; /* Space between items */
     align-items: center; /* Center items vertically */
     height: 60px; /* Fixed height for the navbar */
-    background-color: #007bff; /* Background color of the navbar */
+    background-color: var(--bg-color-highlight); /* Background color of the navbar */
     padding: 0 20px; /* Horizontal padding */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow */
 }
@@ -20,26 +20,16 @@
 }
 
 .navbar li {
-    margin: 0 15px; /* Horizontal margin between items */
+    margin: 0 5px; /* Horizontal margin between items */
 }
 
-.dropdown-button a {
-    color: white; /* Text color */
-    font-weight: bold; /* Bold text */
-}
-
-.dropdown-button.active {
-    border-radius: 4px !important; /* Rounded corners */
-}
-
-/* Sidebar styles (unchanged) */
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     width: 250px;
     height: 100%;
-    background-color: #007bff;
+    background-color: var(--bg-color-header);
     color: white;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
@@ -54,8 +44,13 @@
     padding: 0;
 }
 
-.sidebar li {
+.sidebar .dropdown-menu li {
     padding: 15px;
+}
+
+.sidebar li button {
+    width: 100%;
+    border-radius: 0;
 }
 
 .sidebar a {
@@ -71,8 +66,10 @@
 
 /* Close button in the sidebar */
 .close-button {
+    height: 60px;
+    width: 100%;
+    border-radius: 0;
     background-color: transparent;
-    border: none;
     color: white;
     font-size: 24px;
     cursor: pointer;
@@ -86,7 +83,7 @@
 
    .toggle-button {
       display: block; /* Show button on small screens */
-      background-color: #007bff;
+      background-color: var(--bg-color-highlight);
       border-radius: 4px;
       color:white;
       border:none;

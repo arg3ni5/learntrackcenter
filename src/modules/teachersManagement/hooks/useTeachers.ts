@@ -1,7 +1,8 @@
 // src/hooks/useTeachers.ts
 
 import { useState, useEffect } from 'react';
-import { fetchTeachers, addTeacher, deleteTeacher, Teacher, updateTeacher } from '../services/teacherService'; // Import functions from the service
+import { fetchTeachers, addTeacher, deleteTeacher, updateTeacher } from '../services/teacherService'; // Import functions from the service
+import { Teacher } from '../../../types/types';
 
 const useTeachers = () => {
     const [teachers, setTeachers] = useState<Teacher[]>([]); // State to store the list of teachers

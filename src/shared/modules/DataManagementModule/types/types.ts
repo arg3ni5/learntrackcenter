@@ -13,8 +13,11 @@ export interface BaseField extends Field {
   label?: string; // Optional field label
   type?: FieldType; // Field type (input or select)
   options?: Option[]; // Options for the select
-  view?: boolean;
+  visible?: boolean;
+  required?: boolean;
   onChange?: (value: any) => void;
+  size?: number;
+  unit?: "em" | "px" | "%" | "rem" | "vw" | "vh";
 }
 
 export interface CommonProps<T> {
@@ -26,7 +29,7 @@ export interface CommonProps<T> {
   showForm?: boolean;
   ableFilter?: boolean;
   ableImport?: boolean;
-    useFlexTable?: boolean;
+  useFlexTable?: boolean;
   viewLinks?: LinkItem[];
 }
 
@@ -40,8 +43,11 @@ export interface HandlersBaseModuleProps<T>{
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
   onItemsUpdated?: (changes: Record<string, Record<string, number>>) => void;
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
+  onReload?: () => void;
+  onAssign?: () => void;
 }
 export interface BaseModuleProps<T> extends CommonProps<T>{
+  className?: string;
   title?: string;
   uploadFields?: BaseField[];
   initialFormData?: T | null; // Initial data for the form
@@ -70,6 +76,8 @@ export interface ListBaseProps<T> {
     onItemDeleted?: (id: string) => void;
     onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>;
     onImport?: (state: boolean) => void;
+    onReload?: () => void;
+    onAssign?: () => void;
   }
 }
 
@@ -87,6 +95,8 @@ export interface ActionButtonsProps<T> {
     handleShowImportForm: (state: boolean) => void;
     onItemDeleted?: (id: string) => void;
     onSaveAllChanges?: (event: React.MouseEvent<HTMLButtonElement>, changes: Record<string, Record<string, number>>) => void;
+    onReload?: () => void;
+    onAssign?: () => void;
   };
 }
 

@@ -1,27 +1,35 @@
+import { useEffect } from "react";
+import { useLoading } from "../../../components/loading/LoadingContext";
 import DataManagementModule from "../../../shared/modules/DataManagementModule/DataManagementModule";
+import { Teacher } from "../../../types/types";
 import useTeachers from "../hooks/useTeachers";
-import { Teacher } from "../services/teacherService";
 
 const TeacherModule: React.FC = () => {
-  const {teachers, handleAddTeacher, handleDeleteTeacher, handleUpdateTeacher} = useTeachers(); // Custom hook to fetch teachers from Firestore
-  // Define the fields for the form used to add new teachers
+  const { loading, teachers, handleAddTeacher, handleDeleteTeacher, handleUpdateTeacher } = useTeachers();
+  const { setIsLoading } = useLoading();
+
+  useEffect(() => {
+    setIsLoading(loading);
+  }, [loading, setIsLoading]);
+
   const fields = [
-    { name: "name", placeholder: "Nombre Completo" }, // Field for teacher's full name
-    { name: "idNumber", placeholder: "Número de Identificación" }, // Field for identification number
-    { name: "specialty", placeholder: "Especialidad" }, // Field for specialty
+    { name: "name", placeholder: "Full Name" }, // Field for teacher's full name
+    { name: "idNumber", placeholder: "Id" }, // Field for identification number
+    { name: "specialty", placeholder: "specialty" }, // Field for specialty
   ];
 
   return (
     <>
       <DataManagementModule<Teacher>
-        title="Gestión de Profesores" // Title for the module
+        title="Manage Teacher" // Title for the module
         fields={fields} // Fields to be displayed in the form
         items={teachers} // Function to fetch items from Firestore
         handlers={{
-          onItemAdded : handleAddTeacher,
-          onItemDeleted : handleDeleteTeacher,
+          onItemAdded: handleAddTeacher,
+          onItemDeleted: handleDeleteTeacher,
           onItemUpdated: handleUpdateTeacher
         }}
+        loading={loading} // Loading state
         showForm={false} // Show the form
       />
     </>

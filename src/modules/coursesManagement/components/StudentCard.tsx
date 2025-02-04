@@ -4,8 +4,7 @@ import Card, { CardField } from '../../../shared/components/Card/Card';
 
 interface StudentCardProps {
     student: Student;
-    // onEdit?: (student: Student) => void;
-    onDelete?: (id: string) => void;
+    onDelete?: (id: string) => Promise<void>;
 }
 
 const fields: CardField[] = [
@@ -16,7 +15,7 @@ const fields: CardField[] = [
 const StudentCard: React.FC<StudentCardProps> = ({ student, onDelete }) => {
     return (
         <>
-        <Card<Student> titleName="fullName" fields={fields} data={student} onDelete={onDelete} />
+            <Card<Student> titleName="fullName" fields={fields} data={student} handlers={{ onDelete }} />
         </>
     );
 };

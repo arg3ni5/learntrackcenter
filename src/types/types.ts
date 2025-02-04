@@ -27,6 +27,7 @@ export interface Course extends AvailableCourse{
     teacherId?: string; // Reference to the Teacher document
     teacherName?: string; // To show name of teacher
     assignmentsIds: string[]; // List of assignments for the course
+    enrolledStudents: string[]; // List of enrolledStudents for the course
 }
 export interface PeriodCourse extends Course{
     periodCourseId: string; // Reference to the PeriodCourse document
@@ -67,7 +68,7 @@ export interface Student {
 
 
 
-export interface StudentCourse extends Omit<AvailableCourse, 'duration' | 'hours'>{
+export interface StudentCourse extends Omit<AvailableCourse, 'duration' | 'hours' | 'enrolledStudents'>{
     courseId: string; // Reference to the Course document
     periodId: string; // Reference to the Period document
     periodCourseId: string; // Reference to the Period/Course document
@@ -107,4 +108,10 @@ export interface Grade {
     studentId: string;
     subjectId: string;
     finalGrade: number;
+}
+export interface Teacher {
+    id?: string;
+    name: string;
+    idNumber?: string;
+    specialty?: string;
 }

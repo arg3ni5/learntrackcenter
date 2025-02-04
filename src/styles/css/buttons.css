@@ -1,0 +1,194 @@
+.button,
+button {
+  background-color: var(--bg);
+  color: var(--color);
+}
+
+@media (prefers-color-scheme: light) {
+
+  .button,
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+.view-toggle .active,
+.section-buttons .active {
+  background-color: var(--active) !important;
+  color: white;
+  font-weight: bold;
+}
+
+.buttons-container .active,
+.section-buttons .active {
+  border: 2px solid var(--border-color-highlight) !important;
+  /* Borde más oscuro */
+}
+
+.buttons-container.flex {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.buttons-container.flex button {
+  flex: 1;
+  border: 1px solid var(--border-color-highlight);
+}
+
+.buttons-container button:nth-child(n+2) {
+  margin-left: 5px;
+}
+
+.view-toggle button[class=""]:hover,
+.buttons-container button[class=""]:hover {
+  background-color: var(--bg-color-hover) !important;
+}
+
+.buttons-container .active:hover,
+.section-buttons .active:hover {
+  background-color: var(--active-hover) !important;
+}
+
+.button-black {
+  background-color: black !important;
+}
+
+/* Base styles for all buttons */
+.delete-button,
+.edit-button,
+.add-button,
+.view-button,
+.save-button{
+  color: white;
+}
+
+.button {
+  background-color: var(--bg);
+}
+
+button svg,
+.button svg {
+  top: 2px;
+  position: relative;
+}
+
+/* Specific styles for delete button */
+.delete-button {
+  background-color: var(--bg-color-delete) !important;
+  /* Background color for delete */
+}
+
+.delete-button:hover {
+  background-color: var(--bg-color-delete-hover) !important;
+  /* Background color on hover for delete */
+}
+
+/* Specific styles for edit button */
+.edit-button {
+  background-color: var(--bg-color-edit);
+  /* Background color for edit */
+}
+
+.edit-button:hover {
+  background-color: var(--bg-color-edit-hover);
+  /* Background color on hover for edit */
+}
+
+/* Specific styles for view button */
+.view-button {
+  background-color: var(--bg-color-view);
+  /* Background color for view */
+}
+
+.view-button:hover {
+  background-color: var(--bg-color-view-hover);
+  /* Background color on hover for view */
+}
+
+/* Specific styles for save button */
+.save-button {
+  background-color: var(--bg-color-save) !important;
+  /* Background color for save */
+}
+
+.save-button:hover {
+  background-color: var(--bg-color-save-hover) !important;
+  /* Background color on hover for save */
+}
+
+/* Specific styles for add button */
+.add-button {
+  background-color: var(--bg-color-add) !important;
+  /* Background color for add */
+}
+
+.add-button:hover {
+  background-color: var(--bg-color-add-hover) !important;
+  /* Background color on hover for add */
+}
+
+button[disabled],
+button[disabled]:hover,
+.disabled-link {
+  background-color: var(--bg-color-hover) !important;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Apply transform to all buttons on hover */
+.delete-button:hover,
+.edit-button:hover,
+.add-button:hover,
+.view-button:hover,
+.save-button:hover {
+  transform: translateY(-1px);
+  /* Lift the button slightly on hover */
+}
+
+.buttons-container button:hover,
+.add-button:hover {
+  transform: translateY(-1px);
+}
+
+.actions.buttons-container.compact {
+  padding-top: 20px;
+  width: auto !important;
+  justify-content: right;
+}
+
+.actions button:only-child span{
+  display: inline !important;
+}
+
+.compact button:hover,
+.compact .button:hover {
+  transform: none !important;
+}
+
+.view-toggle button,
+.actions.buttons-container.compact button,
+.actions.buttons-container.compact .button {
+  margin: 0;
+  border-radius: 0;
+}
+
+.view-toggle button:first-child,
+.actions.buttons-container.compact a:first-child,
+.actions.buttons-container.compact button:first-child,
+.actions.buttons-container.compact .button:first-child {
+  border-top-left-radius: 8px !important;
+}
+
+.view-toggle button:last-child,
+.actions.buttons-container.compact a:last-child,
+.actions.buttons-container.compact button:last-child,
+.actions.buttons-container.compact .button:last-child {
+  border-top-right-radius: 8px !important;
+}
+
+.actions.buttons-container.compact a:only-child,
+.actions.buttons-container.compact button:only-child,
+.actions.buttons-container.compact .button:only-child {
+  border-radius: 8px 8px 0 0 !important;
+}

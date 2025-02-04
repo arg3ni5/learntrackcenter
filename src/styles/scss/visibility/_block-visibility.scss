@@ -1,0 +1,16 @@
+@use '../mixins';
+@use "../variables";
+
+
+// .d-md-block, .d-lg-block, etc.
+.d-md-block {
+  @include mixins.block-visibility(variables.$breakpoint-md);
+}
+
+.d-lg-block {
+  @include mixins.block-visibility(variables.$breakpoint-lg);
+}
+
+.d-xl-block {
+  @include mixins.block-visibility(variables.$breakpoint-xl);
+}

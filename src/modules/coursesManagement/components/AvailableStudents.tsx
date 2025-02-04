@@ -11,7 +11,7 @@ interface CourseStudentsManagerProps {
     periodId: string;
 }
 
-const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, periodId }) => {
+const AvailableStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, periodId }) => {
     const { setIsLoading } = useLoading();
     const { availableStudents, loadAvailableStudents, loading, error} = useStudentsCourse(periodCourse);
     const { handleAddCourse } = useStudentCourses(periodId);
@@ -30,19 +30,17 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
 
     const assignPeriodToStudent = async () => {
         if (selectedStudent && periodCourse) {
-            const {id, duration, hours, ...selectedCourse} = periodCourse;
+            const {id, courseId, name, description} = periodCourse;
+
             const newCourse : StudentCourse = {
-                ...selectedCourse,
-                id,
-                courseId: id!,
-                periodId: periodId,
                 periodCourseId: id!,
+                courseId,
+                periodId: periodId,
+                name, description,
                 status: 'Not Started',
                 finalGrade: 0,
                 assignmentsIds: [],
             };
-
-            console.log(newCourse);
             await handleAddCourse(selectedStudent.id!, newCourse); // Call the function to add the new period
             await loadAvailableStudents();
         }
@@ -54,12 +52,12 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
     }, [loading, setIsLoading]);
 
     return (
-        <div className="">
-            <h2></h2>
+        <div className="bt">
             {selectedStudent && <StudentCard student={selectedStudent} />}
             {selectedStudent && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
 
             <DataManagementModule<Student>
+                title="Available Students"
                 fields={fields}
                 items={availableStudents}
                 showForm={false}
@@ -75,4 +73,4 @@ const AvalibleStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse, 
     );
 };
 
-export default AvalibleStudents;
+export default AvailableStudents;

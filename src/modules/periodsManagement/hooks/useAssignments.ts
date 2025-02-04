@@ -14,7 +14,7 @@ const useAssignments = (props: AssignmentsManagerProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { showNotification } = useNotification();
-  
+
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -43,10 +43,11 @@ const useAssignments = (props: AssignmentsManagerProps) => {
     async (newAssignment: Assignment) => {
       setLoading(true);
       try {
-        const { id, ...assignment } = newAssignment;
-        await addAssignment(periodId, courseId, assignment);
+        const { id, link,...assignment } = newAssignment;
+        await addAssignment(periodId, courseId, {...assignment, link: link || ''});
         await loadData();
       } catch (err) {
+        console.error("Error adding assignments:", err);
         setError(err instanceof Error ? err.message : "Error adding assignment");
       } finally {
         setLoading(false);
@@ -139,15 +140,12 @@ const useAssignments = (props: AssignmentsManagerProps) => {
 
   const handleSyncAssignments = async () => {
     try {
-      console.log('Syncing assignments for period:', periodId, 'course:', courseId);
       if (!periodId || !courseId) {
         setError('Invalid period or course ID');
         return;
       }
       setLoading(true);
-      
       await syncAssignments(periodId, courseId);
-      // Optionally, you can reload students or perform any other necessary actions after syncing
       await loadData();
     } catch (err) {
       setError('Error syncing assignments');

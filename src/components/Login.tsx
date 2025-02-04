@@ -11,7 +11,7 @@ const Login: React.FC = () => {
 
     const handleGoogleLogin = async () => {
         try {
-            const result = await signInWithPopup(auth, googleProvider);
+            await signInWithPopup(auth, googleProvider);
         } catch (error) {
             console.error("Error iniciando sesión con Google:", error);
             setError("Error al iniciar sesión con Google.");

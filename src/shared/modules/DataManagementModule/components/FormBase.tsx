@@ -56,7 +56,7 @@ const FormBase = <T extends {}>({ isEditing, fields, initialData, onItemAdded, o
       name: field.name,
       placeholder: field.placeholder,
       value: formData[field.name] || "",
-      required: true,
+      required: field.required !== undefined ? field.required : true,
       onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         // if (field.onChange) {

@@ -4,9 +4,9 @@
         "header"
         "main";
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr; /* Cambiado de 60px a auto */
-    max-height: 100vh; /* Cambiado de height a min-height */
-    min-height: 100vh; /* Cambiado de height a min-height */
+    grid-template-rows: auto 1fr;
+    max-height: 100vh;
+    min-height: 100vh;
 }
 
 .header {
@@ -15,44 +15,128 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: #007bff; /* Asegúrate de que tenga un color de fondo */
-    color: white;
+    background-color: var(--bg-color-header);
 }
 
 .main {
     margin-top: 5px;
     grid-area: main;
     padding: 20px 250px;
-    overflow-y: auto; /* Permite scroll dentro del contenido principal si es necesario */
+    overflow-y: auto;
     min-height: calc(100vh - 60px);
 }
 
 @media (max-width: 768px) {
     .main {
-        padding: 10px; /* Menos padding en pantallas pequeñas */
+        padding: 10px;
     }
 }
 
 /* Customization for WebKit browsers (Chrome, Safari) */
 .main::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
+    width: 12px;
+    /* Width of the scrollbar */
 }
 
 .main::-webkit-scrollbar-track {
-    background: var(--bg-color); /* Background color of the track */
-    border-radius: 10px; /* Rounded corners for the track */
+    background: var(--bg-color);
+    /* Background color of the track */
+    border-radius: 10px;
+    /* Rounded corners for the track */
 }
 
 .main::-webkit-scrollbar-thumb {
-    background: #007bff; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the thumb */
+    background: #007bff;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Rounded corners for the thumb */
 }
 
 .main::-webkit-scrollbar-thumb:hover {
-    background: #0056b3; /* Color when hovering over the thumb */
+    background: #0056b3;
+    /* Color when hovering over the thumb */
 }
 
 /* Customization for Firefox */
 .main {
-    scrollbar-color: #007bff var(--bg); /* Thumb color and track color */
+    scrollbar-color: #007bff var(--bg);
+    /* Thumb color and track color */
+    flex: 1;
+}
+
+
+
+
+
+/* Media Queries para Responsividad */
+
+/* Pantallas pequeñas (móviles) */
+@media (max-width: 600px) {
+    .header {
+        font-size: 1.5rem;
+        /* Tamaño de fuente más grande en móviles */
+        padding: 15px;
+        /* Menos espaciado en móviles */
+    }
+
+    .main {
+        padding: 10px;
+        /* Menos espaciado en móviles */
+        font-size: 0.9rem;
+        /* Tamaño de fuente más pequeño en móviles */
+    }
+
+    .footer {
+        font-size: 0.8rem;
+        /* Tamaño de fuente más pequeño en móviles */
+        padding: 5px;
+        /* Menos espaciado en móviles */
+    }
+    .container-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 2px;
+    }
+    .container-flex .item{
+        flex: auto;
+    }
+}
+
+/* Pantallas medianas (tabletas) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .header {
+        font-size: 1.75rem;
+    }
+
+    .main {
+        padding: 15px;
+        font-size: 1rem;
+    }
+
+    .footer {
+        font-size: 0.9rem;
+        /* Tamaño de fuente moderado en tabletas */
+        padding: 8px;
+        /* Espaciado moderado en tabletas */
+    }
+
+    .container-grid {
+        display: grid;
+        padding-top: 30px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
+.main::-webkit-scrollbar {
+    width: 12px;
+    right: 5px;
+    /* Mueve el scrollbar 5px hacia la izquierda */
+}
+
+.main::-webkit-scrollbar-thumb {
+    background: #007bff;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Rounded corners for the thumb */
 }
