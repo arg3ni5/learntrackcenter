@@ -81,6 +81,7 @@
 
     .main {
         padding: 10px;
+        padding-bottom: 40px !important;
         /* Menos espaciado en móviles */
         font-size: 0.9rem;
         /* Tamaño de fuente más pequeño en móviles */

@@ -6,15 +6,14 @@
   "homepage": "https://arg3ni5.github.io/learntrackcenter",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && copy dist\\index.html dist\\404.html",
-    "lint": "eslint .",
+    "build": "tsc -b && vite build && (if [ $(uname) = 'Darwin' ] || [ $(uname) = 'Linux' ]; then cp dist/index.html dist/404.html; else copy dist\\index.html dist\\404.html; fi)",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "node deploy.js"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
-    "firebase": "^11.1.0",
+    "firebase": "^9.23.0",
     "framer-motion": "^12.0.11",
     "i18next": "^24.2.0",
     "react": "^18.3.1",
@@ -25,7 +24,7 @@
     "react-select": "^5.9.0",
     "react-transition-group": "^4.4.5",
     "reactfire": "^4.2.3",
-    "xlsx": "^0.18.5"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
