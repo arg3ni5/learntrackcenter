@@ -20,6 +20,9 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
+      - name: Mostrar uno de los secretos (No sensible)
+        run: echo "VITE_PROJECT_ID=${{ secrets.VITE_PROJECT_ID }}"
+
       - name: 🔧 Build project
         run: npm run build
         env:
