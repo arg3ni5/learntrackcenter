@@ -1,13 +1,11 @@
-// src/modules/studentsManagement/components/PeriodsManager.tsx
-
 import React from 'react';
-import './StudentPeriodsManager.css';
 import useStudentCourses from '../hooks/useStudentCourses';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Student, StudentCourse } from '../../../types/types';
 import Card, { CardField } from '../../../shared/components/Card/Card';
+import './StudentPeriodsManager.css';
 
-const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
+const StudentPeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string | null>('selectedPeriodId', null);
     const [selectedCourseId, setSelectedCourseId] = useLocalStorage<string | null>('selectedCourseId', null);
     const { availableCourses, availablePeriods, studentCourses, handleAddCourse, handleDeleteCourse, setPeriodId } = useStudentCourses(student.id!);
@@ -69,7 +67,8 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                                     </button>
                                 ))}
                         </div>
-                        {availableCourses.length === 0 && <div className="empty">No courses available for this period</div>}
+                        {availableCourses.filter(ac => !studentCourses.some(course => course.id === ac.id)).length === 0 &&
+                            <div className="empty">No courses available for this period</div>}
                     </div>)}
                 {selectedPeriodId && selectedCourseId && <button className="edit-button" onClick={assignPeriodToStudent}>Assign course</button>}
             </div>
@@ -83,7 +82,7 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
                         <Card<StudentCourse> titleName="name"
                             fields={fields}
                             data={course}
-                            handlers={{ onDelete: () => { return handleDeleteCourse(student.id!, course.courseId!, course.periodId!)} }}
+                            handlers={{ onDelete: () => { return handleDeleteCourse(student.id!, course.courseId!, course.periodId!) } }}
                             ableDelete={course.assignmentsIds.length === 0} />
                     </div>
                 ))}
@@ -92,4 +91,4 @@ const PeriodsManager: React.FC<{ student: Student }> = ({ student }) => {
     );
 };
 
-export default PeriodsManager;
+export default StudentPeriodsManager;

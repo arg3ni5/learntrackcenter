@@ -6,7 +6,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import { Student } from "../../types/types";
 import StudentCard from "./components/StudentCard";
-import PeriodsManager from "./components/StudentPeriodsManager";
+import StudentPeriodsManager from "./components/StudentPeriodsManager";
 import './StudentModule.css';
 
 const StudentModule: React.FC = () => {
@@ -63,7 +63,7 @@ const StudentModule: React.FC = () => {
             {(selectedStudent || animation === 'slide-out-top') && (
                 <div className={`animated-element ${animation}`}>
                     <StudentCard student={selectedStudent!} />
-                    {selectedStudent?.id && <PeriodsManager student={selectedStudent} />}
+                    {selectedStudent?.id && <StudentPeriodsManager student={selectedStudent} />}
                 </div>
             )}
 
