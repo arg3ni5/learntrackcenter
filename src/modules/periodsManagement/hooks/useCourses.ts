@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { AvailableCourse, Course, Teacher } from "../../../types/types";
 import { fetchTeachers } from "../../teachersManagement/services/teacherService";
 import { addCourse, deleteCourse, updateCourse, fetchAvailableCourses, fetchCourses } from "../services/periodCourseService";
@@ -9,7 +9,6 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 const DEFAULT_POLLING_INTERVAL = 10 * 60 * 1000;
 
 const useCourses = (periodId: string) => {
-  const isFirstRun = useRef(true);
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [availableTeachers, setAvailableTeachers] = useLocalStorage<Teacher[]>("availableTeachers", []);
@@ -71,7 +70,7 @@ const useCourses = (periodId: string) => {
   const loadAvailableCourses = async (forceUpdate = false) => {
     try {
       if (!forceUpdate && availableCourses.length > 0) {
-        console.log("Courses data already loaded. Skipping fetch.");
+        console.log("Available Courses data already loaded. Skipping fetch.");
         return;
       }
 
@@ -80,10 +79,10 @@ const useCourses = (periodId: string) => {
       setAvailableCourses(courses);
       localStorage.setItem("availableCourses", JSON.stringify(courses));
 
-      console.log("Courses data updated.");
+      console.log("Available Courses data updated.");
     } catch (err) {
-      console.error("Error loading courses:", err);
-      showNotification("Error loading courses", "error");
+      console.error("Error loading available courses:", err);
+      showNotification("Error loading available courses", "error");
     } finally {
       forceUpdate && setLoading(false);
     }
@@ -101,7 +100,7 @@ const useCourses = (periodId: string) => {
    * @param {LoadableData[] | boolean} [loadListOrForce] - List of data to load or a boolean to force update everything.
    * @param {boolean} [forceUpdate] - Whether to force update (only used if first param is an array).
    */
-  const loadGlobalData = async (loadListOrForce?: LoadableData[] | boolean, forceUpdate = false) => {
+  const loadGlobalData = async (loadListOrForce?: LoadableData[] | boolean, forceUpdate: boolean = false) => {
     let loadList: LoadableData[] = ["teachers", "courses"];
 
     if (typeof loadListOrForce === "boolean") {
@@ -121,10 +120,6 @@ const useCourses = (periodId: string) => {
   };
 
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-      return;
-    }
     if (periodId) {
       loadPeriodCourses();
     }
