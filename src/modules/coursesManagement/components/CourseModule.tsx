@@ -27,7 +27,7 @@ const CourseModule: React.FC = () => {
   return (
     <>
       <DataManagementModule<Course>
-        title="Course Management" // Title for the module
+        title="Manage Courses" // Title for the module
         fields={fields} // Fields to be displayed in the form
         items={courses} // Use the courses from the custom hook
         handlers={{
