@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { FaXmark } from "react-icons/fa6";
 import './Notification.css'; // Asegúrate de tener estilos para el componente
 
 interface NotificationProps {
@@ -24,8 +25,7 @@ const Notification: React.FC<NotificationProps> = ({ message, type, timeout = 50
 
     return (
         <div className={`notification ${type}`}>
-            <span>{message}</span>
-            <button className="close-button" onClick={onClose}>✖</button>
+            <span>{message} <button className="close-button" onClick={onClose}><FaXmark/></button></span>
         </div>
     );
 };

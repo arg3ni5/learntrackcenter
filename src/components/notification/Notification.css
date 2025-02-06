@@ -2,7 +2,7 @@
     position: fixed; /* Fijar la posición en la pantalla */
     top: 75px; /* Espacio desde la parte superior */
     right: 20px; /* Espacio desde la derecha */
-    max-width: 300px; /* Ancho máximo del contenedor de notificaciones */
+    max-width: 50%; /* Ancho máximo del contenedor de notificaciones */
     display: flex;
     flex-direction: column; /* Apilar verticalmente las notificaciones */
     gap: 10px; /* Espacio entre las notificaciones */
@@ -31,6 +31,7 @@
 }
 
 .close-button {
+    display: inline !important;
     background: none; /* Sin fondo en el botón */
     border: none; /* Sin borde */
     color: white; /* Color del texto del botón */
