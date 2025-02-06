@@ -4,7 +4,7 @@
  */
 
 import { db } from "../../../services/firebase";
-import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc, query, where } from "firebase/firestore";
 import { Period } from "../../../types/types";
 
 /**
@@ -23,13 +23,15 @@ export const fetchPeriods = async (): Promise<Period[]> => {
 };
 
 /**
- * Fetches all periods from Firestore.
+ * Fetches all active periods from Firestore.
  * @async
  * @returns {Promise<Period[]>} A promise that resolves to an array of Period objects.
  */
+
 export const fetchPeriodsActive = async (): Promise<Period[]> => {
   const periodsCollection = collection(db, "periods");
-  const periodSnapshot = await getDocs(periodsCollection);
+  const activePeriodsQuery = query(periodsCollection, where("status", "==", "2"));
+  const periodSnapshot = await getDocs(activePeriodsQuery);
   const periodList: Period[] = periodSnapshot.docs.map((doc) => ({
     id: doc.id,
     ...(doc.data() as Omit<Period, "id">),

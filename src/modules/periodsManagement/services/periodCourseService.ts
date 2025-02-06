@@ -8,7 +8,7 @@ import { Course } from "../../../types/types";
 
 // Function to fetch available courses
 export const fetchAvailableCourses = async (): Promise<AvailableCourses[]> => {
-  const coursesCollection = collection(db, "courses"); // Adjust this path based on your Firestore structure
+  const coursesCollection = collection(db, "courses");
   const coursesSnapshot = await getDocs(coursesCollection);
   return coursesSnapshot.docs.map((doc) => ({
     id: doc.id,
