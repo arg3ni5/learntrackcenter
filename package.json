@@ -6,7 +6,7 @@
   "homepage": "https://arg3ni5.github.io/learntrackcenter",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && (if [ $(uname) = 'Darwin' ] || [ $(uname) = 'Linux' ]; then cp dist/index.html dist/404.html; else copy dist\\index.html dist\\404.html; fi)",
+    "build": "tsc -b && vite build && node copyIndex.js",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "node deploy.js"
@@ -32,6 +32,7 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
