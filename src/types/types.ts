@@ -37,11 +37,22 @@ export interface CourseWithDetails extends Course {
 
 }
 
-export type PeriodStatus =
-    | 'Active'
-    | 'Finished'
-    | 'In Progress'
-    | 'Upcoming';
+/**
+ * Represents the possible statuses of an academic period.
+ */
+export enum PeriodStatus {
+    /** The period has been created but is not yet configured or in use. */
+    Created = 0,
+
+    /** The period has ended and is no longer active. */
+    Finished = 1,
+
+    /** The period is currently active (in use). */
+    Active = 2,
+
+    /** The period is scheduled to start in the future. */
+    Upcoming = 3
+}
 
 // Define the interface for Period
 export interface Period {
