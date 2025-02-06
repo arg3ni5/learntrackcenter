@@ -107,18 +107,6 @@ const DataManagementModule = <T extends Record<string, any>>({
   };
 
   /**
-   * Handle deleting an item.
-   * @param {string} id - The ID of the item to delete.
-   */
-  const handleItemDelete = async (id: string) => {
-    if (handlers?.onItemDeleted) {
-      await handlers?.onItemDeleted(id);
-      loadItems();
-      showNotification("Item deleted", "success");
-    }
-  };
-
-  /**
    * Reset editing state and clear the current item.
    */
   const resetEditing = () => {
@@ -267,7 +255,7 @@ const DataManagementModule = <T extends Record<string, any>>({
                   onAdd: setShowForm,
                   onImport: setShowImportForm,
                   onSelect: handleOnSelect,
-                  onItemDeleted: handleItemDelete,
+                  onItemDeleted: handlers?.onItemDeleted,
                   onItemsUpdated: handleSaveAllChanges,
                   onReload: handlers?.onReload,
                   onAssign: handlers?.onAssign,
