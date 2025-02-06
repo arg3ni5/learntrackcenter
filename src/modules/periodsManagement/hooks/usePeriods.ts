@@ -8,8 +8,7 @@ import { useNotification } from "../../../components/notification/NotificationCo
 const usePeriods = () => {
   const [periods, setPeriods] = useState<Period[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const { showNotification } = useNotification();
+  const { showNotification, showError } = useNotification();
 
   const loadPeriods = async (): Promise<Period[]> => {
     try {
@@ -18,7 +17,7 @@ const usePeriods = () => {
       setPeriods(fetchedPeriods);
       return fetchedPeriods;
     } catch (err) {
-      setError("Error fetching periods");
+      showError("Error fetching periods");
       return [];
     } finally {
       setLoading(false);
@@ -29,20 +28,16 @@ const usePeriods = () => {
     loadPeriods();
   }, []);
 
-  useEffect(() => {
-    error && showNotification(error, "error");
-  }, [error]);
-
   const handleAddPeriod = async (newPeriod: Period) => {
     try {
       const addedPeriod = await addPeriod(newPeriod);
       if (addedPeriod.id) {
         setPeriods((prevPeriods) => [...prevPeriods, addedPeriod]);
       } else {
-        setError("Error adding period, no ID returned");
+        showError("Error adding period, no ID returned");
       }
     } catch (err) {
-      setError("Error adding period");
+      showError("Error adding period");
     }
   };
 
@@ -50,11 +45,11 @@ const usePeriods = () => {
     const periodToDelete = periods.find((period) => period.id === id);
 
     if (!periodToDelete) {
-      setError("Period does not exist in the local state");
+      showError("Period does not exist in the local state");
       return;
     }
     if (periodToDelete && periodToDelete.coursesIds && periodToDelete.coursesIds.length > 0) {
-      setError("Cannot delete period: it has associated courses.");
+      showError("Cannot delete period: it has associated courses.");
       return;
     }
     try {
@@ -64,7 +59,7 @@ const usePeriods = () => {
         setPeriods((prevPeriods) => prevPeriods.filter((period) => period.id !== id)); // Eliminar del estado
       }
     } catch (err) {
-      setError("Error deleting period");
+      showError("Error deleting period");
     }
   };
 
@@ -73,11 +68,11 @@ const usePeriods = () => {
       await updatePeriod(id, updatedPeriod);
       setPeriods((prevPeriods) => prevPeriods.map((period) => (period.id === id ? { ...period, ...updatedPeriod } : period)));
     } catch (err) {
-      setError("Error updating period");
+      showError("Error updating period");
     }
   };
 
-  return { periods, loadPeriods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod };
+  return { periods, loadPeriods, loading, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod };
 };
 
 export default usePeriods;
