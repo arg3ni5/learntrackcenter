@@ -28,7 +28,7 @@ const DataManagementModule = <T extends Record<string, any>>({
     ableImport = false,
     ableFilter = false,
     ableForm = true,
-    type = "vertical",
+    layout = "table",
     alias,
     title,
     fields,
@@ -234,7 +234,7 @@ const DataManagementModule = <T extends Record<string, any>>({
             {items && (
               <ListBase<T>
                 config={{
-                  type,
+                  layout,
                   loading: loading || false,
                   alias, items, viewLinks,
                   selectedItem: iniFormData || currentItem,

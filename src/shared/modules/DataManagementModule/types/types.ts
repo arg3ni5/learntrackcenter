@@ -48,9 +48,9 @@ export interface HandlersBaseModuleProps<T> {
   onAssign?: () => Promise<void>;
 }
 
-type TableType = "vertical" | "table" | "table-fixed";
+type LayoutType = "vertical" | "table" | "table-fixed" | "cards";
 export interface BaseModuleProps<T> extends CommonProps<T> {
-  type?: TableType;
+  layout?: LayoutType;
   className?: string;
   title?: string;
   uploadFields?: BaseField[];
@@ -69,7 +69,7 @@ export interface configListBaseProps<T> extends CommonProps<T> {
   seeable: boolean;
   tempChanges: Record<string, Record<string, number>>;
   setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
-  type: TableType;
+  layout: LayoutType;
 }
 
 export interface ListBaseProps<T> {

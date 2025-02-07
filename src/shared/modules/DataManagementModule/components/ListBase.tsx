@@ -39,7 +39,7 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     showForm: isShowForm = false,
     showImportForm: isShowImportForm = false,
     loading = false,
-    type,
+    layout,
   } = config;
   const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated, onReload, onAssign } = handlers;
 
@@ -158,14 +158,14 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
         )}
 
         {/* Table container */}
-        {type == "table-fixed" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
+        {layout == "table-fixed" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
           <div className="table-body-container">
             <TableHeader fields={fields} setColumnWidths={setColumnWidths} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} useFlexTable={useFlexTable} />
             <TableBody fields={fields} items={paginatedItems} columnWidths={columnWidths} selectedItem={selectedItem} tempChanges={tempChanges} handlers={handlersTbody} useFlexTable={useFlexTable} />
           </div>
         </div>)}
 
-        {type == "table" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
+        {layout == "table" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
           <div className="table-body-container">
             <Table<T>
               items={paginatedItems}
@@ -180,7 +180,7 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
           </div>
         </div>)}
 
-        {type == "vertical" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
+        {layout == "vertical" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
           <div className="table-body-container">
             <VerticalTable<T>
               items={paginatedItems}
