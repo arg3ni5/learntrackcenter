@@ -22,8 +22,6 @@ const PeriodsModule: React.FC = () => {
 		[]
 	);
 
-
-
 	const handleOnEdit = (item: Period) => {
 		navigate(`/period/${item.id}/courses`);
 		setSelectPeriod(item);
