@@ -11,6 +11,7 @@ import { useSorting } from "../hooks/useSorting";
 import { useFiltering } from "../hooks/useFiltering";
 import { usePagination } from "../hooks/usePagination";
 import Table from "./Table";
+import VerticalTable from "./VerticalTable";
 // import Table from "./Table";
 
 /**
@@ -38,7 +39,7 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     showForm: isShowForm = false,
     showImportForm: isShowImportForm = false,
     loading = false,
-    type = "table"
+    type,
   } = config;
   const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated, onReload, onAssign } = handlers;
 
@@ -167,6 +168,21 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
         {type == "table" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
           <div className="table-body-container">
             <Table<T>
+              items={paginatedItems}
+              selectedItem={selectedItem}
+              config={{
+                fields, sortConfig,
+                columnWidths,
+                useFlexTable
+              }}
+              tempChanges={tempChanges}
+              handlers={handlersTable} />
+          </div>
+        </div>)}
+
+        {type == "vertical" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
+          <div className="table-body-container">
+            <VerticalTable<T>
               items={paginatedItems}
               selectedItem={selectedItem}
               config={{
