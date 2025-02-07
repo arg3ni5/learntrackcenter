@@ -28,6 +28,7 @@ const DataManagementModule = <T extends Record<string, any>>({
     ableImport = false,
     ableFilter = false,
     ableForm = true,
+    type = "vertical",
     alias,
     title,
     fields,
@@ -233,23 +234,17 @@ const DataManagementModule = <T extends Record<string, any>>({
             {items && (
               <ListBase<T>
                 config={{
-                  viewLinks: viewLinks,
+                  type,
                   loading: loading || false,
-                  alias: alias,
-                  items: items,
+                  alias, items, viewLinks,
                   selectedItem: iniFormData || currentItem,
                   fields: dynamicFields,
                   removeable: !!handlers?.onItemDeleted,
                   editable: !!handlers?.onItemUpdated,
                   seeable: !!handlers?.onView,
-                  ableFilter: ableFilter,
-                  ableForm: ableForm,
-                  ableImport: ableImport,
-                  showForm: showForm,
-                  showImportForm: showImportForm,
+                  ableFilter, ableForm, ableImport, showForm, showImportForm,
+                  tempChanges, setTempChanges,
                   useFlexTable: false,
-                  tempChanges: tempChanges,
-                  setTempChanges: setTempChanges,
                 }}
                 handlers={{
                   onAdd: setShowForm,

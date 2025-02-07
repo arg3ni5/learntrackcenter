@@ -1,30 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { BaseField } from "../types/types";
 
-interface TableBodyProps<T> {
-  fields: BaseField[];
-  sortConfig: { key: keyof T; direction: 'ascending' | 'descending' } | null;
+export interface TableProps<T> {
   items: T[];
-  columnWidths: number[];
+  config: TableConfig<T>;
   selectedItem: T | null;
-  useFlexTable: boolean;
   tempChanges: Record<string, Record<string, number>>;
   handlers: {
     handleRowClick: (item: T) => void;
     handleSort: (key: keyof T) => void;
     setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
   };
+}
+
+export interface TableConfig<T> {
+  fields: BaseField[];
+  sortConfig: { key: keyof T; direction: 'ascending' | 'descending' } | null;
+  columnWidths: number[];
+  useFlexTable: boolean;
   maxHeight?: number;
 }
 
 const Table = <T extends Record<string, any>>({
-  fields,
-  sortConfig,
+  config,
   items,
   selectedItem,
   tempChanges,
   handlers
-}: TableBodyProps<T>) => {
+}: TableProps<T>) => {
   const { handleRowClick, handleSort, setTempChanges } = handlers || {};
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [columnWidths, setColumnWidths] = useState<number[]>([]);
@@ -97,12 +100,12 @@ const Table = <T extends Record<string, any>>({
       <table className={`list-base-table header-table`} aria-label="List header">
         <thead>
           <tr ref={headerRef}>
-            {fields.map((field, index) => field.visible && (
+            {config.fields.map((field, index) => field.visible && (
               <th key={field.name} onClick={() => handleSort(field.name as keyof T)}
-              style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
+                style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
                 {field.label || field.placeholder || field.name}
-                {sortConfig?.key === field.name && (
-                  <span>{sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}</span>
+                {config.sortConfig?.key === field.name && (
+                  <span>{config.sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}</span>
                 )}
               </th>
             ))}
@@ -116,9 +119,9 @@ const Table = <T extends Record<string, any>>({
           <tbody>
             {items.length > 0 ? items.map((item) => (
               <tr key={item.id} onClick={() => handleRowClick?.(item)} className={selectedItem?.id === item.id ? "selected-row" : ""} aria-selected={selectedItem?.id === item.id}>
-                {fields.map((field, index) => (
+                {config.fields.map((field, index) => (
                   <td key={field.name}
-                  style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
+                    style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
                     {renderCell(item, field)}
                   </td>
                 ))}
@@ -126,7 +129,7 @@ const Table = <T extends Record<string, any>>({
             )) :
               (
                 <tr>
-                  <td colSpan={fields.length} className="empty-state">No data available</td>
+                  <td colSpan={config.fields.length} className="empty-state">No data available</td>
                 </tr>
               )
             }

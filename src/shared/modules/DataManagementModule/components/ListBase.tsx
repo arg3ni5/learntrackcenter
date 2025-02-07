@@ -10,6 +10,7 @@ import { useFormVisibility } from "../hooks/useFormVisibility";
 import { useSorting } from "../hooks/useSorting";
 import { useFiltering } from "../hooks/useFiltering";
 import { usePagination } from "../hooks/usePagination";
+import Table from "./Table";
 // import Table from "./Table";
 
 /**
@@ -37,6 +38,7 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     showForm: isShowForm = false,
     showImportForm: isShowImportForm = false,
     loading = false,
+    type = "table"
   } = config;
   const { onAdd, onImport, onSelect, onItemDeleted, onItemsUpdated, onReload, onAssign } = handlers;
 
@@ -104,11 +106,11 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
     handleRowClick,
   };
 
-  // const handlersTable = {
-  //   setTempChanges,
-  //   handleRowClick,
-  //   handleSort
-  // };
+  const handlersTable = {
+    setTempChanges,
+    handleRowClick,
+    handleSort
+  };
 
   // Render component
   return (
@@ -155,12 +157,27 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
         )}
 
         {/* Table container */}
-        <div className={`table-container ${showActions ? "with-actions" : ""}`}>
+        {type == "table-fixed" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
           <div className="table-body-container">
             <TableHeader fields={fields} setColumnWidths={setColumnWidths} sortConfig={sortConfig} handleSort={handleSort} showActions={showActions} useFlexTable={useFlexTable} />
             <TableBody fields={fields} items={paginatedItems} columnWidths={columnWidths} selectedItem={selectedItem} tempChanges={tempChanges} handlers={handlersTbody} useFlexTable={useFlexTable} />
           </div>
-        </div>
+        </div>)}
+
+        {type == "table" && (<div className={`table-container ${showActions ? "with-actions" : ""}`}>
+          <div className="table-body-container">
+            <Table<T>
+              items={paginatedItems}
+              selectedItem={selectedItem}
+              config={{
+                fields, sortConfig,
+                columnWidths,
+                useFlexTable
+              }}
+              tempChanges={tempChanges}
+              handlers={handlersTable} />
+          </div>
+        </div>)}
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </>
     )

@@ -35,7 +35,7 @@ export interface CommonProps<T> {
 
 export interface UploadField extends Field {}
 
-export interface HandlersBaseModuleProps<T>{
+export interface HandlersBaseModuleProps<T> {
   onView?: (item: T) => void; // Optional callback to handle view
   onSelect?: (item: T | null) => void; // Optional callback to handle select
   onItemAdded?: (newItem: T) => Promise<void>; // Callback to handle adding an item
@@ -46,7 +46,10 @@ export interface HandlersBaseModuleProps<T>{
   onReload?: () => void;
   onAssign?: () => void;
 }
-export interface BaseModuleProps<T> extends CommonProps<T>{
+
+type TableType = "vertical" | "table" | "table-fixed";
+export interface BaseModuleProps<T> extends CommonProps<T> {
+  type?: TableType;
   className?: string;
   title?: string;
   uploadFields?: BaseField[];
@@ -65,6 +68,7 @@ export interface configListBaseProps<T> extends CommonProps<T> {
   seeable: boolean;
   tempChanges: Record<string, Record<string, number>>;
   setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
+  type: TableType;
 }
 
 export interface ListBaseProps<T> {
@@ -78,7 +82,7 @@ export interface ListBaseProps<T> {
     onImport?: (state: boolean) => void;
     onReload?: () => void;
     onAssign?: () => void;
-  }
+  };
 }
 
 export interface LinkItem {
@@ -106,8 +110,8 @@ export interface ActionButtonsConfig<T> {
   showForm: boolean;
   showImportForm: boolean;
   selectedItem: T | null;
-  setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>
-  tempChanges: Record<string, Record<string, number>>
+  setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
+  tempChanges: Record<string, Record<string, number>>;
   viewLinks?: LinkItem[];
   ableForm?: boolean;
   ableImport?: boolean;
