@@ -8,7 +8,7 @@ export interface TableProps<T> {
   tempChanges: Record<string, Record<string, number>>;
   handlers: {
     handleRowClick: (item: T) => void;
-    handleSort: (key: keyof T) => void;
+    handleSort: (key: keyof T | null) => void;
     setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
   };
 }
@@ -101,7 +101,10 @@ const Table = <T extends Record<string, any>>({
         <thead>
           <tr ref={headerRef}>
             {config.fields.map((field, index) => field.visible && (
-              <th key={field.name} onClick={() => handleSort(field.name as keyof T)}
+              <th
+                key={field.name}
+                onClick={() => handleSort(field.name as keyof T)}
+                onDoubleClick={() => handleSort(null)}
                 style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
                 {field.label || field.placeholder || field.name}
                 {config.sortConfig?.key === field.name && (

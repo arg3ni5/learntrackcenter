@@ -7,7 +7,7 @@ export interface TableProps<T> {
   tempChanges: Record<string, Record<string, number>>;
   handlers: {
     handleRowClick: (item: T) => void;
-    handleSort: (key: keyof T) => void;
+    handleSort: (key: keyof T | null) => void;
     setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
   };
 }
@@ -88,12 +88,15 @@ const VerticalTable = <T extends Record<string, any>>({
               const isSorted = config.sortConfig?.key === field.name;
               return (
                 field.visible && isSorted && (
-                  <th key={field.name} onClick={() => handleSort(field.name as keyof T)}>
+                  <th key={field.name}
+                    onClick={() => handleSort(field.name as keyof T)}
+                    onDoubleClick={() => handleSort(null)}>
                     {<span>{field.label || field.placeholder || field.name} {config.sortConfig?.direction === 'ascending' ? ' ▲' : ' ▼'}</span>}
                   </th>
                 )
               )
             })}
+            <th></th>
           </tr>
         </thead>
       </table>

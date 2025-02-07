@@ -7,7 +7,7 @@ interface TableHeaderProps<T> {
   setColumnWidths: (widths: number[]) => void;
   showActions: boolean;
   useFlexTable: boolean;
-  handleSort: (key: keyof T) => void;
+  handleSort: (key: keyof T | null) => void;
 }
 
 const TableHeader = <T extends Record<string, any>>({ fields, sortConfig, handleSort, setColumnWidths, showActions }: TableHeaderProps<T>) => {
@@ -23,8 +23,11 @@ const TableHeader = <T extends Record<string, any>>({ fields, sortConfig, handle
     <thead>
       <tr ref={headerRef}>
         {fields.map((field) => field.visible && (
-          <th key={field.name} onClick={() => handleSort(field.name as keyof T)}
-          style={{ width: field.size ? `${field.size}${field.unit || "em"}` : "auto" }}>
+          <th
+            key={field.name}
+            onClick={() => handleSort(field.name as keyof T)}
+            onDoubleClick={() => handleSort(null)}
+            style={{ width: field.size ? `${field.size}${field.unit || "em"}` : "auto" }}>
             {field.label || field.placeholder || field.name}
             {sortConfig?.key === field.name && (
               <span>{sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}</span>
