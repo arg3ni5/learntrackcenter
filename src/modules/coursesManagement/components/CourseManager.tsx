@@ -84,9 +84,6 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
         <button onClick={() => { navigate(-1) }}> <FaArrowLeft /> Go Back</button>
       </div>
 
-
-
-
       <div className="actions-card">
         {/* Tabs Navigation */}
         <div className="view-toggle tabs">
@@ -96,7 +93,7 @@ const CourseManager: React.FC<CourseManagerProps> = ({ periodId, periodCourse })
               onClick={() => toggleSection(id)}
               className={`tab ${activeSection === id ? "active" : ""}`}
             >
-              {icon} <span className="d-none ">{label}</span>
+              {icon} <span className="d-none d-md-block-over">{label}</span>
             </button>
           ))}
         </div>
