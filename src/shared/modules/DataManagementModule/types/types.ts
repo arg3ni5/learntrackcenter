@@ -15,9 +15,10 @@ export interface BaseField extends Field {
   options?: Option[]; // Options for the select
   visible?: boolean;
   required?: boolean;
-  onChange?: (value: any) => void;
   size?: number;
   unit?: "em" | "px" | "%" | "rem" | "vw" | "vh";
+  width?: `${number}${"em" | "px" | "%" | "rem" | "vw" | "vh"}`;
+  onChange?: (value: any) => void;
 }
 
 export interface CommonProps<T> {
@@ -41,10 +42,10 @@ export interface HandlersBaseModuleProps<T> {
   onItemAdded?: (newItem: T) => Promise<void>; // Callback to handle adding an item
   onItemsAdded?: (items: T[]) => Promise<void>; // Callback to handle adding multiple items
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
-  onItemsUpdated?: (changes: Record<string, Record<string, number>>) => void;
+  onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>;
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
-  onReload?: () => void;
-  onAssign?: () => void;
+  onReload?: () => Promise<void>;
+  onAssign?: () => Promise<void>;
 }
 
 type TableType = "vertical" | "table" | "table-fixed";
@@ -56,7 +57,7 @@ export interface BaseModuleProps<T> extends CommonProps<T> {
   initialFormData?: T | null; // Initial data for the form
   clearFormAfterAdd?: boolean;
   children?: React.ReactNode;
-  fetchItems?: () => Promise<T[]>; // Function to fetch items
+  fetchItems?: () => Promise<T[]> | null;
   handlers?: HandlersBaseModuleProps<T>;
 }
 
