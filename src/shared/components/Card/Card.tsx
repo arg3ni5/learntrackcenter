@@ -58,7 +58,8 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 
 	return (
 		<>
-			<div className="actions buttons-container compact">
+
+			{showActions && (<div className="actions buttons-container compact">
 
 				{handlers?.onItemUpdated && (
 					<button onClick={() => handlers.onItemUpdated && data && handlers.onItemUpdated(data)} className="edit-button">
@@ -90,7 +91,8 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 
 					</button>
 				))}
-			</div>
+			</div>)}
+
 
 			<div className={`module-card ${showActions ? "with-actions" : ""}`}>
 				{children}
