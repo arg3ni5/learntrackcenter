@@ -26,6 +26,7 @@ export interface HandlersCard<T> {
 
 export interface CardProps<T> {
 	children?: React.ReactNode;
+	className?: string;
 	titleName?: string; // Card title
 	fields: CardField[];
 	data?: T | null;
@@ -37,7 +38,7 @@ export interface CardProps<T> {
 	customButtons?: CustomButton[];
 }
 
-const Card = <T extends Record<string, any>>({ children, titleName, fields, data, handlers, ableDelete, viewLink, customButtons }: CardProps<T>) => {
+const Card = <T extends Record<string, any>>({ children, className, titleName, fields, data, handlers, ableDelete, viewLink, customButtons }: CardProps<T>) => {
 
 	const renderFieldValue = (type: string | undefined, value: any) => {
 		switch (type) {
@@ -59,42 +60,42 @@ const Card = <T extends Record<string, any>>({ children, titleName, fields, data
 	return (
 		<>
 
-			{showActions && (<div className="actions buttons-container compact">
+			{showActions && (
+				<div className="actions buttons-container compact">
+					{handlers?.onItemUpdated && (
+						<button onClick={() => handlers.onItemUpdated && data && handlers.onItemUpdated(data)} className="edit-button">
+							<LuSave /> <span className="d-none d-md-inline-over">Save</span>
+						</button>
+					)}
+					{ableDelete && data && data["id"] && (
+						<button onClick={() => handlers?.onDelete && data && handlers.onDelete(data["id"])} className="delete-button">
+							<FaTrash /> <span className="d-none d-md-inline-over">Delete</span>
+						</button>
+					)}
+					{viewLink && (
+						<Link
+							to={viewLink}
+							className="button view-button"
+							aria-label="View selected item">
+							<FaEye /> <span className="d-none d-md-inline-over">View</span>
 
-				{handlers?.onItemUpdated && (
-					<button onClick={() => handlers.onItemUpdated && data && handlers.onItemUpdated(data)} className="edit-button">
-						<LuSave /> <span className="d-none d-md-inline-over">Save</span>
-					</button>
-				)}
-				{ableDelete && data && data["id"] && (
-					<button onClick={() => handlers?.onDelete && data && handlers.onDelete(data["id"])} className="delete-button">
-						<FaTrash /> <span className="d-none d-md-inline-over">Delete</span>
-					</button>
-				)}
-				{viewLink && (
-					<Link
-						to={viewLink}
-						className="button view-button"
-						aria-label="View selected item">
-						<FaEye /> <span className="d-none d-md-inline-over">View</span>
+						</Link>
+					)}
+					{customButtons && customButtons.map((button, index) => (
+						<button
+							key={index}
+							onClick={button.onClick}
+							className={`button ${button.className || ''}`}
+							aria-label={button.ariaLabel || button.label}
+						>
+							{button.icon ? (<>{button.icon} <span className="d-none d-md-inline-over">{button.label}</span></>) : button.label}
 
-					</Link>
-				)}
-				{customButtons && customButtons.map((button, index) => (
-					<button
-						key={index}
-						onClick={button.onClick}
-						className={`button ${button.className || ''}`}
-						aria-label={button.ariaLabel || button.label}
-					>
-						{button.icon ? (<>{button.icon} <span className="d-none d-md-inline-over">{button.label}</span></>) : button.label}
-
-					</button>
-				))}
-			</div>)}
+						</button>
+					))}
+				</div>)}
 
 
-			<div className={`module-card ${showActions ? "with-actions" : ""}`}>
+			<div className={`module-card ${showActions ? "with-actions" : ""} ${className}`}>
 				{children}
 				{titleName && (<h2>{data ? data[titleName] : ''}</h2>)}
 				{fields.map(({ name, placeholder, type }: CardField) => (

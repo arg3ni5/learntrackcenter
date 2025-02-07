@@ -12,6 +12,7 @@ import { useFiltering } from "../hooks/useFiltering";
 import { usePagination } from "../hooks/usePagination";
 import Table from "./Table";
 import VerticalTable from "./VerticalTable";
+import Cards from "./Cards";
 // import Table from "./Table";
 
 /**
@@ -194,6 +195,19 @@ const ListBase = <T extends Record<string, any>>({ config, handlers }: ListBaseP
               handlers={handlersTable} />
           </div>
         </div>)}
+
+        {layout == "cards" && (
+          <Cards<T>
+            items={paginatedItems}
+            selectedItem={selectedItem}
+            config={{
+              fields, sortConfig,
+              columnWidths,
+              useFlexTable
+            }}
+            tempChanges={tempChanges}
+            handlers={handlersTable} />
+        )}
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </>
     )
