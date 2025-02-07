@@ -21,17 +21,12 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
     { name: "grade", placeholder: "Grade", type: "number" },
   ];
 
-  const handleDelete = async (id: string) => {
+  const onItemDeleted = async (id: string) => {
     console.log(id);
   };
 
-  const handleOnSelect = (item: StudentAssignment | null) => {
-    setCurrentAssignment(item);
-  };
-
-  const onItemsUpdated = (changes: Record<string, Record<string, number>>) => {
-    handleUpdateAssignments(changes);
-  };
+  const onItemsUpdated = (changes: Record<string, Record<string, number>>) => handleUpdateAssignments(changes);
+  ;
 
   return (
     loading ? <Loading type='spinner' className="item h30vh"></Loading> : <>
@@ -51,10 +46,10 @@ const AssignmentsManager: React.FC<StudentAssignmentsManagerProps> = ({ studentI
             initialFormData={currentAssignment}
             loading={loading}
             handlers={{
+              onItemDeleted,
+              onItemsUpdated,
               onItemUpdated: handleUpdateAssignment,
-              onItemDeleted: handleDelete,
-              onSelect: handleOnSelect,
-              onItemsUpdated: onItemsUpdated,
+              onSelect: setCurrentAssignment,
             }}></DataManagementModule>
         )}
       </div>

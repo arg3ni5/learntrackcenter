@@ -18,7 +18,7 @@ const StudentModule: React.FC = () => {
 
     const fields = [
         { name: "fullName", placeholder: "Full Name", view: true, size: 20 },
-        { name: "identificationNumber", placeholder: "Identification Number", size: 15 },
+        { name: "identificationNumber", placeholder: "Identification", size: 15 },
         { name: "email", placeholder: "Email Address", size: 20 },
     ];
 

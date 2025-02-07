@@ -18,8 +18,8 @@ interface Props {
   teachers: Teacher[];
   setSelectedCourseId?: (id: string | null) => void;
   loading: boolean;
-  assign?: () => void;
-  load?: () => void;
+  assign?: () => Promise<void>;
+  load?: () => Promise<void>;
   handlers: {
     onItemAdded?: (newItem: Course) => Promise<void>;
     onItemUpdated?: (updatedItem: Course) => Promise<void>;

@@ -14,8 +14,8 @@ interface Props {
   courses: AvailableCourse[];
   setSelectedCourseId?: (id: string | null) => void;
   loading: boolean;
-  assign?: () => void;
-  load?: () => void;
+  assign?: () => Promise<void>;
+  load?: () => Promise<void>;
 }
 
 const CourseSelector: React.FC<Props> = (
