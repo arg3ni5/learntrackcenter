@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import DataManagementModule from "../../shared/modules/DataManagementModule/DataManagementModule";
 import useStudents from './hooks/useStudents';
 import { useLoading } from "../../components/loading/LoadingContext";
@@ -8,17 +8,17 @@ import { Student } from "../../types/types";
 import StudentCard from "./components/StudentCard";
 import StudentPeriodsManager from "./components/StudentPeriodsManager";
 import './StudentModule.css';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const StudentModule: React.FC = () => {
     const { setIsLoading } = useLoading();
     const { students, loading, handleAddStudent, handleAddStudents, handleRemoveStudent, handleUpdateStudent } = useStudents("Loading Student");
     const [selectedStudent, setSelectedStudent] = useLocalStorage<Student | null>("selectedStudent", null);
-    const [animation, setAnimation] = useState('');
     const navigate = useNavigate();
 
     const fields = [
         { name: "fullName", placeholder: "Full Name", view: true, size: 20 },
-        { name: "identificationNumber", placeholder: "Identification", size: 15 },
+        { name: "identificationNumber", placeholder: "Identification Number", size: 15 },
         { name: "email", placeholder: "Email Address", size: 20 },
     ];
 
@@ -35,20 +35,6 @@ const StudentModule: React.FC = () => {
         setSelectedStudent(item);
     };
 
-    // Handle selection of a student
-    const handleOnSelect = (item: Student | null) => {
-        if (item) {
-            setAnimation('slide-in-elliptic-bottom-fwd');
-            setSelectedStudent(item);
-        } else {
-            setAnimation('slide-out-elliptic-bottom-bck');
-            setTimeout(() => {
-                setSelectedStudent(null);
-                setAnimation('');
-            }, 500); // Ajusta este tiempo según la duración de tu animación
-        }
-    };
-
 
     // Handle removal of a student
     const handleOnRemove = async (id: string) => {
@@ -60,12 +46,17 @@ const StudentModule: React.FC = () => {
     return (
         <>
             <h1 className='title'>Manage Student</h1>
-            {(selectedStudent || animation === 'slide-out-top') && (
-                <div className={`animated-element ${animation}`}>
-                    <StudentCard student={selectedStudent!} />
-                    {selectedStudent?.id && <StudentPeriodsManager student={selectedStudent} />}
-                </div>
-            )}
+            <AnimatePresence initial={false}>
+                {selectedStudent && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0 }}>
+                        <StudentCard student={selectedStudent!} />
+                        <StudentPeriodsManager student={selectedStudent} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <DataManagementModule<Student>
                 fields={fields}
@@ -76,7 +67,7 @@ const StudentModule: React.FC = () => {
                     onItemDeleted: handleOnRemove,
                     onItemUpdated: handleUpdateStudent,
                     onView: handleOnView,
-                    onSelect: handleOnSelect
+                    onSelect: setSelectedStudent
                 }}
                 initialFormData={selectedStudent}
                 ableFilter={true}

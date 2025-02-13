@@ -1,12 +1,13 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../components/loading/Loading";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import DataManagementModule from "../../shared/modules/DataManagementModule/DataManagementModule";
 import { Period, PeriodStatus } from "../../types/types";
 import usePeriods from "./hooks/usePeriods";
+import { useLoading } from "../../components/loading/LoadingContext";
 
 const PeriodsModule: React.FC = () => {
+	const { setIsLoading } = useLoading();
 	const { periods, loading, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod } = usePeriods();
 	const [, setSelectPeriod] = useLocalStorage<Period | null>("selectPeriod", null);
 	const navigate = useNavigate();
@@ -26,6 +27,10 @@ const PeriodsModule: React.FC = () => {
 		navigate(`/period/${item.id}/courses`);
 		setSelectPeriod(item);
 	};
+	// Effect to manage loading state
+			useEffect(() => {
+					setIsLoading(loading);
+			}, [loading, setIsLoading]);
 
 	return (
 		<>
@@ -54,11 +59,6 @@ const PeriodsModule: React.FC = () => {
 				loading={loading} // Loading state
 				showForm={false} // Show the form
 			/>
-			{loading && (
-				<div className="loading">
-					<Loading />
-				</div>
-			)}
 		</>
 	);
 };
