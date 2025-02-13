@@ -41,7 +41,7 @@
 /* Estilos para el menú desplegable */
 .select-input .react-select__menu {
     background-color: var(--bg-color);
-    z-index: 9999; /* Asegura que el menú aparezca sobre otros elementos */
+    z-index: 2; /* Asegura que el menú aparezca sobre otros elementos */
 }
 .select-input .react-select__option:nth-child(odd) {
     border-bottom: 2px solid #007bff;

@@ -15,7 +15,7 @@
     display: flex; /* Usar flexbox para alinear el contenido */
     justify-content: space-between; /* Espacio entre el mensaje y el botón de cerrar */
     align-items: center; /* Centrar verticalmente */
-    z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+    z-index: 6; /* Asegurarse de que esté por encima de otros elementos */
 }
 
 .notification.success {

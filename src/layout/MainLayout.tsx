@@ -11,6 +11,9 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <Menu />
       </div>
       <div className="main">{children}</div>
+      <div className="footer">
+        <p>Footer</p>
+      </div>
     </div>
   );
 };
