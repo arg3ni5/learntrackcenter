@@ -36,4 +36,4 @@ const TeacherModule: React.FC = () => {
   );
 };
 
-export default TeacherModule; // Exporting the TeacherModule component for use in other parts of the application
+export default TeacherModule;
