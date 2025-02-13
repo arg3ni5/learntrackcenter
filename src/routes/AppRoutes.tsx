@@ -3,16 +3,15 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import PrivateRoute from "../modules/userAuth/components/PrivateRoute";
-import PeriodCourses from "../pages/PeriodCourses";
-import Loading from "../components/loading/Loading";
 import { useLoading } from "../components/loading/LoadingContext";
+import PrivateRoute from "../modules/userAuth/components/PrivateRoute";
 
 const Register = lazy(() => import("../components/Register"));
 const Home = lazy(() => import("../pages/Home"));
 const Courses = lazy(() => import("../pages/Courses"));
 const Grades = lazy(() => import("../pages/Grades"));
 const Periods = lazy(() => import("../pages/Periods"));
+const PeriodCourses = lazy(() => import("../pages/PeriodCourses"));
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Students = lazy(() => import("../pages/Students"));
@@ -24,26 +23,16 @@ const PeriodStudents = lazy(() => import("../pages/PeriodStudents"));
 
 const AppRoutes: React.FC = () => {
   const { loading: authLoading } = useAuth();
-  const { setIsLoading } = useLoading();
+  const { setIsLoading, setLoadingText } = useLoading();
   const [initialLoadingComplete, setInitialLoadingComplete] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (authLoading) {
-      setIsLoading(true);
-    } else {
-      timer = setTimeout(() => {
-        setIsLoading(false);
-        setInitialLoadingComplete(true);
-        setShowContent(true);
-      }, 2000);
-    }
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [authLoading, setIsLoading]);
+    setLoadingText("Cargando pagina");
+    setIsLoading(authLoading);
+    setInitialLoadingComplete(!authLoading);
+    setShowContent(!authLoading);
+  }, [authLoading, setIsLoading, setLoadingText]);
 
   if (!initialLoadingComplete) {
     return null;
@@ -71,7 +60,7 @@ const AppRoutes: React.FC = () => {
     </Routes>
   );
 
-  return <Suspense fallback={<Loading text="Cargando componente..."></Loading>}>{showContent ? routes : null}</Suspense>;
+  return <Suspense>{showContent ? routes : null}</Suspense>;
 };
 
 export default AppRoutes;
