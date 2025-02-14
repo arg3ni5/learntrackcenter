@@ -1,0 +1,92 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.button {
+    padding: 10px;
+    background-color: var(--bg-color-highlight);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.link {
+    padding: 10px;
+    /* background-color: var(--bg-color-highlight); */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.link:hover,
+.button:hover {
+    background-color: #0056b3;
+}
+
+.buttons {
+    margin: 18px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.buttons .button,
+.buttons .link {
+    flex: 1;
+}
+
+.lineText {
+    width: 60%;
+    padding: 1rem;
+}
+
+.pass {
+    position: relative;
+}
+
+.pass .icon {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    padding: 10px;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}

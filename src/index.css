@@ -63,6 +63,31 @@ button,
   transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background-color: var(--bg);
+}
+
+input, select {
+  margin-bottom: 15px;
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
