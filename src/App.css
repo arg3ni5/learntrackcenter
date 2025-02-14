@@ -61,15 +61,11 @@ body {
 }
 
 /* Estilos para el .footer */
-.footer {
-  background-color: #f8f9fa;
-  /* Color de fondo */
+.footer{
+  background-color: #f8f9fa !important;
   color: #333;
-  /* Color del texto */
   text-align: center;
-  /* Centrar texto */
   padding: 10px;
-  /* Espaciado interno */
 }
 
 .logo {
