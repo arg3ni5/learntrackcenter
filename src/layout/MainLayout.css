@@ -10,6 +10,11 @@
     min-height: 100vh;
 }
 
+
+.footer a {
+    color: #f8f9fa !important;
+}
+
 .header {
     height: 60px;
     grid-area: header;
@@ -18,6 +23,7 @@
     z-index: 4;
     background-color: var(--bg-color-header);
 }
+
 .footer {
     height: 60px;
     grid-area: footer;
@@ -103,12 +109,14 @@
         padding: 0.8rem;
         /* Menos espaciado en móviles */
     }
+
     .container-grid {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
         gap: 2px;
     }
-    .container-flex .item{
+
+    .container-flex .item {
         flex: auto;
     }
 }
