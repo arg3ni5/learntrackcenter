@@ -4,7 +4,7 @@ import React, { Suspense, lazy, useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useLoading } from "../components/loading/LoadingContext";
-import PrivateRoute from "../modules/userAuth/components/PrivateRoute";
+import PrivateRoute from "../auth/components/PrivateRoute";
 
 const Register = lazy(() => import("../components/Register"));
 const Home = lazy(() => import("../pages/Home"));
