@@ -19,7 +19,11 @@ const Home: React.FC = () => {
 
     return (
         <div className="home-container">
-            <h1>Welcome to LearnTrackCenter</h1> <p>Your platform for managing grades and students.</p>
+            <h1>Welcome to
+                <span className='d-none d-lg-block-under'> Learn Track Center</span>
+                <span className='d-none d-lg-inline-over'> LearnTrackCenter</span>
+            </h1>
+            <p>Your platform for managing grades and students.</p>
 
             {!user ? (
                 <Login />
