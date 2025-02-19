@@ -19,7 +19,7 @@ const AvailableStudents: React.FC<CourseStudentsManagerProps> = ({ periodCourse,
 
     useEffect(()=>{
         loadAvailableStudents();
-    },[]);
+    }, [periodCourse, loadAvailableStudents]);
 
     // Define fields for the student table
     const fields = [

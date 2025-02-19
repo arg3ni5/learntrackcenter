@@ -45,7 +45,11 @@ export const useUsers = () => {
       const newUser = await registerUser(email, password);
       setUser(newUser);
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
     } finally {
       setLoading(false);
     }
@@ -60,7 +64,11 @@ export const useUsers = () => {
       console.log(loggedInUser);
       setUser(loggedInUser);
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
     } finally {
       setLoading(false);
     }
@@ -74,7 +82,11 @@ export const useUsers = () => {
       const googleUser = await loginWithGoogle();
       setUser(googleUser);
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
     } finally {
       setLoading(false);
     }
@@ -88,7 +100,11 @@ export const useUsers = () => {
       await logoutUser();
       setUser(null);
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
     } finally {
       setLoading(false);
     }
@@ -102,7 +118,11 @@ export const useUsers = () => {
       const userData = await getUserData(uid);
       setUser({ ...user, ...userData });
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
     } finally {
       setLoading(false);
     }
@@ -115,7 +135,11 @@ export const useUsers = () => {
     try {
       await updateUserProfile(uid, data);
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
     } finally {
       setLoading(false);
     }
@@ -125,10 +149,14 @@ export const useUsers = () => {
     setLoading(true);
     setError("");
     try {
-      const googleUser = await linkGoogleAccount(user);
+      const googleUser = await linkGoogleAccount();
       setUser(googleUser);
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
     } finally {
       setLoading(false);
     }
