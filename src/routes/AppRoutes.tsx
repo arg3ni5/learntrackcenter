@@ -5,6 +5,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useLoading } from "../components/loading/LoadingContext";
 import PrivateRoute from "../auth/components/PrivateRoute";
+import PeriodCourse from "../pages/PeriodCourse";
 
 const Register = lazy(() => import("../components/Register"));
 const Home = lazy(() => import("../pages/Home"));
@@ -53,7 +54,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/periods/courses" element={<PrivateRoute element={<Periods />} />} />
       <Route path="/period/:id/courses" element={<PrivateRoute element={<PeriodCourses />} />} />
       <Route path="/period/:id/students" element={<PrivateRoute element={<PeriodStudents />} />} />
-      <Route path="/period/:periodId/course/:courseId" element={<PrivateRoute element={<CourseStudents />} />} />
+      <Route path="/period/:periodId/course/:courseId" element={<PrivateRoute element={<PeriodCourse />} />} />
       <Route path="grades/period/:periodId/course/:courseId" element={<PrivateRoute element={<Grades />} />} />
       <Route path="/course/:id/students" element={<PrivateRoute element={<CourseStudents />} />} />
       <Route path="*" element={<Navigate to="/" />} /> {/* Redirigir a la página de inicio */}

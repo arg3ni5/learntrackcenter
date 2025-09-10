@@ -1,7 +1,7 @@
-// src/modules/studentsManagement/services/courseService.ts
+// src/modules/periodsManagement/services/periodCourseService.ts
 
 import { db } from "../../../services/firebase";
-import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { collection, addDoc, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { Course as AvailableCourses } from "../../coursesManagement/services/courseService";
 import { arrayUnion, arrayRemove } from "firebase/firestore";
 import { Course } from "../../../types/types";
@@ -14,6 +14,15 @@ export const fetchAvailableCourses = async (): Promise<AvailableCourses[]> => {
     id: doc.id,
     ...(doc.data() as Omit<AvailableCourses, "id">),
   }));
+};
+
+export const getCourseById = async (periodId: string, courseId: string): Promise<Course | null> => {
+  const courseDoc = doc(db, `periods/${periodId}/courses`, courseId);
+  const courseSnapshot = await getDoc(courseDoc);
+  if (courseSnapshot.exists()) {
+    return { id: courseSnapshot.id, ...(courseSnapshot.data() as Omit<Course, "id">) };
+  }
+  return null;
 };
 
 // Function to fetch courses for a specific student
