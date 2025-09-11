@@ -4,9 +4,7 @@ import TeacherModule from '../modules/teachersManagement/components/TeacherModul
 
 const Teachers: React.FC = () => {
     return (
-        <div>
-            <TeacherModule />
-        </div>
+        <><TeacherModule/></>
     );
 };
 

@@ -1,20 +1,36 @@
-import React from "react";
-import DataManagementModule from "../../shared/modules/DataManagementModule/DataManagementModule";
-import usePeriods from "./hooks/usePeriods";
-import Loading from "../../components/loading/Loading";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import { Period } from "../../types/types";
+import DataManagementModule from "../../shared/modules/DataManagementModule/DataManagementModule";
+import { Period, PeriodStatus } from "../../types/types";
+import usePeriods from "./hooks/usePeriods";
+import { useLoading } from "../../components/loading/LoadingContext";
 
 const PeriodsModule: React.FC = () => {
-	const { periods, loading, error, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod } = usePeriods();
+	const { setIsLoading } = useLoading();
+	const { periods, loading, handleAddPeriod, handleDeletePeriod, handleUpdatePeriod } = usePeriods();
 	const [, setSelectPeriod] = useLocalStorage<Period | null>("selectPeriod", null);
 	const navigate = useNavigate();
+
+	const periodStatusOptions = useMemo(
+		() =>
+			Object.entries(PeriodStatus)
+				.filter(([, value]) => !isNaN(Number(value)))
+				.map(([key, value]) => ({
+					value: value.toString(),
+					label: key
+				})),
+		[]
+	);
 
 	const handleOnEdit = (item: Period) => {
 		navigate(`/period/${item.id}/courses`);
 		setSelectPeriod(item);
 	};
+	// Effect to manage loading state
+			useEffect(() => {
+					setIsLoading(loading);
+			}, [loading, setIsLoading]);
 
 	return (
 		<>
@@ -25,7 +41,7 @@ const PeriodsModule: React.FC = () => {
 					{ name: "name", placeholder: "Name of Period", label: "Name", size: 20 },
 					{ name: "startDate", placeholder: "Start Date", size: 10 },
 					{ name: "endDate", placeholder: "End Date", size: 10 },
-					{ name: "status", placeholder: "Status", size: 8 },
+					{ name: "status", placeholder: "Status", size: 8, type: "select", options: periodStatusOptions },
 				]}
 				items={periods} // Fetch current periods
 				handlers={{
@@ -43,13 +59,6 @@ const PeriodsModule: React.FC = () => {
 				loading={loading} // Loading state
 				showForm={false} // Show the form
 			/>
-			{loading && (
-				<div className="loading">
-					<Loading />
-				</div>
-			)}{" "}
-			{/* Loading message */}
-			{error && <div className="error">{error}</div>} {/* Error message */}
 		</>
 	);
 };

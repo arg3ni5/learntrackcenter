@@ -11,6 +11,9 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <Menu />
       </div>
       <div className="main">{children}</div>
+      <div className="footer">
+        <a href="https://github.com/arg3ni5" target="_blank" rel="noopener noreferrer">arg3ni5</a>
+      </div>
     </div>
   );
 };

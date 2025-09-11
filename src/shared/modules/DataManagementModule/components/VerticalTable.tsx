@@ -1,4 +1,3 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { BaseField } from "../types/types";
 
 export interface TableProps<T> {
@@ -16,12 +15,12 @@ export interface TableProps<T> {
 export interface TableConfig<T> {
   fields: BaseField[];
   sortConfig: { key: keyof T; direction: 'ascending' | 'descending' } | null;
-  columnWidths: number[];
+  columnWidths?: number[];
   useFlexTable: boolean;
   maxHeight?: number;
 }
 
-const Table = <T extends Record<string, any>>({
+const VerticalTable = <T extends Record<string, any>>({
   config,
   items,
   selectedItem,
@@ -29,21 +28,6 @@ const Table = <T extends Record<string, any>>({
   handlers
 }: TableProps<T>) => {
   const { handleRowClick, handleSort, setTempChanges } = handlers || {};
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const [columnWidths, setColumnWidths] = useState<number[]>([]);
-  const headerRef = useRef<HTMLTableRowElement>(null);
-
-  useEffect(() => {
-    if (headerRef.current) {
-      setColumnWidths(Array.from(headerRef.current.children).map((th) => (th as HTMLTableCellElement).offsetWidth));
-    }
-  }, [isDataLoaded]);
-
-  useEffect(() => {
-    if (items.length > 0) {
-      setIsDataLoaded(true);
-    }
-  }, [items]);
 
   const handleNumberChange = (itemId: string, fieldName: string, value: string) => {
     const numValue = parseFloat(value);
@@ -99,19 +83,20 @@ const Table = <T extends Record<string, any>>({
     <div className="table-body-container">
       <table className={`list-base-table header-table`} aria-label="List header">
         <thead>
-          <tr ref={headerRef}>
-            {config.fields.map((field, index) => field.visible && (
-              <th
-                key={field.name}
-                onClick={() => handleSort(field.name as keyof T)}
-                onDoubleClick={() => handleSort(null)}
-                style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
-                {field.label || field.placeholder || field.name}
-                {config.sortConfig?.key === field.name && (
-                  <span>{config.sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}</span>
-                )}
-              </th>
-            ))}
+          <tr>
+            {config.fields.map((field) => {
+              const isSorted = config.sortConfig?.key === field.name;
+              return (
+                field.visible && isSorted && (
+                  <th key={field.name}
+                    onClick={() => handleSort(field.name as keyof T)}
+                    onDoubleClick={() => handleSort(null)}>
+                    {<span>{field.label || field.placeholder || field.name} {config.sortConfig?.direction === 'ascending' ? ' ▲' : ' ▼'}</span>}
+                  </th>
+                )
+              )
+            })}
+            <th></th>
           </tr>
         </thead>
       </table>
@@ -120,16 +105,29 @@ const Table = <T extends Record<string, any>>({
       <div className="table-body-wrapper">
         <table className="list-base-table body-table" aria-label="List of items">
           <tbody>
-            {items.length > 0 ? items.map((item) => (
-              <tr key={item.id} onClick={() => handleRowClick?.(item)} className={selectedItem?.id === item.id ? "selected-row" : ""} aria-selected={selectedItem?.id === item.id}>
-                {config.fields.map((field, index) => (
-                  <td key={field.name}
-                    style={{ width: (`${field.size}${field.unit || "em"}`) || columnWidths[index] || "auto" }}>
-                    {renderCell(item, field)}
-                  </td>
-                ))}
-              </tr>
-            )) :
+            {items.length > 0 ?
+              items.map((item) => {
+                const isSelected = selectedItem?.id === item.id;
+                const [firstField, ...fieldsInfo] = config.fields;
+                return (
+                  <tr key={item.id}
+                    onClick={() => handleRowClick?.(item)}
+                    className={isSelected ? "selected-row" : ""}
+                    aria-selected={isSelected}>
+                    <td>
+                      <h2 onClick={() => handleSort(firstField.name as keyof T)}>{renderCell(item, firstField)}</h2>
+
+                      {true && (fieldsInfo.map((field) => (
+                        <p key={field.name}>
+                          <strong className='capitalize' onClick={() => handleSort(field.name as keyof T)}>{field.placeholder}: </strong>
+                          {renderCell(item, field)}
+                        </p>
+                      )))}
+
+                    </td>
+                  </tr>
+                )
+              }) :
               (
                 <tr>
                   <td colSpan={config.fields.length} className="empty-state">No data available</td>
@@ -143,4 +141,4 @@ const Table = <T extends Record<string, any>>({
   );
 };
 
-export default Table;
+export default VerticalTable;

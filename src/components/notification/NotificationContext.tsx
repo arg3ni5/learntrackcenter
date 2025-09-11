@@ -12,6 +12,9 @@ interface NotificationData {
 
 interface NotificationContextType {
     showNotification: (message: string, type: 'success' | 'error' | 'info', timeout?: number) => void;
+    showError: (message: string, timeout?: number) => void;
+    showSuccess: (message: string, timeout?: number) => void;
+    showInfo: (message: string, timeout?: number) => void;
 }
 
 
@@ -45,19 +48,23 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         }
     };
 
+    const showError = (message: string, timeout?: number) => showNotification(message, "error", timeout);
+    const showSuccess = (message: string, timeout?: number) => showNotification(message, "success", timeout);
+    const showInfo = (message: string, timeout?: number) => showNotification(message, "info", timeout);
+
     const removeNotification = (id: number) => {
         setNotifications((prev) => prev.filter(notification => notification.id !== id));
     };
 
     return (
-        <NotificationContext.Provider value={{ showNotification }}>
+        <NotificationContext.Provider value={{ showNotification, showError, showSuccess, showInfo }}>
             <div className="notification-container">
                 {notifications.map(notification => (
-                    <Notification 
-                        key={notification.id} 
-                        message={notification.message} 
-                        type={notification.type} 
-                        onClose={() => removeNotification(notification.id)} 
+                    <Notification
+                        key={notification.id}
+                        message={notification.message}
+                        type={notification.type}
+                        onClose={() => removeNotification(notification.id)}
                         timeout={notification.timeout}
                     />
                 ))}
