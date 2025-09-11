@@ -23,9 +23,8 @@ const PeriodCourse: React.FC = () => {
         className="item"
         key={courseId}
         course={course}
-        handlers={{ onDelete: async () => { } }}
+        handlers={{}}
         childrenVisible={false}
-        viewLink={`/period/${periodId}/course/${courseId}`}
         setSelectedTeacher={() => { }}
       >
         {course && course.id && periodId && <CourseAssignmentsManager course={course} />}
