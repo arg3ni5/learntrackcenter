@@ -55,7 +55,7 @@ const Card = <T extends Record<string, any>>({ children, className, titleName, f
 				return value;
 		}
 	};
-	const showActions = !!handlers?.onItemUpdated || ableDelete || viewLink;
+	const showActions = !!handlers?.onItemUpdated || ableDelete || viewLink || (customButtons && customButtons.length > 0);
 
 	return (
 		<>

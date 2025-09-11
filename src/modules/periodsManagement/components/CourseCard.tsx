@@ -12,7 +12,7 @@ interface CourseCardProps {
     childrenVisible?: boolean;
     course: Course | null;
     teachers?: Teacher[];
-    viewLink: string;
+    viewLink?: string;
     className?: string;
     setSelectedTeacher: (id: string) => void;
     handlers: {
@@ -48,9 +48,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
     const nodeRef = useRef<HTMLDivElement | null>(null);
     const cardRef = useRef<HTMLDivElement | null>(null);
     const titleName = hideTitle ? undefined :"name";
-
-
     const { onDelete, onItemAdded, onItemUpdated } = handlers;
+    const ableDelete = onDelete !== undefined;
     const toggleChildrenVisibility = () => {
         setIsChildrenVisible(!isChildrenVisible);
     };
@@ -100,7 +99,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
                                 data={course}
                                 viewLink={viewLink}
                                 handlers={{ onDelete, onItemAdded, onItemUpdated }}
-                                ableDelete={course.assignmentsIds.length === 0 && (course.enrolledStudents?.length ?? 0) === 0}
+                                ableDelete={ableDelete && course.assignmentsIds.length === 0 && (course.enrolledStudents?.length ?? 0) === 0}
                                 customButtons={[
                                     {
                                         label: isChildrenVisible ? 'Hide Assignments' : 'Assignments',
