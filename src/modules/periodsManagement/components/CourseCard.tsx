@@ -7,6 +7,7 @@ import './CourseCard.css';
 import { FaClipboardCheck } from 'react-icons/fa';
 
 interface CourseCardProps {
+    hideTitle?: boolean;
     children?: React.ReactNode;
     childrenVisible?: boolean;
     course: Course | null;
@@ -34,6 +35,7 @@ const fields: CardField[] = [
 ];
 
 const CourseCard: React.FC<CourseCardProps> = ({
+    hideTitle = false,
     children,
     className,
     childrenVisible,
@@ -45,6 +47,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
     const [isChildrenVisible, setIsChildrenVisible] = useState(childrenVisible);
     const nodeRef = useRef<HTMLDivElement | null>(null);
     const cardRef = useRef<HTMLDivElement | null>(null);
+    const titleName = hideTitle ? undefined :"name";
 
 
     const { onDelete, onItemAdded, onItemUpdated } = handlers;
@@ -92,7 +95,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
                         nodeRef={cardRef}>
                         <div ref={cardRef}>
                             <Card<Course>
-                                titleName="name"
+                                titleName={titleName}
                                 fields={fields}
                                 data={course}
                                 viewLink={viewLink}
