@@ -126,3 +126,13 @@ export interface Teacher {
     idNumber?: string;
     specialty?: string;
 }
+
+export interface Attendance {
+    id?: string;
+    courseId: string;
+    periodId: string;
+    studentId: string;
+    weekNumber: number;
+    attended: boolean;
+    date?: Date;
+}

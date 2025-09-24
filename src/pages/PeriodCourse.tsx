@@ -14,9 +14,17 @@ const PeriodCourse: React.FC = () => {
     <div>
       <div className="container px-0" style={{ paddingBottom: 30 }}>
         <h1>{course?.name}</h1>
-        <button onClick={() => navigate(-1)}>
-          <FaArrowLeft /> Go Back
-        </button>
+        <div className="flex justify-between">
+          <button onClick={() => navigate(-1)}>
+            <FaArrowLeft /> Go Back
+          </button>
+          <button
+            onClick={() => navigate(`/attendance/${periodId}/${courseId}`)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Tomar Asistencia
+          </button>
+        </div>
       </div>
       <CourseCard
         hideTitle={true}

@@ -21,6 +21,7 @@ const Teachers = lazy(() => import("../pages/Teachers"));
 const StudentsCourses = lazy(() => import("../pages/StudentsCourses"));
 const CourseStudents = lazy(() => import("../pages/CourseStudents"));
 const PeriodStudents = lazy(() => import("../pages/PeriodStudents"));
+const CourseAttendance = lazy(() => import("../pages/CourseAttendance"));
 
 const AppRoutes: React.FC = () => {
   const { loading: authLoading } = useAuth();
@@ -57,6 +58,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/period/:periodId/course/:courseId" element={<PrivateRoute element={<PeriodCourse />} />} />
       <Route path="grades/period/:periodId/course/:courseId" element={<PrivateRoute element={<Grades />} />} />
       <Route path="/course/:id/students" element={<PrivateRoute element={<CourseStudents />} />} />
+      <Route path="/attendance/:periodId/:courseId" element={<PrivateRoute element={<CourseAttendance />} />} />
       <Route path="*" element={<Navigate to="/" />} /> {/* Redirigir a la página de inicio */}
     </Routes>
   );
