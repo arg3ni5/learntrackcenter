@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 6;
 }
 
 .modal-overlay .card {
@@ -55,9 +55,9 @@
     position: absolute;
     right: 10px;
     top: 10px;
-    z-index: 1001;
+    z-index: 7;
     background-color: transparent;
-    
+
     font-size: 1em;
 }
 
@@ -121,4 +121,3 @@
 .modal-overlay .buttons-container {
     padding: 0 2em;
 }
-

@@ -1,67 +1,78 @@
-# Sistema de Gestión de Estudiantes
+# Student Management System
 
-Este es un sistema de gestión de estudiantes que permite a los usuarios cargar, visualizar, actualizar y eliminar información sobre estudiantes, períodos y cursos. El sistema está construido con React y utiliza Firebase Firestore como base de datos.
+This is a student management system that allows users to add, view, update, and delete student, period, and course information. The system is built with React and uses Firebase Firestore as its database.
 
-## Características
+## Features
 
-- **Gestión de Estudiantes**: Agregar, eliminar y actualizar información sobre estudiantes.
-- **Gestión de Períodos**: Asignar períodos a los estudiantes y gestionar su información.
-- **Gestión de Cursos**: Asignar cursos a los períodos y gestionar las asignaciones.
-- **Carga de Datos**: Cargar datos desde archivos Excel para agregar múltiples estudiantes a la vez.
+- **Student Management**: Add, update, and remove student records.
+- **Period Management**: Assign periods to students and manage their details.
+- **Course Management**: Assign courses to specific periods and manage assignments.
+- **Bulk Data Upload**: Import student data from Excel files for batch additions.
 
-## Tecnologías Utilizadas
+## Technologies Used
 
-- **React**: Biblioteca para construir interfaces de usuario.
-- **Firebase**: Plataforma para el backend, incluyendo Firestore para la base de datos.
-- **XLSX**: Biblioteca para manejar archivos Excel.
+- **React**: Library for building user interfaces.
+- **Firebase**: Backend platform, using Firestore as the database.
+- **XLSX**: Library for handling Excel files.
 
-## Instalación
+## Installation
 
-1. Clona el repositorio:
+Follow these steps to set up the project:
 
+1. Clone the repository:
+   ```sh
+   git clone <repository_url>
+   ```
+2. Navigate to the project directory:
+   ```sh
+   cd student-management-system
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+4. Configure Firebase:
+   - Create a project on [Firebase](https://firebase.google.com/).
+   - Add your Firebase configuration details to the project.
 
-2. Navega al directorio del proyecto:
+5. Start the application:
+   ```sh
+   npm run dev
+   ```
 
+## Usage
 
-3. Instala las dependencias:
+### Student Management
+Use the `StudentModule` component to add, update, or delete student records.
 
+### Period Management
+The `PeriodsManager` component allows you to assign periods to students and manage associated courses.
 
-4. Configura Firebase:
-- Crea un proyecto en [Firebase](https://firebase.google.com/).
-- Agrega la configuración de Firebase en tu proyecto.
+### Course Management
+The `CoursesManager` component enables you to assign courses to specific periods and manage assignments.
 
-5. Inicia la aplicación:
-```npm run dev```
+### Bulk Student Upload
+Use the `UploadStudents` component to import multiple students from an Excel file. Ensure the file contains the required columns (Full Name, Identification Number, Email Address).
 
+## Contributing
 
-## Uso
+Contributions are welcome! To contribute to this project, follow these steps:
 
-### Gestión de Estudiantes
+1. Fork the repository.
+2. Create a new branch:
+   ```sh
+   git checkout -b feature/new-feature
+   ```
+3. Make your changes and commit them:
+   ```sh
+   git commit -m "Add new feature"
+   ```
+4. Push your changes:
+   ```sh
+   git push origin feature/new-feature
+   ```
+5. Open a Pull Request.
 
-Para gestionar estudiantes, utiliza el componente `StudentModule`. Aquí puedes agregar nuevos estudiantes, eliminar estudiantes existentes o actualizar su información.
+## License
 
-### Gestión de Períodos
-
-El componente `PeriodsManager` permite asignar períodos a los estudiantes y gestionar los cursos asociados.
-
-### Gestión de Cursos
-
-El componente `CoursesManager` se utiliza para asignar cursos a los períodos específicos y gestionar las asignaciones.
-
-### Carga de Estudiantes
-
-Utiliza el componente `UploadStudents` para cargar múltiples estudiantes desde un archivo Excel. Asegúrate de que el archivo tenga las columnas adecuadas (Nombre completo, Número de identificación, Correo electrónico).
-
-## Contribuciones
-
-Las contribuciones son bienvenidas. Si deseas contribuir a este proyecto, por favor sigue estos pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una nueva rama (`git checkout -b feature/nueva-caracteristica`).
-3. Realiza tus cambios y haz commit (`git commit -m 'Añadir nueva característica'`).
-4. Envía tus cambios (`git push origin feature/nueva-caracteristica`).
-5. Abre un Pull Request.
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.

@@ -6,7 +6,7 @@ import { fetchCourses as fetchAvailableCourses } from "../../periodsManagement/s
 import { CourseWithDetails, AvailableCourse, StudentCourse, Period } from "../../../types/types"; // Import the Course interface
 import { useNotification } from "../../../components/notification/NotificationContext";
 import useLocalStorage from "../../../hooks/useLocalStorage"; // Import the local storage hook
-import { fetchPeriods } from "../../periodsManagement/services/periodService";
+import { fetchPeriodsActive } from "../../periodsManagement/services/periodService";
 import { useLoading } from "../../../components/loading/LoadingContext";
 
 const useStudentCourses = (studentId: string) => {
@@ -31,7 +31,7 @@ const useStudentCourses = (studentId: string) => {
       // Only fetch if not already in local storage
       try {
         setLoading(true);
-        const fetchedAvailablePeriods = await fetchPeriods(); // Fetch available periods from service
+        const fetchedAvailablePeriods = await fetchPeriodsActive(); // Fetch available periods from service
         setAvailablePeriods(fetchedAvailablePeriods); // Store in local storage
       } catch (err) {
         setError("Error fetching available periods");

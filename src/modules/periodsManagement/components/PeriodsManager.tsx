@@ -77,9 +77,10 @@ const PeriodsManager: React.FC<{ periodId: string }> = ({ periodId }) => {
           </button>
         </div>
         <div className="view-toggle">
-          <button onClick={() => setViewMode('assign')} className={viewMode === 'assign' ? 'active' : ''}>
+
+          {period?.status != 1 && (<button onClick={() => setViewMode('assign')} className={viewMode === 'assign' ? 'active' : ''}>
             <FaClipboardList /> <span className="d-none d-md-block-over">Assign Courses</span>
-          </button>
+          </button>)}
         </div>
       </div>
 

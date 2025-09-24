@@ -57,8 +57,8 @@ const CourseStudentsManager: React.FC<CourseStudentsManagerProps> = ({ periodCou
         >
           {selectedStudent && <StudentCard student={selectedStudent} />}
 
-          {selectedStudent?.id && periodCourse.id && periodId! && (
-            <AssignmentsManager studentId={selectedStudent?.id!} periodId={periodId} courseId={periodCourse.courseId!} periodCourseId={periodCourse.id!} />
+          {selectedStudent && selectedStudent?.id && periodCourse.id && periodId! && (
+            <AssignmentsManager studentId={selectedStudent.id!} periodId={periodId} courseId={periodCourse.courseId!} periodCourseId={periodCourse.id!} />
           )}
         </motion.div>
       </div>

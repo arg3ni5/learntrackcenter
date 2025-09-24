@@ -3,16 +3,16 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import PrivateRoute from "../modules/userAuth/components/PrivateRoute";
-import PeriodCourses from "../pages/PeriodCourses";
-import Loading from "../components/loading/Loading";
 import { useLoading } from "../components/loading/LoadingContext";
+import PrivateRoute from "../auth/components/PrivateRoute";
+import PeriodCourse from "../pages/PeriodCourse";
 
 const Register = lazy(() => import("../components/Register"));
 const Home = lazy(() => import("../pages/Home"));
 const Courses = lazy(() => import("../pages/Courses"));
 const Grades = lazy(() => import("../pages/Grades"));
 const Periods = lazy(() => import("../pages/Periods"));
+const PeriodCourses = lazy(() => import("../pages/PeriodCourses"));
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Students = lazy(() => import("../pages/Students"));
@@ -21,29 +21,20 @@ const Teachers = lazy(() => import("../pages/Teachers"));
 const StudentsCourses = lazy(() => import("../pages/StudentsCourses"));
 const CourseStudents = lazy(() => import("../pages/CourseStudents"));
 const PeriodStudents = lazy(() => import("../pages/PeriodStudents"));
+const CourseAttendance = lazy(() => import("../pages/CourseAttendance"));
 
 const AppRoutes: React.FC = () => {
   const { loading: authLoading } = useAuth();
-  const { setIsLoading } = useLoading();
+  const { setIsLoading, setLoadingText } = useLoading();
   const [initialLoadingComplete, setInitialLoadingComplete] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (authLoading) {
-      setIsLoading(true);
-    } else {
-      timer = setTimeout(() => {
-        setIsLoading(false);
-        setInitialLoadingComplete(true);
-        setShowContent(true);
-      }, 2000);
-    }
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [authLoading, setIsLoading]);
+    setLoadingText("Cargando pagina");
+    setIsLoading(authLoading);
+    setInitialLoadingComplete(!authLoading);
+    setShowContent(!authLoading);
+  }, [authLoading, setIsLoading, setLoadingText]);
 
   if (!initialLoadingComplete) {
     return null;
@@ -64,14 +55,15 @@ const AppRoutes: React.FC = () => {
       <Route path="/periods/courses" element={<PrivateRoute element={<Periods />} />} />
       <Route path="/period/:id/courses" element={<PrivateRoute element={<PeriodCourses />} />} />
       <Route path="/period/:id/students" element={<PrivateRoute element={<PeriodStudents />} />} />
-      <Route path="/period/:periodId/course/:courseId" element={<PrivateRoute element={<CourseStudents />} />} />
+      <Route path="/period/:periodId/course/:courseId" element={<PrivateRoute element={<PeriodCourse />} />} />
       <Route path="grades/period/:periodId/course/:courseId" element={<PrivateRoute element={<Grades />} />} />
       <Route path="/course/:id/students" element={<PrivateRoute element={<CourseStudents />} />} />
+      <Route path="/attendance/:periodId/:courseId" element={<PrivateRoute element={<CourseAttendance />} />} />
       <Route path="*" element={<Navigate to="/" />} /> {/* Redirigir a la página de inicio */}
     </Routes>
   );
 
-  return <Suspense fallback={<Loading text="Cargando componente..."></Loading>}>{showContent ? routes : null}</Suspense>;
+  return <Suspense>{showContent ? routes : null}</Suspense>;
 };
 
 export default AppRoutes;

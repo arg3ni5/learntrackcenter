@@ -1,9 +1,16 @@
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
 .loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   overflow: hidden !important;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .loading-container.h30vh {
@@ -36,6 +43,7 @@
 
 .loading-text {
   padding: 20px;
+  font-weight: bold;
   color: white;
   position: absolute;
   width: 50%; /* O cualquier ancho deseado */
@@ -47,7 +55,7 @@
   color: white;
   white-space: nowrap;
   text-overflow: ellipsis;
-  text-align: center;  
+  text-align: center;
   margin-top: 135px;
 }
 
@@ -99,7 +107,7 @@
 
 .loader:after {
   content: "";
-  position: absolute;  
+  position: absolute;
   right: -60px;
   top: 0;
   height: 7px;

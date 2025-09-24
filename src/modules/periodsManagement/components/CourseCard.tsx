@@ -6,12 +6,13 @@ import { CSSTransition } from 'react-transition-group';
 import './CourseCard.css';
 import { FaClipboardCheck } from 'react-icons/fa';
 
-interface StudentCardProps {
+interface CourseCardProps {
+    hideTitle?: boolean;
     children?: React.ReactNode;
     childrenVisible?: boolean;
-    course: Course;
-    teachers: Teacher[];
-    viewLink: string;
+    course: Course | null;
+    teachers?: Teacher[];
+    viewLink?: string;
     className?: string;
     setSelectedTeacher: (id: string) => void;
     handlers: {
@@ -33,7 +34,8 @@ const fields: CardField[] = [
     { name: "teacherName", placeholder: "teacherName" },
 ];
 
-const CourseCard: React.FC<StudentCardProps> = ({
+const CourseCard: React.FC<CourseCardProps> = ({
+    hideTitle = false,
     children,
     className,
     childrenVisible,
@@ -45,71 +47,74 @@ const CourseCard: React.FC<StudentCardProps> = ({
     const [isChildrenVisible, setIsChildrenVisible] = useState(childrenVisible);
     const nodeRef = useRef<HTMLDivElement | null>(null);
     const cardRef = useRef<HTMLDivElement | null>(null);
-
-
+    const titleName = hideTitle ? undefined :"name";
     const { onDelete, onItemAdded, onItemUpdated } = handlers;
+    const ableDelete = onDelete !== undefined;
     const toggleChildrenVisibility = () => {
         setIsChildrenVisible(!isChildrenVisible);
     };
 
     return (
         <>
-            <div className={className}>
-                {!course.teacherId && (
-                    <>
-                        <SelectInput
-                            label="Teacher"
-                            key="teacherId"
-                            options={teachers.map((teacher) => ({ value: teacher.id!, label: teacher.name }))}
-                            value={""}
-                            onChange={(selectedOption) => setSelectedTeacher(selectedOption.value)}
-                            placeholder="Select Teacher"
-                        />
-                    </>
-                )}
+            {course && (
+                <div className={className}>
+                    {!course.teacherId && teachers != undefined && teachers.length > 0 && (
+                        <>
+                            <SelectInput
+                                label="Teacher"
+                                key="teacherId"
+                                options={teachers.map((teacher) => ({ value: teacher.id!, label: teacher.name }))}
+                                value={""}
+                                onChange={(selectedOption) => setSelectedTeacher(selectedOption.value)}
+                                placeholder="Select Teacher"
+                            />
+                        </>
+                    )}
 
 
 
-                <CSSTransition
-                    in={isChildrenVisible}
-                    timeout={500}
-                    classNames="fade"
-                    unmountOnExit
-                    nodeRef={nodeRef}>
-                    <div ref={(el) => (nodeRef.current = el)} className="fade-container">
-                        {children}
-                    </div>
-                </CSSTransition>
+                    <CSSTransition
+                        in={isChildrenVisible}
+                        timeout={500}
+                        classNames="fade"
+                        unmountOnExit
+                        nodeRef={nodeRef}>
+                        <div ref={(el) => (nodeRef.current = el)} className="fade-container">
+                            {children}
+                        </div>
+                    </CSSTransition>
 
 
-                <CSSTransition
-                    in={!isChildrenVisible}
-                    timeout={500}
-                    classNames={{
-                        enter: "animate__animated animate__bounceInUp",
-                    }}
-                    nodeRef={cardRef}>
-                    <div ref={cardRef}>
-                        <Card<Course>
-                            titleName="name"
-                            fields={fields}
-                            data={course}
-                            viewLink={viewLink}
-                            handlers={{ onDelete, onItemAdded, onItemUpdated }}
-                            ableDelete={course.assignmentsIds.length === 0 && (course.enrolledStudents?.length ?? 0) === 0}
-                            customButtons={[
-                                {
-                                    label: isChildrenVisible ? 'Hide Assignments' : 'Assignments',
-                                    icon: <FaClipboardCheck/>,
-                                    onClick: toggleChildrenVisibility,
-                                    className: 'save-button',
-                                    ariaLabel: 'Toggle Details Button',
-                                },
-                            ]}>
-                        </Card>
-                    </div>
-                </CSSTransition>
-            </div>
+                    <CSSTransition
+                        in={!isChildrenVisible}
+                        timeout={500}
+                        classNames={{
+                            enter: "animate__animated animate__bounceInUp",
+                        }}
+                        nodeRef={cardRef}>
+                        <div ref={cardRef}>
+                            <Card<Course>
+                                titleName={titleName}
+                                fields={fields}
+                                data={course}
+                                viewLink={viewLink}
+                                handlers={{ onDelete, onItemAdded, onItemUpdated }}
+                                ableDelete={ableDelete && course.assignmentsIds.length === 0 && (course.enrolledStudents?.length ?? 0) === 0}
+                                customButtons={[
+                                    {
+                                        label: isChildrenVisible ? 'Hide Assignments' : 'Assignments',
+                                        icon: <FaClipboardCheck />,
+                                        onClick: toggleChildrenVisibility,
+                                        className: 'save-button',
+                                        ariaLabel: 'Toggle Details Button',
+                                    },
+                                ]}>
+                            </Card>
+                        </div>
+                    </CSSTransition>
+                </div>
+            )}
+
         </>
     );
 };

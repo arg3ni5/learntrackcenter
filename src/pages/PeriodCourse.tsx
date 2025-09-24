@@ -1,0 +1,44 @@
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import CourseCard from '../modules/periodsManagement/components/CourseCard';
+import useCourse from "../modules/coursesManagement/hooks/useCourse";
+import CourseAssignmentsManager from '../modules/periodsManagement/components/CourseAssignmentsManager';
+import { FaArrowLeft } from 'react-icons/fa';
+
+
+const PeriodCourse: React.FC = () => {
+  const navigate = useNavigate();
+  const { courseId, periodId } = useParams<{ courseId: string, periodId: string }>();
+  const { course } = useCourse(periodId, courseId);
+  return (
+    <div>
+      <div className="container px-0" style={{ paddingBottom: 30 }}>
+        <h1>{course?.name}</h1>
+        <div className="flex justify-between">
+          <button onClick={() => navigate(-1)}>
+            <FaArrowLeft /> Go Back
+          </button>
+          <button
+            onClick={() => navigate(`/attendance/${periodId}/${courseId}`)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Tomar Asistencia
+          </button>
+        </div>
+      </div>
+      <CourseCard
+        hideTitle={true}
+        className="item"
+        key={courseId}
+        course={course}
+        handlers={{}}
+        childrenVisible={false}
+        setSelectedTeacher={() => { }}
+      >
+        {course && course.id && periodId && <CourseAssignmentsManager course={course} />}
+      </CourseCard>
+    </div>
+  );
+};
+
+export default PeriodCourse;

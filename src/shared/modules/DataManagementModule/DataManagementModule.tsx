@@ -28,6 +28,7 @@ const DataManagementModule = <T extends Record<string, any>>({
     ableImport = false,
     ableFilter = false,
     ableForm = true,
+    layout = "table",
     alias,
     title,
     fields,
@@ -103,18 +104,6 @@ const DataManagementModule = <T extends Record<string, any>>({
       setCurrentItem(null);
       setInitialFormData(null);
       resetEditing();
-    }
-  };
-
-  /**
-   * Handle deleting an item.
-   * @param {string} id - The ID of the item to delete.
-   */
-  const handleItemDelete = async (id: string) => {
-    if (handlers?.onItemDeleted) {
-      await handlers?.onItemDeleted(id);
-      loadItems();
-      showNotification("Item deleted", "success");
     }
   };
 
@@ -245,29 +234,23 @@ const DataManagementModule = <T extends Record<string, any>>({
             {items && (
               <ListBase<T>
                 config={{
-                  viewLinks: viewLinks,
+                  layout,
                   loading: loading || false,
-                  alias: alias,
-                  items: items,
+                  alias, items, viewLinks,
                   selectedItem: iniFormData || currentItem,
                   fields: dynamicFields,
                   removeable: !!handlers?.onItemDeleted,
                   editable: !!handlers?.onItemUpdated,
                   seeable: !!handlers?.onView,
-                  ableFilter: ableFilter,
-                  ableForm: ableForm,
-                  ableImport: ableImport,
-                  showForm: showForm,
-                  showImportForm: showImportForm,
+                  ableFilter, ableForm, ableImport, showForm, showImportForm,
+                  tempChanges, setTempChanges,
                   useFlexTable: false,
-                  tempChanges: tempChanges,
-                  setTempChanges: setTempChanges,
                 }}
                 handlers={{
                   onAdd: setShowForm,
                   onImport: setShowImportForm,
                   onSelect: handleOnSelect,
-                  onItemDeleted: handleItemDelete,
+                  onItemDeleted: handlers?.onItemDeleted,
                   onItemsUpdated: handleSaveAllChanges,
                   onReload: handlers?.onReload,
                   onAssign: handlers?.onAssign,

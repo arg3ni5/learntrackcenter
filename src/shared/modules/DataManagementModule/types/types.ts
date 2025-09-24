@@ -15,9 +15,10 @@ export interface BaseField extends Field {
   options?: Option[]; // Options for the select
   visible?: boolean;
   required?: boolean;
-  onChange?: (value: any) => void;
   size?: number;
   unit?: "em" | "px" | "%" | "rem" | "vw" | "vh";
+  width?: `${number}${"em" | "px" | "%" | "rem" | "vw" | "vh"}`;
+  onChange?: (value: any) => void;
 }
 
 export interface CommonProps<T> {
@@ -35,25 +36,28 @@ export interface CommonProps<T> {
 
 export interface UploadField extends Field {}
 
-export interface HandlersBaseModuleProps<T>{
+export interface HandlersBaseModuleProps<T> {
   onView?: (item: T) => void; // Optional callback to handle view
   onSelect?: (item: T | null) => void; // Optional callback to handle select
   onItemAdded?: (newItem: T) => Promise<void>; // Callback to handle adding an item
   onItemsAdded?: (items: T[]) => Promise<void>; // Callback to handle adding multiple items
   onItemUpdated?: (id: string, updatedItem: T) => Promise<void>; // Optional callback to handle updating
-  onItemsUpdated?: (changes: Record<string, Record<string, number>>) => void;
+  onItemsUpdated?: (changes: Record<string, Record<string, number>>) => Promise<void>;
   onItemDeleted?: (id: string) => Promise<void>; // Optional callback to handle deletion
-  onReload?: () => void;
-  onAssign?: () => void;
+  onReload?: () => Promise<void>;
+  onAssign?: () => Promise<void>;
 }
-export interface BaseModuleProps<T> extends CommonProps<T>{
+
+type LayoutType = "vertical" | "table" | "table-fixed" | "cards";
+export interface BaseModuleProps<T> extends CommonProps<T> {
+  layout?: LayoutType;
   className?: string;
   title?: string;
   uploadFields?: BaseField[];
   initialFormData?: T | null; // Initial data for the form
   clearFormAfterAdd?: boolean;
   children?: React.ReactNode;
-  fetchItems?: () => Promise<T[]>; // Function to fetch items
+  fetchItems?: () => Promise<T[]> | null;
   handlers?: HandlersBaseModuleProps<T>;
 }
 
@@ -65,6 +69,7 @@ export interface configListBaseProps<T> extends CommonProps<T> {
   seeable: boolean;
   tempChanges: Record<string, Record<string, number>>;
   setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
+  layout: LayoutType;
 }
 
 export interface ListBaseProps<T> {
@@ -78,7 +83,7 @@ export interface ListBaseProps<T> {
     onImport?: (state: boolean) => void;
     onReload?: () => void;
     onAssign?: () => void;
-  }
+  };
 }
 
 export interface LinkItem {
@@ -106,8 +111,8 @@ export interface ActionButtonsConfig<T> {
   showForm: boolean;
   showImportForm: boolean;
   selectedItem: T | null;
-  setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>
-  tempChanges: Record<string, Record<string, number>>
+  setTempChanges: React.Dispatch<React.SetStateAction<Record<string, Record<string, number>>>>;
+  tempChanges: Record<string, Record<string, number>>;
   viewLinks?: LinkItem[];
   ableForm?: boolean;
   ableImport?: boolean;

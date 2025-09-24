@@ -9,16 +9,16 @@ import useLocalStorage from "../../../../hooks/useLocalStorage";
  * @returns {Object} An object containing sorting state and functions.
  */
 export const useSorting = <T extends Record<string, any>>(items: T[], alias?: string) => {
-  const [sortConfig, setSortConfig] = alias 
+  const [sortConfig, setSortConfig] = alias
     ? useLocalStorage<{ key: keyof T; direction: "ascending" | "descending" } | null>(`${alias}-sortConfig`, null)
     : useState<{ key: keyof T; direction: "ascending" | "descending" } | null>(null);
 
-  const handleSort = (key: keyof T) => {
+  const handleSort = (key: keyof T | null) => {
     let direction: "ascending" | "descending" = "ascending";
     if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
       direction = "descending";
     }
-    setSortConfig({ key, direction });
+    setSortConfig(key ? { key, direction } : null);
   };
 
   const sortedItems = useMemo(() => {

@@ -75,7 +75,13 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
   };
 
   return (
-    <div className="table-body-wrapper">
+    <motion.div
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.4,
+        scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+      }} className="table-body-wrapper">
       <table className="list-base-table body-table" aria-label="List of items">
         <tbody>
           {items.length > 0 ? items.map((item) => (
@@ -101,7 +107,7 @@ const TableBody = <T extends Record<string, any>>({ fields, items, selectedItem,
           }
         </tbody>
       </table>
-    </div>
+    </motion.div>
   );
 };
 
