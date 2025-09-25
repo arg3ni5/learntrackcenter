@@ -7,13 +7,13 @@ import { useNotification } from '../components/notification/NotificationContext'
 import { Course, Student, Attendance } from '../types/types';
 import { db } from '../services/firebase';
 import { collection, query, where, getDocs, doc, getDoc, setDoc } from 'firebase/firestore';
+import useCourse from '../modules/coursesManagement/hooks/useCourse';
 
 const CourseAttendance: React.FC = () => {
     const { periodId, courseId } = useParams<{ periodId: string, courseId: string }>();
     const { setIsLoading, setLoadingText } = useLoading();
     const { showSuccess, showError } = useNotification();
-
-    const [course, setCourse] = useState<Course | null>(null);
+    const { course } = useCourse(periodId, courseId);
     const [students, setStudents] = useState<Student[]>([]);
     const [week, setWeek] = useState(1);
     const [attendances, setAttendances] = useState<Map<string, Attendance>>(new Map());
@@ -26,16 +26,14 @@ const CourseAttendance: React.FC = () => {
 
             try {
                 // Fetch course details
-                const courseRef = doc(db, 'courses', courseId);
-                const courseSnap = await getDoc(courseRef);
-                if (courseSnap.exists()) {
-                    const courseData = courseSnap.data() as Course;
-                    setCourse(courseData);
-
+                if (course) {
                     // Fetch enrolled students
-                    if (courseData.enrolledStudents && courseData.enrolledStudents.length > 0) {
-                        const studentsQuery = query(collection(db, 'students'), where('__name__', 'in', courseData.enrolledStudents));
+                    console.log('Enrolled Students IDs:', course.enrolledStudents);
+                    if (course.enrolledStudents && course.enrolledStudents.length > 0) {
+
+                        const studentsQuery = query(collection(db, 'students'), where('__name__', 'in', course.enrolledStudents));
                         const studentsSnap = await getDocs(studentsQuery);
+                        console.log('Fetched Students:', studentsSnap.docs.map(d => ({ id: d.id, ...d.data() } as Student)));
                         setStudents(studentsSnap.docs.map(d => ({ id: d.id, ...d.data() } as Student)));
                     }
                 } else {
